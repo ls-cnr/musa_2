@@ -24,7 +24,7 @@ public class DomainEntail {
 	private static DomainEntail instance=null;
 
 	
-	private final String path2dvl = "./tools/dlv.i386-apple-darwin.bin";
+	private final String path2dvl = "./ext/dlv.i386-apple-darwin.bin";
 	private  DLV solver;	
 	private AspFolTranslator tx;
 	
