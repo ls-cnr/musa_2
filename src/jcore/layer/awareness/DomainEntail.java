@@ -37,6 +37,12 @@ public class DomainEntail {
 	/** The path 2 dvl. */
 	private final String path2dvl = "./ext/dlv.mingw.exe";
 	
+<<<<<<< HEAD
+=======
+	/** The path 2 dvl. */
+	private final String path2dvl = "C:/Users/PC MARIA/Desktop/dlv.mingw.exe";
+	
+>>>>>>> origin/dev
 	/** The solver. */
 	private  DLV solver;	
 	

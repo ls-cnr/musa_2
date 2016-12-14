@@ -2,11 +2,11 @@
 <classpath>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry excluding="**/*.asl" kind="src" path="src/agt"/>
+	<classpathentry kind="src" path="src/testcase"/>
 	<classpathentry excluding="*.ptl" kind="src" path="src/int"/>
 	<classpathentry excluding="*.xml" kind="src" path="src/org"/>
 	<classpathentry kind="src" path="src/env"/>
 	<classpathentry kind="src" path="src/jcore"/>
-	<classpathentry kind="src" path="src/testcase"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/JaCaMo"/>
 	<classpathentry kind="lib" path="lib/jgrapht-core-1.0.0.jar"/>
 	<classpathentry kind="lib" path="lib/net.sf.tweety.tweety-full-1.7-with-dependencies.jar"/>
