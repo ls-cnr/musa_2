@@ -19,20 +19,43 @@ import net.sf.tweety.lp.asp.syntax.DLPHead;
 import net.sf.tweety.lp.asp.syntax.DLPLiteral;
 import net.sf.tweety.lp.asp.syntax.Program;
 
+// TODO: Auto-generated Javadoc
+
+/**
+ * The Class DomainEntail.
+ * @author icar-aose
+ * @version 1.0.0
+ * @author Javadoc author Fontana Alessandro
+ */
+
 /* pattern Singleton */
 public class DomainEntail {
+	
+	/** The instance. */
 	private static DomainEntail instance=null;
 
+	/** The path 2 dvl. */
+	private final String path2dvl = "./ext/dlv.mingw.exe";
 	
-	private final String path2dvl = "./ext/dlv.i386-apple-darwin.bin";
+	/** The solver. */
 	private  DLV solver;	
+	
+	/** The tx. */
 	private AspFolTranslator tx;
 	
+	/**
+	 * Instantiates a new domain entail.
+	 */
 	private DomainEntail() {
 		solver = new DLV(path2dvl);
 		tx = new AspFolTranslator();
 	}
 	
+	/**
+	 * Gets the single instance of DomainEntail.
+	 *
+	 * @return single instance of DomainEntail
+	 */
 	public static DomainEntail getInstance() {
 		if (instance==null) {
 			instance = new DomainEntail();
@@ -40,6 +63,17 @@ public class DomainEntail {
 		return instance;
 	}
 	
+	/**
+	 * Entails condition.
+	 *
+	 * @param world
+	 *            the world
+	 * @param assumptions
+	 *            the assumptions
+	 * @param condition
+	 *            the condition
+	 * @return true, if successful
+	 */
 	public boolean entailsCondition(StateOfWorld world,  AssumptionSet assumptions, Condition condition) {
 		Program test = assumptions.getASPClone();
 		Iterator<DLPHead> fact_it = world.getFacts().iterator();
