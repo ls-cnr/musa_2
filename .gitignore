@@ -10,9 +10,16 @@
 hs_err_pid*
 
 .project
+.factorypath
+.classpath
+.settings/
 
-bin/musa_2_0.xml
-bin/classes/*
+*.launch
 
+bin/
+tmp/
+*.tmp
+*.bak
+*.swp
 
 /.DS_Store
