@@ -19,8 +19,6 @@ import net.sf.tweety.lp.asp.syntax.DLPHead;
 import net.sf.tweety.lp.asp.syntax.DLPLiteral;
 import net.sf.tweety.lp.asp.syntax.Program;
 
-// TODO: Auto-generated Javadoc
-
 /**
  * The Class DomainEntail.
  * @author icar-aose
@@ -35,14 +33,8 @@ public class DomainEntail {
 	private static DomainEntail instance=null;
 
 	/** The path 2 dvl. */
-	private final String path2dvl = "./ext/dlv.mingw.exe";
+	private final String path2dvl;
 	
-//<<<<<<< HEAD
-//=======
-//	/** The path 2 dvl. */
-//	private final String path2dvl = "C:/Users/PC MARIA/Desktop/dlv.mingw.exe";
-//	
-//>>>>>>> origin/dev
 	/** The solver. */
 	private  DLV solver;	
 	
@@ -53,6 +45,7 @@ public class DomainEntail {
 	 * Instantiates a new domain entail.
 	 */
 	private DomainEntail() {
+		path2dvl = setPath();
 		solver = new DLV(path2dvl);
 		tx = new AspFolTranslator();
 	}
@@ -108,6 +101,17 @@ public class DomainEntail {
 
 		}
 		return false; // no stable model
+	}
+	
+	/**
+	 * This method returns the right path for DVL program considering the OS. 
+	 * @return path
+	 */
+	private String setPath(){
+		if( System.getProperty("os.name").startsWith("Windows") )
+			return "./ext/dlv.nimgw.exe";
+		else //TODO considering other OS, such as Mac OS or Linux based OS
+			return "./ext/dlv.i368-apple-darwin.bin";
 	}
 	
 }

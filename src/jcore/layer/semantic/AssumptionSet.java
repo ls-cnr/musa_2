@@ -10,14 +10,11 @@ import net.sf.tweety.lp.asp.syntax.DLPHead;
 import net.sf.tweety.lp.asp.syntax.Program;
 import net.sf.tweety.lp.asp.syntax.Rule;
 
-/* *********************************************************/
-/** ASSUMPTION -                                                                             
+/**                                                                            
  * The Class AssumptionSet
  * @author icar-aose
- * @author Javadoc Author Mirko Zichichi
  * @version 1.0.0
- */                                
-/* *********************************************************/
+ */
 
 public class AssumptionSet {
 	

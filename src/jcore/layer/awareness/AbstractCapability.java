@@ -8,17 +8,12 @@ import layer.semantic.Condition;
 import layer.semantic.evolution.AddStatement;
 import layer.semantic.evolution.EvolutionScenario;
 
-
-
-// TODO: Auto-generated Javadoc
-
 /**
  * The Class AbstractCapability encapsulate a capability. A capability is an atomic and self-contained action the system may
  * intentionally use to address a given evolution of the state of the world. Each abstract capability can be implemented by several
  * concrete capabilities.
  * @author icar-aose
  * @version 1.0.0
- * @author Javadoc author Fontana Alessandro
  */
 
 //@FreeBuilder

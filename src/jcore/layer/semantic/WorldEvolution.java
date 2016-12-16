@@ -7,14 +7,11 @@ import java.util.LinkedList;
 import layer.awareness.DomainEntail;
 import layer.semantic.evolution.EvolutionOperator;
 
-/* *********************************************************/
 /**
  * The Class WorldEvolution.
  * @author icar-aose
- * @author Javadoc Author Mirko Zichichi
  * @version 1.0.0
- */                                
-/* *********************************************************/
+ */
 
 public class WorldEvolution {
 	

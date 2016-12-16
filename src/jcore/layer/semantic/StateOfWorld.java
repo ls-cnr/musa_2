@@ -8,15 +8,12 @@ import net.sf.tweety.lp.asp.parser.ParseException;
 import net.sf.tweety.lp.asp.syntax.DLPHead;
 import net.sf.tweety.lp.asp.syntax.Rule;
 
-/* *********************************************************/
-/** STATE OF THE WORLD -                                                                             
+/**                                                                            
  * This class encapsulate a possible State Of World, i.e. a set of facts describing what the system knows about the environment.  
  * for goal-testing reasons, each fact is given in ASP, i.e. a subclass of DLPHead
  * @author icar-aose
- * @author Javadoc Author Mirko Zichichi
  * @version 1.0.0
- */                                
-/* *********************************************************/
+ */
 
 public class StateOfWorld {
 	

@@ -2,15 +2,12 @@ package layer.awareness;
 
 import layer.semantic.Condition;
 
-// TODO: Auto-generated Javadoc
-
 /**
  * The Class Goal encapsulate the Goals. A goal is a desired change in the state of the world an actor wants to achieve.
  * A goal must have a trigger_condition that describe when the goal should be pursued and a final_state that describe the desired
  * state of the world.
  * @author icar-aose
  * @version 1.0.0
- * @author Javadoc author Fontana Alessandro
  */
 
 public class Goal implements RunTimeEntity {
