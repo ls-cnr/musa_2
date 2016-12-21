@@ -98,6 +98,6 @@ public class StateOfWorld {
 		return new StateOfWorld( (HashSet<DLPHead>) this.facts.clone() );
 	}
 	
-	/* @Override hashCode(), solo se si può creare una funzione che rende gli stati del mondo univoci.
+	// @Override hashCode(), solo se si può creare una funzione che rende gli stati del mondo univoci.
 
 }

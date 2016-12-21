@@ -1,24 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry excluding="**/*.asl" kind="src" path="src/agt"/>
 	<classpathentry kind="src" path="src/testcase"/>
 	<classpathentry excluding="*.ptl" kind="src" path="src/int"/>
 	<classpathentry excluding="*.xml" kind="src" path="src/org"/>
 	<classpathentry kind="src" path="src/env"/>
 	<classpathentry kind="src" path="src/jcore"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/JaCaMo"/>
-	<classpathentry kind="lib" path="lib/jgrapht-core-1.0.0.jar"/>
-	<classpathentry kind="lib" path="lib/net.sf.tweety.tweety-full-1.7-with-dependencies.jar"/>
-	<classpathentry kind="lib" path="lib/freebuilder-1.10.5.jar"/>
-	<classpathentry kind="lib" path="lib/hibernate-commons-annotations-5.0.1.Final.jar"/>
-	<classpathentry kind="lib" path="lib/hibernate-core-5.1.2.Final.jar"/>
-	<classpathentry kind="lib" path="lib/javax.persistence.jar"/>
+	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.USER_LIBRARY/JaCaMo"/>
+	<classpathentry exported="true" kind="lib" path="lib/jgrapht-core-1.0.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/net.sf.tweety.tweety-full-1.7-with-dependencies.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/freebuilder-1.10.5.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/hibernate-commons-annotations-5.0.1.Final.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/hibernate-core-5.1.2.Final.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/javax.persistence.jar"/>
 	<classpathentry kind="src" path=".apt_generated">
 		<attributes>
 			<attribute name="optional" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
+	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>

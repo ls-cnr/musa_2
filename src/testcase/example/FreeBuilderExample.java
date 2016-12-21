@@ -6,7 +6,7 @@ import layer.semantic.evolution.AddStatement;
 import layer.semantic.evolution.EvolutionScenario;
 
 public class FreeBuilderExample {
-
+/*
 	public static void main(String[] args) {
 		
 		EvolutionScenario s = new EvolutionScenario.Builder()
@@ -24,4 +24,5 @@ public class FreeBuilderExample {
 	
 		cap1.getName();
 	}
+	*/
 }
