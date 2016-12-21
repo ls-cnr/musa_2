@@ -23,7 +23,6 @@ public class StateOfWorld {
 	 * */
 	private HashSet<DLPHead> facts;
 	
-	
 	/**
 	 * Instantiates a new state of world.
 	 */
@@ -49,6 +48,12 @@ public class StateOfWorld {
 		return facts;
 	}
 
+	
+	//Numero di fatti contenuti nell'oggetto.
+	public int getFactsNumber(){
+		return this.facts.size();
+	}
+	
 	/**
 	 * Adds the fact as string.
 	 *
@@ -92,6 +97,7 @@ public class StateOfWorld {
 	public StateOfWorld clone() {
 		return new StateOfWorld( (HashSet<DLPHead>) this.facts.clone() );
 	}
-
+	
+	/* @Override hashCode(), solo se si può creare una funzione che rende gli stati del mondo univoci.
 
 }

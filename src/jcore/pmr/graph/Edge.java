@@ -12,4 +12,17 @@ public abstract class Edge {
 		this.destination = destination;
 		this.capability = capability;
 	}
+	
+	public Node getSource(){
+		return this.source;
+	}
+
+	public Node getDestination() {
+		return destination;
+	}
+	
+	public AbstractCapability getCapability() {
+		return capability;
+	}
+
 }

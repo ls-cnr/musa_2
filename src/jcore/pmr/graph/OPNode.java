@@ -1,12 +1,14 @@
 package pmr.graph;
 
-import java.util.List;
+import layer.awareness.AbstractCapability;
+import layer.semantic.StateOfWorld;
 
 /**
  * The Class OPNode.
  */
-public class OPNode extends Node {
+public abstract class OPNode extends Node {
 	
-	/** The outcoming edge list. */
-	List<Edge> outcomingEdgeList;
+	public OPNode(StateOfWorld worldState, Node parent, AbstractCapability capability){
+		super(worldState, parent, capability);
+	}
 }
