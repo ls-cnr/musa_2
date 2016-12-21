@@ -7,11 +7,11 @@ import org.jgrapht.graph.DefaultDirectedGraph;
 
 import cartago.*;
 import pmr.graph.EvolutionEdge;
-import pmr.graph.StateOfWorldNode;
+import pmr.graph.WorldNode;
 
 public class SolutionGraph extends Artifact {
 	
-	private DirectedGraph<StateOfWorldNode,EvolutionEdge> graph;
+	private DirectedGraph<WorldNode,EvolutionEdge> graph;
 	
 	void init() {
 		// initialize graph
