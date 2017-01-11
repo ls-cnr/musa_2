@@ -90,6 +90,34 @@ public class StateOfWorld {
 		facts.remove(fact_to_remove);
 	}
 	
+	/*Ridefinisco l'equala tra oggetti StateOfWorld, confrontando la lista di fatti in essi contenuta. Se i fatti differiscono
+	 * Gli StateOfWorld sono diversi, altrimenti lo StateOfWorld è lo stesso.
+	 * HashSet implementa l'equals facendo il confronto tra la somma degli hashCode() degli elementi contenuti. DLPHead implementa
+	 * una hashCode() da loro ridefinita in maniera opportuna*/
+	@Override
+	public boolean equals(Object obj){
+	    if (obj == null) {
+	        return false;
+	    }
+	    if (!StateOfWorld.class.isAssignableFrom(obj.getClass())) {
+	        return false;
+	    }
+	    StateOfWorld other = (StateOfWorld) obj;
+	    if (this.facts.equals(other.getFacts()) && this.facts.size() == other.getFactsNumber()) {
+	        return true;
+	    }
+	    else {
+	        return false;
+	    }
+	}
+	
+	/*Ridefinisco hashCode() per la classe StateOfWorld, rifacendomi all'hashCode() implementato in Set che come spiegato sopra funziona.
+	 * Inoltre questo valore (che anche se molto raramente, potrebbe risultare essere uguale per set di diversa dimensione) lo moltiplico
+	 * per l'effettivo numero di fatti contenuti, eliminando questa possibilità di collisione*/
+	@Override
+	public int hashCode(){
+		return this.facts.hashCode();
+	}
 	/* (non-Javadoc)
 	 * @see java.lang.Object#clone()
 	 */

@@ -24,5 +24,21 @@ public abstract class Edge {
 	public AbstractCapability getCapability() {
 		return capability;
 	}
-
+	
+	@Override
+	public boolean equals(Object obj){
+		if(obj instanceof Edge){
+			Edge temp = (Edge)obj;
+			if(this.source.equals(temp.getSource()) == false)				return false;
+			if(this.destination.equals(temp.getDestination()) == false)		return false;
+			if(this.capability.equals(temp.getCapability()) == false)		return false;
+			return true;
+		}
+		else return false;
+	}
+	
+	@Override
+	public int hashCode(){
+		return this.source.hashCode() + this.destination.hashCode() + this.capability.hashCode();
+	}
 }

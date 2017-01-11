@@ -20,5 +20,8 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
+	<classpathentry kind="lib" path="C:/Users/PC MARIA/Desktop/jacamo-0.5"/>
+	<classpathentry kind="lib" path="C:/Users/PC MARIA/Desktop/jacamo-0.5/lib/cartago.jar"/>
+	<classpathentry kind="lib" path="C:/Users/PC MARIA/Desktop/jacamo-0.5/lib/c4jason.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>

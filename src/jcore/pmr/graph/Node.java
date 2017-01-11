@@ -2,9 +2,14 @@ package pmr.graph;
 
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
 
 import layer.awareness.AbstractCapability;
 import layer.semantic.StateOfWorld;
+
+import net.sf.tweety.lp.asp.syntax.DLPHead;
 
 /**
  * The Interface Node.
@@ -14,7 +19,7 @@ public abstract class Node {
 	/** The incoming list. */
 	
 	//lista degli archi in uscita dal nodo
-	protected ArrayList<Edge> outcomingEdgeList;
+	protected Set<Edge> outcomingEdgeList;
 	
 	//stato del mondo associato al nodo
 	protected StateOfWorld worldState;
@@ -23,36 +28,34 @@ public abstract class Node {
 	protected int Nfacts;
 	
 	//lista degli archi in entrata nel nodo
-	protected ArrayList<Edge> incomingEdgeList;
+	protected Set<Edge> incomingEdgeList;
 	
-	public Node(StateOfWorld worldState, Node parent, AbstractCapability capability){
-		this.worldState = worldState;
-		//l'agente che vuole creare un nuovo nodo, sa da quale nodo è stata ricavata questa evoluzione, 
-		this.incomingEdgeList = new ArrayList<Edge>();
-		
-		//se il genitore era un nodo normale, creo un NormalEdge con il genitore, se era instanza di OPNode, creo un EvolutionEdge
-		if(parent instanceof OPNode)	this.incomingEdgeList.add(new EvolutionEdge(parent, this, capability));
-		else							this.incomingEdgeList.add(new NormalEdge(parent, this, capability));
-		
-		this.outcomingEdgeList = new ArrayList<Edge>();
-		this.Nfacts = worldState.getFactsNumber();
-	}
-	
-	//costruttore del primo nodo del grafo (non ha genitori)
+	//Costruttore per i nodi
 	public Node(StateOfWorld worldState){
 		this.worldState = worldState;
-		this.outcomingEdgeList = new ArrayList<Edge>();
-		this.Nfacts = worldState.getFactsNumber();
+		if(worldState == null){
+			this.Nfacts = 0;
+		}
+		else	{
+			this.Nfacts = worldState.getFactsNumber();
+		}
+		this.outcomingEdgeList = new HashSet<Edge>();
+		this.incomingEdgeList = new HashSet<Edge>();
 	}
-
+	
 	//Aggiunge un arco alla lista degli incomingedge
 	public void addEdge(Edge edge){
 		this.outcomingEdgeList.add(edge);
 	}
 	
-	//Aggiunge una lista di archi all'oggetto.
-	public void setEdgeList(ArrayList<Edge> edges){
+	//Aggiunge una lista di archi in uscita all'oggetto.
+	public void setOutcomingEdgeList(Set<Edge> edges){
 		this.outcomingEdgeList = edges;
+	}
+	
+	//Aggiunge una lista di archi in entrata all'oggetto
+	public void setIncomingEdgeList(Set<Edge> edges){
+		this.incomingEdgeList = edges;
 	}
 	
 	//Restituisce il numero di fatti contenuti nello stato del mondo associato al nodo
@@ -64,11 +67,52 @@ public abstract class Node {
 		return this.worldState; 
 	}
 	
-	public ArrayList<Edge> getOutcomingEdgeList(){
+	public Set<Edge> getOutcomingEdgeList(){
 		return this.outcomingEdgeList;
 	}
 	
-	public ArrayList<Edge> getIncomingEdgeList(){
+	public Set<Edge> getIncomingEdgeList(){
 		return this.incomingEdgeList;
+	}
+	
+	public ArrayList<DLPHead> getFactsList(){
+		ArrayList<DLPHead> factlist = new ArrayList<DLPHead>();
+		Iterator<DLPHead> it = this.worldState.getFacts().iterator();
+		while(it.hasNext() == true){
+			factlist.add(it.next());
+		}
+		return factlist;
+		}
+	
+	//Utilizzo l'equals ridefinito in StateOfWorld per confrontare i nodi.
+	@Override
+	public boolean equals(Object obj){
+	    if (obj == null) {
+	        return false;
+	    }
+	    if (!Node.class.isAssignableFrom(obj.getClass())) {
+	        return false;
+	    }
+	    Node other = (Node) obj;
+	    
+	    if(this.getWorldState() == null && other.getWorldState() == null){
+	    	return true;
+	    }
+	    else if (this.getWorldState() != null && this.getWorldState().equals(other.getWorldState())) {
+	        return true;
+	    }
+	    else {
+	        return false;
+	    }
+	}
+	
+	//Di conseguenza uso l'hashCode() di StateOfWorld per mantenere la regola delgli oggetti true per equals = Stesso hashcode
+	@Override
+	public int hashCode(){
+		if(this.getWorldState() != null)	{
+			return this.getWorldState().hashCode();
+		}
+		else
+			return 0;
 	}
 }

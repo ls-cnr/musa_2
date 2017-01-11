@@ -51,6 +51,36 @@ public class AbstractCapability implements RunTimeEntity {
 		this.post = post;
 	}
 	
+	public Set<EvolutionScenario> getScenarioSet(){
+		return this.evolution_set;
+	}
+	
+	public String getId(){
+		return this.unique_id;
+	}
+	
+	@Override
+	public boolean equals(Object obj){
+		if(obj instanceof AbstractCapability){
+			AbstractCapability temp = (AbstractCapability) obj;
+			if(this.getId() == temp.getId())	return true;
+			else								return false;
+		}
+		else return false;
+	}
+	
+	@Override
+	public int hashCode(){
+		int i = 0;
+		int sum = 0;
+		String temp = this.getId();
+		int len = temp.length();
+		for(i = 0; i < len; i++){
+			sum += (temp.charAt(i)*temp.length());
+		}
+		return sum;
+	}
+	
 //	public void test_evo() {
 //		EvolutionScenario s = new EvolutionScenario.Builder()
 //				.setName("uno")
