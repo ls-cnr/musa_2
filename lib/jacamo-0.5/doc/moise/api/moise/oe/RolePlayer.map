@@ -1,0 +1,12 @@
+<map id="G" name="G">
+<area shape="rect" id="node1_0" href="./RolePlayer.html" title="moise.oe.RolePlayer" alt="" coords="130,111,246,142"/>
+<area shape="rect" id="node1" href="./RolePlayer.html" title="&lt;TABLE&gt;" alt="" coords="119,103,257,151"/>
+<area shape="rect" id="node3_1" href="./OEAgent.html" title="moise.oe.OEAgent" alt="" coords="16,226,117,257"/>
+<area shape="rect" id="node3" href="./OEAgent.html" title="&lt;TABLE&gt;" alt="" coords="5,217,128,265"/>
+<area shape="rect" id="node4_2" href="./GroupInstance.html" title="moise.oe.GroupInstance" alt="" coords="163,226,311,257"/>
+<area shape="rect" id="node4" href="./GroupInstance.html" title="&lt;TABLE&gt;" alt="" coords="153,217,322,265"/>
+<area shape="rect" id="node5_3" href="../os/ss/Role.html" title="moise.os.ss.Role" alt="" coords="357,219,433,264"/>
+<area shape="rect" id="node5" href="../os/ss/Role.html" title="&lt;TABLE&gt;" alt="" coords="346,213,443,269"/>
+<area shape="rect" id="node2_4" href="./Player.html" title="moise.oe.Player" alt="" coords="150,14,226,45"/>
+<area shape="rect" id="node2" href="./Player.html" title="&lt;TABLE&gt;" alt="" coords="139,5,237,53"/>
+</map>

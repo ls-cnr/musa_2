@@ -1,0 +1,12 @@
+<map id="G" name="G">
+<area shape="rect" id="node1_0" href="./TranslationTest.html" title="ora4mas.nopl.test.TranslationTest" alt="" coords="16,14,172,45"/>
+<area shape="rect" id="node1" href="./TranslationTest.html" title="&lt;TABLE&gt;" alt="" coords="5,5,183,53"/>
+<area shape="rect" id="node2_1" href="./OI.html" title="ora4mas.nopl.test.OI" alt="" coords="222,14,265,45"/>
+<area shape="rect" id="node2" href="./OI.html" title="&lt;TABLE&gt;" alt="" coords="207,5,279,53"/>
+<area shape="rect" id="node3_2" href="./NPLParserTest.html" title="ora4mas.nopl.test.NPLParserTest" alt="" coords="315,14,471,45"/>
+<area shape="rect" id="node3" href="./NPLParserTest.html" title="&lt;TABLE&gt;" alt="" coords="304,5,481,53"/>
+<area shape="rect" id="node4_3" href="./NPLInterpreterTestSubGroups.html" title="ora4mas.nopl.test.NPLInterpreterTestSubGroups" alt="" coords="517,14,805,45"/>
+<area shape="rect" id="node4" href="./NPLInterpreterTestSubGroups.html" title="&lt;TABLE&gt;" alt="" coords="506,5,815,53"/>
+<area shape="rect" id="node5_4" href="./NPLInterpreterTest.html" title="ora4mas.nopl.test.NPLInterpreterTest" alt="" coords="851,14,1041,45"/>
+<area shape="rect" id="node5" href="./NPLInterpreterTest.html" title="&lt;TABLE&gt;" alt="" coords="840,5,1052,53"/>
+</map>

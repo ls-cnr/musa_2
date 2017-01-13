@@ -1,0 +1,52 @@
+\begin{thebibliography}{1}
+
+\bibitem{gateau:07}
+Benjamin G\^ateau, Olivier Boissier, Djamel Khadraoui, and Eric Dubois.
+\newblock Controlling an interactive game with a multi-agent based normative
+  organisational model.
+\newblock In P.~Noriega, J.~V\'azquez-Salceda, G.~Boella, V.~Boissier,
+  O.;~Dignum, N.~Fornara, and E.~Matson, editors, {\em AAMAS 2006 and ECAI 2006
+  International Workshops, COIN 2006 Hakodate, Japan, May 9, 2006 Riva del
+  Garda, Italy, August 28, 2006}, volume 4386 of {\em LNAI}, pages 86--100.
+  Springer, 2007.
+\newblock Revised Selected Papers.
+
+\bibitem{hubner:09e}
+Jomi~F. H\"ubner, Olivier Boissier, and Rafael~H. Bordini.
+\newblock Normative programming for organisation management infrastructures.
+\newblock In Axel Polleres and Julian Padget, editors, {\em Workshop on
+  Coordination, Organization, Institutions and Norms in agent systems
+  (COIN09@MALLOW) Torino, Italy, 7th--11th September}, volume 494. CEUR, 2009.
+
+\bibitem{hubner:10b}
+Jomi~Fred H\"ubner, Olivier Boissier, and Rafael~H. Bordini.
+\newblock A normative organisation programming language for organisation
+  management infrastructures.
+\newblock In Julian~Padget et~al., editor, {\em Coordination, Organizations,
+  Institutions and Norms in Agent Systems V}, volume 6069 of {\em LNAI}, pages
+  114--129. Springer, 2010.
+
+\bibitem{hubner:09c}
+Jomi~Fred H\"ubner, Olivier Boissier, Rosine Kitio, and Alessandro Ricci.
+\newblock Instrumenting multi-agent organisations with organisational artifacts
+  and agents: ``giving the organisational power back to the agents''.
+\newblock {\em Journal of Autonomous Agents and Multi-Agent Systems},
+  20(3):369--400, 2010.
+
+\bibitem{hubner:05a}
+Jomi~Fred H{\"u}bner, Jaime~Sim{\~a}o Sichman, and Olivier Boissier.
+\newblock \mbox{S-MOISE+}: A middleware for developing organised multi-agent
+  systems.
+\newblock In Olivier Boissier, Virginia Dignum, Eric Matson, and
+  Jaime~Sim{\~a}o Sichman, editors, {\em Coordination, Organizations,
+  Institutions, and Norms in Multi-Agent Systems}, volume 3913 of {\em LNCS},
+  pages 64--78. Springer, 2006.
+
+\bibitem{hubner:07}
+Jomi~Fred H\"ubner, Jaime~Sim{\~a}o Sichman, and Olivier Boissier.
+\newblock Developing organised multi-agent systems using the {MOISE+} model:
+  Programming issues at the system and agent levels.
+\newblock {\em International Journal of Agent-Oriented Software Engineering},
+  1(3/4):370--395, 2007.
+
+\end{thebibliography}

@@ -1,0 +1,16 @@
+<map id="G" name="G">
+<area shape="rect" id="node1_0" href="./SchemeBoard.html" title="ora4mas.nopl.SchemeBoard" alt="" coords="16,110,160,141"/>
+<area shape="rect" id="node1" href="./SchemeBoard.html" title="&lt;TABLE&gt;" alt="" coords="5,101,171,149"/>
+<area shape="rect" id="node2_1" href="./OrgArtNormativeGUI.html" title="ora4mas.nopl.OrgArtNormativeGUI" alt="" coords="264,14,469,45"/>
+<area shape="rect" id="node2" href="./OrgArtNormativeGUI.html" title="&lt;TABLE&gt;" alt="" coords="253,5,480,53"/>
+<area shape="rect" id="node3_2" href="./OrgArt.html" title="ora4mas.nopl.OrgArt" alt="" coords="139,14,219,45"/>
+<area shape="rect" id="node3" href="./OrgArt.html" title="&lt;TABLE&gt;" alt="" coords="128,5,229,53"/>
+<area shape="rect" id="node7_3" href="./GroupBoard.html" title="ora4mas.nopl.GroupBoard" alt="" coords="206,110,333,141"/>
+<area shape="rect" id="node7" href="./GroupBoard.html" title="&lt;TABLE&gt;" alt="" coords="195,101,343,149"/>
+<area shape="rect" id="node4_4" href="./ORA4MASException.html" title="ora4mas.nopl.ORA4MASException" alt="" coords="515,14,719,45"/>
+<area shape="rect" id="node4" href="./ORA4MASException.html" title="&lt;TABLE&gt;" alt="" coords="505,5,730,53"/>
+<area shape="rect" id="node5_5" href="./ORA4MASConstants.html" title="ora4mas.nopl.ORA4MASConstants" alt="" coords="765,14,971,45"/>
+<area shape="rect" id="node5" href="./ORA4MASConstants.html" title="&lt;TABLE&gt;" alt="" coords="755,5,981,53"/>
+<area shape="rect" id="node6_6" href="./JasonTermWrapper.html" title="ora4mas.nopl.JasonTermWrapper" alt="" coords="1016,14,1208,45"/>
+<area shape="rect" id="node6" href="./JasonTermWrapper.html" title="&lt;TABLE&gt;" alt="" coords="1005,5,1219,53"/>
+</map>

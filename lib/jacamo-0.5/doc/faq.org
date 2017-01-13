@@ -1,0 +1,650 @@
+#+TITLE:     Frequently Asked Questions on the use of the JaCaMo Platform
+#+AUTHOR:    JaCaMo Team
+#+EMAIL:     
+#+DATE:      September 2015
+
+#+SUBTITLE:  Frequently Asked Questions \\ on the use of \\ the JaCaMo Platform
+#+DESCRIPTION: 
+#+KEYWORDS: 
+#+LANGUAGE:  en
+#+OPTIONS: email:t H:3 toc:4 num:t \n:nil @:t ::t |:t ^:t -:t f:t *:t <:t
+#+OPTIONS: TeX:t LaTeX:nil skip:nil d:nil todo:t pri:nil tags:nil
+#+OPTIONS: org-html-html5-fancy:t
+#+INFOJS_OPT: view:nil toc:nil ltoc:t mouse:underline buttons:0 path:http://orgmode.org/org-info.js
+#+EXPORT_SELECT_TAGS: export
+#+EXPORT_EXCLUDE_TAGS: noexport
+# +LINK_UP: index.html 
+# +LINK_HOME: index.html
+#+STYLE: <link rel="stylesheet" type="text/css" href="./jcm.css" />
+
+* How to program agents?
+*ToBeCompleted*
+* How can agents use the environment?
+** What is an Artifact?
+*ToBeCompleted*
+*** observeProperty 
+#+BEGIN_EXAMPLE
+ observeProperty(String name, OpFeedbackParam<ArtifactObsProperty> prop)
+#+END_EXAMPLE
+** What are the default artifacts at the disposal of agents?
+By default, each workspace contains a basic set of predefined artifacts that provide core functionalities to the agents.
++ *workspace* artifact /cartago.WorkspaceArtifact/ (see the [[http://jacamo.sf.net/doc/cartago/main-api/cartago/WorkspaceArtifact.html][Workspace API]]): the workspace artifact provides functionalities to create, dispose, lookup, link, focus artifacts of the workspace. It provides also operations to set roles and policies related to the RBAC security model.
++ *node* artifact /cartago.NodeArtifact/ (see the [[http://jacamo.sf.net/doc/cartago/main-api/cartago/NodeArtifact.html][Node API]]) provides functionalities to create new workspaces, to join local and remote workspaces
++ *blackboard* artifact /cartago.tools.TupleSpace/ provides a tuple space that agents can exploit to communicate and coordinate with each other.
++ *console* artifact /cartago.tools.Console/ provides functionalities to print messages on standard output.
+** How can an agent use and access the Manual of an Artifact?
+An agent can use and access the Manual of an Artifact through the *ManRepoArtifact* Artifact.
+*** How to store the Manual?
+An agent can use the operation *storeManual* of the *ManRepoArtifact* as follows:
+#+BEGIN_EXAMPLE
+  storeManual(String artifactModelName, String uri)
+#+END_EXAMPLE
+*** How to get the Manual of an artifact of a certain type?
+An agent can use the operation *getManualContent* of the *ManRepoArtifact* as follows:
+#+BEGIN_EXAMPLE
+  getManualContent(String artifactModelName, OpFeedbackParam<String> content)
+#+END_EXAMPLE
+*** How to consult the Manual of an artifact of a certain type?
+An agent can use the operation *consultManual* of the *ManRepoArtifact* as follows:
+#+BEGIN_EXAMPLE
+  consultManual(String artifactModelName)
+#+END_EXAMPLE
+** How can agent use and operate on a Node?
+*** How to get the Id of a node?
+An agent can get the Id of a node by using the operation *getNodeId* of the /NodeArtifact/ where /param/ is the parameter receiving the Node Id.
+#+BEGIN_EXAMPLE
+  getNodeId(OpFeedbackParam<NodeId> param)
+#+END_EXAMPLE
+*** How to enable Linking with Node?
+An agent can enable linking with node by using the operation *enableLinkingWithNode* of the /NodeArtifact/ where /id/ is the Node Id, /support/ is the kind of support and /address/ is the address of the node to link with. 
+#+BEGIN_EXAMPLE
+  enableLinkingWithNode(NodeId id, String support, String address)
+#+END_EXAMPLE
+*** How to shutdown a Node?
+**** in a graceful way
+An agent can shutdown a node by using the operation *shutdownNode* of the /NodeArtifact/ calling the dispose routines of all the artifacts. 
+#+BEGIN_EXAMPLE
+  shutdownNode()
+#+END_EXAMPLE
+**** and after one second shutdown the VM
+by using the operation *crash* of the /NodeArtifact/
+#+BEGIN_EXAMPLE
+  crash()
+#+END_EXAMPLE
+** How can an agent get information on the workspaces in a Node?
+An agent can use and access the workspaces through the *NodeArtifact*
+*** Working in workspaces
++ By default an agent, when launched, joins the default workspace on current node. 
++ Agents can create, join and work in multiple workspace at a time. However there is always a current workspace, to which are routed actions with no artifact id or workspace id specified. 
+# Current workspace info are automatically tracked by the current *wsp(WspId,Name,NodeId)* belief.
++ Agents can join workspaces that are hosted on remote nodes, by means of a *joinRemoteWorkspace* action. As soon as the join succeed, the interaction within remote workspaces is the same as local workspace.
+*** How to get the workspaces of a Node?
+**** By focusing on the Node Artifact
+By focusing on the /NodeArtifact/, getting the observable property *workspace(name, wspId)*
+**** By discovering a workspace by name
+By using the operation *lookupWorkspace* on the /NodeArtifact/ where /workspaceName/ is the name of the workspace and /aid/ is the output parameter receiving the workspace id
+#+BEGIN_EXAMPLE
+  lookupWorkspace(String wspName, OpFeedbackParam<ArtifactId> aid)
+#+END_EXAMPLE
+*** How to join a workspace?
+**** a local one
+by using the operation *joinWorkspace*  of the /NodeArtifact/ where /wspName/ is the workspace name and /res/ is the output parameter receiving the workspace id
+#+BEGIN_EXAMPLE
+joinWorkspace(String wspName, OpFeedbackParam<WorkspaceId> res)
+#+END_EXAMPLE
+**** a local one, giving credentials
+by using the operation *joinWorkspace* of the /NodeArtifact/ where /wspName/ is the workspace name, /cred/ are the agent credentials, /res/ is the output parameter receiving the workspace id.
+#+BEGIN_EXAMPLE
+  joinWorkspace(String wspName, AgentCredential cred, OpFeedbackParam<WorkspaceId> res)
+#+END_EXAMPLE
+**** a remote one
+by using the operation *joinRemoteWorkspace*  of the /NodeArtifact/ where /wspName/ is the workspace name, /address/ is the address and /res/ is the output parameter receiving the workspace id.
+#+BEGIN_EXAMPLE
+joinRemoteWorkspace(String wspName, String address, OpFeedbackParam<WorkspaceId> res)
+#+END_EXAMPLE
+**** a remote one with infraServiceType
+by using the operation *joinRemoteWorkspace* of the /NodeArtifact/ where /wspName/ is the workspace name, /address/ is the address, /infraServiceType/ is the infrastructure service type (use /"default"/ to use default one), and /res/ is the output parameter receiving the workspace id.
+#+BEGIN_EXAMPLE
+joinRemoteWorkspace(String wspName, String address, String infraServiceType, OpFeedbackParam<WorkspaceId> res) 
+#+END_EXAMPLE
+*Infrastructure options*: 
+  + by default, Jason programs using CArtAgO environment create a standalone CArtAgO node, i.e. not accessible through the network
+  + To install a CArtAgO node accessible also to remote agents further parameters can be specified to the c4jason.CartagoEnvironment:
+     + *c4jason.CartagoEnvironment("infrastructure"{,WspName, protocol(ProtName, Address), ...})*: installs an infrastructure layer specifying the protocols to support and the local address where to start the service;
+     + *c4jason.CartagoEnvironment("remote"{,WspName, protocol(ProtName, Address), ...})*: does not install any node – agents directly join the specified remote workspace;
+     + *c4jason.CartagoEnvironment("local"{,WspName})*: does not install any node – agents directly join the specified local workspace.
+*** How to quit workspace?
+An agent can qui a workspace by using the operation *quitWorkspace* of the /WorkspaceArtifact/ that it wants to quit
+#+BEGIN_EXAMPLE
+  quitWorkspace(WorkspaceArtifact WspId)
+#+END_EXAMPLE
+*** How to create a workspace ?
+**** in the local node.
+An agent can create a workspace in the local node by using the operation *createWorkspace(String name)* of the /NodeArtifact/ where /name/ is the name of the workspace
+**** in the local node, with a topology
+An agent can create a workspace in the local node by using the operation *createWorkspaceWithTopology(String name, String topologyClassName)* of the /NodeArtifact/ where /name/ is the name of the workspace and /topologyClassName/ is the topology
+**** in the local one with a logger
+An agent can create a workspace in the local node by using the operation *createWorkspace(String wspName, ICartagoLogger logger)* of the /NodeArtifact/ where /wspName/ is the workspace name and /logger/ of type /ICartagoLogger/ is the logger
+** How can an agent use and access artifacts within a Workspace?
+An agent can use and access artifacts within a workspace through the *WorkspaceArtifact*
+*** How to make agents invoque operations of the artifact?
++ In case of operation invocation with no specification of target artifact: the artifact is automatically selected from the workspace. If there are no artifacts providing such action, the action fails. if more than one artifact is found, artifacts created by the agent itself are considered first. If more than one artifact is found, one is selected non deterministically. Then, the rest of the artifacts are considered, and one is selected non deterministically.
++ In case of operation invocation with specification of a target artifact: This is done by adding the annotation *~[artifact_id(Id)]~*, where /Id/ must be bound to the artifact identifier. Alternatively, the annotation *~[artifact_name(Name)]~* can be used, where /Name/ must be bound to the logic name of the artifact.
++ In case of operation invocation with specification of the target workspace: done by adding the annotation *~[wsp_id(WspID)]~*, where /WspID/ must be bound to the wsp identifier.
+*** How to create or delete Artifacts?
+**** Create a new artifact
+by using the operation *makeArtifact* of the /WorkspaceArtifact/ where /name/ is the name of the artifact, /template/ is the artifact template (type) and /aid/ is the output parameter receiving the artifact id.
+#+BEGIN_EXAMPLE
+  makeArtifact(String artifactName, String templateName, OpFeedbackParam<ArtifactId> aid)
+#+END_EXAMPLE
+**** Create a new artifact with configuration
+by using the operation *makeArtifact* of the /WorkspaceArtifact/ where /name/ is the name of the artifact, /template/ is the artifact template (type), /artifactconf/ the artifact configuration and /aid/ is the output parameter receiving the artifact id.
+#+BEGIN_EXAMPLE
+makeArtifact(String artifactName, String templateName, ArtifactConfig artifactconf, OpFeedbackParam<ArtifactId>   aid)
+#+END_EXAMPLE
+**** Add an artifact factory
+by using the operation *addArtifactFactory* of the /WorkspaceArtifact/ where /factory/ is the artifact factory.
+#+BEGIN_EXAMPLE
+  addArtifactFactory(ArtifactFactory factory)
+#+END_EXAMPLE
+**** Remove an existing artifact factory
+by using the operation *removeArtifactFactory* of the /WorkspaceArtifact/ where /name/ is the factory name
+#+BEGIN_EXAMPLE
+  removeArtifactFactory(String name)
+#+END_EXAMPLE
+**** Dispose Artifact
+by using the operation *disposeArtifact* of the /WorkspaceArtifact/ where /id/ is the artifact id. 
+#+BEGIN_EXAMPLE
+  disposeArtifact(ArtifactId id)
+#+END_EXAMPLE
+*** How to get the artifacts within a workspace?
+**** By focusing on the Workspace Artifact
+By focusing on the Workspace Artifact, getting the observable property /artifact(artifactName, templateName, id)/
+**** By discovering an artifact by name
+Using the operation *lookupArtifact* of the /WorkspaceArtifact/ where /artifactName (string)/ is the name of the artifact, /aid/ is the output parameter receiving the id of the artifact.
+#+BEGIN_EXAMPLE
+  lookupArtifact(String artifactName, OpFeedbackParam<ArtifactId> aid)
+#+END_EXAMPLE
+**** By discovering an artifact by type
+Using the operation *lookupArtifactByType* of the /WorkspaceArtifact/ where /artifactName (string)/ is the name of the artifact, /aid/ is the output parameter receiving the id of the artifact.
+#+BEGIN_EXAMPLE
+  lookupArtifactByType(String artifactType, OpFeedbackParam<ArtifactId> aid)
+#+END_EXAMPLE
+**** By getting the list of available artifact names
+Using the operation *getCurrentArtifacts* of the /WorkspaceArtifact/ where /list/ is the output parameter receiving the list of the artifact names.
+#+BEGIN_EXAMPLE
+  getCurrentArtifacts(OpFeedbackParam<String[]> list)
+#+END_EXAMPLE
+**** By getting the current artifact list
+Using the operation *getArtifactList* of the /WorkspaceArtifact/ where /artifacts/ is the output parameter receiving the list of the artifact ids.
+#+BEGIN_EXAMPLE
+  getArtifactList(OpFeedbackParam<ArtifactId[]> artifacts)
+#+END_EXAMPLE
+*** How to observe artifacts?
+**** Start observing 
+Using the operation *focus* of the /WorkspaceArtifact/ where /aid/ is the artifact id on which ones wants to focus.
+#+BEGIN_EXAMPLE
+  focus(ArtifactId aid)
+#+END_EXAMPLE
+**** Start observing when available
+Using the operation *focusWhenAvailable* of the /WorkspaceArtifact/ where /artName/ is the artifact name
+#+BEGIN_EXAMPLE
+  focusWhenAvailable(String artName)
+#+END_EXAMPLE
+**** Start observing for specific events
+Using the operation *focus* of the /WorkspaceArtifact/ where /aid/ is the artifact id, /filter/ is the filter to select which events to perceive
+#+BEGIN_EXAMPLE
+  focus(ArtifactId aid, IEventFilter filter)
+#+END_EXAMPLE
+**** Start observing for specific events when available
+Using the operation *focusWhenAvailable* of the /WorkspaceArtifact/ where /artName/ is the artifact name, /filter/ is the filter to select the events to perceive
+#+BEGIN_EXAMPLE
+  focusWhenAvailable(String artName, IEventFilter filter)
+#+END_EXAMPLE
+*** How to stop Observing artifacts?
+**** Stop observing an artifact
+Using the operation *stopFocus* of the /WorkspaceArtifact/ where /aid/ is the artifact id that one wants to stop focusing on
+#+BEGIN_EXAMPLE
+  stopFocus(ArtifactId aid)
+#+END_EXAMPLE
+*** How to link artifacts?
+Using the operation *linkArtifacts* of the /WorkspaceArtifact/ where /artifactOutId/ is the artifact id source of the link, /artifactOutPort/ is the port of the source, /artifactInId/ is the artifact id of the target of the link
+#+BEGIN_EXAMPLE
+  linkArtifacts(ArtifactId artifactOutId, String artifactOutPort, ArtifactId artifactInId)
+#+END_EXAMPLE
+*** How to add a specific rule-based management to a workspace?
+Using the operation *setWSPRuleEngine* of the /WorkspaceArtifact/ where /man/ is the rule engine to add
+#+BEGIN_EXAMPLE
+  setWSPRuleEngine(AbstractWSPRuleEngine man)
+#+END_EXAMPLE
+*** How to add a specific topology to a workspace?
+Using the operation *setWorkspaceTopology* of the /WorkspaceArtifact/
+#+BEGIN_EXAMPLE
+  setWorkspaceTopology(AbstractWorkspaceTopology topology)
+#+END_EXAMPLE
+*** COMMENT manuals management
+**** create manual 
++ createManual(String src, OpFeedbackParam<ArtifactId> aid)
+**** create manual from file
++ createManualFromFile(String fname, OpFeedbackParam<ArtifactId> aid) 
+*** How to add RBAC to a workspace?
+**** Setting a security manager
+Using the operation *setSecurityManager* of the /WorkspaceArtifact/ where /man/ is the security manager
+#+BEGIN_EXAMPLE
+  setSecurityManager(IWorkspaceSecurityManager man)
+#+END_EXAMPLE
+**** Adding a role
+Using the operation *addRole* of the /WorkspaceArtifact/ where /roleName/ is the role Name to add
+#+BEGIN_EXAMPLE
+  addRole(String roleName)
+#+END_EXAMPLE
+**** Removing a role, if it exists
+Using the operation *removeRole* of the /WorkspaceArtifact/ where /roleName/ is the role Name to remove
+#+BEGIN_EXAMPLE
+  removeRole(String roleName)
+#+END_EXAMPLE
+**** Getting the current roles list
+Using the operation *getRoleList* of the /WorkspaceArtifact/ where /list/ is the role list
+#+BEGIN_EXAMPLE
+  getRoleList(OpFeedbackParam<String[]> list)
+#+END_EXAMPLE
+**** Adding a policy to a role 
+Using the operation *addRolePolicy* of the /WorkspaceArtifact/ where /roleName/ is the role name, /artifactName/ is the artifact name, /policy/ is the policy
+#+BEGIN_EXAMPLE
+  addRolePolicy(String roleName, String  artifactName, IArtifactUsePolicy policy)
+#+END_EXAMPLE
+**** Removing a policy
+Using the operation *removeRolePolicy* of the /WorkspaceArtifact/ where /roleName/ is the role Name, /artifactName/ is the artifact name
+#+BEGIN_EXAMPLE
+  removeRolePolicy(String roleName, String  artifactName)
+#+END_EXAMPLE
+**** Setting the default use policy
+Using the operation *setDefaultRolePolicy* of the /WorkspaceArtifact/ where /roleName/ is the role name, /artName/ is the artifact name, /policy/ is the policy to add
+#+BEGIN_EXAMPLE
+  setDefaultRolePolicy(String roleName, String artName, IArtifactUsePolicy policy)
+#+END_EXAMPLE
+* How can an agent use the organization?
+Being part of an organization means for an agent to be able to get the current state of the organization entity and to execute organizational actions on the organization entity. Actions and current state are brought to the agents by /organisational/ artifacts: /GroupBoard/ and /SchemeBoard/
+** How can an agent use Groups? 
+Agents may use groups by using the GroupBoard Artifact (see the [[http://moise.sf.net/doc/api/ora4mas/nopl/GroupBoard.html][GroupBoard API]])
+*** How to manage groups?
+**** How to create a group?
+An agent can create a group instance by using the *makeArtifact* operation using a /GroupBoard/ artifact template ToBeCompleted
+**** How to delete a group?
+A group can be deleted by destroying the artifact (~GrId~) that manages it and then disposing the corresponding Artifact.
+#+BEGIN_EXAMPLE
+  destroy()[artifact_id(GrId)];
+  disposeArtifact(GrId);
+#+END_EXAMPLE
+**** How to get the group specification of a group?
+The group specification is accessible through the observable property mapped to  *specification(….)* agent's belief - annotated with artifact(artifact id) (a prolog like representation)
+# +BEGIN_EXAMPLE
+#+begin_example
+  group_specification(group type id, list of role, list of sub-groups, properties) 
+#+end_example
+# +END_EXAMPLE
+Each role in the list is: /role(id,min cardinality, max cardinality, list of compatible roles, list of links)/, each link is: /link(type, target, scopo)/ ([[http://moise.sf.net/doc/api/moise/os/ss/Group.html#getAsProlog()][see explanations]])
+*** How to enter a group?
++ for now the only way to enter a group is by adopting a role
+*** How to manage roles within a group?
+**** How to adopt a role?
+An agent can try to adopt /role/ in the group by calling the action *adoptRole* on the GroupBoard in charge of the management of the group
+#+BEGIN_EXAMPLE
+  adoptRole(String role)
+#+END_EXAMPLE
+**** How to leave a role?
+An agent can try to leave/give up /role/in the group by executing the action *leaveRole* on the GroupBoard in charge of the management of the group
+#+BEGIN_EXAMPLE
+  leaveRole(String role)
+#+END_EXAMPLE
+**** How to know what roles are played in a group?
+An agent can know the roles that are played in a group by accessing to the observable property mapped to an agent's belief - annotated with the group artifact id - *play* with /agent/ being the agent is playing the /role/ in the /group/
+#+BEGIN_EXAMPLE
+  play(agent, role, group) 
+#+END_EXAMPLE
+*** How to manage social scheme responsibilities of a group?
+**** How to start a group being responsible of a social scheme?
+An agent can start a group being responsible for the scheme /schId/ by using the operation *addScheme* on the GroupBoard in charge on the management of the group
+#+BEGIN_EXAMPLE
+  addScheme(String schId) 
+#+END_EXAMPLE
+**** How to stop a group being responsible of a social scheme?
+An agent can finish a group being responsible for the scheme /schId/ by using the operation *removeScheme* on the GroupBoard in charge on the management of the group
+#+BEGIN_EXAMPLE
+  removeScheme(String schId)
+#+END_EXAMPLE
+**** How to the scheme under the responsibility of a group?
+An agent can get the list of schemes ids it is responsible for through the observable property mapped to the agent's belief - annotated with artifact(artifact id) - *schemes*
+#+BEGIN_EXAMPLE
+  schemes(ListOfSchemes) 
+#+END_EXAMPLE
+*** How to manage hierachies of groups?
+**** How to set the parent of a group?
+An agent can set a group becoming a subgroup of /parentGroupId/ by using the operation *setParentGroup*
+#+BEGIN_EXAMPLE
+  setParentGroup(String parentGroupId) 
+#+END_EXAMPLE
+**** How to get the hierarchy of a group?
+An agent cat get the list of subgroup ids of a group through the observable properties mapped to the agent's beliefs - annotated with artifact(artifact id) - *subgroups*
+#+BEGIN_EXAMPLE
+  subgroups(ListOfGroupIds)
+#+END_EXAMPLE
+An agent cat get the parent group id of a group through the observable properties mapped to the agent's beliefs - annotated with artifact(artifact id) - *parentGgroup*
+#+BEGIN_EXAMPLE
+  parentGroup(GroupId)
+#+END_EXAMPLE
+*** How to manage ownership of a group?
++ ToBeCompleted
+*** How to get the status of a group?
+An agent can get the status (i.e. wether the group is well-formed or not) of a group through the observable property mapped to an agent's belief - annotated with the group artifact id - *formationStatus*  (values are /ok/ and /nok/) 
+#+BEGIN_EXAMPLE
+  formationStatus(OkOrNotOk)
+#+END_EXAMPLE
+** How can an agent use social schemes?
+see the [[http://moise.sf.net/doc/api/ora4mas/nopl/SchemeBoard.html][SchemeBoard API]]
+*** How to manage a social scheme?
+**** How to create a scheme?
+ToBeCompleted
+**** How to delete a scheme?
+A scheme can be deleted by destroying the artifact (~SchId~) that manages it and then disposing the corresponding Artifact.
+#+BEGIN_EXAMPLE
+  destroy()[artifact_id(SchId)];
+  disposeArtifact(SchId);
+#+END_EXAMPLE
+**** How to get the scheme specification of a scheme?
+The scheme specification is accessible through the observable property mapped to  *specification(….)* agent's belief - annotated with artifact(artifact id) (see [[http://moise.sf.net/doc/api/ora4mas/nopl/SchemeBoard.html][SchemeBoard API]]) ([[http://moise.sf.net/doc/api/moise/os/fs/Scheme.html#getAsProlog()][see explanations]])
+#+BEGIN_EXAMPLE
+  scheme_specification(id,goals tree starting by root goal,missions)
+#+END_EXAMPLE
+**** How to know which groups are responsible of a scheme?
+An agent can get the list of groups responsible for a scheme through the observable property mapped to the  agent's beliefs - annotated with artifact(artifact id) - *groups*
+#+BEGIN_EXAMPLE
+  groups(ListOfGroups)
+#+END_EXAMPLE
+**** How to know that a scheme has been destroyed?
+An agent can get the fact that an artifact has been destroyed through the belief *destroyed*
+#+BEGIN_EXAMPLE
+  destroyed(artifact id)
+#+END_EXAMPLE
+*** How to manage goals?
+**** How to set a goal of a social scheme as achieved?
+An agent can set a goal as achieved using the action *goalAchieved*
+#+BEGIN_EXAMPLE
+goalAchieved(String goal) 
+#+END_EXAMPLE
+Note: verifications that the agent is committed to the goal and that the goal has been enabled throwing a /normFailure/ in the case of breaking some regimentation
+**** How to set an argument to a goal?
+An agent can set a /value/ for the /goal/ argument /var/ by using the action *setArgumentValue*
+#+BEGIN_EXAMPLE
+setArgumentValue(String goal, String var, Object value) 
+#+END_EXAMPLE
+**** How to reset a goal and relaunch its achievement?
+An agent can reset the status of a goal by using the action *resetGoal*
+#+BEGIN_EXAMPLE
+resetGoal(String goal)
+#+END_EXAMPLE
+**** How to get a goal state?
+The status of a goal is accessible through the observable property mapped to the agent's belief - annotated with artifact(artifact id) - *goalState* 
+#+BEGIN_EXAMPLE
+  goalState(schId, goalId, list of committed agents, list of agents that achieved the goal, state) 
+#+END_EXAMPLE
+The /state/ refers to the goal status: /waiting/, /enabled/, /satisfied/). 
+*** How to manage missions?
+**** How to commit to a mission? 
+An agent can try to commit to a mission in the scheme by using the action *commitMission*
+#+BEGIN_EXAMPLE
+commitMission(String mission)
+#+END_EXAMPLE
+/Note/: verifications of the mission max cardinality and mission permissions, throwing /normFailure/ in the case of breaking some regimentation)
+**** How to leave a mission? 
+An agent can leave its misseion in the scheme by using the action *leaveMission*
+#+BEGIN_EXAMPLE
+  leaveMission(String mission) 
+#+END_EXAMPLE
+/Note/: verification that the agent is committed to the mission and that the mission's goals have been satisfied throwing a /normFailure/ in the case of breaking some regimentation
+**** How to get the current mission commitments?
+The current mission commitments are accessible through the observable property mapped to an agent's belief - annotated with artifact(artifact id) - *commitment* telling that agent ag is committed to the mission in the scheme (we have as many obs prop as commitments) 
+#+BEGIN_EXAMPLE
+  commitment(agent, mission, scheme) 
+#+END_EXAMPLE
+** How can an agent manage norms and obligations?
+*** How to get the current obligations?
+An agent can get current active obligation through the observable property mapped to an agent's belief - annotated with artifact(artifact id) - *obligation*: 
+#+BEGIN_EXAMPLE
+  obligation(agent,norm,goal,deadline) 
+#+END_EXAMPLE
+*** How to get the status of a norm? 
+An agent can get the status of a norm thanks to organizational events mapped to the following agent's beliefs: *oblCreated* (the obligation /o/ is created), *oblFulfilled* (the obligation /o/ is fulfilled), *oblUnfulfilled* (the obligation /o/ is unfulfilled (e.g. by timeout), *oblInactive* (the obligation /o/ is inactive (e.g. its condition does not hold anymore))
+#+BEGIN_EXAMPLE
+oblCreated(o)
+oblFulfilled(o)
+oblUnfulfilled(o)
+oblInactive(o) 
+#+END_EXAMPLE
+*** How to get the reason why a norm has failed?
+An agent can get the failure reason /f/ (e.g. due to some regimentation violation) of a norm thanks thanks to organizational events mapped to agent's belief *normFailure*:
+#+BEGIN_EXAMPLE
+normFailure(f) 
+#+END_EXAMPLE
+* COMMENT How to use the .jcm file?
+** Template
+*** example global 
+#+BEGIN_EXAMPLE
+mas olivier { .... }
+#+END_EXAMPLE
+*** Agent definition
+**** definition
+#+BEGIN_EXAMPLE
+<agent>     ::= agent <name> [ : <source> ] { <parameter>* }
+<parameter> ::= <id> : <value> ( (, | EOL) <value> ) *
+<id>        ::= beliefs | goals | ag-class | ag-arch | ag-bb-class |
+                verbose | myparameter | node | instances | join | focus |
+                roles
+#+END_EXAMPLE
+**** example
+#+BEGIN_EXAMPLE
+      agent bob : participant.asl {                    // if source is omitted, bob.asl will be used
+           // initial beliefs
+           beliefs:     p("this is a condition",15000)   
+                        friend(alice)
+           // initial goals
+           goals:       start, go(home)                  
+           // if omitted, Jason Agent default class will be used
+           ag-class:    tt.MyAgClass                     
+           // CArtAgO arch is automatically included, if necessary, JADE arch is automatically included
+           ag-arch:     myp.myArch1
+                        mypkg.MyCustomAgArch             
+           ag-bb-class: my.Bb
+           // 0 means only agent output, 1 means agent+jason output, 2 means agent+jason+debug output
+           verbose:     2                                
+           // user application parameter, used for instance by user custom architectures
+           myparameter: "this is an appl paramter"       
+           // the logical name of the place where the agent will run
+           node:        n1                               
+           // 5 bobs (called bob1, bob2, ... bob5) will be created. 
+           // You can also list the names of the agents. Default value is 1.
+           instances:   5                                
+           // join the workspace w2
+           join:        w2                               
+           // focus on artifact a1 in workspace w1 running on node n1
+           focus:       w1.a1 @ n1                       
+           // adopt the role r1 in group g2 and role r2 in group g3 (in org o1)
+           roles:       r1 in g2, r2 in o1.g3            
+      }
+      // the source is alice.asl, one instance will be created at default node
+      agent alice
+#+END_EXAMPLE
+*** Environment definition
+**** Definition
+#+BEGIN_EXAMPLE
+       <environment> ::= <workspace>*
+       <workspace>   ::= workspace <name> { <artifact>* <agents> <node> }
+       <artifact>    ::= artifact  <name> : <type> [ { focused-by: <agents> } ]
+       <agents>      ::= agents : <name> ( (, | EOL) <name> )* | "*"   // "*" means all agents
+       <node>        ::= node :   <name> EOL
+#+END_EXAMPLE
+**** Example
+#+BEGIN_EXAMPLE
+       workspace w1 {
+          // creates an artifact named c1 as an instance of mylib.Counter 
+          // initialised with (10) 
+          artifact c1: mylib.Counter(10)               
+          artifact bll: mylist.BlackList() 
+          // this workspace will run on node n2
+          node: n2                                     
+       }
+#+END_EXAMPLE
+*** Organisation Entity definition
+**** Definition
+#+BEGIN_EXAMPLE
+       <organisations> ::= <org>*
+       <org>           ::= organisation <name> [ : <source> ] { <parameter>* <agents> <node> <group>* <scheme>* }
+       <group>         ::= group  <name> : <type> [ { <parameter>* } ] 
+       <scheme>        ::= scheme <name> : <type> [ { <parameter>* } ] 
+#+END_EXAMPLE
+**** Example
+#+BEGIN_EXAMPLE
+      // os.xml is the file with the organisational specification, 
+      // if omitted o1.xml is used
+      organisation o1 : os.xml {                      
+           // creates a group instance named g1 based on the group definition 
+           // identified by writepaper (defined in the o1.xml file)
+           group g1: writepaper {                       
+           responsible-for: s1                       
+           // the group will be responsible for the scheme s1
+           owner: alice
+           // starts GUI for this group             
+           debug                                     
+           // groups sg2 will be a sub-group of g1          
+           group sg2 : t1                            
+        }             
+        // another group (without particular initialisation) 
+        group g2 : writepaper                        
+        
+        // instance of scheme identified by wpscheme (in o1.xml)  
+        scheme s1 : wpscheme                         
+     }
+     asl-path: src/agt
+               src/agt/inc
+#+END_EXAMPLE
+*** Platform configuration
+**** example
+#+BEGIN_EXAMPLE
+         platform: jade() 
+                cartago("infrastructure")
+#+END_EXAMPLE
+*** Node configuration
+**** example
+#+BEGIN_EXAMPLE
+       node n3 running @ x.com.fr
+       // nodes not defined will be launched when this .jcm is run
+#+END_EXAMPLE
+** Configuration
++ use the common-cartago.asl from jacamo (acquired automatically by creating an agent by using the plugin)
+** Multi-Agent System Basic Components
+*** Agents
+Three kinds of skill are considered: 
++ skills to use Jason internal actions: [[./src/agt/inc/default-acting-skills.asl][default-acting-skills.asl]]
++ skills to act using only one artifact: [[./src/agt/inc/acting-skills.asl][acting-skills.asl]]
++ skills to act using all the artifacts able to enact the involved action: [[./src/agt/inc/acting-on-all-artifacts-skills.asl][acting-on-all-artifacts-skills.asl]]
+Besides these skills related to acting on the environment, agents may have organizational reasoning skills
++ skills to reason on the organization: 
+  + [[./src/agt/inc/org-obedient.asl][org-obedient.asl]]: obedience to the organization to which they participate.
+  + [[./src/agt/inc/org-reasoning.asl][org-reasoning.asl]]: reasoning on the organization to adapt/change/manage it.
+**** Obedient agents able to act using one artifact
++ [[./acting-agent.asl][acting-agent.asl]]
+**** Obedient agents able to act using all artifacts
++ [[./acting-on-all-artifacts-agent.asl][acting-on-all-artifacts-agent.asl]]
+**** Obedient agents able to act using all artifacts and reasoning on the organization
++ [[./acting-on-all-artifacts-org-reasonner-agent.asl][acting-on-all-artifacts-org-reasonner-agent.asl]]
+*** Environment/ Workspace/ Artifact
+A GUI Artifact displaying the message produced by the agent
++ [[./src/env/display/GUIConsole.java][GUIConsole.java]] and its accompanying display: [[./src/env/display/Display.java][Display.java]]
+*** Organization
++ One structure with a simple plan: [[./src/org/simple-os.xml][simple-os.xml]]
++ One structure with a plan allocating one goal per role: [[./src/org/only-one-goalduty-os.xml][only-one-goalduty-os.xml]]
++ One structure with a plan intermixing goal execution (with same goals): [[./src/org/intermixing-goal-duties-os.xml][intermixing-goal-duties-os.xml]]
++ One structure with a plan intermixing goal execution (with different goals): [[./src/org/intermixing-different-goal-duties-os.xml][intermixing-different-goal-duties-os.xml]]
+** Basic Hello MAS
+*** Simple launching configuration
++ Set of [[./src/agt/acting-on-default-artifacts-agent.asl][acting-on-default-artifacts-agent.asl]] agents
++ Use of default /Console/ Artifact
++ Simple [[./src/org/simple-os.xml][simple-os.xml]] organization
+**** Basic launch
++ [[./helloJaCaMo-1a-basic.jcm][helloJaCaMo-1a-basic.jcm]]
+**** Variation on goal allocations
++ [[./helloJaCaMo-1b-basic-playing-with-goal.jcm][helloJaCaMo-1b-basic-playing-with-goal.jcm]]
+**** Use of a richer organization 
++ Set of [[./src/agt/acting-on-default-artifacts-agent.asl][acting-on-default-artifacts-agent.asl]] agents
++ Use of default /Console/ Artifact
++ Simple [[./src/org/only-one-goalduty-os.xml][only-one-goalduty-os.xml]] organization
+***** Basic launch
++ [[./helloJaCaMo-2a-basic-only_one_goalduty_os.jcm][helloJaCaMo-2a-basic-only_one_goalduty_os.jcm]]
+***** Variation on goal allocations
++ [[./helloJaCaMo-2b-basic-only_one_goalduty_os-playing-with-goals.jcm][helloJaCaMo-2b-basic-only_one_goalduty_os-playing-with-goals.jcm]]
+*** Use of dedicated Artifacts
+**** Simple organization, internal goals
++ Agents declare joining workspace: [[./helloJaCaMo-3a-workspace-jacamo.jcm][helloJaCaMo-3a-workspace-jacamo.jcm]]
++ Workspace declare agents joining: [[./helloJaCaMo-3b-workspace-jacamo.jcm][helloJaCaMo-3b-workspace-jacamo.jcm]]
+**** Richer organization
++ [[./helloJaCaMo-3a-workspace-jacamo-only_one_goalduty_os.jcm][helloJaCaMo-3a-workspace-jacamo-only_one_goalduty_os.jcm]]
+** Hello MAS using multiple workspaces
+*** On the same machine
+**** Test of the join workspace effects, agent uses artifact in its workspace
++ With simple organization: [[./helloJaCaMo-4a-multiple-workspaces-join-effects.jcm][helloJaCaMo-4a-multiple-workspaces-join-effects.jcm]]
++ With richer organization: [[./helloJaCaMo-4a-multiple-workspaces-only_one_goalduty_os-join-effects.jcm][helloJaCaMo-4a-multiple-workspaces-only_one_goalduty_os-join-effects.jcm]]
+**** Test of the join workspace effects, some agents use all artifacts of their workspaces 
++ With richer organization, use of beliefs with the name of the artifacts: [[./helloJaCaMo-4a-multiple-workspaces-only_one_goalduty_os-acting_on_all_artifacts_agent-artifact_belief.jcm][helloJaCaMo-4a-multiple-workspaces-only_one_goalduty_os-acting_on_all_artifacts_agent-artifact_belief.jcm]]
++ With richer organization, test of the join effects: [[./helloJaCaMo-4a-multiple-workspaces-only_one_goalduty_os-acting_on_all_artifacts_agent-join-effects.jcm][helloJaCaMo-4a-multiple-workspaces-only_one_goalduty_os-acting_on_all_artifacts_agent-join-effects.jcm]]
+**** 
++ [[./helloJaCaMo-4b-multiple-workspaces-side-effect-focus.jcm][helloJaCaMo-4b-multiple-workspaces-side-effect-focus.jcm]]
+** Hello MAS using multiple workspaces in a distributed setting
+In this part, only one organization either simple or rich, 4 workspaces on three nodes.
+It should be used with a combination of one configuration for America, Europe and Mirrorworld.
+*** With only one organization in the infrastructure node
+**** America Node
++ Using one artifact: [[./helloJaCaMo-5a-dist-america-without-org.jcm][helloJaCaMo-5a-dist-america-without-org.jcm]]
++ Using all artifacts: [[./helloJaCaMo-5a-dist-america-without-org-acting_on_all_artifacts_agent.jcm][helloJaCaMo-5a-dist-america-without-org-acting_on_all_artifacts_agent.jcm]]
+**** Europe Node
++ Using one artifact: [[./helloJaCaMo-5a-dist-europe-without-org.jcm][helloJaCaMo-5a-dist-europe-without-org.jcm]]
+**** Mirrorworld Node
++ Simple Organization: [[./helloJaCaMo-5a-dist-mirrorworld-simple_os.jcm][helloJaCaMo-5a-dist-mirrorworld-simple_os.jcm]]
++ Richer Organization: [[./helloJaCaMo-5a-dist-mirrorworld-only_one_goalduty_os.jcm][helloJaCaMo-5a-dist-mirrorworld-only_one_goalduty_os.jcm]]
+*** With only one organization in one non-infrastructure node
+**** America Node
++ [[./helloJaCaMo-5b-dist-america.jcm][helloJaCaMo-5b-dist-america.jcm]]
+**** Europe Node
++ [[./helloJaCaMo-5b-dist-europe-with-org.jcm][helloJaCaMo-5b-dist-europe-with-org.jcm]]
+**** Mirrorworld Node
++ [[./helloJaCaMo-5b-dist-mirrorworld-without-org.jcm][helloJaCaMo-5b-dist-mirrorworld-without-org.jcm]]
+** Hello in multiple organizations
++ [[./helloJaCaMo-6a-dist-america-own-org.jcm][helloJaCaMo-6a-dist-america-own-org.jcm]]
++ [[./helloJaCaMo-6a-dist-europe-own-org.jcm][helloJaCaMo-6a-dist-europe-own-org.jcm]]
++ [[./helloJaCaMo-6a-dist-mirrorworld-jacamo-org.jcm][helloJaCaMo-6a-dist-mirrorworld-jacamo-org.jcm]]
++ [[./helloJaCaMo-6b-dist-america-own-org.jcm][helloJaCaMo-6b-dist-america-own-org.jcm]]
++ [[./helloJaCaMo-6b-dist-europe-own-org.jcm][helloJaCaMo-6b-dist-europe-own-org.jcm]]
++ [[./helloJaCaMo-6b-dist-mirrorworld-jacamo-org.jcm][helloJaCaMo-6b-dist-mirrorworld-jacamo-org.jcm]]
+** Advanced
+*** Agent reasoning to change the organisation
++ Within one workspace: [[./helloJaCaMo-3a-workspace-jacamo-only_one_goalduty_os-cyclic_scheme_execution.jcm][helloJaCaMo-3a-workspace-jacamo-only_one_goalduty_os-cyclic_scheme_execution.jcm]]
++ With multiple workspaces:  [[./helloJaCaMo-4a-multiple-workspaces-only_one_goalduty_os-cycle_scheme_execution-acting_on_all_artifacts_agent-artifact_belief.jcm][helloJaCaMo-4a-multiple-workspaces-only_one_goalduty_os-cycle_scheme_execution-acting_on_all_artifacts_agent-artifact_belief.jcm]]
++ With multiple workspaces in a distributed setting (should be used with the 5a families for America and Mirrorworld): [[./helloJaCaMo-5a-dist-europe-without-org-cyclic_scheme_execution.jcm][helloJaCaMo-5a-dist-europe-without-org-cyclic_scheme_execution.jcm]]
+*** Controling the organization with a monitoring scheme
+*** TOCHECK Intermixing goals  
+**** Same goal reused at different places of the plan
++ Two organizations to test with the reuse of the same goal at different places of the plan: [[./src/org/intermixing-goal-duties-os.xml][intermixing-goal-duties-os.xml]] or [[./src/org/intermixing-goal-duties-same-goal-os.xml][intermixing-goal-duties-same-goal-os.xml]]
++ [[./helloJaCaMo-2a-basic-only_one_goalduty_os.jcm][helloJaCaMo-2a-basic-only_one_goalduty_os.jcm]] with [[./src/org/intermixing-goal-duties-os.xml][intermixing-goal-duties-os.xml]]
++ or [[./helloJaCaMo-3a-workspace-jacamo-intermixing_goal_duties_os.jcm][helloJaCaMo-3a-workspace-jacamo-intermixing_goal_duties_os.jcm]] with [[./src/org/intermixing-goal-duties-os.xml][intermixing-goal-duties-os.xml]]
+**** All different goals
++ [[./helloJaCaMo-3a-workspace-jacamo-intermixing_different_goal_duties_os.jcm][helloJaCaMo-3a-workspace-jacamo-intermixing_different_goal_duties_os.jcm]] with [[./src/org/intermixing-different-goal-duties-os.xml][intermixing-different-goal-duties-os.xml]]
+*** Authority Links conflict management
+
+
+
+
+
+
+
+
+
+

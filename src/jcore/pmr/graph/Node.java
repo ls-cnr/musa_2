@@ -2,9 +2,7 @@ package pmr.graph;
 
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Set;
 
 import layer.awareness.AbstractCapability;
 import layer.semantic.StateOfWorld;
@@ -19,7 +17,7 @@ public abstract class Node {
 	/** The incoming list. */
 	
 	//lista degli archi in uscita dal nodo
-	protected Set<Edge> outcomingEdgeList;
+	protected ArrayList<Edge> outcomingEdgeList;
 	
 	//stato del mondo associato al nodo
 	protected StateOfWorld worldState;
@@ -28,7 +26,7 @@ public abstract class Node {
 	protected int Nfacts;
 	
 	//lista degli archi in entrata nel nodo
-	protected Set<Edge> incomingEdgeList;
+	protected ArrayList<Edge> incomingEdgeList;
 	
 	//Costruttore per i nodi
 	public Node(StateOfWorld worldState){
@@ -39,22 +37,27 @@ public abstract class Node {
 		else	{
 			this.Nfacts = worldState.getFactsNumber();
 		}
-		this.outcomingEdgeList = new HashSet<Edge>();
-		this.incomingEdgeList = new HashSet<Edge>();
+		this.outcomingEdgeList = new ArrayList<Edge>();
+		this.incomingEdgeList = new ArrayList<Edge>();
 	}
 	
-	//Aggiunge un arco alla lista degli incomingedge
-	public void addEdge(Edge edge){
+	//Aggiunge un arco alla lista degli incomingEdge usando l'arco stesso
+	public void addIncomingEdge(Edge edge){
+		this.incomingEdgeList.add(edge);
+	}
+	
+	//Aggiunge un arco alla lista degli outcomingEdge usando l'arco stesso
+	public void addOutcomingEdge(Edge edge){
 		this.outcomingEdgeList.add(edge);
 	}
 	
 	//Aggiunge una lista di archi in uscita all'oggetto.
-	public void setOutcomingEdgeList(Set<Edge> edges){
+	public void setOutcomingEdgeList(ArrayList<Edge> edges){
 		this.outcomingEdgeList = edges;
 	}
 	
 	//Aggiunge una lista di archi in entrata all'oggetto
-	public void setIncomingEdgeList(Set<Edge> edges){
+	public void setIncomingEdgeList(ArrayList<Edge> edges){
 		this.incomingEdgeList = edges;
 	}
 	
@@ -63,26 +66,25 @@ public abstract class Node {
 		return this.Nfacts;
 	}
 	
+	//Restituisce lo stato del mondo associato al nodo
 	public StateOfWorld getWorldState(){
 		return this.worldState; 
 	}
 	
-	public Set<Edge> getOutcomingEdgeList(){
+	//Restituisce la lista degli archi in uscita contenuti nel nodo
+	public ArrayList<Edge> getOutcomingEdgeList(){
 		return this.outcomingEdgeList;
 	}
 	
-	public Set<Edge> getIncomingEdgeList(){
+	//Restituisce la lista degli archi in entrata contenuti nel nodo
+	public ArrayList<Edge> getIncomingEdgeList(){
 		return this.incomingEdgeList;
 	}
 	
+	//Restituisce la lista dei fatti, lista contenuta nello state of world
 	public ArrayList<DLPHead> getFactsList(){
-		ArrayList<DLPHead> factlist = new ArrayList<DLPHead>();
-		Iterator<DLPHead> it = this.worldState.getFacts().iterator();
-		while(it.hasNext() == true){
-			factlist.add(it.next());
-		}
-		return factlist;
-		}
+		return this.worldState.getFactsList();
+	}
 	
 	//Utilizzo l'equals ridefinito in StateOfWorld per confrontare i nodi.
 	@Override
@@ -106,7 +108,7 @@ public abstract class Node {
 	    }
 	}
 	
-	//Di conseguenza uso l'hashCode() di StateOfWorld per mantenere la regola delgli oggetti true per equals = Stesso hashcode
+	//Ho modifcato equals, di conseguenza modifico l'hashCode() di StateOfWorld per mantenere la regola delgli oggetti true per equals = Stesso hashcode
 	@Override
 	public int hashCode(){
 		if(this.getWorldState() != null)	{
@@ -115,4 +117,15 @@ public abstract class Node {
 		else
 			return 0;
 	}
+
+	//Rimuove un arco dalla lista degli archi in entrata
+	public void removeIncomingEdge(Edge edge){
+		this.incomingEdgeList.remove(edge);
+	}
+	
+	//Rimuove un arco dalla lista degli archi in uscita
+	public void removeOutcomingEdge(Edge edge){
+		this.outcomingEdgeList.remove(edge);
+	}
+	
 }

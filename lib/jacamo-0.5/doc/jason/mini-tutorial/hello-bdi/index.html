@@ -1,0 +1,634 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+               "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="pt" xml:lang="pt">
+<head>
+<title>(BDI) Hello World</title>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+<meta name="title" content="(BDI) Hello World"/>
+<meta name="generator" content="Org-mode"/>
+<meta name="generated" content="2015"/>
+<meta name="author" content="Jomi F. Hubner (with Rafael H. Bordini assistance)"/>
+<meta name="description" content=""/>
+<meta name="keywords" content=""/>
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  html { font-family: Times, serif; font-size: 12pt; }
+  .title  { text-align: center; }
+  .todo   { color: red; }
+  .done   { color: green; }
+  .tag    { background-color: #add8e6; font-weight:normal }
+  .target { }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .right  {margin-left:auto; margin-right:0px;  text-align:right;}
+  .left   {margin-left:0px;  margin-right:auto; text-align:left;}
+  .center {margin-left:auto; margin-right:auto; text-align:center;}
+  p.verse { margin-left: 3% }
+  pre {
+	border: 1pt solid #AEBDCC;
+	background-color: #F3F5F7;
+	padding: 5pt;
+	font-family: courier, monospace;
+        font-size: 90%;
+        overflow:auto;
+  }
+  table { border-collapse: collapse; }
+  td, th { vertical-align: top;  }
+  th.right  { text-align:center;  }
+  th.left   { text-align:center;   }
+  th.center { text-align:center; }
+  td.right  { text-align:right;  }
+  td.left   { text-align:left;   }
+  td.center { text-align:center; }
+  dt { font-weight: bold; }
+  div.figure { padding: 0.5em; }
+  div.figure p { text-align: center; }
+  div.inlinetask {
+    padding:10px;
+    border:2px solid gray;
+    margin:10px;
+    background: #ffffcc;
+  }
+  textarea { overflow-x: auto; }
+  .linenr { font-size:smaller }
+  .code-highlighted {background-color:#ffff00;}
+  .org-info-js_info-navigation { border-style:none; }
+  #org-info-js_console-label { font-size:10px; font-weight:bold;
+                               white-space:nowrap; }
+  .org-info-js_search-highlight {background-color:#ffff00; color:#000000;
+                                 font-weight:bold; }
+  /*]]>*/-->
+</style>
+<link rel="stylesheet" type="text/css" href="./jcm.css" />
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2013 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+
+</head>
+<body>
+
+<div id="preamble">
+
+</div>
+
+<div id="content">
+<h1 class="title">(BDI) Hello World</h1>
+
+
+
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">Introduction</a></li>
+<li><a href="#sec-2">Bob (the mentalist)</a>
+<ul>
+<li><a href="#sec-2-1">the agent program</a></li>
+<li><a href="#sec-2-2">execution</a></li>
+</ul>
+</li>
+<li><a href="#sec-3">Bob (the believer)</a>
+<ul>
+<li><a href="#sec-3-1">perception</a></li>
+</ul>
+</li>
+<li><a href="#sec-4">Bob (the vigilant)</a></li>
+<li><a href="#sec-5">Bob (the revisionist)</a></li>
+<li><a href="#sec-6">Bob (the lazy &ndash; finally)</a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-1" class="outline-2">
+<h2 id="sec-1">Introduction</h2>
+<div class="outline-text-2" id="text-1">
+
+
+<p>
+This programming (mini) tutorial will illustrate how the BDI model is used in the <a href="http://jason.sf.net">Jason</a> agent-oriented programming language. We start by a very simple agent code and progress exploring the BDI features of Jason. 
+</p>
+<p>
+We assume that the reader knows the basic concepts of the BDI model (an introduction and further references are found at the <a href="http://en.wikipedia.org/wiki/Belief–desire–intention_software_model">Wikipedia</a>). It is important to know these concepts to be a good Jason programmer, in the same way that knowing the concepts of and objects and classes is important for a Java programmer.  Very briefly, in the BDI model the agent has <i>beliefs</i> (based on what it perceives and communicates with other agents) that can produce <i>desires</i> (states of the world that the agent wants to achieve). The agent <i>deliberates</i> on its desires and decides to <i>commit</i> to some (desires to which the agent is committed become <i>intentions</i>). The satisfy its intentions, the agent executes plans that lead to action. The behaviour of the agent (i.e., its actions) is thus explained/caused by what it intends (i.e., the desires it decided to pursue). An important feature of the model is that the agent should <i>react</i> to changes in its environment as soon as possible while keeping its <i>pro-active</i> (i.e., desires-oriented) behaviour. (Do not worry about all these high-level anthropomorphic concepts (in italics), we will try to keep the simplicity of usual hello world programs.)
+</p>
+</div>
+
+</div>
+
+<div id="outline-container-2" class="outline-2">
+<h2 id="sec-2">Bob (the mentalist)</h2>
+<div class="outline-text-2" id="text-2">
+
+
+
+</div>
+
+<div id="outline-container-2-1" class="outline-3">
+<h3 id="sec-2-1">the agent program</h3>
+<div class="outline-text-3" id="text-2-1">
+
+
+<p>
+The Jason program for our agent is the following (since BDI is inspired in folk psychology, we can name this agent Bob):
+</p>
+
+
+
+<pre class="example">happy(bob).
+
+!say(hello).
+
++!say(X) : happy(bob) &lt;- .print(X).
+</pre>
+
+
+<p>
+As we can see, the syntax is far from the usual C, Java, or Python programs we are used to. For those (rare) guys who have had some contact with Prolog, maybe it looks a bit familiar. The syntax is indeed inspired by Prolog, but the objective is different (the output is not knowledge and the underlying engine is not based on resolution). Let's read this program:
+</p>
+<ol>
+<li>The agent has one (initial) belief: <code>happy(bob)</code>, included by the programmer (rather than by perceiving the state of the environment). This belief can be read as ``the domain element named <code>bob</code> has the property (or predicate) <code>happy</code>".
+</li>
+<li>The agent has one (initial) desire: <code>!say(hello)</code>, also included by the programmer. What follows the symbol <code>!</code> describes the desire and is also represented as a Prolog literal.
+</li>
+<li>The agent has one plan to achieve the desire <code>say(hello)</code>. We can read this plan as ``whenever the agent has the desire to <code>say(X)</code> and believes that <code>happy(bob)</code>, by executing the action <code>.print(X)</code> the desire is achieved, for any <code>X</code> (which is a variable since it starts with an uppercase letter, as in Prolog).
+</li>
+</ol>
+
+
+<p>
+The <i>deliberation</i> process of the BDI model is highly related to plans. The plan states <i>whether</i> a desire can become an intention by means of its <i>event</i> and <i>context</i>. In the Bob's plan, the event is <code>+!say(X)</code> (what is written before <code>:</code>) and it means the event of having a new desire to say something. The context is <code>happy(bob)</code> (the part of the code that goes between <code>:</code> and <code>&lt;-</code>) which is a logical formula evaluated in regards to the current believes of the agent.
+</p>
+<p>
+The plan also states <i>how</i> to achieve the desire (i.e. the <i>means-end</i> reasoning part of the BDI model). If the sequence of actions (after <code>&lt;-</code>) is successfully executed, the desire is (hopefully) achieved. An intention in Jason is an instantiated plan that the agent is executing in order to achieve a desire (also called goal).
+</p>
+<p>
+This program is interpreted by Jason as follows:
+</p>
+<ol>
+<li>The initial belief is added in the agent belief base (BB).
+</li>
+<li>From the initial desire, the event <code>+!say(hello)</code> is added in the queue of events to be handled by the agent.
+</li>
+<li>The plan is included in the plan library (PL) of the agent.
+</li>
+<li>A reasoning cycle loop is executed:
+<ul>
+<li>The event <code>+!say(hello)</code> is selected from the queue.
+</li>
+<li>The above plan is selected (it matches the selected event when the variable <code>X</code> is bound to <code>hello</code>).
+</li>
+<li>The context of the plan is evaluated as true since it follows from be BB (i.e. the agent believes <code>happy(bob)</code>).
+</li>
+<li>A new intention is created based on this plan and the <code>X</code> value. The agent has thus committed itself to the desire to <code>say(hello)</code>.
+</li>
+<li>One action of the intention is executed (the <code>.print(hello)</code> command in this case).
+</li>
+<li>Since the intention has executed all actions, it finishes.
+</li>
+</ul>
+
+</li>
+<li>The agent keeps waiting for new events to react to.
+</li>
+</ol>
+
+
+
+</div>
+
+</div>
+
+<div id="outline-container-2-2" class="outline-3">
+<h3 id="sec-2-2">execution</h3>
+<div class="outline-text-3" id="text-2-2">
+
+
+<ul>
+<li>Create a new Jason project (you can use either <a href="http://jason.sourceforge.net/mini-tutorial/getting-started/">jEdit</a> or <a href="http://jason.sourceforge.net/mini-tutorial/eclipse-plugin/">Eclipse</a> plugins).
+
+</li>
+<li>Create agent Bob with the source code above. The .mas2j project should look like:
+</li>
+</ul>
+
+
+<pre class="example">
+MAS bdi_hw {
+
+    agents: bob;
+
+}
+</pre>
+
+
+<ul>
+<li>Run the project.
+</li>
+</ul>
+
+
+</div>
+</div>
+
+</div>
+
+<div id="outline-container-3" class="outline-2">
+<h2 id="sec-3">Bob (the believer)</h2>
+<div class="outline-text-2" id="text-3">
+
+
+<p>
+The second version of agent Bob has neither initial beliefs nor desires:
+</p>
+
+
+
+<pre class="example">+happy(bob) &lt;- !say(hello).
++!say(X) : not today(monday) &lt;- .print(X); .wait(500); !say(X).
+</pre>
+
+
+<p>
+The first plan has a different kind of event: the agent has started to believe something (the belief that follows <code>+</code>). So when the agent starts believing that Bob is happy, the desire to say hello (<code>!say(hello)</code>) is created. In this case, the desire is the result of changes in the agent's beliefs. The agent starts believing something when, for instance, it perceives the state of the environment or receives a message from another agent.
+</p>
+<p>
+The second plan has also changed: (i) the agent will decide to pursue the desire to say something on days other than Monday; (ii) after printing the message, the desire is keept, producing a loop that will end on the next Monday. In other words, the intention to achieve <code>!say</code> does not finish because that intention itself creates a new desire <code>!say</code> (here also conveniently called sub-goal). Only when this sub-goal is achieved, the intention finishes (which never happens in the above plan).
+</p>
+<p>
+If you run this program, nothing happens! Different from other languages where the programmer defines a sequence of operations, in Jason the programmer <i>declares</i> plans and the order of execution depends on the order of the events that take place on a particular environment.
+</p>
+<p>
+To interact with Bob, we will create another agent at runtime and inform them about some facts.
+</p>
+<ol>
+<li>Run the project.
+</li>
+<li>In the MAS Console, click on the button "New REPL agent" and fill "alice" as the name of the new agent.
+</li>
+<li>In the Alice interface, enter <code>.send(bob,tell,happy(bob))</code>.
+</li>
+<li>You will notice that Bob starts saying hello. 
+</li>
+</ol>
+
+
+<p>
+The <i>tell</i> message that Alice sent to Bob is automatically interpreted by Jason. The default interpretation, since it is a "tell" message, is to include the content of the message (<code>happy(bob)</code>) in the Bob's belief base. When that belief is added in the belief base, the event <code>+happy(bob)</code> is included in the queue of events. Bob then reacts to this event  creating an intention.  You can access the <a href="http://localhost:3272">Jason Mind Inspector</a> to see the Bob's mental state (or use the Debug button in the MAS Console):
+</p>
+<p>
+<img src="./screens/mind-1.png" width=500 style="center;margin:0px 20px 20px 20px;" alt="./screens/mind-1.png" />
+</p>
+<p>
+As we can see, the belief is not exactly <code>happy(bob)</code> but <code>happy(bob)[source(alice)]</code>. The part enclosed by <code>[</code> and <code>]</code> are annotations. All beliefs in Jason have annotations for their sources. This information can be used, for instance, if an agent needs to consider only those beliefs that come from trustable sources:
+</p>
+
+
+
+<pre class="example">sincere(alice).
+
++happy(bob)[source(A)] : sincere(A) &lt;- !say(hello).
+
++!say(X) : not today(monday) &lt;- .print(X); .wait(500); !say(X).
+</pre>
+
+
+<p>
+This program has a problem, however. Another malicious agent can tell Bob that it is sincere just before telling him <code>happy(bob)</code>! The source of the <code>sincere</code> belief should be Bob itself (and not another agent):
+</p>
+
+
+
+<pre class="example">sincere(alice).
+
++happy(bob)[source(A)] : sincere(A)[source(self)] &lt;- !say(hello).
+
++!say(X) : not today(monday) &lt;- .print(X); .wait(500); !say(X).
+</pre>
+
+
+
+</div>
+
+<div id="outline-container-3-1" class="outline-3">
+<h3 id="sec-3-1">perception</h3>
+<div class="outline-text-3" id="text-3-1">
+
+
+<p>
+Besides messages from other agents, another source for beliefs is perception. We will place a calendar in the environment so that Bob can be aware of the current day. It is not the focus of this tutorial to develop the environment, so we will simply copy &amp; paste some code:
+</p>
+<ul>
+<li>change the .mas2j to:
+</li>
+</ul>
+
+
+
+
+
+<pre class="example">MAS bdi_hw {
+    infrastructure: JaCaMo
+
+    agents: bob;
+}
+</pre>
+
+
+<ul>
+<li>Download <a href="./code/Calendar.java">this</a> file and place it in the directory of the project.
+
+</li>
+<li>In the beginning of Bob's program, add the following lines that create the Calendar in the environment:
+</li>
+</ul>
+
+
+
+
+<pre class="example">!create_calendar.
++!create_calendar &lt;- makeArtifact("c","Calendar",[],AId); focus(AId).
+</pre>
+
+
+<ul>
+<li>Run the project and interactively change the current day observing Bob's belief base and intentions. For example, if you change the day to Monday, the intention will finish. In this case, the intention finishes with failure, since the agent has a desire without a suitable plan.
+</li>
+</ul>
+
+
+</div>
+</div>
+
+</div>
+
+<div id="outline-container-4" class="outline-2">
+<h2 id="sec-4">Bob (the vigilant)</h2>
+<div class="outline-text-2" id="text-4">
+
+
+<p>
+The following program for Bob includes alternative plans for the events <code>+happy(H)</code> and <code>+!say(X)</code>. 
+</p>
+
+
+
+<pre class="example">sincere(alice).
+
+!create_calendar.
++!create_calendar &lt;- makeArtifact("c","Calendar",[],AId); focus(AId).
+
++happy(H)[source(A)] : sincere(A)[source(self)] &amp; .my_name(H) &lt;- !say(hello(A)).
++happy(H)            : not .my_name(H)                        &lt;- !say(i_envy(H)).
+
++!say(X) : today(friday)     &lt;- .print(X,"!!!!!"); .wait(math.random(400)+100); !say(X).
++!say(X) : not today(monday) &lt;- .print(X);         .wait(math.random(400)+100); !say(X).
+</pre>
+
+
+<p>
+For each event, <b>one</b> plan is selected according to the context: the
+first plan with a context that holds is selected to create the
+intention to react to the event.
+</p>
+<p>
+The first plan for <code>+happy(H)</code> is used when <code>H</code> is <code>bob</code> and the
+source of <code>happy(H)</code> is sincere (<a href="http://jason.sourceforge.net/api/jason/stdlib/my_name.html"><code>.my_name</code></a> is true if the value of
+<code>H</code> is the name of the agent executing that internal action). The
+second plan is used otherwise.  The first plan for <code>+!say(X)</code> is used
+in days other than  Monday and the second on Fridays. (Notice that
+there are no plans for Mondays!)
+</p>
+<p>
+Instead of using REPL, we will add a new agent, called Alice, to run
+this system:
+</p>
+
+
+<pre class="example">!start.
+
++!start 
+   &lt;- .send(bob,tell,happy(bob));
+      .send(bob,tell,happy(alice));
+      .wait(2000);
+      .send(bob,tell,happy(morgana)).
+</pre>
+
+
+<p>
+It is important to notice how many intentions Bob has:
+</p>
+<p>
+<img src="./screens/mind-2.png" width=500 style="center;margin:0px 20px 20px 20px;" alt="./screens/mind-2.png" />
+</p>
+<p>
+Bob is concurrently executing three intentions: one for each
+event. More importantly, even with 3 intentions (or 100 intentions)
+Bob promptly reacts to new events. This <i>reactivity</i> is indeed one of
+the nicer features of the BDI model. You can test it by creating a new
+REPL agent that sends tell messages to Bob and see how fast it
+reacts.
+</p>
+<p>
+To really stress Bob, we can change Alice's program as follows:
+</p>
+
+
+<pre class="example">!start.
+
++!start 
+   &lt;- .send(bob,tell,happy(bob));
+      .send(bob,tell,happy(alice));
+      .wait(2000);
+      .send(bob,tell,happy(morgana));
+      for (.range(I,1,100)) {
+         .send(bob,tell,happy(I));
+      }.
+</pre>
+
+
+<p>
+At this point of the tutorial, you could try to imagine how to program
+this application using conventional languages like Java and C. Even
+actor-based langages, which are also oriented to events and great
+tools for concurrency, will not be so reactive as Jason.
+</p>
+</div>
+
+</div>
+
+<div id="outline-container-5" class="outline-2">
+<h2 id="sec-5">Bob (the revisionist)</h2>
+<div class="outline-text-2" id="text-5">
+
+
+<p>
+Another important feature of the BDI model is that agents are able to
+revise their own intentions. The following plan reacts to the event of
+stop believing that someone is happy. The reaction is to drop the
+corresponding intention.
+</p>
+
+
+
+<pre class="example">// new plan in Bob's program:
+
+-happy(H)[source(A)]
+   &lt;- .drop_intention(say(hello(A)));
+      .drop_intention(say(i_envy(H))).
+</pre>
+
+
+<p>
+We can test this with the following program for Alice:
+</p>
+
+
+
+<pre class="example">!start.
+
++!start 
+   &lt;- .send(bob,tell,happy(bob));
+      .send(bob,tell,happy(alice));    .wait(2000);
+      .send(bob,tell,happy(morgana));  .wait(2000);
+      .send(bob,untell,happy(bob));    .wait(1000);
+      .send(bob,untell,happy(alice)).
+</pre>
+
+
+<p>
+The <code>untell</code> message removes the corresponding belief in the receiver
+(only for the belief with that same source, of course).
+</p>
+</div>
+
+</div>
+
+<div id="outline-container-6" class="outline-2">
+<h2 id="sec-6">Bob (the lazy &ndash; finally)</h2>
+<div class="outline-text-2" id="text-6">
+
+
+<p>
+This last code for Bob implements the following:
+</p>
+<ol>
+<li>On Wednesdays, Bob keeps only two <code>say</code> intentions, the others will
+   be suspended.
+</li>
+<li>On Fridays, suspended intentions are resumed.
+</li>
+<li>On Saturdays, all intentions are dropped.
+</li>
+</ol>
+
+
+
+
+
+
+<pre class="example">sincere(alice).
+
+!create_calendar.
++!create_calendar &lt;- makeArtifact("c","Calendar",[],AId); focus(AId).
+
++happy(H)[source(A)] : sincere(A)[source(self)] &amp; .my_name(H) &lt;- !say(hello(A)).
++happy(H)            : not .my_name(H)                        &lt;- !say(i_envy(H)).
+
+-happy(H)[source(A)]
+   &lt;- .drop_intention(say(hello(A)));
+      .drop_intention(say(i_envy(H))).
+
++!say(X) : today(friday)     &lt;- .print(X,"!!!!!"); .wait(500); !say(X).
++!say(X) : not today(monday) &lt;- .print(X);         .wait(math.random(400)+100); !say(X).
+
+/**** the following is NEW ****/
+
++today(wednesday) &lt;- .print("**** Let's slow down.... ****"); !enter_lazy_mode.
++today(friday)    &lt;- .print("**** Let's finish the work!");   !resume_all.
++today(saturday)  &lt;- .print("**** weekend!");                 .drop_all_intentions.
+
++!enter_lazy_mode
+    : .findall(A, .intend(say(A)), [_,_|L]) // the agent has two say intentions
+   &lt;- for ( .member(I,L) ) {
+         .suspend(say(I));
+      }.
++!enter_lazy_mode.
+
++!resume_all
+    : .count( .intend(A) &amp; .suspended(A,R) &amp; .substring("suspended",R), I) &amp; I &gt; 0
+   &lt;- .resume(say(_));
+      !resume_all.
++!resume_all.
+</pre>
+
+
+<p>
+(You can refer to the  <a href="http://jason.sourceforge.net/api/jason/stdlib/package-summary.html#package.description">Jason API</a> for explanations about all the commands used in this example.)
+</p>
+<p>
+This tutorial showed how some of the (great) BDI concepts become
+concrete and practical in Jason, particularly long-term intentions and
+reactivity.
+</p>
+
+<hr/>
+
+
+
+</div>
+</div>
+</div>
+
+<div id="postamble">
+<p class="date">Date: 2015</p>
+<p class="author">Author: Jomi F. Hubner (with Rafael H. Bordini assistance)</p>
+<p class="email"><a href="mailto:jomifred@gmail.com">jomifred@gmail.com</a></p>
+<p class="creator"><a href="http://orgmode.org">Org</a> version 7.9.3f with <a href="http://www.gnu.org/software/emacs/">Emacs</a> version 24</p>
+<a href="http://validator.w3.org/check?uri=referer">Validate XHTML 1.0</a>
+
+</div>
+</body>
+</html>

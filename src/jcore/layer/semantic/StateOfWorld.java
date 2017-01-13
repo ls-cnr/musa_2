@@ -1,6 +1,8 @@
 package layer.semantic;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Iterator;
 
 import layer.semantic.exception.*;
 import net.sf.tweety.lp.asp.parser.ASPParser;
@@ -44,8 +46,17 @@ public class StateOfWorld {
 	 *
 	 * @return the facts
 	 */
-	public HashSet<DLPHead> getFacts() {
-		return facts;
+	public HashSet<DLPHead>getFacts(){
+		return this.facts;
+	}
+	
+	public ArrayList<DLPHead> getFactsList(){
+		ArrayList<DLPHead> factlist = new ArrayList<DLPHead>();
+		Iterator<DLPHead> it = this.facts.iterator();
+		while(it.hasNext() == true){
+			factlist.add(it.next());
+		}
+		return factlist;
 	}
 
 	
@@ -103,7 +114,7 @@ public class StateOfWorld {
 	        return false;
 	    }
 	    StateOfWorld other = (StateOfWorld) obj;
-	    if (this.facts.equals(other.getFacts()) && this.facts.size() == other.getFactsNumber()) {
+	    if (this.facts.equals(other.getFactsList()) && this.facts.size() == other.getFactsNumber()) {
 	        return true;
 	    }
 	    else {

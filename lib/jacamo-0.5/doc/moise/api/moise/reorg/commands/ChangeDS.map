@@ -1,0 +1,10 @@
+<map id="G" name="G">
+<area shape="rect" id="node1_0" href="./RemoveAllRoleObligations.html" title="moise.reorg.commands.RemoveAllRoleObligations" alt="" coords="16,206,269,237"/>
+<area shape="rect" id="node1" href="./RemoveAllRoleObligations.html" title="&lt;TABLE&gt;" alt="" coords="5,197,280,245"/>
+<area shape="rect" id="node2_1" href="./ChangeOS.html" title="moise.reorg.commands.ChangeOS" alt="" coords="217,14,333,45"/>
+<area shape="rect" id="node2" href="./ChangeOS.html" title="&lt;TABLE&gt;" alt="" coords="206,5,343,53"/>
+<area shape="rect" id="node3_2" href="./ChangeDS.html" title="moise.reorg.commands.ChangeDS" alt="" coords="217,110,332,141"/>
+<area shape="rect" id="node3" href="./ChangeDS.html" title="&lt;TABLE&gt;" alt="" coords="207,101,343,149"/>
+<area shape="rect" id="node4_3" href="./AddRoleObligation.html" title="moise.reorg.commands.AddRoleObligation" alt="" coords="315,206,499,237"/>
+<area shape="rect" id="node4" href="./AddRoleObligation.html" title="&lt;TABLE&gt;" alt="" coords="304,197,509,245"/>
+</map>

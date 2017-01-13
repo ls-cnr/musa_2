@@ -104,7 +104,7 @@ public class WTS {
 	public WTS(){ 
 		this.graph = new HashMap<Node, Node> ();
 		Node tempnode = new WorldNode(null);
-		Set<Edge> templist = new HashSet<Edge>();
+		ArrayList<Edge> templist = new ArrayList<Edge>();
 		tempnode.setOutcomingEdgeList(templist);
 		this.graph.put(tempnode, tempnode);
 	}
@@ -122,7 +122,7 @@ public class WTS {
 	//Aggiunge un nodo di tipo NormalEdge
 	public boolean addEdge(Node sourcenode, Node destnode, AbstractCapability capability){
 		if (sourcenode instanceof WorldNode){
-			Set<Edge> outlist = this.graph.get(sourcenode).getOutcomingEdgeList();
+			ArrayList<Edge> outlist = this.graph.get(sourcenode).getOutcomingEdgeList();
 			Edge tempedge = new NormalEdge(sourcenode, destnode, capability);
 			//Se aggiungendo un nuovo arco alla lista degli outcoming Edge di sourcenode, mi accorgo che è un duplicato non lo aggiungo
 			//se invece viene correttamente aggiunto, il value nella mappa associato al nodo stesso, 
@@ -131,7 +131,7 @@ public class WTS {
 				sourcenode.setOutcomingEdgeList(outlist);
 				this.graph.replace(sourcenode, sourcenode);
 				//Mi occupo di incominglist aggiornandolo
-				Set<Edge> inclist = this.graph.get(destnode).getIncomingEdgeList();
+				ArrayList<Edge> inclist = this.graph.get(destnode).getIncomingEdgeList();
 				inclist.add(tempedge);
 				destnode.setIncomingEdgeList(inclist);
 				this.graph.replace(destnode, destnode);
@@ -148,7 +148,7 @@ public class WTS {
 	//Aggiunge un nodo di tipo EvolutionEdge
 	public boolean addEdge(Node sourcenode, Node destnode, AbstractCapability capability, EvolutionScenario scenario){
 			if(sourcenode instanceof OPNode){
-				Set<Edge> outlist = this.graph.get(sourcenode).getOutcomingEdgeList();
+				ArrayList<Edge> outlist = this.graph.get(sourcenode).getOutcomingEdgeList();
 				Edge tempedge = new EvolutionEdge(sourcenode, destnode, capability, scenario);
 				//Se aggiungendo un nuovo arco alla lista degli outcoming Edge di sourcenode, mi accorgo che è un duplicato non lo aggiungo
 				//se invece viene correttamente aggiunto, il value nella mappa associato al nodo stesso, 
@@ -157,7 +157,7 @@ public class WTS {
 					sourcenode.setOutcomingEdgeList(outlist);
 					this.graph.replace(sourcenode, sourcenode);
 					//Mi occupo di incominglist aggiornandolo
-					Set<Edge> inclist = this.graph.get(destnode).getIncomingEdgeList();
+					ArrayList<Edge> inclist = this.graph.get(destnode).getIncomingEdgeList();
 					inclist.add(tempedge);
 					destnode.setIncomingEdgeList(inclist);
 					this.graph.replace(destnode, destnode);
@@ -170,8 +170,27 @@ public class WTS {
 				//errore
 				return false;
 			}
-	}
 
+	}
+	
+	//Rimuove un nodo dal grafo
+	public void removeNode(Node node){
+		this.graph.remove(node);
+	}
+	
+	//Rimuove un arco da un nodo del grafo, modifica lista in uscita del nodo sorgente e lista in entrata del nodo destinazione
+	public void removeEdge(Node sourcenode, Node destnode, AbstractCapability capability){
+		ArrayList<Edge> listEdge = this.graph.get(sourcenode).getOutcomingEdgeList();
+		listEdge.remove(new NormalEdge(sourcenode, destnode, capability));
+		sourcenode.setOutcomingEdgeList(listEdge);
+		this.graph.replace(sourcenode, sourcenode);
+		
+		ArrayList<Edge> listEdge_2 = this.graph.get(destnode).getIncomingEdgeList();
+		listEdge.remove(new NormalEdge(sourcenode, destnode, capability));
+		destnode.setOutcomingEdgeList(listEdge);
+		this.graph.replace(destnode, destnode);
+		
+	}
 		
 		
 }
