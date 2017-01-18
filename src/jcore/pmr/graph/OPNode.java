@@ -12,12 +12,7 @@ import layer.semantic.evolution.EvolutionScenario;
 public abstract class OPNode extends Node {
 	
 	private EvolutionScenario scenario;
-	public OPNode(StateOfWorld worldState, Node parent, AbstractCapability capability, EvolutionScenario scenario){
+	public OPNode(StateOfWorld worldState){
 		super(worldState);
-		this.scenario = scenario;
-	}
-	
-	public EvolutionScenario getScenario(){
-		return this.scenario;
 	}
 }

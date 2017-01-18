@@ -1,4 +1,4 @@
-package pmrtest;
+package pmrtest.graph;
 
 import static org.junit.Assert.*;
 
@@ -8,11 +8,13 @@ import org.junit.Test;
 import layer.awareness.AbstractCapability;
 import layer.semantic.StateOfWorld;
 import net.sf.tweety.lp.asp.parser.ParseException;
-import pmr.WTS;
+import pmr.graph.Edge;
 import pmr.graph.Node;
+import pmr.graph.NormalEdge;
 import pmr.graph.WorldNode;
 
-public class WTSaddNodeTest {
+public class EdgeTest {
+	
 	private StateOfWorld w1;
 	private StateOfWorld w2;
 	private StateOfWorld w3;
@@ -26,6 +28,10 @@ public class WTSaddNodeTest {
 	private AbstractCapability cap1;
 	private AbstractCapability cap2;
 	private AbstractCapability cap3;
+
+	private Edge e1;
+	private Edge e2;
+	private Edge e3;
 	
 	@Before
 	public void setUp(){
@@ -77,23 +83,24 @@ public class WTSaddNodeTest {
 		this.n2 = new WorldNode(w3);
 		this.n3 = new WorldNode(w1);
 		this.n4 = new WorldNode(w2);
+		
+		this.e1 = new NormalEdge(new WorldNode(null), this.n1, this.cap1);
+		this.e2 = new NormalEdge(new WorldNode(null), this.n1, this.cap1);
+		this.e3 = new NormalEdge(this.n1, this.n2, this.cap1);
+	}
+	
+	@Test
+	public void test_1() {
+		assertEquals(true, this.e1.equals(this.e2));
 	}
 
 	@Test
-	public void testAddNode() {
-		WTS temp = new WTS();
-		temp.addNode(this.n1);
-		temp.addNode(this.n2);
-		temp.addNode(this.n3);
-		assertEquals(true, temp.getWTS().containsKey(this.n4));
+	public void test_2() {
+		assertEquals(false, this.e2.equals(this.e3));
 	}
-
+	
 	@Test
-	public void testAddNode_2() {
-		WTS temp = new WTS();
-		temp.addNode(this.n1);
-		temp.addNode(this.n2);
-		temp.addNode(this.n3);
-		assertEquals(false, temp.addNode(this.n4));
+	public void test_3() {
+		assertEquals(true, new NormalEdge(new WorldNode(null), this.n1, this.cap1).equals(this.e2));
 	}
 }

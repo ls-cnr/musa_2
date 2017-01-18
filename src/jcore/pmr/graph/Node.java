@@ -28,6 +28,9 @@ public abstract class Node {
 	//lista degli archi in entrata nel nodo
 	protected ArrayList<Edge> incomingEdgeList;
 	
+	//Valore dell'hashcode per velocizzare le operazioni
+	protected int hashCode;
+	
 	//Costruttore per i nodi
 	public Node(StateOfWorld worldState){
 		this.worldState = worldState;
@@ -39,21 +42,64 @@ public abstract class Node {
 		}
 		this.outcomingEdgeList = new ArrayList<Edge>();
 		this.incomingEdgeList = new ArrayList<Edge>();
+		this.hashCode = this.hashCode();
 	}
 	
-	//Aggiunge un arco alla lista degli incomingEdge usando l'arco stesso
-	public void addIncomingEdge(Edge edge){
-		this.incomingEdgeList.add(edge);
+	//Aggiunge un arco alla lista degli incomingEdge usando l'arco stesso, ritorna falso se la lista contiene già l'arco e non lo aggiunge
+	public boolean addIncomingEdge(Edge edge){
+		if(edge instanceof NormalEdge){
+			NormalEdge temp = (NormalEdge) edge;
+			if(this.incomingEdgeList.contains(temp) == true){
+				return false;
+			}
+			else{
+				this.incomingEdgeList.add(temp);
+				return true;
+			}
+		}
+		else if(edge instanceof EvolutionEdge){
+			EvolutionEdge temp = (EvolutionEdge) edge;
+			if(this.incomingEdgeList.contains(temp) == true){
+				return false;
+			}
+			else{
+				this.incomingEdgeList.add(temp);
+				return true;
+			}
+		}
+		else
+			return false;
 	}
 	
 	//Aggiunge un arco alla lista degli outcomingEdge usando l'arco stesso
-	public void addOutcomingEdge(Edge edge){
-		this.outcomingEdgeList.add(edge);
+	public boolean addOutcomingEdge(Edge edge){
+		if(edge instanceof NormalEdge){
+			NormalEdge temp = (NormalEdge) edge;
+			if(this.outcomingEdgeList.contains(temp) == true){
+				return false;
+			}
+			else{
+				this.outcomingEdgeList.add(temp);
+				return true;
+			}
+		}
+		else if(edge instanceof EvolutionEdge){
+			EvolutionEdge temp = (EvolutionEdge) edge;
+			if(this.outcomingEdgeList.contains(temp) == true){
+				return false;
+			}
+			else{
+				this.outcomingEdgeList.add(temp);
+				return true;
+			}
+		}
+		else
+			return false;
 	}
 	
 	//Aggiunge una lista di archi in uscita all'oggetto.
 	public void setOutcomingEdgeList(ArrayList<Edge> edges){
-		this.outcomingEdgeList = edges;
+		 this.outcomingEdgeList = edges;
 	}
 	
 	//Aggiunge una lista di archi in entrata all'oggetto
@@ -117,15 +163,21 @@ public abstract class Node {
 		else
 			return 0;
 	}
-
+	
+	//ritorna il valore di hashcode salvato nella variabile (più veloce che calcolarlo)
+	public int getHashCode(){
+		return this.hashCode;
+	}
+	
+	
 	//Rimuove un arco dalla lista degli archi in entrata
-	public void removeIncomingEdge(Edge edge){
-		this.incomingEdgeList.remove(edge);
+	public boolean removeIncomingEdge(Edge edge){
+		return this.incomingEdgeList.remove(edge);
 	}
 	
 	//Rimuove un arco dalla lista degli archi in uscita
-	public void removeOutcomingEdge(Edge edge){
-		this.outcomingEdgeList.remove(edge);
+	public boolean removeOutcomingEdge(Edge edge){
+		return this.outcomingEdgeList.remove(edge);
 	}
 	
 }

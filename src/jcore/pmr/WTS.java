@@ -111,29 +111,69 @@ public class WTS {
 	
 	//Aggiungi nodo alla mappa, restituisce true se lo aggiunge, false se lo trova e non lo aggiunge
 	public boolean addNode(Node newnode){
-		if(this.graph.put(newnode, newnode) == null){
-			return true;
+		if(newnode instanceof XORNode){
+			if(this.graph.containsKey(newnode) == false){
+				this.graph.put((XORNode)newnode, (XORNode) newnode);
+				return true;
+			}
+			else
+				return false;
+		}
+		else if(newnode instanceof WorldNode){
+				if(this.graph.containsKey(newnode) == false){
+					this.graph.put((WorldNode)newnode, (WorldNode)newnode);
+					return true;
+				}
+				else
+					return false;
 		}
 		else{
 			return false;
 		}
 	}
 	
-	//Aggiunge un nodo di tipo NormalEdge
+	//Aggiunge un arco ad un nodo sorgente, modificando la lista degli archi uscenti del nodo stesso e la lista degli archi entranti del nodo destinazione
+	//arco di tipo NormalEdge
 	public boolean addEdge(Node sourcenode, Node destnode, AbstractCapability capability){
-		if (sourcenode instanceof WorldNode){
-			ArrayList<Edge> outlist = this.graph.get(sourcenode).getOutcomingEdgeList();
-			Edge tempedge = new NormalEdge(sourcenode, destnode, capability);
-			//Se aggiungendo un nuovo arco alla lista degli outcoming Edge di sourcenode, mi accorgo che è un duplicato non lo aggiungo
-			//se invece viene correttamente aggiunto, il value nella mappa associato al nodo stesso, 
-			//poi mi preoccupo di aggiornare la lista degli incoming Edge di destnode
-			if(outlist.add(tempedge) == true){
-				sourcenode.setOutcomingEdgeList(outlist);
+		if(sourcenode instanceof WorldNode){
+			//Se i nodi sono presenti nel grafo
+			if(this.graph.containsKey(sourcenode) == true && this.graph.containsKey(destnode) == true){
+				//prendo i riferimenti a quei nodi
+				Node tempnodesource = this.graph.get(sourcenode);
+				Node tempnodedest = this.graph.get(destnode);
+				
+				//se aggiungendo l'arco, mi accorgo che è già presente nella lista, fermo tutto e ritorno falso
+				if(tempnodesource.addOutcomingEdge(new NormalEdge(tempnodesource, tempnodedest, capability)) == false)
+					return false;
+				//Mi occupo di incominglist aggiornandolo
+				if(tempnodedest.addIncomingEdge(new NormalEdge(tempnodesource, tempnodedest, capability)) == false)
+					return false;
+				
+				//Rimpiazzo i due nodi con i loro nuovi valori
+				this.graph.put(this.graph.get(sourcenode), tempnodesource);
+				this.graph.put(this.graph.get(destnode), tempnodedest);
+				return true;
+			}
+			else return false;
+		}
+		else{
+			//errore
+			return false;
+		}
+	}
+	
+	//Aggiunge un arco ad un nodo sorgente, modificando la lista degli archi uscenti del nodo stesso e la lista degli archi entranti del nodo destinazione
+	//arco di tipo EvolutionEdge
+	public boolean addEdge(Node sourcenode, Node destnode, AbstractCapability capability, EvolutionScenario scenario){
+		if(sourcenode instanceof OPNode){
+			//Se i nodi sono presenti nel grafo
+			if(this.graph.containsKey(sourcenode) == true && this.graph.containsKey(destnode) == true){
+				//se aggiungendo l'arco, mi accorgo che è già presente nella lista, fermo tutto e ritorno falso
+				if(sourcenode.addOutcomingEdge(new EvolutionEdge(sourcenode, destnode, capability, scenario)) == false)
+					return false;
 				this.graph.replace(sourcenode, sourcenode);
 				//Mi occupo di incominglist aggiornandolo
-				ArrayList<Edge> inclist = this.graph.get(destnode).getIncomingEdgeList();
-				inclist.add(tempedge);
-				destnode.setIncomingEdgeList(inclist);
+				destnode.addIncomingEdge(new EvolutionEdge(sourcenode, destnode, capability, scenario));
 				this.graph.replace(destnode, destnode);
 				return true;
 			}
@@ -145,32 +185,8 @@ public class WTS {
 		}
 	}
 	
-	//Aggiunge un nodo di tipo EvolutionEdge
-	public boolean addEdge(Node sourcenode, Node destnode, AbstractCapability capability, EvolutionScenario scenario){
-			if(sourcenode instanceof OPNode){
-				ArrayList<Edge> outlist = this.graph.get(sourcenode).getOutcomingEdgeList();
-				Edge tempedge = new EvolutionEdge(sourcenode, destnode, capability, scenario);
-				//Se aggiungendo un nuovo arco alla lista degli outcoming Edge di sourcenode, mi accorgo che è un duplicato non lo aggiungo
-				//se invece viene correttamente aggiunto, il value nella mappa associato al nodo stesso, 
-				//poi mi preoccupo di aggiornare la lista degli incoming Edge di destnode
-				if(outlist.add(tempedge) == true){
-					sourcenode.setOutcomingEdgeList(outlist);
-					this.graph.replace(sourcenode, sourcenode);
-					//Mi occupo di incominglist aggiornandolo
-					ArrayList<Edge> inclist = this.graph.get(destnode).getIncomingEdgeList();
-					inclist.add(tempedge);
-					destnode.setIncomingEdgeList(inclist);
-					this.graph.replace(destnode, destnode);
-					return true;
-				}
-				else return false;
-				
-			}
-			else{
-				//errore
-				return false;
-			}
-
+	public HashMap<Node, Node> getWTS(){
+		return this.graph;
 	}
 	
 	//Rimuove un nodo dal grafo
@@ -179,18 +195,42 @@ public class WTS {
 	}
 	
 	//Rimuove un arco da un nodo del grafo, modifica lista in uscita del nodo sorgente e lista in entrata del nodo destinazione
-	public void removeEdge(Node sourcenode, Node destnode, AbstractCapability capability){
-		ArrayList<Edge> listEdge = this.graph.get(sourcenode).getOutcomingEdgeList();
-		listEdge.remove(new NormalEdge(sourcenode, destnode, capability));
-		sourcenode.setOutcomingEdgeList(listEdge);
-		this.graph.replace(sourcenode, sourcenode);
-		
-		ArrayList<Edge> listEdge_2 = this.graph.get(destnode).getIncomingEdgeList();
-		listEdge.remove(new NormalEdge(sourcenode, destnode, capability));
-		destnode.setOutcomingEdgeList(listEdge);
-		this.graph.replace(destnode, destnode);
-		
+	public void removeEdge(Node sourcenode, Node destnode){
+		if(this.graph.containsKey(sourcenode) == true && this.graph.containsKey(destnode) == true){
+			this.graph.get(sourcenode).removeOutcomingEdge(new NormalEdge(sourcenode, destnode, null));
+			this.graph.replace(sourcenode, sourcenode);
+			
+			this.graph.get(destnode).removeIncomingEdge(new NormalEdge(sourcenode, destnode, null));
+			this.graph.replace(destnode, destnode);
+		}
 	}
 		
+	public ArrayList<Node> WTSVisit(Node start){
+		HashMap <Node,Integer> checkedNode = new HashMap <Node, Integer>();
+		ArrayList<Node> pathNode = new ArrayList <Node>();
+		
+		if(start == null)
+			return null;
+		
+		for(Edge edge : this.graph.get(start).getOutcomingEdgeList()){
+			if(edge instanceof NormalEdge){
+				NormalEdge temp = (NormalEdge) edge;
+				if(checkedNode.containsKey(temp.getDestination()) == false){
+					pathNode.add((WorldNode)temp.getDestination());
+					pathNode.addAll(WTSVisit(temp.getDestination()));
+				}
+			}
+			else{
+				EvolutionEdge temp = (EvolutionEdge) edge;
+				if(checkedNode.containsKey(temp.getDestination()) == false){
+					pathNode.add((XORNode)temp.getDestination());
+					pathNode.addAll(WTSVisit(temp.getDestination()));
+				}
+			}
+		}
+		return pathNode;
+	}
+	
+	
 		
 }

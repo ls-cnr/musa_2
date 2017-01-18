@@ -114,7 +114,7 @@ public class StateOfWorld {
 	        return false;
 	    }
 	    StateOfWorld other = (StateOfWorld) obj;
-	    if (this.facts.equals(other.getFactsList()) && this.facts.size() == other.getFactsNumber()) {
+	    if (this.facts.equals(other.getFacts()) && this.facts.size() == other.getFactsNumber()) {
 	        return true;
 	    }
 	    else {

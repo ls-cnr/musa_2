@@ -29,9 +29,18 @@ public abstract class Edge {
 	public boolean equals(Object obj){
 		if(obj instanceof Edge){
 			Edge temp = (Edge)obj;
+			
+			if(temp.getSource() == null && this.source != null)	return false;
+			else if(temp.getSource() != null && this.source == null)	return false;
+
+			if(temp.getDestination() == null && this.destination != null)	return false;
+			else if(temp.getDestination() != null && this.destination == null)	return false;
+			
+			if(this.source == null && temp.getSource() == null)
+				if(this.destination == null && temp.getDestination() == null )	return true;
+			
 			if(this.source.equals(temp.getSource()) == false)				return false;
 			if(this.destination.equals(temp.getDestination()) == false)		return false;
-			if(this.capability.equals(temp.getCapability()) == false)		return false;
 			return true;
 		}
 		else return false;
@@ -39,6 +48,7 @@ public abstract class Edge {
 	
 	@Override
 	public int hashCode(){
+		if(this == null)	return 0;
 		return this.source.hashCode() + this.destination.hashCode() + this.capability.hashCode();
 	}
 }
