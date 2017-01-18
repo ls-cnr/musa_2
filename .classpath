@@ -2,6 +2,7 @@
 <classpath>
 	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry excluding="**/*.asl" kind="src" path="src/agt"/>
+	<classpathentry kind="src" path="lib/rmetzler"/>
 	<classpathentry kind="src" path="src/testcase"/>
 	<classpathentry excluding="*.ptl" kind="src" path="src/int"/>
 	<classpathentry excluding="*.xml" kind="src" path="src/org"/>
@@ -22,5 +23,6 @@
 	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry exported="true" kind="lib" path="lib/jacamo-0.5/lib/c4jason.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jacamo-0.5/lib/cartago.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/Users/miker/workspace/GitHub/musa_2/lib/rmetzler"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>
