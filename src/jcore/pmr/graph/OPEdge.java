@@ -40,6 +40,8 @@ public class OPEdge {
 		this.capability = capability;
 	}
 	
+	//L'OPNode è unico, ogni WorldNode ha i suoi OPNode, ma non può esistere un OPNode con lo stesso source e lo stesso desintation all'interno
+	//Di un WorldNode
 	
 	@Override
 	public boolean equals(Object obj){

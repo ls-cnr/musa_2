@@ -15,7 +15,7 @@ public abstract class OPNode implements Node {
 	private ArrayList <EvolutionEdge> outcomingList;
 	
 	//Contiene soltanto un arco in entrata
-	private NormalEdge	incomingEdge;
+	private OPEdge incomingEdge;
 	private int hashCode;
 	private AbstractCapability capability;
 	
@@ -28,7 +28,7 @@ public abstract class OPNode implements Node {
 	}
 	
 	//Setta l'arco in entrata
-	public void setIncomingEdge(NormalEdge edge){
+	public void setIncomingEdge(OPEdge edge){
 		this.incomingEdge = edge;
 	}
 	
@@ -38,8 +38,12 @@ public abstract class OPNode implements Node {
 	}
 	
 	 //prende l'arco in entrata;
-	public NormalEdge getIncomingEdge(){
+	public OPEdge getIncomingEdge(){
 		return this.incomingEdge;
+	}
+	
+	public AbstractCapability getCapability(){
+		return this.capability;
 	}
 	
 	//Aggiunge un arco alla lista degli outcomingEdge usando l'arco stesso
@@ -58,7 +62,8 @@ public abstract class OPNode implements Node {
 			return this.outcomingList.remove(edge);
 	}
 	
-	//Utilizzo l'equals ridefinito in StateOfWorld per confrontare i nodi.
+	//Se due OPNode hanno lo stesso source e la stessa capability allora sono uguali, dato che ha senso confrontarli solo all'interno.
+	//Di uno stesso WorldNode
 	@Override
 	public boolean equals(Object obj){
 	    if (obj == null) {
@@ -69,7 +74,7 @@ public abstract class OPNode implements Node {
 	    }
 	    OPNode other = (OPNode) obj;
 	    
-	    if (this.incomingEdge.equals(other.getIncomingEdge()) == true) {
+	    if (this.incomingEdge.equals(other.getIncomingEdge()) == true && this.capability.equals(other.getCapability()) == true) {
 	        return true;
 	    }
 	    else {
