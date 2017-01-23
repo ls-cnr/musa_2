@@ -29,4 +29,16 @@ public class ENode {
 		return tokens;
 	}
 	
+	public void setTokens( ArrayList<String> tokens ) {
+		this.tokens = tokens;
+	}
+	
+	public double getScore() {
+		return score;
+	}
+	
+	public void setScore( double score ) {
+		this.score = score;
+	}
+	
 }

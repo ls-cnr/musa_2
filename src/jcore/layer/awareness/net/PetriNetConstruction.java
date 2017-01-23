@@ -50,6 +50,10 @@ public class PetriNetConstruction {
 		return pn.getPlaces().get(0);
 	}
 	
+	Place getLastPlace() {
+		return pn.getPlaces().get(pn.getPlaces().size() - 1);
+	}
+	
 	/**
 	 * Gets the petrinet.
 	 *

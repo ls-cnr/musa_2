@@ -56,15 +56,13 @@ public class ProblemExploration {
 		ArrayList<String> tokens = starter.getTokens();
 		
 		net.putTokens(tokens);
-		
 		for( Transition t : net.getTransitionsAbleToFire() )
-			if( DomainEntail.getInstance().entailsCondition(state, assumptions, net.getTransitionLabel(t)) ){
-				net.fire(t);
-			}
+			if( DomainEntail.getInstance().entailsCondition(state, assumptions, net.getTransitionLabel(t)) )
+				net.fire(t); 
+		tokens = net.getTokens();
+		net.removeTokens(tokens);
 		
-		
-		
-		
+		enode.setTokens(tokens);
 		return enode;
 	}
 	
