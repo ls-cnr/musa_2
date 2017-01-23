@@ -8,14 +8,14 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import layer.awareness.*;
-import layer.awareness.goaltree.*;
+import layer.awareness.goalmodel.GoalModel;
+import layer.awareness.net.Net;
 import petrinet.logic.*;
 
 import java.util.ArrayList;
 
 public class NetTest {
 
-	private GoalTree tree;
 	private GoalModel model;
 	private Net net;
 	
@@ -23,15 +23,13 @@ public class NetTest {
 	
 	@Before
 	public void init() {
-		tree = new GoalTree(new Goal("root", null, null));
-		model = new GoalModel(tree);
-		net = new Net(model);
+		model = new GoalModel(new Goal("root", null, null));
 	}
 	
 	@Ignore
 	@Test
 	public void testBasicTemplate() {
-		net.construct();
+		net = new Net(model);
 		for( Arc a : net.getPetrinet().getArcs() ){
 			if( a.getDirection() == 1 ) 
 					System.out.print( "|" + a.getPlace().getName()  + "| -----" + a.getName() + "-----> ");
@@ -43,14 +41,11 @@ public class NetTest {
 	
 	@Test
 	public void testParallelTemplate() {
-		try{
-			ArrayList<Goal> gs = new ArrayList<>();
-			gs.add(new Goal("secondo", null, null));
-			gs.add(new Goal("terzo", null, null));
-			tree.addAndArcs(new Goal("root", null, null), gs);
-			net.construct();
-		}
-		catch( NodeNotFoundException ex){ System.out.println("Errore"); }
+		ArrayList<Goal> gs = new ArrayList<>();
+		gs.add(new Goal("secondo", null, null));
+		gs.add(new Goal("terzo", null, null));
+		model.addAndArcs(new Goal("root", null, null), gs);
+		net = new Net(model);
 	}
 	
 }

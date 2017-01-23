@@ -1,4 +1,4 @@
-package layer.awareness.goaltree;
+package layer.awareness.goalmodel;
 
 
 import java.util.ArrayList;
@@ -57,45 +57,30 @@ public class GoalTree {
 	}
 	
 	/**
-	 * Method called to add AndArcs to a certain node.
+	 * Method called to add AndArcs or OrArcs to a certain node (based on a boolean).
 	 *
 	 * @param node the key
 	 * @param outputs the value, is an array list that contains all the goal linked to node
 	 * @throws NodeNotFoundException thrown if the key node has no match in the HashMap
 	 */
-	public void addAndArcs( Goal node, ArrayList<Goal> outputs ) throws NodeNotFoundException {
+	void addRefinementArcs( Goal node, ArrayList<Goal> outputs, boolean and ) throws NodeNotFoundException {
 		if( tree.containsKey(node) ){
-			ArrayList<RefinementArc> arcs = new ArrayList<>();	
-			for( Goal goal : outputs ){
-				if( !tree.containsKey(goal) ){
-					arcs.add(new AndArc(goal));
-					putNode(goal);	
+			ArrayList<RefinementArc> arcs = new ArrayList<>();
+			
+			if(and)										//AndCase
+				for( Goal goal : outputs ){
+					if( !tree.containsKey(goal) ){
+						arcs.add(new AndArc(goal));
+						putNode(goal);	
+					}
 				}
-			}
-			if( !arcs.isEmpty() )
-				addArcs(node, arcs);
-		}
-		else{
-			throw new NodeNotFoundException();
-		}
-	}
-	
-	/**
-	 * Method called to add OrArcs to a certain node.
-	 *
-	 * @param node the key
-	 * @param outputs the value, is an array list that contains all the goal linked to node
-	 * @throws NodeNotFoundException thrown if the key node has no match in the HashMap
-	 */
-	public void addOrArcs( Goal node, ArrayList<Goal> outputs ) throws NodeNotFoundException {
-		if( tree.containsKey(node) ){
-			ArrayList<RefinementArc> arcs = new ArrayList<>();	
-			for( Goal goal : outputs ){
-				if( !tree.containsKey(goal) ){
-					arcs.add(new OrArc(goal));
-					putNode(goal);	
+			else										//OrCase
+				for( Goal goal : outputs ){
+					if( !tree.containsKey(goal) ){
+						arcs.add(new OrArc(goal));
+						putNode(goal);	
+					}
 				}
-			}
 			if( !arcs.isEmpty() )
 				addArcs(node, arcs);
 		}
@@ -109,7 +94,7 @@ public class GoalTree {
 	 *
 	 * @return the root
 	 */
-	public Goal getRoot() {
+	Goal getRoot() {
 		return root;
 	}
 	
@@ -119,7 +104,7 @@ public class GoalTree {
 	 * @param goal the key for getting arcs
 	 * @return goal's arcs
 	 */
-	public ArrayList<RefinementArc> getArcs( Goal goal ) {
+	ArrayList<RefinementArc> getArcs( Goal goal ) {
 		return tree.get(goal);
 	}
 	
@@ -128,7 +113,7 @@ public class GoalTree {
 	 *
 	 * @return the tree
 	 */
-	public HashMap<Goal, ArrayList<RefinementArc>> getTree(){
+	HashMap<Goal, ArrayList<RefinementArc>> getTree(){
 		return tree;
 	}
 	
@@ -137,7 +122,7 @@ public class GoalTree {
 	 *
 	 * @return the goals
 	 */
-	public HashMap<Goal, Goal> getGoals(){
+	HashMap<Goal, Goal> getGoals(){
 		return goals;
 	}
 	

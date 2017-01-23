@@ -10,7 +10,7 @@ extends PetrinetObject {
     public static final int UNLIMITED = -1;
     
     private int tokens = 0;
-    private int maxTokens = UNLIMITED;    
+    private int maxTokens = 1;    
 
 	private List<Arc> incoming = new ArrayList<Arc>(); 	//added
 	private List<Arc> outgoing = new ArrayList<Arc>();	//added

@@ -1,4 +1,4 @@
-package layer.awareness.goaltree;
+package layer.awareness.goalmodel;
 
 public class NodeNotFoundException extends Exception {
 
