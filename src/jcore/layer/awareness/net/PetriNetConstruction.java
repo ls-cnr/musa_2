@@ -1,16 +1,17 @@
-package layer.awareness;
+package layer.awareness.net;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import layer.awareness.goaltree.*;
+import layer.awareness.Goal;
+import layer.awareness.goalmodel.*;
 import layer.semantic.Condition;
 import petrinet.logic.*;
 
 /**
  * Used to construct a PetriNet from a GoalModel.
  */
-public class Net {
+public class PetriNetConstruction {
 	
 	/** The GoalModel used to construct the Net. */
 	private GoalModel model;
@@ -31,7 +32,7 @@ public class Net {
 	 *
 	 * @param m the GoalModel
 	 */
-	public Net( GoalModel m ) {
+	PetriNetConstruction( GoalModel m ) {
 		pn = new Petrinet("petrinet");
 		model = m;
 		labels = new HashMap<>();
@@ -45,16 +46,29 @@ public class Net {
 	 *
 	 * @return the first Place
 	 */
-	public Place getFirstPlace() {
+	Place getFirstPlace() {
 		return pn.getPlaces().get(0);
 	}
 	
 	/**
-	 * tarts the construction
+	 * Gets the petrinet.
+	 *
+	 * @return the petrinet
+	 */
+	Petrinet getPetrinet() {
+		return pn;
+	}
+	
+	HashMap<Transition, Condition> getLabels() {
+		return labels;
+	}
+	
+	/**
+	 * Starts the construction
 	 *
 	 * @return last Place created
 	 */
-	public Place construct(){
+	Place construct(){
 		return netConstruction(getFirstPlace(), null, model.getRoot());
 	}
 	
@@ -191,15 +205,6 @@ public class Net {
 		else
 			return pn.arc("arc"+a++, t2, last).getPlace();
 		
-	}
-	
-	/**
-	 * Gets the petrinet.
-	 *
-	 * @return the petrinet
-	 */
-	public Petrinet getPetrinet() {
-		return pn;
 	}
 	
 	/**

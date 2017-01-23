@@ -1,4 +1,4 @@
-package layer.awareness.goaltree;
+package layer.awareness.goalmodel;
 
 import layer.awareness.Goal;
 

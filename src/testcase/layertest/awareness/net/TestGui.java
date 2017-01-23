@@ -1,30 +1,28 @@
 package layertest.awareness.net;
 
 import layer.awareness.*;
-import layer.awareness.goaltree.*;
+import layer.awareness.goalmodel.GoalModel;
+import layer.awareness.net.Net;
 import petrinet.gui.*;
 
 import java.util.ArrayList;
 
 public class TestGui {
 
-	public static void main(String[] args) throws NodeNotFoundException {
-		GoalTree tree = new GoalTree(new Goal("root", null, null));
-		GoalModel model = new GoalModel(tree);
-		Net net = new Net(model);
-		
+	public static void main(String[] args) {
+		GoalModel model = new GoalModel(new Goal("root", null, null));		
 		ArrayList<Goal> gs = new ArrayList<>();
 		
 		/*Test And
 		gs.add(new Goal("secondo"));
 		gs.add(new Goal("terzo"));
-		tree.addAndArcs(new Goal("root"), gs);
+		model.addAndArcs(new Goal("root"), gs);
 		*/
 		
 		/*Test Or
 		gs.add(new Goal("secondo"));
 		gs.add(new Goal("terzo"));
-		tree.addOrArcs(new Goal("root"), gs);
+		model.addOrArcs(new Goal("root"), gs);
 		*/
 		
 		/*Test T*/
@@ -34,12 +32,13 @@ public class TestGui {
 		gsor.add(new Goal("quarto", null, null));
 		gsor.add(new Goal("quinto", null, null));
 		
-		tree.addAndArcs(new Goal("root", null, null), gs);
-		tree.addOrArcs(new Goal("terzo", null, null), gsor);
+		model.addAndArcs(new Goal("root", null, null), gs);
+		model.addOrArcs(new Goal("terzo", null, null), gsor);
 		
 		
-		net.construct();
-		net.getFirstPlace().addTokens(1);
+
+		Net net = new Net(model);
+		net.getPetrinet().getPlaces().get(0).addTokens(1);
 		PetrinetGUI.displayPetrinet(net.getPetrinet());
 	}
 	

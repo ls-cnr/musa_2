@@ -1,7 +1,10 @@
 package petrinet.logic;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+
+import cartago.new_array;
 
 /**
  * Ein Petrinetz kennt alle Elemente.
@@ -27,6 +30,9 @@ extends PetrinetObject {
     List<Transition> transitions    = new ArrayList<Transition>();
     List<Arc> arcs                  = new ArrayList<Arc>();
     List<InhibitorArc> inhibitors   = new ArrayList<InhibitorArc>();
+    
+    HashMap<String,Integer> placesPosition = new HashMap<>();
+    Integer position = 0;
     
     public Petrinet(String name) {
         super(name);
@@ -63,12 +69,14 @@ extends PetrinetObject {
     public Place place(String name) {
         Place p = new Place(name);
         places.add(p);
+        placesPosition.put(name, position++);
         return p;
     }
     
     public Place place(String name, int initial) {
         Place p = new Place(name, initial);
         places.add(p);
+        placesPosition.put(name, position++);
         return p;
     }
     
@@ -103,6 +111,10 @@ extends PetrinetObject {
             sb.append(p).append(nl);
         }
         return sb.toString();
+    }
+    
+    public Place getPlace( String name ) {
+    	return places.get(placesPosition.get(name));
     }
 
     public List<Place> getPlaces() {

@@ -4,19 +4,19 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
-import layer.awareness.*;
-import layer.awareness.goaltree.*;
+import layer.awareness.Goal;
+import layer.awareness.goalmodel.GoalModel;
 
 import java.util.ArrayList;
 
-public class GoalTreeTest {
+public class GoalModelTest {
 	
-	private GoalTree model;
+	private GoalModel model;
 
 	@Before	//Initializing the test
 	public void init() {
 		Goal g = new Goal("root", null, null);
-		model = new GoalTree(g);
+		model = new GoalModel(g);
 	}
 	
 	@Test //Testing root presence
@@ -30,10 +30,7 @@ public class GoalTreeTest {
 	public void testSameRoot() {
 		ArrayList<Goal> a = new ArrayList<>();
 		a.add(new Goal("root", null, null));	//New goal but already present in the model (Same name)
-		try{
-			model.addOrArcs(model.getRoot(), a);
-		}
-		catch( NodeNotFoundException ex ){}
+		model.addOrArcs(model.getRoot(), a);
 		assertNull( model.getArcs(model.getRoot()));
 	}
 	
@@ -42,10 +39,7 @@ public class GoalTreeTest {
 		ArrayList<Goal> a = new ArrayList<>();
 		Goal g = new Goal("second", null, null);
 		a.add(g);
-		try{
-			model.addOrArcs(model.getRoot(), a);
-		}
-		catch( NodeNotFoundException ex ){}
+		model.addOrArcs(model.getRoot(), a);
 		assertEquals( model.getArcs(model.getRoot()).get(0).getNextNode(), g);
 	}
 	
@@ -56,10 +50,7 @@ public class GoalTreeTest {
 		Goal h = new Goal("second", null, null);	// equal
 		a.add(g);
 		a.add(h);
-		try{
-			model.addOrArcs(model.getRoot(), a);
-		}
-		catch( NodeNotFoundException ex ){}
+		model.addOrArcs(model.getRoot(), a);
 		assertEquals( model.getArcs(model.getRoot()).size(), 1);
 	}
 
