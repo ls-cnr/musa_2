@@ -14,218 +14,120 @@ import pmr.graph.Edge;
 import pmr.graph.EvolutionEdge;
 import pmr.graph.Node;
 import pmr.graph.NormalEdge;
+import pmr.graph.OPEdge;
 import pmr.graph.OPNode;
 import pmr.graph.WorldNode;
 import pmr.graph.XORNode;
+import pmr.probexp.ENode;
+import pmr.probexp.ExpantionNode;
+import pmr.probexp.MultipleExpantionNode;
+import pmr.probexp.NormalExpantionNode;
 
 //Il solution graph, implementato come una mappa nodo-arco
 public class WTS {
 	
-	private HashMap<Node, Node> graph;
-	
-/*	/*implementazione secondo Ruggero Creo una funzione di Hash per i Facts, implemento una mappa <Integer, lista di nodi>
-	 dove Integer è l'hashcode del predicato, e la lista degli stati del mondo contiene gli stati che a loro volta contegono il predicato.
-	 Inoltre ho un'altra mappa <Integer, lista di nodi> dove integer, questa volta corrispondente al numero di predicati contenuti,
-	 è associato a quali stati del mondo corrispondono.
-	 
-	private HashMap<Integer, ArrayList<Node>> listPredicates; //Questo Integer è l'hashcode del predicato
-	private HashMap<Integer, ArrayList<Node>> NPredicates;		//Questo Integer è un semplice int
-	
-	public void addNode(Node node){
-		if(addFactsOnList(node) == true){	//Se ho aggiunto almeno un fatto, il nodo è nuovo. Altrimenti eseguo altre verifiche
-			this.graph.put(node, new ArrayList<Edge>()); //IndexOutOfBoundRange.
-			this.UpdateNpredicates(node);
-			//NPredicates.put(node.getNFacts(), new ArrayList(Node)); //il primo è l'indice il secondo la lista dei nodi con 1 nodo.
-			Iterator itr = node.getFacts.iterator();
-			while(itr.hasNext()){
-				Integer tempHashCode = new Integer(itr.next().getHash());	//prende l'intero relativo all'hash del primo fatto
-				if(listPredicates.containsKey(tempHashCode)){
-					ArrayList<Node> tempNodeListEdit = listPredicates.get(tempHashCode);
-					tempNodeListEdit.add(node);
-					listPredicates.replace(tempHashCode, tempNodeListEdit); 
-				}
-			}
-		}
-		//aggiorno la list predicates con tutti i nuovi predicati del nodo di sopra.
-		else for(i=0; i<node.getNFacts(); i++){
-				if(HashAssociato a tutti i predicati non è contenuto in listPredicates ferma e aggiorna tutto.
-		else	stato del mondo presente, aggiorna gli archi del grafo.
-			}
-	}
-	
-		//Controllo se il singolo fatto è già stato inserito nella mappa
-	private boolean isFactOnMap(DLPHead fact){
-		if(this.listPredicates.containsKey(fact.hashCode()) == true){
-			return true;
-		}
-		else{
-			return false;
-		}
-	}
-	/*addFactsOnList, aggiunge una nuova key alla mappa dei predicati se il predicato non è già contenuto, restituendo true
-	 * se il predicato era già presente in mappa allora aggiunge alla lista dei nodi che lo contengono il nuovo nodo, restituendo false
-	public boolean addFactsOnList(Node node){
-		int flag = 0;
-		ArrayList<Node> nodelist = new ArrayList<Node>();
-		nodelist.add(node);
-		for(DLPHead fact : node.getFactsList()){
-			if(this.isFactOnMap(fact)){
-				this.listPredicates.put(new Integer(fact.hashCode()), nodelist);
-				flag = 1;
-			}
-			else{
-				ArrayList<Node> temp = this.listPredicates.get(fact.hashCode());
-				temp.add(node);
-				this.listPredicates.replace(fact.hashCode(), temp);
-			}
-		}
-		if(flag == 1)
-			return true;
-		else
-			return false;
-	}
-	
-	/*Controllo se la cella corrispondente al numero di fatti del nodo esiste, aggiungendo il nodo alla lista ad essa associata.
-	 * Se la cella è vuota la creo.
-	 
-	public void UpdateNpredicates(Node node){
-		if(this.NPredicates.containsKey(node.getNFacts())){
-			ArrayList<Node> temp = this.NPredicates.get(node.getNFacts());
-			temp.add(node);
-			this.NPredicates.replace(node.getNFacts(), temp);
-		}
-		else{
-			ArrayList<Node> temp = new ArrayList<Node>();
-			temp.add(node);
-			this.NPredicates.put(node.getNFacts(), temp);
-		}
-	}*/
+	private HashMap<WorldNode, WorldNode> graph;
 
 	public WTS(){ 
-		this.graph = new HashMap<Node, Node> ();
-		Node tempnode = new WorldNode(null);
-		ArrayList<Edge> templist = new ArrayList<Edge>();
+		this.graph = new HashMap<WorldNode, WorldNode> ();
+		WorldNode tempnode = new WorldNode(null);
+		ArrayList<NormalEdge> templist = new ArrayList<NormalEdge>();
 		tempnode.setOutcomingEdgeList(templist);
 		this.graph.put(tempnode, tempnode);
 	}
 	
+	
 	//Aggiungi nodo alla mappa, restituisce true se lo aggiunge, false se lo trova e non lo aggiunge
-	public boolean addNode(Node newnode){
-		if(newnode instanceof XORNode){
-			if(this.graph.containsKey(newnode) == false){
-				this.graph.put((XORNode)newnode, (XORNode) newnode);
-				return true;
-			}
-			else
-				return false;
-		}
-		else if(newnode instanceof WorldNode){
-				if(this.graph.containsKey(newnode) == false){
-					this.graph.put((WorldNode)newnode, (WorldNode)newnode);
-					return true;
-				}
-				else
-					return false;
-		}
+	public void addNode(ExpantionNode newnode){	
+		if(newnode instanceof NormalExpantionNode){
+			//Aggiorno il nodo presente sia nel grafo che nel newnode, aggiungo al grafo il nodo destinazione presente in newnode 
+			//aggiungendo un arco in entrata dal nodo source e aggiorno gli archi in uscita dal nodo source aggiungendo
+			//quello diretto verso il nodo destination.
+			NormalExpantionNode tempnode = (NormalExpantionNode) newnode;
+			this.addSafeNode(tempnode.getDestination().get(0).getWorldNode());
+			WorldNode destination2 = this.graph.get(tempnode.getDestination().get(0).getWorldNode());
+			
+			//Metodo che aggiunge l'arco in entrata ed in uscita
+			this.addEdge(tempnode.getSource().getWorldNode(), destination2, tempnode.getCapability());			}
 		else{
-			return false;
+			//Aggiorno il nodo presente nel grafo, aggiungendogli un OPNode all'interno
+			MultipleExpantionNode exptempnode = (MultipleExpantionNode) newnode;
+			WorldNode source2 = this.graph.get(exptempnode.getSource().getWorldNode());
+			
+			//Creo un OPNode E setto l'arco entrante
+			OPNode faketempnode = new XORNode(exptempnode.getCapability());
+			faketempnode.setIncomingEdge(new OPEdge(source2, faketempnode, exptempnode.getCapability()));
+			
+			//Se il nodo contiene già quell'OPNode non compio nessuna operazione altrimenti lo aggiungo
+			if(source2.getOPNodeList().contains(faketempnode))	return;
+			
+			//Per ogni Enodo destinazione, aggiungo al grafo il WorldNode contenuto
+			for(ENode etemp : newnode.getDestination()){
+				WorldNode wnode = etemp.getWorldNode();
+				this.addSafeNode(wnode);
+				//Aggiorno la lista degli archi uscenti da faketempnode, aggiungendo un arco per ogni ENode destination
+				faketempnode.addOutcomingEdge(new EvolutionEdge(faketempnode, wnode, exptempnode.getScenario(etemp)));
+			}
+			//Aggiungo l'OPNode al WorldNode source nel grafo
+			source2.addOPNode(faketempnode);
 		}
 	}
 	
-	//Aggiunge un arco ad un nodo sorgente, modificando la lista degli archi uscenti del nodo stesso e la lista degli archi entranti del nodo destinazione
+	//Aggiunta semplice al grafo tramite WorldNode
+	public boolean addSafeNode(WorldNode source){
+		if(this.graph.containsKey(source) == false){
+			this.graph.put(source, source);
+			return true;
+		}
+		else
+			return false;
+	}
+	
+	//Aggiunge un arco ad un Worldnodo sorgente, modificando la lista degli archi uscenti del nodo stesso e la lista degli archi entranti del nodo destinazione
 	//arco di tipo NormalEdge
-	public boolean addEdge(Node sourcenode, Node destnode, AbstractCapability capability){
-		if(sourcenode instanceof WorldNode){
-			//Se i nodi sono presenti nel grafo
-			if(this.graph.containsKey(sourcenode) == true && this.graph.containsKey(destnode) == true){
-				//prendo i riferimenti a quei nodi
-				Node tempnodesource = this.graph.get(sourcenode);
-				Node tempnodedest = this.graph.get(destnode);
-				
-				//se aggiungendo l'arco, mi accorgo che è già presente nella lista, fermo tutto e ritorno falso
-				if(tempnodesource.addOutcomingEdge(new NormalEdge(tempnodesource, tempnodedest, capability)) == false)
-					return false;
-				//Mi occupo di incominglist aggiornandolo
-				if(tempnodedest.addIncomingEdge(new NormalEdge(tempnodesource, tempnodedest, capability)) == false)
-					return false;
-				
-				//Rimpiazzo i due nodi con i loro nuovi valori
-				this.graph.put(this.graph.get(sourcenode), tempnodesource);
-				this.graph.put(this.graph.get(destnode), tempnodedest);
-				return true;
-			}
-			else return false;
-		}
-		else{
-			//errore
-			return false;
-		}
+	public void addEdge(WorldNode sourcenode, WorldNode destnode, AbstractCapability capability){
+			sourcenode.addOutcomingEdge(new NormalEdge(sourcenode, destnode, capability));
+			destnode.addIncomingEdge(new NormalEdge(sourcenode, destnode, capability));
 	}
 	
-	//Aggiunge un arco ad un nodo sorgente, modificando la lista degli archi uscenti del nodo stesso e la lista degli archi entranti del nodo destinazione
-	//arco di tipo EvolutionEdge
-	public boolean addEdge(Node sourcenode, Node destnode, AbstractCapability capability, EvolutionScenario scenario){
-		if(sourcenode instanceof OPNode){
-			//Se i nodi sono presenti nel grafo
-			if(this.graph.containsKey(sourcenode) == true && this.graph.containsKey(destnode) == true){
-				//se aggiungendo l'arco, mi accorgo che è già presente nella lista, fermo tutto e ritorno falso
-				if(sourcenode.addOutcomingEdge(new EvolutionEdge(sourcenode, destnode, capability, scenario)) == false)
-					return false;
-				this.graph.replace(sourcenode, sourcenode);
-				//Mi occupo di incominglist aggiornandolo
-				destnode.addIncomingEdge(new EvolutionEdge(sourcenode, destnode, capability, scenario));
-				this.graph.replace(destnode, destnode);
-				return true;
-			}
-			else return false;
-		}
-		else{
-			//errore
-			return false;
-		}
-	}
 	
-	public HashMap<Node, Node> getWTS(){
+	public HashMap<WorldNode, WorldNode> getWTS(){
 		return this.graph;
 	}
 	
 	//Rimuove un nodo dal grafo
-	public void removeNode(Node node){
+	public void removeNode(WorldNode node){
 		this.graph.remove(node);
 	}
 	
-	//Rimuove un arco da un nodo del grafo, modifica lista in uscita del nodo sorgente e lista in entrata del nodo destinazione
-	public void removeEdge(Node sourcenode, Node destnode){
+	//Rimuove un arco da un Worldnodo del grafo, modifica lista in uscita del nodo sorgente e lista in entrata del nodo destinazione
+	public void removeEdge(WorldNode sourcenode, WorldNode destnode){
 		if(this.graph.containsKey(sourcenode) == true && this.graph.containsKey(destnode) == true){
-			this.graph.get(sourcenode).removeOutcomingEdge(new NormalEdge(sourcenode, destnode, null));
-			this.graph.replace(sourcenode, sourcenode);
-			
-			this.graph.get(destnode).removeIncomingEdge(new NormalEdge(sourcenode, destnode, null));
-			this.graph.replace(destnode, destnode);
+				WorldNode tempnode = (WorldNode) destnode;
+				this.graph.get(sourcenode).removeOutcomingEdge(new NormalEdge(sourcenode, tempnode, null));
+				this.graph.get(tempnode).removeIncomingEdge(new NormalEdge(sourcenode, tempnode, null));
 		}
 	}
+	
+	//Rimuove un arco da un WorldNode del grafo verso un OPNode, rimuovendo l'OPNode dalla lista nel WorldNode, restituisce l'OPNode
+	public OPNode removeEdge(WorldNode sourcenode, OPNode destnode){
+		if(this.graph.containsKey(sourcenode) == true && this.graph.containsKey(destnode) == true){
+				return this.graph.get(sourcenode).removeOPNode(destnode);
+		}
+		return null;
+	}
 		
-	public ArrayList<Node> WTSVisit(Node start){
-		HashMap <Node,Integer> checkedNode = new HashMap <Node, Integer>();
-		ArrayList<Node> pathNode = new ArrayList <Node>();
+	public ArrayList<WorldNode> WTSVisit(WorldNode start){
+		HashMap <WorldNode,Integer> checkedNode = new HashMap <WorldNode, Integer>();
+		ArrayList<WorldNode> pathNode = new ArrayList <WorldNode>();
 		
 		if(start == null)
 			return null;
 		
-		for(Edge edge : this.graph.get(start).getOutcomingEdgeList()){
-			if(edge instanceof NormalEdge){
-				NormalEdge temp = (NormalEdge) edge;
-				if(checkedNode.containsKey(temp.getDestination()) == false){
-					pathNode.add((WorldNode)temp.getDestination());
-					pathNode.addAll(WTSVisit(temp.getDestination()));
-				}
-			}
-			else{
-				EvolutionEdge temp = (EvolutionEdge) edge;
-				if(checkedNode.containsKey(temp.getDestination()) == false){
-					pathNode.add((XORNode)temp.getDestination());
-					pathNode.addAll(WTSVisit(temp.getDestination()));
-				}
+		for(NormalEdge edge : this.graph.get(start).getOutcomingEdgeList()){
+			if(checkedNode.containsKey(edge.getDestination()) == false){
+				pathNode.add((WorldNode)edge.getDestination());
+				pathNode.addAll(WTSVisit(edge.getDestination()));
 			}
 		}
 		return pathNode;

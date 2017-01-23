@@ -1,47 +1,47 @@
 package pmr.graph;
 
-import java.util.ArrayList;
-
 import layer.awareness.AbstractCapability;
 import layer.semantic.evolution.EvolutionScenario;
 
-public class EvolutionEdge implements Edge {
+public class OPEdge {
+		
+	private WorldNode source;
+	private OPNode destination;
+	private AbstractCapability capability; 
 	
-	private OPNode source;
-	private WorldNode destination;
-	private EvolutionScenario scenario; 
-	
-	public EvolutionEdge(OPNode source, WorldNode destination, EvolutionScenario scenario){
+	public OPEdge(WorldNode source, OPNode destination, AbstractCapability capability){
 		super();
 		this.source = source;
 		this.destination = destination;
-		this.scenario = scenario;
+		this.capability = capability;
 	}
 	
-	public EvolutionScenario getScenario(){
-		return this.scenario;
+	public AbstractCapability getCapability(){
+		return this.capability;
 	}
 	
-	public OPNode getSource(){
+	public WorldNode getSource(){
 		return this.source;
 	}
 
-	public WorldNode getDestination() {
+	public OPNode getDestination() {
 		return this.destination;
 	}
 	
-	public void setSource(OPNode source){
+	public void setSource(WorldNode source){
 		this.source = source;
 	}
 
-	public void setDestination(WorldNode destination) {
+	public void setDestination(OPNode destination) {
 		this.destination = destination;
 	}
 	
-	public void setScenario(EvolutionScenario scenario) {
-		this.scenario = scenario;
+	public void setScenario(AbstractCapability capability) {
+		this.capability = capability;
 	}
 	
+	//L'OPNode è unico, ogni WorldNode ha i suoi OPNode, ma non può esistere un OPNode con lo stesso source e lo stesso desintation all'interno
+	//Di un WorldNode
 	
 	@Override
 	public boolean equals(Object obj){
