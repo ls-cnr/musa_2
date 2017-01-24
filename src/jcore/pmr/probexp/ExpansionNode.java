@@ -6,13 +6,13 @@ import layer.awareness.AbstractCapability;
 import pmr.graph.Node;
 import pmr.graph.WorldNode;
 
-public abstract class ExpantionNode implements Node{
+public abstract class ExpansionNode implements Node{
 	
 	private AbstractCapability capability;
 	private ArrayList<ENode> destination;
 	private ENode source;
 	
-	public ExpantionNode(ENode source, ArrayList<ENode> destination, AbstractCapability capability){
+	public ExpansionNode(ENode source, ArrayList<ENode> destination, AbstractCapability capability){
 		this.capability = capability;
 		this.source = source;
 		this.destination = destination;

@@ -7,12 +7,12 @@ import layer.awareness.AbstractCapability;
 import layer.semantic.evolution.EvolutionScenario;
 import pmr.graph.WorldNode;
 
-public class MultipleExpantionNode extends ExpantionNode{
+public class MultipleExpansionNode extends ExpansionNode{
 
 	private double score;
 	private HashMap<ENode, EvolutionScenario> scenarioList;
 	
-	public MultipleExpantionNode(ENode source, ArrayList<ENode> destination, AbstractCapability capability){
+	public MultipleExpansionNode(ENode source, ArrayList<ENode> destination, AbstractCapability capability){
 		super(source, destination, capability);
 		//if(destination != null)	this.findScore();
 	}

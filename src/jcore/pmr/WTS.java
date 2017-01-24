@@ -19,9 +19,9 @@ import pmr.graph.OPNode;
 import pmr.graph.WorldNode;
 import pmr.graph.XORNode;
 import pmr.probexp.ENode;
-import pmr.probexp.ExpantionNode;
-import pmr.probexp.MultipleExpantionNode;
-import pmr.probexp.NormalExpantionNode;
+import pmr.probexp.ExpansionNode;
+import pmr.probexp.MultipleExpansionNode;
+import pmr.probexp.NormalExpansionNode;
 
 //Il solution graph, implementato come una mappa nodo-arco
 public class WTS {
@@ -38,12 +38,12 @@ public class WTS {
 	
 	
 	//Aggiungi nodo alla mappa, restituisce true se lo aggiunge, false se lo trova e non lo aggiunge
-	public void addNode(ExpantionNode newnode){	
-		if(newnode instanceof NormalExpantionNode){
+	public void addNode(ExpansionNode newnode){	
+		if(newnode instanceof NormalExpansionNode){
 			//Aggiorno il nodo presente sia nel grafo che nel newnode, aggiungo al grafo il nodo destinazione presente in newnode 
 			//aggiungendo un arco in entrata dal nodo source e aggiorno gli archi in uscita dal nodo source aggiungendo
 			//quello diretto verso il nodo destination.
-			NormalExpantionNode tempnode = (NormalExpantionNode) newnode;
+			NormalExpansionNode tempnode = (NormalExpansionNode) newnode;
 			this.addSafeNode(tempnode.getDestination().get(0).getWorldNode());
 			WorldNode destination2 = this.graph.get(tempnode.getDestination().get(0).getWorldNode());
 			
@@ -51,7 +51,7 @@ public class WTS {
 			this.addEdge(tempnode.getSource().getWorldNode(), destination2, tempnode.getCapability());			}
 		else{
 			//Aggiorno il nodo presente nel grafo, aggiungendogli un OPNode all'interno
-			MultipleExpantionNode exptempnode = (MultipleExpantionNode) newnode;
+			MultipleExpansionNode exptempnode = (MultipleExpansionNode) newnode;
 			WorldNode source2 = this.graph.get(exptempnode.getSource().getWorldNode());
 			
 			//Creo un OPNode E setto l'arco entrante
