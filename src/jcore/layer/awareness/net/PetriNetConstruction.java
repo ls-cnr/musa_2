@@ -42,19 +42,6 @@ public class PetriNetConstruction {
 	}
 	
 	/**
-	 * Get first Place in the net.
-	 *
-	 * @return the first Place
-	 */
-	Place getFirstPlace() {
-		return pn.getPlaces().get(0);
-	}
-	
-	Place getLastPlace() {
-		return pn.getPlaces().get(pn.getPlaces().size() - 1);
-	}
-	
-	/**
 	 * Gets the petrinet.
 	 *
 	 * @return the petrinet
@@ -68,12 +55,12 @@ public class PetriNetConstruction {
 	}
 	
 	/**
-	 * Starts the construction
+	 * Starts the construction using the place in position 0 and the goal model root.
 	 *
 	 * @return last Place created
 	 */
 	Place construct(){
-		return netConstruction(getFirstPlace(), null, model.getRoot());
+		return netConstruction(pn.getPlaces().get(0), null, model.getRoot());
 	}
 	
 	/**

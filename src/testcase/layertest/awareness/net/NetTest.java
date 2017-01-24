@@ -26,19 +26,6 @@ public class NetTest {
 		model = new GoalModel(new Goal("root", null, null));
 	}
 	
-	@Ignore
-	@Test
-	public void testBasicTemplate() {
-		net = new Net(model);
-		for( Arc a : net.getPetrinet().getArcs() ){
-			if( a.getDirection() == 1 ) 
-					System.out.print( "|" + a.getPlace().getName()  + "| -----" + a.getName() + "-----> ");
-			if( a.getDirection() == 0 ) 
-				System.out.print( "|" + a.getTransition().getName()  + "| -----" + a.getName() + "-----> ");
-		}
-		System.out.println("|" + net.getPetrinet().getPlaces().get(net.getPetrinet().getPlaces().size() - 1).getName() + "|");
-	}
-	
 	@Test
 	public void testParallelTemplate() {
 		ArrayList<Goal> gs = new ArrayList<>();

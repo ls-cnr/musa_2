@@ -11,6 +11,7 @@ public abstract class ExpansionNode implements Node{
 	private AbstractCapability capability;
 	private ArrayList<ENode> destination;
 	private ENode source;
+	private int score;
 	
 	public ExpansionNode(ENode source, ArrayList<ENode> destination, AbstractCapability capability){
 		this.capability = capability;
@@ -44,6 +45,14 @@ public abstract class ExpansionNode implements Node{
 	
 	public void setSource(ENode source) {
 		this.source = source;
+	}
+	
+	public int getScore(){
+		return this.score;
+	}
+	
+	public void setScore(int score) {
+		this.score = score;
 	}
 
 

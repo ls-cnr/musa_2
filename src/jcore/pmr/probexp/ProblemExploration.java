@@ -26,46 +26,151 @@ public class ProblemExploration {
 		toVisit = new ArrayList<>();
 		net = new Net(model);
 	}
+
+	public void addToVisit( WorldNode node, ArrayList<String> tokens, int score ) {
+		toVisit.add( new ENode(node, tokens, score, false) );
+	}
 		
 	/*
 	START
-	N <- highestNodeToVisit        (remove)
+	eN <- highestNodeToVisit        (remove)
 	for each C in Capability
-	       if N.StateOfW |= c.precondition == true then 
-	             eNode <- apply_expand(C, N)
-	             eNode2 <- apply_pn(eNode)
-	             score(eNode2)
-	             ExpandList <- Node2
-	Visited <- N
+	       if eN.StateOfW |= c.precondition == true then 
+	             expansionNode <- apply_expand(C, eN)
+	             apply_pn(expansionNode)
+	             score(expansionNode)
+	             ExpandList <- expansionNode
+	Visited <- eN
 	END
 	*/	
 	
-	public void addToVisit( WorldNode node, ArrayList<String> tokens, double score ) {
-		toVisit.add( new ENode(node, tokens, score) );
+	public void expandNode() {
+		ENode enode = getHighestNodeToVisit();
+		for( AbstractCapability capability : capabilities ){
+			if( true /*enode.getWorldNode().getWorldState() != capability.precondition*/){
+				ExpansionNode expNode;
+				
+				expNode = applyExpand(enode, capability);
+				
+				for( ENode destination : expNode.getDestination() )
+					applyNet(expNode.getSource().getTokens(), destination);
+				
+				score(expNode);
+				
+				expandedList.add(expNode);
+			}
+			visited.add(enode);
+		}
+	}
+	
+	public ENode getHighestNodeToVisit(){
+		return toVisit.remove(0);
+	}
+	
+	private ExpansionNode applyExpand( ENode enode, AbstractCapability capability) {
+		/*TODO*/
+		return new NormalExpansionNode(enode, new ArrayList<ENode>(), capability);
 	}
 	
 	/**
 	 * After the expansion a new ENode has been created, but it's empty. 
-	 * This method fill up the remaining attributes using the Net.
+	 * This method fills up the remaining attributes using the Net.
+	 * 
+	 * For every transition able to fire, it checks if the new state of world entails the condition labeled in 
+	 *  the transition (trigger condition or final state).
+	 * Then if the condition is true, it fires the token and elaborate the new token map.
+	 * Finally it calls fillENode to fill up the enode.  
 	 * 
 	 * @param enode the new eNode created from expansion
-	 * @return
+	 * @param startingTokens the list of token to start with
 	 */
-	private ENode applyNet( ENode starter, ENode enode ) {
+	private void applyNet( ArrayList<String> startingTokens, ENode enode ) {
 		StateOfWorld state = enode.getWorldNode().getWorldState();
-		ArrayList<String> tokens = starter.getTokens();
+		ArrayList<String> tokens = new ArrayList<>();
 		
-		net.putTokens(tokens);
+		net.putTokens(startingTokens);	//Prepares the net with tokens
+		
+		//checking and firing
 		for( Transition t : net.getTransitionsAbleToFire() )
-			if( DomainEntail.getInstance().entailsCondition(state, assumptions, net.getTransitionLabel(t)) )
-				net.fire(t); 
-		tokens = net.getTokens();
-		net.removeTokens(tokens);
+			if( DomainEntail.getInstance().entailsCondition(state, assumptions, net.getTransitionLabel(t)) ){
+				t.fire();
+				for(Arc arcOut : t.getOutgoing())		//Adding tokens from the fired transition outgoing places 
+					tokens.add(arcOut.getPlace().getName());
+			}
+			else
+				for(Arc arcIn : t.getIncoming())		//Adding tokens from the transition ingoing places
+					tokens.add(arcIn.getPlace().getName());
 		
-		enode.setTokens(tokens);
-		//exit??
-		return enode;
+		net.removeTokens(tokens); //Cleans the net from tokens
+		
+		fillENode(enode, tokens);//Fills up enode
 	}
 	
+	/**
+	 * This method is used in applyNet to fill up the remaining attributes in enode.
+	 * 
+	 * First part consists in setting the list of tokens.
+	 * 
+	 * Second part consists in calculating the Hops in the net and checking if it's an exit node.
+	 * 
+	 * In third part the SCORE is elaborated using a function that follows a color rule.
+	 * The function sets a promising node at a value near 255 to represent WHITE, 0 for BLACK,  or
+	 * in between to represent GRAY.
+	 *
+	 * @param enode
+	 *            the enode to fill up
+	 * @param tokens
+	 *            the enode's tokens 
+	 */
+	private void fillENode( ENode enode, ArrayList<String> tokens ) {
+		int nHop = 0;
+		
+		enode.setTokens(tokens);
+		//Elaborating Hops and exit condition
+		for( String token : tokens ){
+			Place place = net.getPlace(token);
+			nHop += net.getHop(place);
+			if( place.equals(net.getLast()) ) enode.setExit(true);
+		}
+		//Elaborating score
+		int score = 0;
+		if( enode.isExitNode() ) 
+			score = 255;
+		else 
+			score = (int) 255 - (255 / net.getNumTransitions()) * nHop;
+		enode.setScore(score);
+	}
+	
+	/**
+	 * The score function that elaborates the score for an ExpansionNode.
+	 * If expNode has multiple destinations it sets the score to the minimum 
+	 *  score obtained by its eNode destinations.   
+	 *
+	 * @param expNode
+	 *            the expansionNode that needs a score
+	 */
+	private void score( ExpansionNode expNode ) {
+		int score = 0;
+		for( ENode destination : expNode.getDestination() ){
+			score = max(score, destination.getScore());
+		}
+		expNode.setScore(score);
+	}
+	
+	/**
+	 * A standard method for finding the minimum value between two.
+	 *
+	 * @param a
+	 *            the first value
+	 * @param b
+	 *            the second value
+	 * @return the minimum between the two values
+	 */
+	private int max( int a, int b ){
+		if( a >= b ) 
+			return a;
+		else 
+			return b;
+	}
 	
 }

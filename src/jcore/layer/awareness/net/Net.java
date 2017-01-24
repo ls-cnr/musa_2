@@ -13,6 +13,7 @@ public class Net {
 	private Petrinet pn;
 	private HashMap<Transition, Condition> labels;
 	private HashMap<Place, Integer> hops;
+	private int numTransitions;
 	
 	public Net( GoalModel model ) {
 		PetriNetConstruction construction = new PetriNetConstruction(model);
@@ -21,32 +22,10 @@ public class Net {
 		labels = construction.getLabels();
 		
 		hops = new HashMap<>();
-		hops.put(construction.getLastPlace(), 0);
-		hop( construction.getLastPlace() );
-	}
-	
-	public void putTokens( ArrayList<String> tokens ) {
-		for( String i : tokens ){
-			pn.getPlace(i).addTokens(1); //equals??
-		}
-	}
-	
-	public void removeTokens( ArrayList<String> tokens ) {
-		for( String i : tokens ){
-			pn.getPlace(i).removeTokens(1); //equals??
-		}
-	}
-	
-	public void fire( Transition t ) {
-		t.fire();
-	}
-	
-	public ArrayList<String> getTokens() {
-		ArrayList<String> newTokens = new ArrayList<>();
-		for( Place p : pn.getPlaces() )
-			if( p.getTokens() > 0 ) 
-				newTokens.add(p.getName());
-		return newTokens;
+		hops.put(getLast(), 0);
+		hop(getLast());
+		
+		numTransitions = pn.getTransitions().size();
 	}
 	
 	private void hop( Place place ) {
@@ -77,15 +56,6 @@ public class Net {
 			}
 	}
 	
-	private int max( int a, int b) {
-		if( a >= b ) return a;
-		else return b;
-	}
-	
-	public int getHop( Place place ) {
-		return hops.get(place);
-	}
-	
 	public ArrayList<Transition> getTransitionsAbleToFire() {
 		return (ArrayList<Transition>) pn.getTransitionsAbleToFire();
 	}
@@ -94,13 +64,41 @@ public class Net {
 		return labels.get(t);
 	}
 	
-	/*Temp*/
-	public Petrinet getPetrinet() {
-		return pn;
+	public int getNumTransitions() {
+		return numTransitions;
 	}
 	
-	/*Temp for testing*/
+	public void putTokens( ArrayList<String> tokens ) {
+		for( String i : tokens ){
+			pn.getPlace(i).addTokens(1); //equals test??
+		}
+	}
+	
+	public void removeTokens( ArrayList<String> tokens ) {
+		for( String i : tokens ){
+			pn.getPlace(i).removeTokens(1); //equals test??
+		}
+	}
+	
+	public int getHop( Place place ) {
+		return hops.get(place);
+	}
+	
+	public Place getPlace( String name ) {
+		return pn.getPlace(name);
+	}
+	
 	public Place getFirst() {
 		return pn.getPlaces().get(0);
 	}
+	
+	public Place getLast() {
+		return pn.getPlaces().get(pn.getPlaces().size() - 1);
+	}
+	
+	private int max( int a, int b) {
+		if( a >= b ) return a;
+		else return b;
+	}
+	
 }

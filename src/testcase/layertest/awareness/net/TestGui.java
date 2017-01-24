@@ -4,6 +4,7 @@ import layer.awareness.*;
 import layer.awareness.goalmodel.GoalModel;
 import layer.awareness.net.Net;
 import petrinet.gui.*;
+import petrinet.logic.Petrinet;
 
 import java.util.ArrayList;
 
@@ -37,9 +38,17 @@ public class TestGui {
 		
 		
 
+		/*Add this method to the Net class to start the test.
+		 * 
+		public Petrinet getPetrinet() {
+			return pn;
+		}
+		*/
+		/*
 		Net net = new Net(model);
 		net.getPetrinet().getPlaces().get(0).addTokens(1);
 		PetrinetGUI.displayPetrinet(net.getPetrinet());
+		*/
 	}
 	
 	

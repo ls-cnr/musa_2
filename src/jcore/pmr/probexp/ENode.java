@@ -10,17 +10,19 @@ public class ENode implements Node{
 	
 	private WorldNode node;
 	private ArrayList<String> tokens;
-	private double score;
+	private int score;
 	private boolean exit;
 	
 	public ENode( WorldNode node ) {
 		this.node = node;
+		this.exit = false;
 	}
 	
-	public ENode( WorldNode node, ArrayList<String> tokens, double score ) {
+	public ENode( WorldNode node, ArrayList<String> tokens, int score, boolean exit ) {
 		this.node = node;
 		this.tokens = tokens;
 		this.score = score;
+		this.exit = exit;
 	}
 	
 	public WorldNode getWorldNode() {
@@ -43,11 +45,11 @@ public class ENode implements Node{
 		return tokens;
 	}
 	
-	public double getScore(){
+	public int getScore(){
 		return this.score;
 	}
 	
-	public void setScore(double score){
+	public void setScore(int score){
 		this.score = score;
 	}
 	
