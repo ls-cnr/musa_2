@@ -38,14 +38,6 @@ public class ENode implements Node{
 		return tokens;
 	}
 	
-	public double getScore() {
-		return score;
-	}
-	
-	public void setScore( double score ) {
-		this.score = score;
-	}
-	
 	public double getScore(){
 		return this.score;
 	}
