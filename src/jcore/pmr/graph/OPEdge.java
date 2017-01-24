@@ -3,7 +3,7 @@ package pmr.graph;
 import layer.awareness.AbstractCapability;
 import layer.semantic.evolution.EvolutionScenario;
 
-public class OPEdge {
+public class OPEdge implements Edge {
 		
 	private WorldNode source;
 	private OPNode destination;

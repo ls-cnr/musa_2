@@ -90,6 +90,23 @@ public class WTS {
 			destnode.addIncomingEdge(new NormalEdge(sourcenode, destnode, capability));
 	}
 	
+	//Ritorna l'arco da modificare se è presente, null altrimenti.
+	//Basta confrontare le capability tra gli archi visto che ci troviamo all'interno di un nodo.
+	public Edge editEdge(WorldNode node, AbstractCapability capability){
+		Iterator <NormalEdge> i = this.graph.get(node).getOutcomingEdgeList().iterator();
+		while(i.hasNext() == true){
+			NormalEdge tempedge = i.next();
+			if (tempedge.getCapability().equals(capability) == true)
+				return tempedge;
+		}
+		Iterator <OPNode> j = this.graph.get(node).getOPNodeList().iterator();
+		while(j.hasNext() == true){
+			OPNode tempnode = j.next();
+			if (tempnode.getCapability().equals(capability) == true)
+				return tempnode.getIncomingEdge();
+		}
+		return null;
+	}
 	
 	public HashMap<WorldNode, WorldNode> getWTS(){
 		return this.graph;
