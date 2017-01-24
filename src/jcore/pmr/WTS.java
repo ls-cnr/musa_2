@@ -20,11 +20,16 @@ import pmr.graph.WorldNode;
 import pmr.graph.XORNode;
 import pmr.probexp.ENode;
 import pmr.probexp.ExpansionNode;
+<<<<<<< HEAD
 import pmr.probexp.ExpansionNode;
 import pmr.probexp.MultipleExpansionNode;
 import pmr.probexp.MultipleExpansionNode;
 import pmr.probexp.NormalExpansionNode;
 import pmr.probexp.NormalExpansionNode;
+=======
+import pmr.probexp.MultipleExpansionNode;
+import pmr.probexp.NormalExpansionNode;
+>>>>>>> 11c57714d27dec7a27ce4ac3bc15eb37f04e305f
 
 //Il solution graph, implementato come una mappa nodo-arco
 public class WTS {

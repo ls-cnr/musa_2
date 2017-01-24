@@ -11,6 +11,7 @@ public class ENode implements Node{
 	private WorldNode node;
 	private ArrayList<String> tokens;
 	private double score;
+	private boolean exit;
 	
 	public ENode( WorldNode node ) {
 		this.node = node;
@@ -30,6 +31,10 @@ public class ENode implements Node{
 		this.tokens = tokens;
 	}
 	
+	public void setExit(boolean exit){
+		this.exit = exit;
+	}
+	
 	public void addToken(String token){
 		this.tokens.add(token);
 	}
@@ -44,5 +49,9 @@ public class ENode implements Node{
 	
 	public void setScore(double score){
 		this.score = score;
+	}
+	
+	public boolean isExitNode(){
+		return this.exit;
 	}
 }
