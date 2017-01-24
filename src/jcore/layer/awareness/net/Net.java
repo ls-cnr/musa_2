@@ -2,6 +2,7 @@ package layer.awareness.net;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import layer.awareness.goalmodel.GoalModel;
 import layer.semantic.Condition;
@@ -9,7 +10,7 @@ import petrinet.logic.*;
 
 public class Net {
 
-	Petrinet pn;
+	private Petrinet pn;
 	private HashMap<Transition, Condition> labels;
 	private HashMap<Place, Integer> hops;
 	
@@ -49,24 +50,40 @@ public class Net {
 	}
 	
 	private void hop( Place place ) {
-		for( Arc arcP : place.getIncoming() ){
-			if( arcP.getTransition().hasMoreThanOneOutgoing() )
-				//sum 
-				;
-			else{
-				for( Arc arcT : arcP.getTransition().getIncoming() ){
-					Place next = arcT.getPlace();
-					hops.put(next, max(hops.get(next), hops.get(place) + 1));
+		int val = hops.get(place) + 1;
+		List<Arc> placeIncoming;
+		
+		if(  (placeIncoming = place.getIncoming())  != null )
+			for( Arc arcP : placeIncoming ){
+				Transition transition = arcP.getTransition();
+				
+				if( transition.hasMoreThanOneOutgoing() ){
+					val = 0;
+					for( Arc arcTOut : transition.getOutgoing() ){
+						Integer i = hops.get( arcTOut.getPlace() );
+						if( i == null ) i = 0;
+						val += i;
+					}
+					val += 1;
+				}
+				
+				for( Arc arcTIn : transition.getIncoming() ){
+					Place next = arcTIn.getPlace();
+					Integer prev;
+					if( ( prev = hops.get(next)) == null ) prev = 0;
+					hops.put(next, max(prev, val) );
 					hop(next);
 				}
 			}
-				
-		}
 	}
 	
 	private int max( int a, int b) {
 		if( a >= b ) return a;
 		else return b;
+	}
+	
+	public int getHop( Place place ) {
+		return hops.get(place);
 	}
 	
 	public ArrayList<Transition> getTransitionsAbleToFire() {
@@ -80,5 +97,10 @@ public class Net {
 	/*Temp*/
 	public Petrinet getPetrinet() {
 		return pn;
+	}
+	
+	/*Temp for testing*/
+	public Place getFirst() {
+		return pn.getPlaces().get(0);
 	}
 }

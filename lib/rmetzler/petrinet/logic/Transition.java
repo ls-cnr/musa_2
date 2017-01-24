@@ -80,6 +80,13 @@ extends PetrinetObject{
         return incoming.isEmpty() && outgoing.isEmpty();
     }
     
+    public boolean hasMoreThanOneOutgoing() {
+    	if( outgoing.size() > 1 )
+    		return true;
+    	else 
+    		return false;
+    }
+    
     public List<Arc> getIncoming() {
     	return incoming;
     }

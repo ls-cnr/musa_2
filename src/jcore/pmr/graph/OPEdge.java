@@ -66,6 +66,6 @@ public class OPEdge implements Edge {
 	
 	@Override
 	public int hashCode(){
-		return this.source.hashCode() + this.destination.hashCode() + this.scenario.hashCode();
+		return this.source.hashCode() + this.destination.hashCode() + this.capability.hashCode();
 	}
 }

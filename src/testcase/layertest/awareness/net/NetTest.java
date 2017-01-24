@@ -49,8 +49,40 @@ public class NetTest {
 	}
 	
 	@Test
-	public void testHops() {
+	public void testHops1() {
+		ArrayList<Goal> gs = new ArrayList<>();
+		ArrayList<Goal> gsor = new ArrayList<>();
+		gs.add(new Goal("secondo", null, null));
+		gs.add(new Goal("terzo", null, null));
+		gsor.add(new Goal("quarto", null, null));
+		gsor.add(new Goal("quinto", null, null));
 		
+		model.addAndArcs(new Goal("root", null, null), gs);
+		model.addOrArcs(new Goal("terzo", null, null), gsor);
+		
+		
+		net = new Net(model);
+		assertEquals(net.getHop(net.getFirst()), 9);
+	}
+	
+	@Test
+	public void testHops2() {
+		ArrayList<Goal> gs = new ArrayList<>();
+		ArrayList<Goal> gsor = new ArrayList<>();
+		ArrayList<Goal> gsandor = new ArrayList<>();
+		gs.add(new Goal("secondo", null, null));
+		gs.add(new Goal("terzo", null, null));
+		gsor.add(new Goal("quarto", null, null));
+		gsor.add(new Goal("quinto", null, null));
+		gsandor.add(new Goal("sesto", null, null));
+		gsandor.add(new Goal("settimo", null, null));
+		
+		model.addAndArcs(new Goal("root", null, null), gs);
+		model.addOrArcs(new Goal("terzo", null, null), gsor);
+		model.addAndArcs(new Goal("quinto", null, null), gsandor);
+		
+		net = new Net(model);
+		assertEquals(net.getHop(net.getFirst()), 16);
 	}
 	
 }

@@ -63,6 +63,7 @@ public class ProblemExploration {
 		net.removeTokens(tokens);
 		
 		enode.setTokens(tokens);
+		//exit??
 		return enode;
 	}
 	
