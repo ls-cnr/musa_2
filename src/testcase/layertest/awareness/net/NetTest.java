@@ -48,4 +48,9 @@ public class NetTest {
 		net = new Net(model);
 	}
 	
+	@Test
+	public void testHops() {
+		
+	}
+	
 }
