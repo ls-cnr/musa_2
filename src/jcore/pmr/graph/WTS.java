@@ -1,4 +1,4 @@
-package pmr;
+package pmr.graph;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -10,14 +10,6 @@ import layer.awareness.AbstractCapability;
 import layer.semantic.evolution.EvolutionScenario;
 import net.sf.tweety.logics.pl.semantics.PossibleWorld;
 import net.sf.tweety.lp.asp.syntax.DLPHead;
-import pmr.graph.Edge;
-import pmr.graph.EvolutionEdge;
-import pmr.graph.Node;
-import pmr.graph.NormalEdge;
-import pmr.graph.OPEdge;
-import pmr.graph.OPNode;
-import pmr.graph.WorldNode;
-import pmr.graph.XORNode;
 import pmr.probexp.ENode;
 import pmr.probexp.ExpansionNode;
 import pmr.probexp.MultipleExpansionNode;

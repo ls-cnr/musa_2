@@ -1,6 +1,7 @@
 package pmr.probexp;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 
 import layer.awareness.AbstractCapability;
 import pmr.graph.Node;
@@ -55,7 +56,16 @@ public abstract class ExpansionNode implements Node{
 		this.score = score;
 	}
 
-
+	//Comparatore per tenere le liste aggiornate secondo lo score
+	public static Comparator<ExpansionNode> getScoreComparator(){
+		Comparator<ExpansionNode> comp = new Comparator<ExpansionNode>(){
+			@Override
+			public int compare(ExpansionNode e1, ExpansionNode e2){
+				return e2.score - e1.score;
+			}
+		};
+		return comp;
+	}
 	
 
 }

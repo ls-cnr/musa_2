@@ -1,6 +1,7 @@
 package pmr.probexp;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 
 import petrinet.logic.Place;
 import pmr.graph.Node;
@@ -56,4 +57,16 @@ public class ENode implements Node{
 	public boolean isExitNode(){
 		return this.exit;
 	}
+	
+	//Comparatore per tenere le liste aggiornate secondo lo score
+	public static Comparator<ENode> getScoreComparator(){
+		Comparator<ENode> comp = new Comparator<ENode>(){
+			@Override
+			public int compare(ENode e1, ENode e2){
+				return e2.score - e1.score;
+			}
+		};
+		return comp;
+	}
+	
 }

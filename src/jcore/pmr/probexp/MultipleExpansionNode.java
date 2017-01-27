@@ -1,9 +1,11 @@
 package pmr.probexp;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 
 import layer.awareness.AbstractCapability;
+import layer.semantic.evolution.EvolutionOperator;
 import layer.semantic.evolution.EvolutionScenario;
 import pmr.graph.WorldNode;
 
@@ -13,6 +15,7 @@ public class MultipleExpansionNode extends ExpansionNode{
 	
 	public MultipleExpansionNode(ENode source, ArrayList<ENode> destination, AbstractCapability capability){
 		super(source, destination, capability);
+		this.scenarioList = new HashMap<ENode, EvolutionScenario>();
 		//if(destination != null)	this.findScore();
 	}
 	
@@ -26,5 +29,12 @@ public class MultipleExpansionNode extends ExpansionNode{
 	
 	public EvolutionScenario getScenario(ENode node){
 		return this.scenarioList.get(node);
+	}
+	
+	public void createScenarioMap(Collection<EvolutionOperator> TX){
+		Iterator i = TX.iterator();
+		int i = 0;
+		//while(i.hasNext()){
+			//this.addScenario(this.destination.get(i), i.next());
 	}
 }

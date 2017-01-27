@@ -24,6 +24,12 @@ public class WorldEvolution {
 	/** The checker. */
 	private DomainEntail checker;
 
+	
+	public LinkedList<StateOfWorld> getEvolution(){
+		return this.evo;
+	}
+	
+	
 	/**
 	 * Instantiates a new world evolution.
 	 *
@@ -34,7 +40,6 @@ public class WorldEvolution {
 		evo= new LinkedList<StateOfWorld>();
 		evo.add(W);
 		assumptions = K;
-		
 		checker = DomainEntail.getInstance();
 	}
 	
