@@ -91,7 +91,7 @@ public class ProblemExploration {
 		net.putTokens(startingTokens);	//Prepares the net with tokens
 		
 		//checking and firing
-		for( Transition t : net.getTransitionsAbleToFire() )
+		for( Transition t : net.getTransitionsAbleToFire() ) //lista aggiornata???
 			if( DomainEntail.getInstance().entailsCondition(state, assumptions, net.getTransitionLabel(t)) ){
 				t.fire();
 				for(Arc arcOut : t.getOutgoing())		//Adding tokens from the fired transition outgoing places 
@@ -123,15 +123,16 @@ public class ProblemExploration {
 	 *            the enode's tokens 
 	 */
 	private void fillENode( ENode enode, ArrayList<String> tokens ) {
-		int nHop = 0;
-		
+				
 		enode.setTokens(tokens);
-		//Elaborating Hops and exit condition
-		for( String token : tokens ){
-			Place place = net.getPlace(token);
-			nHop += net.getHop(place);
-			if( place.equals(net.getLast()) ) enode.setExit(true);
-		}
+		
+		//Checking if it's an exit node
+		for( String token : tokens )
+			if( net.getPlace(token).equals(net.getLast()) ) enode.setExit(true);
+		
+		//Calculating Hops
+		int nHop = net.hop(tokens);
+		
 		//Elaborating score
 		int score = 0;
 		if( enode.isExitNode() ) 

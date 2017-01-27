@@ -22,6 +22,9 @@ public class PetriNetConstruction {
 	/** The structure that maintains associations between transitions and goals conditions (trigger condition, final state)*/
 	private HashMap<Transition, Condition> labels;
 	
+	/** */
+	private HashMap<Place, Place> twins;	
+	
 	/** These variables are used to name places, transitions and arcs in a correct order */
 	private static int p = 0;
 	private static int t = 0;
@@ -36,6 +39,8 @@ public class PetriNetConstruction {
 		pn = new Petrinet("petrinet");
 		model = m;
 		labels = new HashMap<>();
+		twins = new HashMap<>();
+		
 		
 		/*Add first place*/
 		pn.place("p"+p++);
@@ -181,7 +186,10 @@ public class PetriNetConstruction {
 		place = pn.arc("arc"+a++, t1, pn.place("p"+p++)).getPlace();
 		
 		//Place to use at the end of subtemplates
-		Place orPlace = pn.place("p"+p++);		
+		Place orPlace = pn.place("p"+p++);	
+		
+		//Twins condition
+		setTwins(place, orPlace);
 		
 		//Conditional constructing
 		for( RefinementArc arc : arcs ){
@@ -216,6 +224,15 @@ public class PetriNetConstruction {
 	 */
 	private void addFinalState( Transition transition, Goal goal) {
 		labels.put(transition, goal.getFinal_state());
+	}
+	
+	private void setTwins( Place p1, Place p2 ) {
+		twins.put(p1, p2);
+		twins.put(p2, p1);
+	}
+	
+	public HashMap<Place,Place>	getTwins() {
+		return twins;
 	}
 	
 }

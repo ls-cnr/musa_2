@@ -12,7 +12,8 @@ public class Net {
 
 	private Petrinet pn;
 	private HashMap<Transition, Condition> labels;
-	private HashMap<Place, Integer> hops;
+	private HashMap<Transition, Integer> hopMap;
+	private HashMap<Place,Place> twins;
 	private int numTransitions;
 	
 	public Net( GoalModel model ) {
@@ -20,14 +21,48 @@ public class Net {
 		construction.construct();
 		pn = construction.getPetrinet();
 		labels = construction.getLabels();
-		
-		hops = new HashMap<>();
-		hops.put(getLast(), 0);
-		hop(getLast());
+		twins = construction.getTwins();
 		
 		numTransitions = pn.getTransitions().size();
 	}
 	
+	public int hop( ArrayList<String> tokens ) {
+		hopMap = new HashMap<>();
+		int hopValue = 0;
+		for( String nome : tokens )
+			hopValue += hopToken(getPlace(nome));
+		return hopValue;
+	}
+	
+	private int hopToken( Place place ) {
+		if( place.getOutgoing().isEmpty() )
+			return 0;
+		else{
+			int general = 0;
+			
+			for( Arc arcP : place.getOutgoing() ){
+				Transition transition = arcP.getTransition();
+				int count = 0;
+				if( !hopMap.containsKey(transition) ){
+					count++;
+					for( Arc arcT : transition.getOutgoing() )
+						count += hopToken(arcT.getPlace());
+					if( isTwin(place) )
+						hopMap.put(transition, count);
+					else
+						hopMap.put(transition, 0);
+				}
+				else{
+					count = hopMap.get(transition);
+				}
+				general = max(count, general);
+			}
+			
+			return general;
+		}
+	}
+	
+	/*
 	private void hop( Place place ) {
 		int val = hops.get(place) + 1;
 		List<Arc> placeIncoming;
@@ -55,7 +90,7 @@ public class Net {
 				}
 			}
 	}
-	
+	*/
 	public ArrayList<Transition> getTransitionsAbleToFire() {
 		return (ArrayList<Transition>) pn.getTransitionsAbleToFire();
 	}
@@ -80,10 +115,6 @@ public class Net {
 		}
 	}
 	
-	public int getHop( Place place ) {
-		return hops.get(place);
-	}
-	
 	public Place getPlace( String name ) {
 		return pn.getPlace(name);
 	}
@@ -99,6 +130,10 @@ public class Net {
 	private int max( int a, int b) {
 		if( a >= b ) return a;
 		else return b;
+	}
+	
+	public boolean isTwin( Place place ) {
+		return twins.containsKey(place);
 	}
 	
 }
