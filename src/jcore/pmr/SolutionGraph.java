@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 
+import pmr.graph.WTS;
 import pmr.graph.WorldNode;
 import pmr.probexp.ENode;
 import pmr.probexp.ExpansionNode;

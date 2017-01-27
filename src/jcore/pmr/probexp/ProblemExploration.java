@@ -1,6 +1,9 @@
 package pmr.probexp;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.LinkedList;
 
 import layer.awareness.AbstractCapability;
 import layer.awareness.DomainEntail;
@@ -8,6 +11,8 @@ import layer.awareness.goalmodel.GoalModel;
 import layer.awareness.net.Net;
 import layer.semantic.AssumptionSet;
 import layer.semantic.StateOfWorld;
+import layer.semantic.WorldEvolution;
+import layer.semantic.evolution.EvolutionScenario;
 import petrinet.logic.Arc;
 import petrinet.logic.Place;
 import petrinet.logic.Transition;
@@ -29,6 +34,7 @@ public class ProblemExploration {
 
 	public void addToVisit( WorldNode node, ArrayList<String> tokens, int score ) {
 		toVisit.add( new ENode(node, tokens, score, false) );
+		toVisit.sort(ENode.getScoreComparator());
 	}
 		
 	/*
@@ -47,10 +53,10 @@ public class ProblemExploration {
 	public void expandNode() {
 		ENode enode = getHighestNodeToVisit();
 		for( AbstractCapability capability : capabilities ){
-			if( true /*enode.getWorldNode().getWorldState() != capability.precondition*/){
+			if(DomainEntail.getInstance().entailsCondition(enode.getWorldNode().getWorldState(), this.assumptions, capability.getPreCondition()) == true){
 				ExpansionNode expNode;
-				
 				expNode = applyExpand(enode, capability);
+			
 				
 				for( ENode destination : expNode.getDestination() )
 					applyNet(expNode.getSource().getTokens(), destination);
@@ -58,6 +64,7 @@ public class ProblemExploration {
 				score(expNode);
 				
 				expandedList.add(expNode);
+				expandedList.sort(ExpansionNode.getScoreComparator());
 			}
 			visited.add(enode);
 		}
@@ -67,9 +74,43 @@ public class ProblemExploration {
 		return toVisit.remove(0);
 	}
 	
+	
+	//Funzione che crea gli stati del mondo successivi, applicando un'evoluzione agli scenari associati alla capability passata
+	//Se la capability contiene un solo elemento sarà un evoluzione semplice gestita da un NormalExpansionNode.
 	private ExpansionNode applyExpand( ENode enode, AbstractCapability capability) {
-		/*TODO*/
-		return new NormalExpansionNode(enode, new ArrayList<ENode>(), capability);
+		if(capability.getScenarioSet().size() == 1){
+			//Creo un oggetto di tipo WorldEvolution che dato un AssumptionSet ed un StateOfWorld ci da le evoluzioni.
+			WorldEvolution evo = new WorldEvolution(this.assumptions, enode.getWorldNode().getWorldState());
+			//Uso un iteratore perché il set non mi fa accedere ai singoli elementi. In questo caso l'elemento è uno solo
+			//Ed è l'ultimo della lista delle evoluzioni, dato che in ogni caso WorldEvolution salva lo StateOfWorld source.
+			Iterator i = capability.getScenarioSet().iterator();
+			if(i.hasNext()){
+				EvolutionScenario temp =(EvolutionScenario) i.next();
+				evo.addEvolution(temp.getOperators());
+			}
+			ArrayList<ENode> newEnodeList = new ArrayList<ENode>();
+			ENode newEnode = new ENode(new WorldNode(evo.getEvolution().getLast()));
+			newEnodeList.add(newEnode);
+			ExpansionNode result = new NormalExpansionNode(enode, newEnodeList, capability);
+			return result;
+		}
+		else{
+			//Se la capability ha più scenari, devo creare una WorldEvolution per scenario. Ogni WorldEvolution produrrà
+			//Uno StateOfWorld, che verrà inglobato in un nodo che a sua volta finirà nella lista delle destinazioni
+			//Del MultipleExpansioNode. Inoltre si aggiunge alla mappa dei nodi-scenari associati, la coppia nodo-scenario.
+			MultipleExpansionNode expNode = new MultipleExpansionNode(enode, new ArrayList<ENode>(), capability);
+			WorldEvolution evo = new WorldEvolution(this.assumptions, enode.getWorldNode().getWorldState());
+			Iterator i = capability.getScenarioSet().iterator();
+			while(i.hasNext()){
+				EvolutionScenario temp = (EvolutionScenario) i.next();
+				evo.addEvolution(temp.getOperators());
+				ENode newEnode = new ENode(new WorldNode(evo.getEvolution().getLast()));
+				expNode.addDestination(newEnode);
+				expNode.addScenario(newEnode, temp);
+			}
+			ExpansionNode result = expNode;
+			return result;
+		}
 	}
 	
 	/**
@@ -174,4 +215,11 @@ public class ProblemExploration {
 			return b;
 	}
 	
+	public void toVisitSort(){
+		Collections.sort(this.toVisit, ENode.getScoreComparator());
+	}
+	
+	public void ExpansionListSort(){
+		Collections.sort(this.expandedList, ExpansionNode.getScoreComparator());
+	}
 }

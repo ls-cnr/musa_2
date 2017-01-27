@@ -89,9 +89,12 @@ public class AbstractCapability implements RunTimeEntity {
 //	}
 
 //	public String getName();
-//	public Set<EvolutionScenario> getEvolutions();
-//	public Condition getPreCondition();
-//	public Condition getPostCondition();
+	public Condition getPreCondition(){
+		return this.pre;
+	}
+	public Condition getPostCondition(){
+		return this.post;
+	}
 //	
 //	class Builder extends AbstractCapability_Builder {}
 	
