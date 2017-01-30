@@ -9,9 +9,12 @@ import layer.awareness.AbstractCapability;
 import layer.semantic.StateOfWorld;
 import net.sf.tweety.lp.asp.parser.ParseException;
 import pmr.graph.Edge;
+import pmr.graph.EvolutionEdge;
 import pmr.graph.Node;
 import pmr.graph.NormalEdge;
+import pmr.graph.OPNode;
 import pmr.graph.WorldNode;
+import pmr.graph.XORNode;
 
 public class EdgeTest {
 	
@@ -20,18 +23,21 @@ public class EdgeTest {
 	private StateOfWorld w3;
 	private StateOfWorld w4;
 	
-	private Node n1;
-	private Node n2;
-	private Node n3;
-	private Node n4;
+	private WorldNode n1;
+	private WorldNode n2;
+	private WorldNode n3;
+	private OPNode op1;
 	
 	private AbstractCapability cap1;
 	private AbstractCapability cap2;
 	private AbstractCapability cap3;
 
-	private Edge e1;
-	private Edge e2;
-	private Edge e3;
+	private NormalEdge e1;
+	private NormalEdge e2;
+	private NormalEdge e3;
+	
+	private EvolutionEdge ev1;
+	private EvolutionEdge ev2;
 	
 	@Before
 	public void setUp(){
@@ -82,11 +88,13 @@ public class EdgeTest {
 		this.n1 = new WorldNode(w4);
 		this.n2 = new WorldNode(w3);
 		this.n3 = new WorldNode(w1);
-		this.n4 = new WorldNode(w2);
+		this.op1 = new XORNode(cap1);
 		
 		this.e1 = new NormalEdge(new WorldNode(null), this.n1, this.cap1);
 		this.e2 = new NormalEdge(new WorldNode(null), this.n1, this.cap1);
 		this.e3 = new NormalEdge(this.n1, this.n2, this.cap1);
+		
+		this.ev1 = new EvolutionEdge(op1, n1, null);
 	}
 	
 	@Test

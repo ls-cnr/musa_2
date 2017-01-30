@@ -2,14 +2,9 @@ package pmr.graph;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Set;
 
 import layer.awareness.AbstractCapability;
-import layer.semantic.evolution.EvolutionScenario;
-import net.sf.tweety.logics.pl.semantics.PossibleWorld;
-import net.sf.tweety.lp.asp.syntax.DLPHead;
 import pmr.probexp.ENode;
 import pmr.probexp.ExpansionNode;
 import pmr.probexp.MultipleExpansionNode;
@@ -36,6 +31,7 @@ public class WTS {
 			//aggiungendo un arco in entrata dal nodo source e aggiorno gli archi in uscita dal nodo source aggiungendo
 			//quello diretto verso il nodo destination.
 			NormalExpansionNode tempnode = (NormalExpansionNode) newnode;
+			this.addSafeNode(tempnode.getSource().getWorldNode());
 			this.addSafeNode(tempnode.getDestination().get(0).getWorldNode());
 			WorldNode destination2 = this.graph.get(tempnode.getDestination().get(0).getWorldNode());
 			
@@ -44,6 +40,7 @@ public class WTS {
 		else{
 			//Aggiorno il nodo presente nel grafo, aggiungendogli un OPNode all'interno
 			MultipleExpansionNode exptempnode = (MultipleExpansionNode) newnode;
+			this.addSafeNode(exptempnode.getSource().getWorldNode());
 			WorldNode source2 = this.graph.get(exptempnode.getSource().getWorldNode());
 			
 			//Creo un OPNode E setto l'arco entrante
@@ -68,7 +65,10 @@ public class WTS {
 	//Aggiunta semplice al grafo tramite WorldNode
 	public boolean addSafeNode(WorldNode source){
 		if(this.graph.containsKey(source) == false){
-			this.graph.put(source, source);
+			WorldNode temp = new WorldNode(source.getWorldState());
+			temp.setIncomingEdgeList(source.getIncomingEdgeList());
+			temp.setOutcomingEdgeList(source.getOutcomingEdgeList());
+			this.graph.put(temp, temp);
 			return true;
 		}
 		else
@@ -126,6 +126,10 @@ public class WTS {
 		return null;
 	}
 		
+	
+	/*Semplice visita. Percorre tutti i WorldNode ed una volta esauriti i NormalEdge inizia a scorrere, se presente
+	*La lista degli OPNode ripetendo il processo.
+	*/
 	public ArrayList<WorldNode> WTSVisit(WorldNode start){
 		HashMap <WorldNode,Integer> checkedNode = new HashMap <WorldNode, Integer>();
 		ArrayList<WorldNode> pathNode = new ArrayList <WorldNode>();
@@ -135,8 +139,16 @@ public class WTS {
 		
 		for(NormalEdge edge : this.graph.get(start).getOutcomingEdgeList()){
 			if(checkedNode.containsKey(edge.getDestination()) == false){
-				pathNode.add((WorldNode)edge.getDestination());
+				pathNode.add(edge.getDestination());
 				pathNode.addAll(WTSVisit(edge.getDestination()));
+			}
+		}
+		for(OPNode node : this.graph.get(start).getOPNodeList()){
+			for(int j=0; j<this.graph.get(start).getOPNodeList().size(); j++){
+				if(checkedNode.containsKey(node.getOutcomingEdge().get(j).getDestination()) == false){
+					pathNode.add(node.getOutcomingEdge().get(j).getDestination());
+					pathNode.addAll(WTSVisit(node.getOutcomingEdge().get(j).getDestination()));
+				}
 			}
 		}
 		return pathNode;

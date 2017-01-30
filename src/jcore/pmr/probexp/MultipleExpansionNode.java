@@ -3,6 +3,7 @@ package pmr.probexp;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 
 import layer.awareness.AbstractCapability;
 import layer.semantic.evolution.EvolutionOperator;
@@ -31,10 +32,4 @@ public class MultipleExpansionNode extends ExpansionNode{
 		return this.scenarioList.get(node);
 	}
 	
-	public void createScenarioMap(Collection<EvolutionOperator> TX){
-		Iterator i = TX.iterator();
-		int i = 0;
-		//while(i.hasNext()){
-			//this.addScenario(this.destination.get(i), i.next());
-	}
 }
