@@ -3,12 +3,11 @@ package pmr.probexp;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
-import java.util.LinkedList;
 
 import layer.awareness.AbstractCapability;
 import layer.awareness.DomainEntail;
 import layer.awareness.goalmodel.GoalModel;
-import layer.awareness.net.Net;
+import layer.awareness.net.*;
 import layer.semantic.AssumptionSet;
 import layer.semantic.StateOfWorld;
 import layer.semantic.WorldEvolution;
@@ -32,7 +31,7 @@ public class ProblemExploration {
 		net = new Net(model);
 	}
 
-	public void addToVisit( WorldNode node, ArrayList<String> tokens, int score ) {
+	public void addToVisit( WorldNode node, ArrayList<Token> tokens, int score ) {
 		toVisit.add( new ENode(node, tokens, score, false) );
 		toVisit.sort(ENode.getScoreComparator());
 	}
@@ -54,8 +53,7 @@ public class ProblemExploration {
 		ENode enode = getHighestNodeToVisit();
 		for( AbstractCapability capability : capabilities ){
 			if(DomainEntail.getInstance().entailsCondition(enode.getWorldNode().getWorldState(), this.assumptions, capability.getPreCondition()) == true){
-				ExpansionNode expNode;
-				expNode = applyExpand(enode, capability);
+				ExpansionNode expNode = applyExpand(enode, capability);
 			
 				
 				for( ENode destination : expNode.getDestination() )
@@ -125,7 +123,8 @@ public class ProblemExploration {
 	 * @param enode the new eNode created from expansion
 	 * @param startingTokens the list of token to start with
 	 */
-	private void applyNet( ArrayList<String> startingTokens, ENode enode ) {
+	/*
+	private void applyNet2( ArrayList<String> startingTokens, ENode enode ) {
 		StateOfWorld state = enode.getWorldNode().getWorldState();
 		ArrayList<String> tokens = new ArrayList<>();
 		
@@ -141,6 +140,65 @@ public class ProblemExploration {
 			else
 				for(Arc arcIn : t.getIncoming())		//Adding tokens from the transition ingoing places
 					tokens.add(arcIn.getPlace().getName());
+		
+		net.removeTokens(tokens); //Cleans the net from tokens
+		
+		fillENode(enode, tokens);//Fills up enode
+	}
+	*/
+	
+	private void applyNet( ArrayList<Token> startingTokens, ENode enode ) {
+		StateOfWorld state = enode.getWorldNode().getWorldState();
+		ArrayList<Token> tokens = new ArrayList<>();
+		
+		net.putTokens(startingTokens);	//Prepares the net with tokens
+		
+		ArrayList<Transition> transitionsATF= net.getTransitionsAbleToFire();
+		
+		//checking and firing
+		for( int i = 0; i < transitionsATF.size(); i++ ){
+			Transition t = transitionsATF.get(i);
+			if( DomainEntail.getInstance().entailsCondition(state, assumptions, net.getTransitionLabel(t)) ){
+				Place place = net.getFirstInPlaceFromTransition(t);
+				
+				if( net.isInitialOrPlace(place) ){
+					if( !net.checkInvisibleToken(place) ) 
+						tokens.add( new MultipleToken(place.getName()) );
+					
+					for(Arc arcOut : t.getOutgoing()){		//Adding tokens from the fired transition outgoing places 
+						Place finalPlace = arcOut.getPlace();
+						tokens.add( new Token(finalPlace.getName()) ); //It's sure that it isn't a finalOrPlace
+					}
+				}
+				else
+					for( Arc arcOut : t.getOutgoing() ){
+						Place finalPlace = arcOut.getPlace();
+						if( net.isFinalOrPlace(finalPlace) ) {
+							tokens.add( new Token(finalPlace.getName()) );
+							net.removeOrTokens(finalPlace);
+							for( int j = i + 1; j < transitionsATF.size(); j++ )
+								if( !transitionsATF.get(j).canFire() )
+									transitionsATF.remove(j);
+						}
+						else
+							tokens.add( new Token(finalPlace.getName()) );
+					}
+				
+				t.fire();
+			}
+			else
+				for(Arc arcIn : t.getIncoming()){		//Adding tokens from the transition ingoing places
+					Place p = arcIn.getPlace();
+					for( Token initToken : startingTokens )
+						if( initToken.getPlaceName() == p.getName() ){
+							if( initToken instanceof MultipleToken )
+								tokens.add(new MultipleToken(initToken));
+							else 
+								tokens.add( new Token(initToken.getPlaceName()) );
+							break;
+						}	
+				}
+		}
 		
 		net.removeTokens(tokens); //Cleans the net from tokens
 		
@@ -163,13 +221,13 @@ public class ProblemExploration {
 	 * @param tokens
 	 *            the enode's tokens 
 	 */
-	private void fillENode( ENode enode, ArrayList<String> tokens ) {
+	private void fillENode( ENode enode, ArrayList<Token> tokens ) {
 				
 		enode.setTokens(tokens);
 		
 		//Checking if it's an exit node
-		for( String token : tokens )
-			if( net.getPlace(token).equals(net.getLast()) ) enode.setExit(true);
+		for( Token token : tokens )
+			if( net.getPlace(token.getPlaceName()).equals(net.getLast()) ) enode.setExit(true);
 		
 		//Calculating Hops
 		int nHop = net.hop(tokens);

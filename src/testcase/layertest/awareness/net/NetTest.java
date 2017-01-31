@@ -10,6 +10,7 @@ import org.junit.Test;
 import layer.awareness.*;
 import layer.awareness.goalmodel.GoalModel;
 import layer.awareness.net.Net;
+import layer.awareness.net.Token;
 import petrinet.logic.*;
 
 import java.util.ArrayList;
@@ -50,8 +51,8 @@ public class NetTest {
 		
 		
 		net = new Net(model);
-		ArrayList<String> t1 = new ArrayList<>();
-		t1.add(net.getFirst().getName());
+		ArrayList<Token> t1 = new ArrayList<>();
+		t1.add(new Token(net.getFirst().getName()));
 		assertEquals(net.hop(t1), 8);
 	}
 	
@@ -94,24 +95,24 @@ public class NetTest {
 		
 		net = new Net(model);
 		
-		ArrayList<String> first = new ArrayList<>();
-		first.add(net.getFirst().getName());
+		ArrayList<Token> first = new ArrayList<>();
+		first.add(new Token(net.getFirst().getName()));
 		assertEquals(net.hop(first), 12);
 		
-		ArrayList<String> blu = new ArrayList<>();
-		blu.add("p1");
-		blu.add("p6");
+		ArrayList<Token> blu = new ArrayList<>();
+		blu.add(new Token("p1"));
+		blu.add(new Token("p6"));
 		assertEquals(net.hop(blu), 4);
 		
-		ArrayList<String> rosso = new ArrayList<>();
-		rosso.add("p10");
-		rosso.add("p11");
-		rosso.add("p3");
+		ArrayList<Token> rosso = new ArrayList<>();
+		rosso.add(new Token("p10"));
+		rosso.add(new Token("p11"));
+		rosso.add(new Token("p3"));
 		assertEquals(net.hop(rosso), 5);
 		
-		ArrayList<String> verde = new ArrayList<>();
-		verde.add("p5");
-		verde.add("p3");
+		ArrayList<Token> verde = new ArrayList<>();
+		verde.add(new Token("p5"));
+		verde.add(new Token("p3"));
 		assertEquals(net.hop(verde), 8);
 	}
 	

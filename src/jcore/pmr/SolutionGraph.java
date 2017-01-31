@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 
+import layer.awareness.net.Token;
 import pmr.graph.WTS;
 import pmr.graph.WorldNode;
 import pmr.probexp.ENode;
@@ -12,7 +13,7 @@ import pmr.probexp.NormalExpansionNode;
 
 public class SolutionGraph {
 	private WTS wts;
-	private HashMap<WorldNode, ArrayList<String>> tokenMap;
+	private HashMap<WorldNode, ArrayList<Token>> tokenMap;
 	private HashMap<WorldNode, Double> scoreMapping;
 	private HashMap<WorldNode, WorldNode> exitNodeMap;
 	
@@ -31,7 +32,6 @@ public class SolutionGraph {
 	
 	public void updateTokenMap(ExpansionNode node){
 		this.tokenMap.put(node.getSource().getWorldNode(), node.getSource().getTokens());
-		NormalExpansionNode tempnode = (NormalExpansionNode) node;
 		Iterator<ENode> i = node.getDestination().iterator();
 		while (i.hasNext()){
 			ENode temp = i.next();

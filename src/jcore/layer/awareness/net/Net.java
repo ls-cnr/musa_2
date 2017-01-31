@@ -13,7 +13,8 @@ public class Net {
 	private Petrinet pn;
 	private HashMap<Transition, Condition> labels;
 	private HashMap<Transition, Integer> hopMap;
-	private HashMap<Place,Place> twins;
+	private HashMap<Place,Place> initialOrPlaces;
+	private HashMap<Place,Place> finalOrPlaces;
 	private int numTransitions;
 	
 	public Net( GoalModel model ) {
@@ -21,16 +22,17 @@ public class Net {
 		construction.construct();
 		pn = construction.getPetrinet();
 		labels = construction.getLabels();
-		twins = construction.getTwins();
+		initialOrPlaces = construction.getInitialOrPlaces();
+		finalOrPlaces = construction.getFinalOrPlaces();
 		
 		numTransitions = pn.getTransitions().size();
 	}
 	
-	public int hop( ArrayList<String> tokens ) {
+	public int hop( ArrayList<Token> tokens ) {
 		hopMap = new HashMap<>();
 		int hopValue = 0;
-		for( String nome : tokens )
-			hopValue += hopToken(getPlace(nome));
+		for( Token token : tokens )
+			hopValue += hopToken(getPlace(token.getPlaceName()));
 		return hopValue;
 	}
 	
@@ -47,7 +49,7 @@ public class Net {
 					count++;
 					for( Arc arcT : transition.getOutgoing() )
 						count += hopToken(arcT.getPlace());
-					if( isTwin(place) )
+					if( isFinalOrPlace(place) )
 						hopMap.put(transition, count);
 					else
 						hopMap.put(transition, 0);
@@ -103,15 +105,44 @@ public class Net {
 		return numTransitions;
 	}
 	
-	public void putTokens( ArrayList<String> tokens ) {
-		for( String i : tokens ){
-			pn.getPlace(i).addTokens(1); //equals test??
+	public void putTokens( ArrayList<Token> tokens ) {
+		for( Token token : tokens ){
+			pn.getPlace(token.getPlaceName()).addTokens(1); //equals test??
 		}
 	}
 	
-	public void removeTokens( ArrayList<String> tokens ) {
-		for( String i : tokens ){
-			pn.getPlace(i).removeTokens(1); //equals test??
+	public boolean checkInvisibleToken( Place place ){
+		if( !place.hasAtLeastTokens(1) ){
+			place.addTokens(1);
+			return true;
+		}
+		return false;
+	}
+	
+	public void removeOrTokens(Place finalOrPlace) {
+		Place initialOrPlace = finalOrPlaces.get(finalOrPlace);
+		remove(finalOrPlace, initialOrPlace);
+	}
+	
+	private void remove( Place initial, Place place ) {
+		if( place.getName() != initial.getName() ){
+			
+			if( place.hasAtLeastTokens(1) ) 
+				place.removeTokens(1);
+			
+			for( Arc incomingArcP : place.getIncoming() ){
+				Transition t = incomingArcP.getTransition();
+				for( Arc incomingArcT : t.getIncoming() ){
+					remove(initial, incomingArcT.getPlace());
+				}
+			}
+			
+		}
+	}
+	
+	public void removeTokens( ArrayList<Token> tokens ) {
+		for( Token token : tokens ){
+			pn.getPlace(token.getPlaceName()).removeTokens(1); //equals test??
 		}
 	}
 	
@@ -127,13 +158,21 @@ public class Net {
 		return pn.getPlaces().get(pn.getPlaces().size() - 1);
 	}
 	
+	public Place getFirstInPlaceFromTransition( Transition transition ) {
+		return transition.getIncoming().get(0).getPlace();
+	}
+	
 	private int max( int a, int b) {
 		if( a >= b ) return a;
 		else return b;
 	}
 	
-	public boolean isTwin( Place place ) {
-		return twins.containsKey(place);
+	public boolean isFinalOrPlace( Place place ) {
+		return finalOrPlaces.containsKey(place);
+	}
+	
+	public boolean isInitialOrPlace( Place place ) {
+		return initialOrPlaces.containsKey(place);
 	}
 	
 }

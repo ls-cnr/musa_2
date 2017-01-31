@@ -23,7 +23,8 @@ public class PetriNetConstruction {
 	private HashMap<Transition, Condition> labels;
 	
 	/** */
-	private HashMap<Place, Place> twins;	
+	private HashMap<Place, Place> initialOrPlaces;	
+	private HashMap<Place, Place> finalOrPlaces;
 	
 	/** These variables are used to name places, transitions and arcs in a correct order */
 	private static int p = 0;
@@ -39,8 +40,8 @@ public class PetriNetConstruction {
 		pn = new Petrinet("petrinet");
 		model = m;
 		labels = new HashMap<>();
-		twins = new HashMap<>();
-		
+		initialOrPlaces = new HashMap<>();
+		finalOrPlaces = new HashMap<>();
 		
 		/*Add first place*/
 		pn.place("p"+p++);
@@ -226,13 +227,17 @@ public class PetriNetConstruction {
 		labels.put(transition, goal.getFinal_state());
 	}
 	
-	private void setTwins( Place p1, Place p2 ) {
-		twins.put(p1, p2);
-		twins.put(p2, p1);
+	private void setTwins( Place initialOr, Place finalOr ) {
+		initialOrPlaces.put(initialOr, finalOr);
+		finalOrPlaces.put(finalOr, initialOr);
 	}
 	
-	public HashMap<Place,Place>	getTwins() {
-		return twins;
+	public HashMap<Place,Place>	getInitialOrPlaces() {
+		return initialOrPlaces;
+	}
+	
+	public HashMap<Place,Place>	getFinalOrPlaces() {
+		return finalOrPlaces;
 	}
 	
 }

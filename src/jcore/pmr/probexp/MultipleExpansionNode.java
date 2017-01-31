@@ -30,11 +30,4 @@ public class MultipleExpansionNode extends ExpansionNode{
 	public EvolutionScenario getScenario(ENode node){
 		return this.scenarioList.get(node);
 	}
-	
-	public void createScenarioMap(Collection<EvolutionOperator> TX){
-		Iterator i = TX.iterator();
-		int i = 0;
-		//while(i.hasNext()){
-			//this.addScenario(this.destination.get(i), i.next());
-	}
 }
