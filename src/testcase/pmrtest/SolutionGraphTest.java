@@ -188,6 +188,41 @@ public void setUp(){
 		this.graph.addNode(ex1);
 		this.graph.addNode(ex2);
 		assertEquals(true, this.graph.getWTS().containsKey(ex2.getDestination().get(0).getWorldNode()));
+	}	
+	
+	//Dovrei aver aggiunto tutti gli stateOfWorld diversi: w1,w3,w4,w5,wnull = 5
+	@Test
+	public void addNodeTest3(){
+		this.e3.setExit(true);
+		this.graph.addNode(ex1);
+		this.graph.addNode(ex2);
+		this.graph.addNode(ex3);
+		this.graph.addNode(ex4);
+		this.graph.addNode(ex5);
+		this.graph.addNode(ex6);
+		this.graph.addNode(ex1);
+		this.graph.addNode(ex2);
+		this.graph.addNode(ex3);
+		this.graph.addNode(ex4);
+		this.graph.addNode(ex5);
+		this.graph.addNode(ex6);
+		assertEquals(5, this.graph.getWTS().size());
+	}
+	
+	//WorldNode con OPNode all'interno : n4,n5,null
+	@Test
+	public void addNodeTest4(){
+		this.e3.setExit(true);
+		this.graph.addNode(ex1);
+		this.graph.addNode(ex2);
+		this.graph.addNode(ex3);
+		this.graph.addNode(ex4);
+		this.graph.addNode(ex5);
+		this.graph.addNode(ex6);
+		int a = 0;
+		a = this.graph.getWTS().get(n4).getOPNodeList().size() + this.graph.getWTS().get(n5).getOPNodeList().size()
+				+ this.graph.getWTS().get(new WorldNode(null)).getOPNodeList().size();
+		assertEquals(3, a);
 	}
 	
 	@Test
@@ -210,4 +245,6 @@ public void setUp(){
 		this.graph.addNode(ex3);
 		assertEquals(true, this.graph.getExitNodeMap().containsKey(e4.getWorldNode()));
 	}
+	
+
 }

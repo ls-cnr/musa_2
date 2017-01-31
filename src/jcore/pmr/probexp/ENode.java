@@ -3,6 +3,7 @@ package pmr.probexp;
 import java.util.ArrayList;
 import java.util.Comparator;
 
+import layer.awareness.net.Token;
 import petrinet.logic.Place;
 import pmr.graph.Node;
 import pmr.graph.WorldNode;
@@ -10,7 +11,7 @@ import pmr.graph.WorldNode;
 public class ENode implements Node{
 	
 	private WorldNode node;
-	private ArrayList<String> tokens;
+	private ArrayList<Token> tokens;
 	private int score;
 	private boolean exit;
 	
@@ -19,7 +20,7 @@ public class ENode implements Node{
 		this.exit = false;
 	}
 	
-	public ENode( WorldNode node, ArrayList<String> tokens, int score, boolean exit ) {
+	public ENode( WorldNode node, ArrayList<Token> tokens, int score, boolean exit ) {
 		this.node = node;
 		this.tokens = tokens;
 		this.score = score;
@@ -30,7 +31,7 @@ public class ENode implements Node{
 		return node;
 	}
 	
-	public void setTokens(ArrayList<String> tokens){
+	public void setTokens(ArrayList<Token> tokens){
 		this.tokens = tokens;
 	}
 	
@@ -38,11 +39,11 @@ public class ENode implements Node{
 		this.exit = exit;
 	}
 	
-	public void addToken(String token){
+	public void addToken(Token token){
 		this.tokens.add(token);
 	}
 	
-	public ArrayList<String> getTokens() {
+	public ArrayList<Token> getTokens() {
 		return tokens;
 	}
 	

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 
+import layer.awareness.net.Token;
 import pmr.graph.WTS;
 import pmr.graph.WorldNode;
 import pmr.probexp.ENode;
@@ -12,22 +13,22 @@ import pmr.probexp.NormalExpansionNode;
 
 public class SolutionGraph {
 	private WTS wts;
-	private HashMap<WorldNode, ArrayList<String>> tokenMap;
+	private HashMap<WorldNode, ArrayList<Token>> tokenMap;
 	private HashMap<WorldNode, Double> scoreMapping;
 	private HashMap<WorldNode, WorldNode> exitNodeMap;
 	
 	public SolutionGraph(){
 		this.wts = new WTS();
-		this.tokenMap = new HashMap<WorldNode, ArrayList<String>>();
-		this.scoreMapping = new HashMap<WorldNode, Double>();
-		this.exitNodeMap = new HashMap<WorldNode, WorldNode>();
+		this.tokenMap = new HashMap<>();
+		this.scoreMapping = new HashMap<>();
+		this.exitNodeMap = new HashMap<>();
 	}
 	
 	public HashMap<WorldNode, WorldNode> getWTS(){
 		return this.wts.getWTS();
 	}
 	
-	public HashMap<WorldNode, ArrayList<String>> getTokenMap(){
+	public HashMap<WorldNode, ArrayList<Token>> getTokenMap(){
 		return this.tokenMap;
 	}
 	
