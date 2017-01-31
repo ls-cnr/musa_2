@@ -127,31 +127,48 @@ public class WTS {
 	}
 		
 	
+	public ArrayList<ArrayList<WorldNode>> getSolutions(WorldNode start, HashMap<WorldNode, WorldNode> exitNodeMap){
+		ArrayList<ArrayList<WorldNode>> result = new ArrayList<>();
+		ArrayList<WorldNode> pathNode = new ArrayList <WorldNode>();
+		HashMap <WorldNode,Integer> checkedNode = new HashMap <WorldNode, Integer>();
+		WTSVisit(start, exitNodeMap, result, pathNode, checkedNode);
+		return result;
+	}
+	
+	
 	/*Semplice visita. Percorre tutti i WorldNode ed una volta esauriti i NormalEdge inizia a scorrere, se presente
 	*La lista degli OPNode ripetendo il processo.
 	*/
-	public ArrayList<WorldNode> WTSVisit(WorldNode start){
-		HashMap <WorldNode,Integer> checkedNode = new HashMap <WorldNode, Integer>();
-		ArrayList<WorldNode> pathNode = new ArrayList <WorldNode>();
+	
+	private void WTSVisit(WorldNode start, HashMap<WorldNode, WorldNode> exitNodeMap, ArrayList<ArrayList<WorldNode>> result, 
+			ArrayList<WorldNode> pathNode, HashMap <WorldNode,Integer> checkedNode){
 		
-		if(start == null)
-			return null;
+		if(exitNodeMap.containsKey(start) == true){
+			result.add(pathNode);
+			return;
+		}
 		
 		for(NormalEdge edge : this.graph.get(start).getOutcomingEdgeList()){
 			if(checkedNode.containsKey(edge.getDestination()) == false){
 				pathNode.add(edge.getDestination());
-				pathNode.addAll(WTSVisit(edge.getDestination()));
+				checkedNode.put(start, 1);
+				WTSVisit(edge.getDestination(), exitNodeMap, result, pathNode, checkedNode);
+				pathNode.remove(edge.getDestination());
+				checkedNode.remove(start);
 			}
 		}
+		
 		for(OPNode node : this.graph.get(start).getOPNodeList()){
 			for(int j=0; j<this.graph.get(start).getOPNodeList().size(); j++){
 				if(checkedNode.containsKey(node.getOutcomingEdge().get(j).getDestination()) == false){
 					pathNode.add(node.getOutcomingEdge().get(j).getDestination());
-					pathNode.addAll(WTSVisit(node.getOutcomingEdge().get(j).getDestination()));
+					checkedNode.put(start, 1);
+					WTSVisit(node.getOutcomingEdge().get(j).getDestination(), exitNodeMap, result, pathNode, checkedNode);
+					pathNode.remove(node.getOutcomingEdge().get(j).getDestination());
+					checkedNode.remove(start);
 				}
 			}
 		}
-		return pathNode;
 	}
 	
 	
