@@ -105,12 +105,6 @@ public class WorldNode implements Node {
 		return this.OPList;
 	}
 	
-	//ritorna il valore di hashcode salvato nella variabile (più veloce che calcolarlo)
-	public int getHashCode(){
-		return this.hashCode;
-	}
-	
-	
 	//Rimuove un arco dalla lista degli archi in entrata
 	public boolean removeIncomingEdge(Edge edge){
 		return this.incomingEdgeList.remove(edge);
@@ -171,6 +165,6 @@ public class WorldNode implements Node {
 	//Richiamo il valore della funzione hashcode eseguita una volta alla creazione, lo stateofworld non cambia dopo l'inizializzazione.
 	@Override
 	public int hashCode(){
-			return this.hashCode();
+			return this.hashCode;
 	}
 }	

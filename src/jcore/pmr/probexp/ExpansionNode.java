@@ -9,10 +9,10 @@ import pmr.graph.WorldNode;
 
 public abstract class ExpansionNode implements Node{
 	
-	private AbstractCapability capability;
-	private ArrayList<ENode> destination;
-	private ENode source;
-	private int score;
+	protected AbstractCapability capability;
+	protected ArrayList<ENode> destination;
+	protected ENode source;
+	protected int score;
 	
 	public ExpansionNode(ENode source, ArrayList<ENode> destination, AbstractCapability capability){
 		this.capability = capability;

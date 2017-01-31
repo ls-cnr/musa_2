@@ -85,7 +85,7 @@ public abstract class OPNode implements Node {
 	//Ho modifcato equals, di conseguenza modifico l'hashCode() di StateOfWorld per mantenere la regola delgli oggetti true per equals = Stesso hashcode
 	@Override
 	public int hashCode(){
-		if(this.incomingEdge.getSource().getWorldState() != null)	{
+		if(this.incomingEdge != null && this.incomingEdge.getSource().getWorldState() != null)	{
 			return this.incomingEdge.getSource().getWorldState().hashCode();
 		}
 		else

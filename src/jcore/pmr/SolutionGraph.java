@@ -17,7 +17,28 @@ public class SolutionGraph {
 	private HashMap<WorldNode, Double> scoreMapping;
 	private HashMap<WorldNode, WorldNode> exitNodeMap;
 	
+	public SolutionGraph(){
+		this.wts = new WTS();
+		this.tokenMap = new HashMap<>();
+		this.scoreMapping = new HashMap<>();
+		this.exitNodeMap = new HashMap<>();
+	}
 	
+	public HashMap<WorldNode, WorldNode> getWTS(){
+		return this.wts.getWTS();
+	}
+	
+	public HashMap<WorldNode, ArrayList<Token>> getTokenMap(){
+		return this.tokenMap;
+	}
+	
+	public HashMap<WorldNode, Double> getScoreMapping(){
+		return this.scoreMapping;
+	}
+	
+	public HashMap<WorldNode, WorldNode> getExitNodeMap(){
+		return this.exitNodeMap;
+	}
 	public void addNode(ExpansionNode node){
 		this.wts.addNode(node);
 		this.updateTokenMap(node);
@@ -40,6 +61,7 @@ public class SolutionGraph {
 	}
 	
 	public void updateExitNodeList(ExpansionNode node){
+		if(node.getSource().isExitNode() == true)	this.exitNodeMap.put(node.getSource().getWorldNode(), node.getSource().getWorldNode());
 		Iterator<ENode> i = node.getDestination().iterator();
 		while (i.hasNext()){
 			ENode temp = i.next();
