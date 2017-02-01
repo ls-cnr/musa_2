@@ -68,4 +68,8 @@ public class SolutionGraph {
 			if(temp.isExitNode() == true)	this.exitNodeMap.put(temp.getWorldNode(), temp.getWorldNode());
 		}
 	}
+	
+	public ArrayList<ArrayList<WorldNode>> getSolutions(){
+		return this.wts.getSolutions(new WorldNode(null), this.exitNodeMap);
+	}
 }

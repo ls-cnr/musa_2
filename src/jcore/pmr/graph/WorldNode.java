@@ -45,13 +45,29 @@ public class WorldNode implements Node {
 	
 	//Aggiunge un arco alla lista degli incomingEdge usando l'arco stesso, ritorna falso se la lista contiene già l'arco e non lo aggiunge
 	public boolean addIncomingEdge(Edge edge){
-			if(this.incomingEdgeList.contains(edge) == true){
+		NormalEdge nortemp = null;
+		EvolutionEdge evotemp = null;
+		if(edge instanceof NormalEdge){
+			nortemp = (NormalEdge) edge;
+			if(this.incomingEdgeList.contains(nortemp) == true){
 				return false;
 			}
 			else{
-				this.incomingEdgeList.add(edge);
+				this.incomingEdgeList.add(nortemp);
 				return true;
 			}
+		}
+		
+		else{
+			evotemp = (EvolutionEdge) edge;
+			if(this.incomingEdgeList.contains(evotemp) == true){
+				return false;
+			}
+			else{
+				this.incomingEdgeList.add(evotemp);
+				return true;
+			}
+		}
 	}
 	
 	//Aggiunge un arco alla lista degli outcomingEdge usando l'arco stesso

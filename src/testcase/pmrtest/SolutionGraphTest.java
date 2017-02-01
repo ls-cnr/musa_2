@@ -49,12 +49,15 @@ public class SolutionGraphTest {
 	private ENode e5;
 	private ENode e6;
 	
+	private ExpansionNode ex0;
 	private ExpansionNode ex1;
 	private ExpansionNode ex2;
 	private ExpansionNode ex3;
 	private ExpansionNode ex4;
 	private ExpansionNode ex5;
 	private ExpansionNode ex6;
+	
+	private ExpansionNode ex1Repeat;
 	
 	private AbstractCapability cap1;
 	private AbstractCapability cap2;
@@ -131,10 +134,10 @@ public void setUp(){
 	}
 	
 
-	this.n1 = new WorldNode(w4);
-	this.n2 = new WorldNode(w3);
-	this.n3 = new WorldNode(w1);
-	this.n4 = new WorldNode(w2);
+	this.n1 = new WorldNode(w1);
+	this.n2 = new WorldNode(w2);
+	this.n3 = new WorldNode(w3);
+	this.n4 = new WorldNode(w4);
 	this.n5 = new WorldNode(w5);
 	
 	this.e1 = new ENode(n1);
@@ -144,43 +147,58 @@ public void setUp(){
 	this.e5 = new ENode(new WorldNode(null));
 	this.e6 = new ENode(n5);
 	
+	ArrayList<ENode> ENodeList123 = new ArrayList<ENode>();
+	ENodeList123.add(e1);
+	ENodeList123.add(e2);
+	ENodeList123.add(e3);
+	
 	ArrayList<ENode> ENodeList1 = new ArrayList<ENode>();
 	ENodeList1.add(e1);
-	ENodeList1.add(e2);
-	ENodeList1.add(e3);
 	
 	ArrayList<ENode> ENodeList2 = new ArrayList<ENode>();
 	ENodeList2.add(e2);
 	
 	ArrayList<ENode> ENodeList3 = new ArrayList<ENode>();
 	ENodeList3.add(e3);
+	
+	ArrayList<ENode> ENodeList4 = new ArrayList<ENode>();
+	ENodeList4.add(e4);
 
-	this.ex1 = new NormalExpansionNode(e5, ENodeList2, cap1);
+	this.ex0 = new NormalExpansionNode(new ENode(new WorldNode(null)), ENodeList1, cap1);
+	this.ex1 = new NormalExpansionNode(e1, ENodeList2, cap1);
 	this.ex2 = new NormalExpansionNode(e2, ENodeList3, cap2);
-	this.ex3 = new NormalExpansionNode(e3, ENodeList1, cap3);
-	this.ex4 = new MultipleExpansionNode(e4, ENodeList1, cap1);
-	this.ex5 = new MultipleExpansionNode(e5, ENodeList1, cap1);
-	this.ex6 = new MultipleExpansionNode(e6, ENodeList1, cap1);
+	this.ex3 = new NormalExpansionNode(e3, ENodeList4, cap3);
+	this.ex4 = new MultipleExpansionNode(e4, ENodeList123, cap1);
+	this.ex5 = new MultipleExpansionNode(e5, ENodeList123, cap1);
+	this.ex6 = new MultipleExpansionNode(e6, ENodeList123, cap1);
 	
 	this.graph = new SolutionGraph();
 }
 
 /* w1 ha lo stesso DLPHead Set di w2
- * n3 ha lo stesso StateOfWorld di n4
- * e3 ha lo stesso StateOfWorld di e4
+ * n1 ha lo stesso StateOfWorld di n2
+ * e1 ha lo stesso StateOfWorld di e2
+ * ex1 ha lo stesso StateOfWorld di ex2
  * e5 ha null come StateOfWorld
  * x1 ha la stessa capability di x4
  * ex1 ha la stessa capability di ex4
  * ex1 contiene e5 che ha null come StateOfWorld
  * ex3 ha la stessa destNodeList di ex4
  * ex4 è di tipo MultipleExpansionNode
- * ex5 è di tipo MultipleExpansionNode ed ha null come source
+ * ex5 è di tipo MultipleExpansionNode ed ha e5 come source che ha null come StateOfWorld
  */
 
+//Il nodo iniziale viene sempre riconosciuto tramite un new WorldNode(null)
 	@Test
 	public void addNodeTest(){
-		this.graph.addNode(ex1);
-		assertEquals(true, this.graph.getWTS().containsKey(ex1.getSource().getWorldNode()));
+		assertEquals(true, this.graph.getWTS().containsKey(ex0.getSource().getWorldNode()));
+		assertEquals(null, this.graph.getWTS().get(new WorldNode(null)).getWorldState());
+		assertEquals(true, this.graph.getWTS().get(new WorldNode(null)).equals(new WorldNode(null)));
+
+		this.graph.addNode(ex0);
+		
+		assertEquals(2,this.graph.getWTS().size());
+		assertEquals(1, this.graph.getWTS().get(new WorldNode(null)).getOutcomingEdgeList().size());
 	}
 	
 	@Test
@@ -243,8 +261,37 @@ public void setUp(){
 	public void exitNodeTest3(){
 		this.e3.setExit(true);
 		this.graph.addNode(ex3);
-		assertEquals(true, this.graph.getExitNodeMap().containsKey(e4.getWorldNode()));
+		assertEquals(true, this.graph.getExitNodeMap().containsKey(e3.getWorldNode()));
 	}
 	
+	
+	//WNull -> n1, n1 -> n2 ma n1 = n2 quindi n1 -> n1, n2=n1 -> n3
+	// n1 outlist = 2 archi, n1 inlist = 2 archi.
+	//n1 = n2
+	@Test
+	public void edgeTest1(){
+		this.graph.addNode(ex0);
+		this.graph.addNode(ex1);
+		this.graph.addNode(ex2);
+		assertEquals(1, this.graph.getWTS().get(new WorldNode(null)).getOutcomingEdgeList().size());
+		assertEquals(2, this.graph.getWTS().get(n1).getOutcomingEdgeList().size());
+		assertEquals(2, this.graph.getWTS().get(n1).getIncomingEdgeList().size());
+		
+	}
+	
+	//WNull -> n1 -> n2 ma n1=n2 quindi n1 -> n1, n2=n1 -> n3, n3 -> n4, n4 nodo uscita
+	//Percorso1: Wnull->n1->n1->n3->n4
+	//Percorso2: Wnull->n1 (n1 checked)
+	@Test
+	public void visitTest1(){
+		this.e4.setExit(true);
+		this.graph.addNode(ex0);
+		this.graph.addNode(ex1);
+		this.graph.addNode(ex2);
+		this.graph.addNode(ex3);
+		ArrayList<ArrayList<WorldNode>> solution = this.graph.getSolutions();
+		assertEquals(1, solution.size());
+		assertEquals(4, solution.get(0).size());
+	}
 
 }

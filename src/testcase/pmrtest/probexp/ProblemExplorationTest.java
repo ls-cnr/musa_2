@@ -8,6 +8,10 @@ import org.junit.Before;
 import org.junit.Test;
 
 import layer.awareness.AbstractCapability;
+import layer.awareness.Goal;
+import layer.awareness.goalmodel.GoalModel;
+import layer.awareness.net.Net;
+import layer.awareness.net.Token;
 import layer.semantic.StateOfWorld;
 import net.sf.tweety.lp.asp.parser.ParseException;
 import pmr.graph.WorldNode;
@@ -58,6 +62,9 @@ public class ProblemExplorationTest {
 	private AbstractCapability cap1;
 	private AbstractCapability cap2;
 	private AbstractCapability cap3;
+	
+	private GoalModel model;
+	ArrayList<Token> rosso;
 	
 @Before
 public void setUp(){
@@ -161,6 +168,27 @@ public void setUp(){
 	this.ex5 = new MultipleExpansionNode(e5, ENodeList1, cap1);
 	this.ex6 = new MultipleExpansionNode(e6, ENodeList1, cap1);
 	
+	ArrayList<Goal> gs = new ArrayList<>();
+	ArrayList<Goal> gsor = new ArrayList<>();
+	ArrayList<Goal> gsandor = new ArrayList<>();
+	gs.add(new Goal("secondo", null, null));
+	gs.add(new Goal("terzo", null, null));
+	gsor.add(new Goal("quarto", null, null));
+	gsor.add(new Goal("quinto", null, null));
+	gsandor.add(new Goal("sesto", null, null));
+	gsandor.add(new Goal("settimo", null, null));
+	
+	model.addAndArcs(new Goal("root", null, null), gs);
+	model.addOrArcs(new Goal("terzo", null, null), gsor);
+	model.addAndArcs(new Goal("quinto", null, null), gsandor);
+	
+	this.rosso = new ArrayList<>();
+	this.rosso.add(new Token("p10"));
+	this.rosso.add(new Token("p11"));
+	this.rosso.add(new Token("p3"));
+	
+	this.exploration = new ProblemExploration(model);
+	
 }
 
 /* w1 ha lo stesso DLPHead Set di w2
@@ -174,4 +202,10 @@ public void setUp(){
  * ex4 è di tipo MultipleExpansionNode
  * ex5 è di tipo MultipleExpansionNode ed ha null come source
  */
+
+	@Test
+	public void applyNetTest(){
+	}
 }
+
+

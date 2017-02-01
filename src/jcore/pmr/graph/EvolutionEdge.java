@@ -57,9 +57,10 @@ public class EvolutionEdge implements Edge {
 			if(this.source == null && temp.getSource() == null)
 				if(this.destination == null && temp.getDestination() == null )	return true;
 			
-			if(this.source.equals(temp.getSource()) == false)				return false;
-			if(this.destination.equals(temp.getDestination()) == false)		return false;
-			return true;
+			if(this.source.equals(temp.getSource()) == true)
+				if(this.destination.equals(temp.getDestination()) == true)		return true;
+			
+			return false;
 		}
 		else return false;
 	}

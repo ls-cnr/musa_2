@@ -17,10 +17,7 @@ public class WTS {
 
 	public WTS(){ 
 		this.graph = new HashMap<WorldNode, WorldNode> ();
-		WorldNode tempnode = new WorldNode(null);
-		ArrayList<NormalEdge> templist = new ArrayList<NormalEdge>();
-		tempnode.setOutcomingEdgeList(templist);
-		this.graph.put(tempnode, tempnode);
+		this.graph.put(new WorldNode(null), new WorldNode(null));
 	}
 	
 	
@@ -36,7 +33,7 @@ public class WTS {
 			WorldNode destination2 = this.graph.get(tempnode.getDestination().get(0).getWorldNode());
 			
 			//Metodo che aggiunge l'arco in entrata ed in uscita
-			this.addEdge(tempnode.getSource().getWorldNode(), destination2, tempnode.getCapability());			}
+			this.addEdge(this.graph.get(tempnode.getSource().getWorldNode()), destination2, tempnode.getCapability());			}
 		else{
 			//Aggiorno il nodo presente nel grafo, aggiungendogli un OPNode all'interno
 			MultipleExpansionNode exptempnode = (MultipleExpansionNode) newnode;
@@ -127,31 +124,50 @@ public class WTS {
 	}
 		
 	
+	public ArrayList<ArrayList<WorldNode>> getSolutions(WorldNode start, HashMap<WorldNode, WorldNode> exitNodeMap){
+		ArrayList<ArrayList<WorldNode>> result = new ArrayList<>();
+		ArrayList<WorldNode> pathNode = new ArrayList <WorldNode>();
+		HashMap <WorldNode,Integer> checkedNode = new HashMap <WorldNode, Integer>();
+		WTSVisit(start, exitNodeMap, result, pathNode, checkedNode);
+		return result;
+	}
+	
+	
 	/*Semplice visita. Percorre tutti i WorldNode ed una volta esauriti i NormalEdge inizia a scorrere, se presente
 	*La lista degli OPNode ripetendo il processo.
 	*/
-	public ArrayList<WorldNode> WTSVisit(WorldNode start){
-		HashMap <WorldNode,Integer> checkedNode = new HashMap <WorldNode, Integer>();
-		ArrayList<WorldNode> pathNode = new ArrayList <WorldNode>();
+	
+	private void WTSVisit(WorldNode start, HashMap<WorldNode, WorldNode> exitNodeMap, ArrayList<ArrayList<WorldNode>> result, 
+			ArrayList<WorldNode> pathNode, HashMap <WorldNode,Integer> checkedNode){
 		
-		if(start == null)
-			return null;
+		if(exitNodeMap.containsKey(start) == true){
+			pathNode.add(start);
+			ArrayList<WorldNode> temp = new ArrayList<>(pathNode);
+			result.add(temp);
+			pathNode.remove(start);
+			return;
+		}
 		
 		for(NormalEdge edge : this.graph.get(start).getOutcomingEdgeList()){
-			if(checkedNode.containsKey(edge.getDestination()) == false){
-				pathNode.add(edge.getDestination());
-				pathNode.addAll(WTSVisit(edge.getDestination()));
+			if(checkedNode.containsKey(start) == false){
+				pathNode.add(start);
+				checkedNode.put(start, 1);
+				WTSVisit(edge.getDestination(), exitNodeMap, result, pathNode, checkedNode);
+				pathNode.remove(start);
 			}
 		}
+		
 		for(OPNode node : this.graph.get(start).getOPNodeList()){
 			for(int j=0; j<this.graph.get(start).getOPNodeList().size(); j++){
 				if(checkedNode.containsKey(node.getOutcomingEdge().get(j).getDestination()) == false){
 					pathNode.add(node.getOutcomingEdge().get(j).getDestination());
-					pathNode.addAll(WTSVisit(node.getOutcomingEdge().get(j).getDestination()));
+					checkedNode.put(start, 1);
+					WTSVisit(node.getOutcomingEdge().get(j).getDestination(), exitNodeMap, result, pathNode, checkedNode);
+					pathNode.remove(node.getOutcomingEdge().get(j).getDestination());
 				}
 			}
 		}
-		return pathNode;
+		checkedNode.remove(start);
 	}
 	
 	
