@@ -6,8 +6,8 @@ public class MultipleToken extends Token{
 		super(placeName);
 	}
 	
-	public MultipleToken( Token init ){
-		super(init.getPlaceName());
+	public MultipleToken( String placeName, MultipleToken depend ){
+		super(placeName, depend);
 	}
 
 }

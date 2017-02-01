@@ -9,8 +9,10 @@ import org.junit.Test;
 
 import layer.awareness.*;
 import layer.awareness.goalmodel.GoalModel;
+import layer.awareness.net.MultipleToken;
 import layer.awareness.net.Net;
 import layer.awareness.net.Token;
+import net.sf.tweety.agents.MultiAgentSystem;
 import petrinet.logic.*;
 
 import java.util.ArrayList;
@@ -108,6 +110,10 @@ public class NetTest {
 		rosso.add(new Token("p10"));
 		rosso.add(new Token("p11"));
 		rosso.add(new Token("p3"));
+		
+		MultipleToken token = new MultipleToken("p5");
+		rosso.add( token );
+		rosso.add(new Token("p7", token));
 		assertEquals(net.hop(rosso), 5);
 		
 		ArrayList<Token> verde = new ArrayList<>();

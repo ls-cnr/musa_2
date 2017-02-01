@@ -162,12 +162,20 @@ public class ProblemExploration {
 				Place place = net.getFirstInPlaceFromTransition(t);
 				
 				if( net.isInitialOrPlace(place) ){
-					if( !net.checkInvisibleToken(place) ) 
-						tokens.add( new MultipleToken(place.getName()) );
+					
+					MultipleToken mulTok = null;
+					if( !net.checkMultipleToken(place) ){ 
+						mulTok = new MultipleToken(place.getName());
+						tokens.add(mulTok);
+					}
+					if( mulTok == null )
+						for( Token mulTokOld : tokens )
+							if( mulTokOld.getPlaceName() == place.getName() )
+								mulTok = (MultipleToken) mulTokOld;
 					
 					for(Arc arcOut : t.getOutgoing()){		//Adding tokens from the fired transition outgoing places 
 						Place finalPlace = arcOut.getPlace();
-						tokens.add( new Token(finalPlace.getName()) ); //It's sure that it isn't a finalOrPlace
+						tokens.add( new Token(finalPlace.getName(), mulTok) ); //It's sure that it isn't a finalOrPlace
 					}
 				}
 				else
@@ -175,26 +183,28 @@ public class ProblemExploration {
 						Place finalPlace = arcOut.getPlace();
 						if( net.isFinalOrPlace(finalPlace) ) {
 							tokens.add( new Token(finalPlace.getName()) );
-							net.removeOrTokens(finalPlace);
+							net.removeOrTokens(finalPlace, tokens);
 							for( int j = i + 1; j < transitionsATF.size(); j++ )
 								if( !transitionsATF.get(j).canFire() )
 									transitionsATF.remove(j);
 						}
 						else
-							tokens.add( new Token(finalPlace.getName()) );
+							for( Token initToken : startingTokens )
+								if( initToken.getPlaceName() == place.getName() )
+									tokens.add( new Token(finalPlace.getName(), initToken.getDependentToken()) );
 					}
 				
 				t.fire();
 			}
 			else
-				for(Arc arcIn : t.getIncoming()){		//Adding tokens from the transition ingoing places
+				for(Arc arcIn : t.getIncoming()){		//Adding tokens from the transition incoming places
 					Place p = arcIn.getPlace();
 					for( Token initToken : startingTokens )
 						if( initToken.getPlaceName() == p.getName() ){
 							if( initToken instanceof MultipleToken )
-								tokens.add(new MultipleToken(initToken));
+								tokens.add(new MultipleToken(initToken.getPlaceName(), initToken.getDependentToken()));
 							else 
-								tokens.add( new Token(initToken.getPlaceName()) );
+								tokens.add( new Token(initToken.getPlaceName(), initToken.getDependentToken()) );
 							break;
 						}	
 				}

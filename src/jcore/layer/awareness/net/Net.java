@@ -13,8 +13,9 @@ public class Net {
 	private Petrinet pn;
 	private HashMap<Transition, Condition> labels;
 	private HashMap<Transition, Integer> hopMap;
-	private HashMap<Place,Place> initialOrPlaces;
-	private HashMap<Place,Place> finalOrPlaces;
+	private HashMap<Place, Place> initialOrPlaces;
+	private HashMap<Place, Place> finalOrPlaces;
+	
 	private int numTransitions;
 	
 	public Net( GoalModel model ) {
@@ -23,7 +24,7 @@ public class Net {
 		pn = construction.getPetrinet();
 		labels = construction.getLabels();
 		initialOrPlaces = construction.getInitialOrPlaces();
-		finalOrPlaces = construction.getFinalOrPlaces();
+		finalOrPlaces = construction.getFinalOrPlaces(); 
 		
 		numTransitions = pn.getTransitions().size();
 	}
@@ -32,12 +33,13 @@ public class Net {
 		hopMap = new HashMap<>();
 		int hopValue = 0;
 		for( Token token : tokens )
-			hopValue += hopToken(getPlace(token.getPlaceName()));
+			if( !token.isDependent() && !(token instanceof MultipleToken) )
+				hopValue += hopToken(getPlace(token.getPlaceName()));
 		return hopValue;
 	}
 	
 	private int hopToken( Place place ) {
-		if( place.getOutgoing().isEmpty() )
+		if( place.equals(getLast()) )
 			return 0;
 		else{
 			int general = 0;
@@ -111,7 +113,7 @@ public class Net {
 		}
 	}
 	
-	public boolean checkInvisibleToken( Place place ){
+	public boolean checkMultipleToken( Place place ){
 		if( !place.hasAtLeastTokens(1) ){
 			place.addTokens(1);
 			return true;
@@ -119,26 +121,35 @@ public class Net {
 		return false;
 	}
 	
-	public void removeOrTokens(Place finalOrPlace) {
+	public void removeOrTokens( Place finalOrPlace, ArrayList<Token> tokens ) {
 		Place initialOrPlace = finalOrPlaces.get(finalOrPlace);
-		remove(finalOrPlace, initialOrPlace);
+		remove(finalOrPlace, initialOrPlace, tokens);
 	}
 	
-	private void remove( Place initial, Place place ) {
-		if( place.getName() != initial.getName() ){
-			
-			if( place.hasAtLeastTokens(1) ) 
+	private void remove( Place initial, Place place, ArrayList<Token> tokens ) {
+		if( place.getName() == initial.getName() )
+			for( int i = 0; i < tokens.size(); i++ )
+				if( tokens.get(i).getPlaceName() == place.getName() )
+					tokens.remove(i);
+		else{
+			if( place.hasAtLeastTokens(1) ){ 
 				place.removeTokens(1);
+				for( int j = 0; j < tokens.size(); j++ )
+					if( tokens.get(j).getPlaceName() == place.getName() )
+						tokens.remove(j);
+			}
 			
 			for( Arc incomingArcP : place.getIncoming() ){
 				Transition t = incomingArcP.getTransition();
 				for( Arc incomingArcT : t.getIncoming() ){
-					remove(initial, incomingArcT.getPlace());
+					remove(initial, incomingArcT.getPlace(), tokens);
 				}
 			}
 			
 		}
 	}
+	
+	
 	
 	public void removeTokens( ArrayList<Token> tokens ) {
 		for( Token token : tokens ){

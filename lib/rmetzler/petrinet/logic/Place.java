@@ -108,6 +108,13 @@ extends PetrinetObject {
   	public List<Arc> getOutgoing() {
   		return outgoing;
   	}
+  	
+  	public boolean equals( Place place ) {
+  		if( this.getName() == place.getName() )
+  			return true;
+  		else 
+  			return false;
+  	}
          
     @Override
     public String toString() {
