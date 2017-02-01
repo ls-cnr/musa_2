@@ -201,8 +201,8 @@ public class ProblemExploration {
 		}
 		
 		net.removeTokens(tokens); //Cleans the net from tokens
-		
-		fillENode(enode, tokens);//Fills up enode
+		enode.setTokens(tokens);
+		//fillENode(enode, tokens);//Fills up enode
 	}
 	
 	/**

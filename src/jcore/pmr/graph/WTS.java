@@ -17,10 +17,7 @@ public class WTS {
 
 	public WTS(){ 
 		this.graph = new HashMap<WorldNode, WorldNode> ();
-		WorldNode tempnode = new WorldNode(null);
-		ArrayList<NormalEdge> templist = new ArrayList<NormalEdge>();
-		tempnode.setOutcomingEdgeList(templist);
-		this.graph.put(tempnode, tempnode);
+		this.graph.put(new WorldNode(null), new WorldNode(null));
 	}
 	
 	
@@ -36,7 +33,7 @@ public class WTS {
 			WorldNode destination2 = this.graph.get(tempnode.getDestination().get(0).getWorldNode());
 			
 			//Metodo che aggiunge l'arco in entrata ed in uscita
-			this.addEdge(tempnode.getSource().getWorldNode(), destination2, tempnode.getCapability());			}
+			this.addEdge(this.graph.get(tempnode.getSource().getWorldNode()), destination2, tempnode.getCapability());			}
 		else{
 			//Aggiorno il nodo presente nel grafo, aggiungendogli un OPNode all'interno
 			MultipleExpansionNode exptempnode = (MultipleExpansionNode) newnode;
@@ -144,17 +141,19 @@ public class WTS {
 			ArrayList<WorldNode> pathNode, HashMap <WorldNode,Integer> checkedNode){
 		
 		if(exitNodeMap.containsKey(start) == true){
-			result.add(pathNode);
+			pathNode.add(start);
+			ArrayList<WorldNode> temp = new ArrayList<>(pathNode);
+			result.add(temp);
+			pathNode.remove(start);
 			return;
 		}
 		
 		for(NormalEdge edge : this.graph.get(start).getOutcomingEdgeList()){
-			if(checkedNode.containsKey(edge.getDestination()) == false){
-				pathNode.add(edge.getDestination());
+			if(checkedNode.containsKey(start) == false){
+				pathNode.add(start);
 				checkedNode.put(start, 1);
 				WTSVisit(edge.getDestination(), exitNodeMap, result, pathNode, checkedNode);
-				pathNode.remove(edge.getDestination());
-				checkedNode.remove(start);
+				pathNode.remove(start);
 			}
 		}
 		
@@ -165,10 +164,10 @@ public class WTS {
 					checkedNode.put(start, 1);
 					WTSVisit(node.getOutcomingEdge().get(j).getDestination(), exitNodeMap, result, pathNode, checkedNode);
 					pathNode.remove(node.getOutcomingEdge().get(j).getDestination());
-					checkedNode.remove(start);
 				}
 			}
 		}
+		checkedNode.remove(start);
 	}
 	
 	
