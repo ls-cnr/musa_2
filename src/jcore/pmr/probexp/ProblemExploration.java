@@ -1,7 +1,6 @@
 package pmr.probexp;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Iterator;
 
 import layer.awareness.AbstractCapability;
@@ -18,7 +17,8 @@ import petrinet.logic.Transition;
 import pmr.graph.WorldNode;
  
 /**
- * The Artifact ProblemExploration.
+ * The Artifact ProblemExploration. It's used by an Agent to perform evolution for the various StateOfWorld passed, using his Capability.
+ * It keeps a list of all the expanded nodes ready for bidding in auctions.
  * @author Alessandro Fontana, Mirko Zichichi
  */
 public class ProblemExploration {
@@ -56,102 +56,55 @@ public class ProblemExploration {
 	}
 
 	/**
-	 * Adds the to visit.
+	 * This Operation is used to add a new world node to the toVisit List.
 	 *
 	 * @param node
-	 *            the node
+	 *            the WorldNode from SolutionGraph
 	 * @param tokens
-	 *            the tokens
+	 *            the Tokens List associated to that node 
 	 * @param score
-	 *            the score
+	 *            the Score associated to that node
 	 */
 	public void addToVisit( WorldNode node, ArrayList<Token> tokens, int score ) {
 		toVisit.add( new ENode(node, tokens, score, false) );
 		toVisit.sort(ENode.getScoreComparator());
 	}
+	
+	/**
+	 * The main operation, it's used to expand an ENode from the toVisit List.
+	 * It entails if one of is Capability is compatible with the StateOfWorld contained in the ENode.
+	 * If so, it calls a set of methods used to ultimate the expansion, in order: applyExpand, applyNet, score.
+	 * Finally, whatever the case is, it adds the ENode to the visited List. 
+	 */
+	public void expandNode() {
+		ENode enode = getHighestNodeToVisit();
 		
+		for( AbstractCapability capability : capabilities )
+			if(DomainEntail.getInstance().entailsCondition(enode.getWorldNode().getWorldState(), this.assumptions, capability.getPreCondition()) == true){
+				//Starts the expansion
+				ExpansionNode expNode = applyExpand(enode, capability);
+				//Applies the net to ultimate the expansion
+				for( ENode destination : expNode.getDestination() )
+					applyNet(expNode.getSource().getTokens(), destination);
+				//Elaborates the Expansion score
+				score(expNode);
+				//Adds the Expansion to the List in order 
+				expandedList.add(expNode);
+				expandedList.sort(ExpansionNode.getScoreComparator());
+			}
+		
+		visited.add(enode);
+	}	
 	
 	/**
-	 * Sets the capabilities.
+	 * Operation used to get the highest ExpansionNode
 	 *
-	 * @param capabilities
-	 *            the new capabilities
-	 */
-	public void setCapabilities(ArrayList<AbstractCapability> capabilities){
-		this.capabilities = capabilities;
-	}
-	
-	/**
-	 * Adds the capability.
-	 *
-	 * @param capability
-	 *            the capability
-	 */
-	public void addCapability(AbstractCapability capability){
-		this.capabilities.add(capability);
-	}
-	
-	/**
-	 * Gets the highest expansion.
-	 *
-	 * @return the highest expansion
+	 * @return the highest ExpansionNode
 	 */
 	public ExpansionNode getHighestExpansion(){
 		int index = this.expandedList.size() - 1;
 		return this.expandedList.get(index);
 	}
-	
-	/**
-	 * Removes the expanded list.
-	 */
-	public void removeExpandedList(){
-		this.expandedList.removeAll(this.expandedList);
-	}
-	/*
-	START
-	eN <- highestNodeToVisit        (remove)
-	for each C in Capability
-	       if eN.StateOfW |= c.precondition == true then 
-	             expansionNode <- apply_expand(C, eN)
-	             apply_pn(expansionNode)
-	             score(expansionNode)
-	             ExpandList <- expansionNode
-	Visited <- eN
-	END
-	*/	
-	
-	/**
-	 * Expand node.
-	 */
-	public void expandNode() {
-		ENode enode = getHighestNodeToVisit();
-		for( AbstractCapability capability : capabilities ){
-			if(DomainEntail.getInstance().entailsCondition(enode.getWorldNode().getWorldState(), this.assumptions, capability.getPreCondition()) == true){
-				ExpansionNode expNode = applyExpand(enode, capability);
-			
-				
-				for( ENode destination : expNode.getDestination() )
-					applyNet(expNode.getSource().getTokens(), destination);
-				
-				score(expNode);
-				
-				expandedList.add(expNode);
-				expandedList.sort(ExpansionNode.getScoreComparator());
-			}
-			visited.add(enode);
-		}
-	}
-	
-	/**
-	 * Gets the highest node to visit.
-	 *
-	 * @return the highest node to visit
-	 */
-	public ENode getHighestNodeToVisit(){
-		int index = toVisit.size() - 1;
-		return toVisit.remove(index);
-	}
-	
 	
 	//Funzione che crea gli stati del mondo successivi, applicando un'evoluzione agli scenari associati alla capability passata
 	/**
@@ -208,7 +161,15 @@ public class ProblemExploration {
 	 * entails the condition labeled in the transition (trigger condition or
 	 * final state). Then if the condition is true, it fires the token and
 	 * elaborate the new token map. Finally it calls fillENode to fill up the
-	 * enode.
+	 * ENode.
+	 * 
+	 * It handles the creation of a new Token List considering the OR "special"
+	 * condition. Every Conditional Case has an InitialOrPlace and a FinalOrPlace.
+	 * The InitialOrPlace has a special MultipleToken that allows to start 
+	 * multiple parallel path for that case. In every path, called Branch, every
+	 * new Token is created dependent from the MultipleToken and with his branch
+	 * stored. When the first Token gets to the FinalOrPlace, it wins the "race"
+	 * and all the remaining Tokens in every parallel path are destroyed.
 	 *
 	 * @param startingTokens
 	 *            the list of token to start with
@@ -218,19 +179,19 @@ public class ProblemExploration {
 	private void applyNet( ArrayList<Token> startingTokens, ENode enode ) {
 		StateOfWorld state = enode.getWorldNode().getWorldState();
 		ArrayList<Token> tokens = new ArrayList<>();
-		
-		net.putTokens(startingTokens);	//Prepares the net with tokens
-		
+		//Prepares the net with tokens
+		net.putTokens(startingTokens);	
 		ArrayList<Transition> transitionsATF= net.getTransitionsAbleToFire();
 		
-		//checking and firing
+		//Checking compatibility with StateOfWorld for every Transition and Firing
 		for( int i = 0, count = 0; i < transitionsATF.size(); i++ ){
 			Transition t = transitionsATF.get(i);
+			
 			if( DomainEntail.getInstance().entailsCondition(state, assumptions, net.getTransitionLabel(t)) ){
 				Place place = net.getFirstInPlaceFromTransition(t);
-				
+				//Starting a "special" OR condition 
 				if( net.isInitialOrPlace(place) ){
-					
+					//Checking MultipleToken presence and Getting the reference
 					MultipleToken mulTok = null;
 					if( !net.checkMultipleToken(place) ){ 
 						mulTok = new MultipleToken(place.getName());
@@ -241,15 +202,19 @@ public class ProblemExploration {
 							if( mulTokOld.getPlaceName() == place.getName() )
 								mulTok = (MultipleToken) mulTokOld;
 					
-					for(Arc arcOut : t.getOutgoing()){		//Adding tokens from the fired transition outgoing places 
+					//Adding Tokens for the fired Transition outgoing Places, setting DependentToken and Branch for each one
+					for(Arc arcOut : t.getOutgoing()){		
 						Place finalPlace = arcOut.getPlace();
 						tokens.add( new Token(finalPlace.getName(), mulTok, count) ); //It's sure that it isn't a finalOrPlace
 					}
 					count++;
 				}
+				//Normal case
 				else
+					//Adding Tokens for the fired Transition outgoing Places
 					for( Arc arcOut : t.getOutgoing() ){
 						Place finalPlace = arcOut.getPlace();
+						//If finalOrPlace removes Tokens in special OR condition and their associated Transitions 
 						if( net.isFinalOrPlace(finalPlace) ) {
 							tokens.add( new Token(finalPlace.getName()) );
 							net.removeOrTokens(finalPlace, tokens);
@@ -266,7 +231,8 @@ public class ProblemExploration {
 				t.fire();
 			}
 			else
-				for(Arc arcIn : t.getIncoming()){		//Adding tokens from the transition incoming places
+				//Copying tokens from the transition incoming places
+				for(Arc arcIn : t.getIncoming()){		
 					Place p = arcIn.getPlace();
 					for( Token initToken : startingTokens )
 						if( initToken.getPlaceName() == p.getName() ){
@@ -279,13 +245,15 @@ public class ProblemExploration {
 				}
 		}
 		
-		net.removeTokens(tokens); //Cleans the net from tokens
-		enode.setTokens(tokens);
-		//fillENode(enode, tokens);//Fills up enode
+		//Cleans the net from tokens
+		net.removeTokens(tokens); 
+		
+		//Fills up ENode
+		fillENode(enode, tokens);
 	}
 	
 	/**
-	 * This method is used in applyNet to fill up the remaining attributes in enode.
+	 * This method is used in applyNet to fill up the remaining attributes in ENode.
 	 * 
 	 * First part consists in setting the list of tokens.
 	 * 
@@ -296,9 +264,9 @@ public class ProblemExploration {
 	 * in between to represent GRAY.
 	 *
 	 * @param enode
-	 *            the enode to fill up
+	 *            the ENode to fill up
 	 * @param tokens
-	 *            the enode's tokens 
+	 *            the ENode's tokens 
 	 */
 	private void fillENode( ENode enode, ArrayList<Token> tokens ) {
 				
@@ -337,6 +305,43 @@ public class ProblemExploration {
 	}
 	
 	/**
+	 * Method used to get the highest node to visit.
+	 *
+	 * @return the highest node to visit
+	 */
+	private ENode getHighestNodeToVisit(){
+		int index = toVisit.size() - 1;
+		return toVisit.remove(index);
+	}
+	
+	/**
+	 * Removes the expanded list.
+	 */
+	public void removeExpandedList(){
+		this.expandedList.removeAll(this.expandedList);
+	}
+	
+	/**
+	 * This operation is used to set new Capabilities
+	 *
+	 * @param capabilities
+	 *            the new Capabilities List
+	 */
+	public void setCapabilities(ArrayList<AbstractCapability> capabilities){
+		this.capabilities = capabilities;
+	}
+	
+	/**
+	 * This operation is used to add a new Capability
+	 *
+	 * @param capability
+	 *            the new Capability
+	 */
+	public void addCapability(AbstractCapability capability){
+		this.capabilities.add(capability);
+	}
+	
+	/**
 	 * A standard method for finding the minimum value between two.
 	 *
 	 * @param a
@@ -350,19 +355,5 @@ public class ProblemExploration {
 			return a;
 		else 
 			return b;
-	}
-	
-	/**
-	 * To visit sort.
-	 */
-	public void toVisitSort(){
-		Collections.sort(this.toVisit, ENode.getScoreComparator());
-	}
-	
-	/**
-	 * Expansion list sort.
-	 */
-	public void expansionListSort(){
-		Collections.sort(this.expandedList, ExpansionNode.getScoreComparator());
 	}
 }
