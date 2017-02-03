@@ -2,12 +2,31 @@ package pmr.graph;
 
 import layer.awareness.AbstractCapability;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class NormalEdge.
+ */
 public class NormalEdge implements Edge {
 	
+	/** The source. */
 	private WorldNode source;
+	
+	/** The destination. */
 	private WorldNode destination;
+	
+	/** The capability. */
 	private AbstractCapability capability;
 
+	/**
+	 * Instantiates a new normal edge.
+	 *
+	 * @param source
+	 *            the source
+	 * @param destination
+	 *            the destination
+	 * @param capability
+	 *            the capability
+	 */
 	public NormalEdge(WorldNode source, WorldNode destination, AbstractCapability capability){
 		super();
 		this.source = source;
@@ -15,30 +34,66 @@ public class NormalEdge implements Edge {
 		this.capability = capability;
 	}
 	
+	/**
+	 * Gets the source.
+	 *
+	 * @return the source
+	 */
 	public WorldNode getSource(){
 		return this.source;
 	}
 
+	/**
+	 * Gets the destination.
+	 *
+	 * @return the destination
+	 */
 	public WorldNode getDestination() {
 		return this.destination;
 	}
 	
+	/**
+	 * Gets the capability.
+	 *
+	 * @return the capability
+	 */
 	public AbstractCapability getCapability() {
 		return this.capability;
 	}
 	
+	/**
+	 * Sets the source.
+	 *
+	 * @param source
+	 *            the new source
+	 */
 	public void setSource(WorldNode source){
 		this.source = source;
 	}
 
+	/**
+	 * Sets the destination.
+	 *
+	 * @param destination
+	 *            the new destination
+	 */
 	public void setDestination(WorldNode destination) {
 		this.destination = destination;
 	}
 	
+	/**
+	 * Sets the capability.
+	 *
+	 * @param capability
+	 *            the new capability
+	 */
 	public void setCapability(AbstractCapability capability) {
 		this.capability = capability;
 	}
 
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
 	@Override
 	public boolean equals(Object obj){
 		if(obj instanceof NormalEdge){
@@ -62,6 +117,9 @@ public class NormalEdge implements Edge {
 		else return false;
 	}
 	
+	/* (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
 	@Override
 	public int hashCode(){
 		return this.source.hashCode() + this.destination.hashCode() + this.capability.hashCode();

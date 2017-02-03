@@ -10,17 +10,30 @@ import pmr.probexp.ExpansionNode;
 import pmr.probexp.MultipleExpansionNode;
 import pmr.probexp.NormalExpansionNode;
 
+/**
+ * The Class WTS.
+ */
 //Il solution graph, implementato come una mappa nodo-arco
 public class WTS {
 	
+	/** The graph. */
 	private HashMap<WorldNode, WorldNode> graph;
 
+	/**
+	 * Instantiates a new wts.
+	 */
 	public WTS(){ 
 		this.graph = new HashMap<WorldNode, WorldNode> ();
 		this.graph.put(new WorldNode(null), new WorldNode(null));
 	}
 	
 	
+	/**
+	 * Adds the node.
+	 *
+	 * @param newnode
+	 *            the newnode
+	 */
 	//Aggiungi nodo alla mappa, restituisce true se lo aggiunge, false se lo trova e non lo aggiunge
 	public void addNode(ExpansionNode newnode){	
 		if(newnode instanceof NormalExpansionNode){
@@ -59,6 +72,13 @@ public class WTS {
 		}
 	}
 	
+	/**
+	 * Adds the safe node.
+	 *
+	 * @param source
+	 *            the source
+	 * @return true, if successful
+	 */
 	//Aggiunta semplice al grafo tramite WorldNode
 	public boolean addSafeNode(WorldNode source){
 		if(this.graph.containsKey(source) == false){
@@ -73,6 +93,16 @@ public class WTS {
 	}
 	
 	//Aggiunge un arco ad un Worldnodo sorgente, modificando la lista degli archi uscenti del nodo stesso e la lista degli archi entranti del nodo destinazione
+	/**
+	 * Adds the edge.
+	 *
+	 * @param sourcenode
+	 *            the sourcenode
+	 * @param destnode
+	 *            the destnode
+	 * @param capability
+	 *            the capability
+	 */
 	//arco di tipo NormalEdge
 	public void addEdge(WorldNode sourcenode, WorldNode destnode, AbstractCapability capability){
 			sourcenode.addOutcomingEdge(new NormalEdge(sourcenode, destnode, capability));
@@ -80,6 +110,15 @@ public class WTS {
 	}
 	
 	//Ritorna l'arco da modificare se è presente, null altrimenti.
+	/**
+	 * Edits the edge.
+	 *
+	 * @param node
+	 *            the node
+	 * @param capability
+	 *            the capability
+	 * @return the edge
+	 */
 	//Basta confrontare le capability tra gli archi visto che ci troviamo all'interno di un nodo.
 	public Edge editEdge(WorldNode node, AbstractCapability capability){
 		Iterator <NormalEdge> i = this.graph.get(node).getOutcomingEdgeList().iterator();
@@ -97,15 +136,34 @@ public class WTS {
 		return null;
 	}
 	
+	/**
+	 * Gets the wts.
+	 *
+	 * @return the wts
+	 */
 	public HashMap<WorldNode, WorldNode> getWTS(){
 		return this.graph;
 	}
 	
+	/**
+	 * Removes the node.
+	 *
+	 * @param node
+	 *            the node
+	 */
 	//Rimuove un nodo dal grafo
 	public void removeNode(WorldNode node){
 		this.graph.remove(node);
 	}
 	
+	/**
+	 * Removes the edge.
+	 *
+	 * @param sourcenode
+	 *            the sourcenode
+	 * @param destnode
+	 *            the destnode
+	 */
 	//Rimuove un arco da un Worldnodo del grafo, modifica lista in uscita del nodo sorgente e lista in entrata del nodo destinazione
 	public void removeEdge(WorldNode sourcenode, WorldNode destnode){
 		if(this.graph.containsKey(sourcenode) == true && this.graph.containsKey(destnode) == true){
@@ -115,6 +173,15 @@ public class WTS {
 		}
 	}
 	
+	/**
+	 * Removes the edge.
+	 *
+	 * @param sourcenode
+	 *            the sourcenode
+	 * @param destnode
+	 *            the destnode
+	 * @return the OP node
+	 */
 	//Rimuove un arco da un WorldNode del grafo verso un OPNode, rimuovendo l'OPNode dalla lista nel WorldNode, restituisce l'OPNode
 	public OPNode removeEdge(WorldNode sourcenode, OPNode destnode){
 		if(this.graph.containsKey(sourcenode) == true && this.graph.containsKey(destnode) == true){
@@ -124,6 +191,15 @@ public class WTS {
 	}
 		
 	
+	/**
+	 * Gets the solutions.
+	 *
+	 * @param start
+	 *            the start
+	 * @param exitNodeMap
+	 *            the exit node map
+	 * @return the solutions
+	 */
 	public ArrayList<ArrayList<WorldNode>> getSolutions(WorldNode start, HashMap<WorldNode, WorldNode> exitNodeMap){
 		ArrayList<ArrayList<WorldNode>> result = new ArrayList<>();
 		ArrayList<WorldNode> pathNode = new ArrayList <WorldNode>();
@@ -137,6 +213,20 @@ public class WTS {
 	*La lista degli OPNode ripetendo il processo.
 	*/
 	
+	/**
+	 * WTS visit.
+	 *
+	 * @param start
+	 *            the start
+	 * @param exitNodeMap
+	 *            the exit node map
+	 * @param result
+	 *            the result
+	 * @param pathNode
+	 *            the path node
+	 * @param checkedNode
+	 *            the checked node
+	 */
 	private void WTSVisit(WorldNode start, HashMap<WorldNode, WorldNode> exitNodeMap, ArrayList<ArrayList<WorldNode>> result, 
 			ArrayList<WorldNode> pathNode, HashMap <WorldNode,Integer> checkedNode){
 		
