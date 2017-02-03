@@ -11,16 +11,16 @@ import pmr.probexp.MultipleExpansionNode;
 import pmr.probexp.NormalExpansionNode;
 
 /**
- * The Class WTS.
+ * The Class WTS is the graph of solutions implementation.
+ * @author Alessandro Fontana
  */
-//Il solution graph, implementato come una mappa nodo-arco
 public class WTS {
 	
-	/** The graph. */
+	/** The graph. Use an HashMap as implementation to make the computational cost of the operations constant */
 	private HashMap<WorldNode, WorldNode> graph;
 
 	/**
-	 * Instantiates a new wts.
+	 * Instantiates a new wts. The root is a WorldNode with a null StateOfWorld
 	 */
 	public WTS(){ 
 		this.graph = new HashMap<WorldNode, WorldNode> ();
@@ -29,57 +29,53 @@ public class WTS {
 	
 	
 	/**
-	 * Adds the node.
+	 * Adds inside the graph the WorldNodes present in the ExpansionNode.
+	 * This method normally adds the WorldNode and the edges inside the graph. 
+	 * It also generate the OPNode if the ExpansionNode is an instance of MultipleExpansionNode
 	 *
 	 * @param newnode
-	 *            the newnode
+	 *            the new node
 	 */
-	//Aggiungi nodo alla mappa, restituisce true se lo aggiunge, false se lo trova e non lo aggiunge
 	public void addNode(ExpansionNode newnode){	
+		
 		if(newnode instanceof NormalExpansionNode){
-			//Aggiorno il nodo presente sia nel grafo che nel newnode, aggiungo al grafo il nodo destinazione presente in newnode 
-			//aggiungendo un arco in entrata dal nodo source e aggiorno gli archi in uscita dal nodo source aggiungendo
-			//quello diretto verso il nodo destination.
+			/* it normally adds The WorldNodes in newnode. The destinationList of newnode has size = 1. */
 			NormalExpansionNode tempnode = (NormalExpansionNode) newnode;
 			this.addSafeNode(tempnode.getSource().getWorldNode());
 			this.addSafeNode(tempnode.getDestination().get(0).getWorldNode());
 			WorldNode destination2 = this.graph.get(tempnode.getDestination().get(0).getWorldNode());
-			
-			//Metodo che aggiunge l'arco in entrata ed in uscita
-			this.addEdge(this.graph.get(tempnode.getSource().getWorldNode()), destination2, tempnode.getCapability());			}
+			this.addEdge(this.graph.get(tempnode.getSource().getWorldNode()), destination2, tempnode.getCapability());			
+		}
 		else{
-			//Aggiorno il nodo presente nel grafo, aggiungendogli un OPNode all'interno
+			/* it normally adds the source node in newnode, then it generates an OPNode that connect the source with all 
+			 * the nodes in the destinationList of newnode. When it has added all the nodes in the list, it adds the OPNode
+			 * inside the source WorldNode. The destinationList of newnode has size = n.
+			 * if the source already contains that OPNode, it makes no actions and exit from the method.
+			 */
 			MultipleExpansionNode exptempnode = (MultipleExpansionNode) newnode;
 			this.addSafeNode(exptempnode.getSource().getWorldNode());
 			WorldNode source2 = this.graph.get(exptempnode.getSource().getWorldNode());
-			
-			//Creo un OPNode E setto l'arco entrante
 			OPNode faketempnode = new XORNode(exptempnode.getCapability());
 			faketempnode.setIncomingEdge(new OPEdge(source2, faketempnode, exptempnode.getCapability()));
 			
-			//Se il nodo contiene già quell'OPNode non compio nessuna operazione altrimenti lo aggiungo
 			if(source2.getOPNodeList().contains(faketempnode))	return;
 			
-			//Per ogni Enodo destinazione, aggiungo al grafo il WorldNode contenuto
 			for(ENode etemp : newnode.getDestination()){
 				WorldNode wnode = etemp.getWorldNode();
 				this.addSafeNode(wnode);
-				//Aggiorno la lista degli archi uscenti da faketempnode, aggiungendo un arco per ogni ENode destination
 				faketempnode.addOutcomingEdge(new EvolutionEdge(faketempnode, wnode, exptempnode.getScenario(etemp)));
 			}
-			//Aggiungo l'OPNode al WorldNode source nel grafo
 			source2.addOPNode(faketempnode);
 		}
 	}
 	
 	/**
-	 * Adds the safe node.
+	 * Adds a simple WorldNode. it create a new object to avoid references problem.
 	 *
 	 * @param source
 	 *            the source
 	 * @return true, if successful
 	 */
-	//Aggiunta semplice al grafo tramite WorldNode
 	public boolean addSafeNode(WorldNode source){
 		if(this.graph.containsKey(source) == false){
 			WorldNode temp = new WorldNode(source.getWorldState());
@@ -92,34 +88,30 @@ public class WTS {
 			return false;
 	}
 	
-	//Aggiunge un arco ad un Worldnodo sorgente, modificando la lista degli archi uscenti del nodo stesso e la lista degli archi entranti del nodo destinazione
 	/**
-	 * Adds the edge.
+	 * Adds a Normaledge from a WorldNode to a WorldNode.
 	 *
 	 * @param sourcenode
-	 *            the sourcenode
+	 *            the source
 	 * @param destnode
-	 *            the destnode
+	 *            the destination
 	 * @param capability
 	 *            the capability
 	 */
-	//arco di tipo NormalEdge
 	public void addEdge(WorldNode sourcenode, WorldNode destnode, AbstractCapability capability){
 			sourcenode.addOutcomingEdge(new NormalEdge(sourcenode, destnode, capability));
 			destnode.addIncomingEdge(new NormalEdge(sourcenode, destnode, capability));
 	}
 	
-	//Ritorna l'arco da modificare se è presente, null altrimenti.
 	/**
-	 * Edits the edge.
+	 * return the Edge to edit if present, null otherwise.
 	 *
 	 * @param node
 	 *            the node
 	 * @param capability
 	 *            the capability
-	 * @return the edge
+	 * @return the edge, with the selected capability stored inside the selected WorldNode.
 	 */
-	//Basta confrontare le capability tra gli archi visto che ci troviamo all'interno di un nodo.
 	public Edge editEdge(WorldNode node, AbstractCapability capability){
 		Iterator <NormalEdge> i = this.graph.get(node).getOutcomingEdgeList().iterator();
 		while(i.hasNext() == true){
@@ -137,34 +129,32 @@ public class WTS {
 	}
 	
 	/**
-	 * Gets the wts.
+	 * Gets the graph.
 	 *
-	 * @return the wts
+	 * @return the graph of the solutions.
 	 */
 	public HashMap<WorldNode, WorldNode> getWTS(){
 		return this.graph;
 	}
 	
 	/**
-	 * Removes the node.
+	 * Removes a World node.
 	 *
 	 * @param node
 	 *            the node
 	 */
-	//Rimuove un nodo dal grafo
 	public void removeNode(WorldNode node){
 		this.graph.remove(node);
 	}
 	
 	/**
-	 * Removes the edge.
+	 * Removes the edge from a WorldNode to a WorldNode.
 	 *
 	 * @param sourcenode
 	 *            the sourcenode
 	 * @param destnode
 	 *            the destnode
 	 */
-	//Rimuove un arco da un Worldnodo del grafo, modifica lista in uscita del nodo sorgente e lista in entrata del nodo destinazione
 	public void removeEdge(WorldNode sourcenode, WorldNode destnode){
 		if(this.graph.containsKey(sourcenode) == true && this.graph.containsKey(destnode) == true){
 				WorldNode tempnode = (WorldNode) destnode;
@@ -174,31 +164,33 @@ public class WTS {
 	}
 	
 	/**
-	 * Removes the edge.
+	 * Removes the edge from a WorldNode to an OPNode. This edge deletion is performed deleting the OPNode from the OPNodeList inside 
+	 * the WorldNode. It returns true if the OPNode was found, false otherwise.
 	 *
 	 * @param sourcenode
 	 *            the sourcenode
 	 * @param destnode
 	 *            the destnode
-	 * @return the OP node
+	 * @return true, if the edge was present and removed.
 	 */
-	//Rimuove un arco da un WorldNode del grafo verso un OPNode, rimuovendo l'OPNode dalla lista nel WorldNode, restituisce l'OPNode
-	public OPNode removeEdge(WorldNode sourcenode, OPNode destnode){
+	public boolean removeEdge(WorldNode sourcenode, OPNode destnode){
 		if(this.graph.containsKey(sourcenode) == true && this.graph.containsKey(destnode) == true){
-				return this.graph.get(sourcenode).removeOPNode(destnode);
+				this.graph.get(sourcenode).removeOPNode(destnode);
+				return true;
 		}
-		return null;
+		return false;
 	}
 		
 	
 	/**
-	 * Gets the solutions.
+	 * Gets the solution paths present inside the graph. It performs a visit inside the graph and stores the solutions inside an
+	 * ArrayList of ArrayList of WorldNode, returning this structure when the visit is over.
 	 *
 	 * @param start
 	 *            the start
 	 * @param exitNodeMap
 	 *            the exit node map
-	 * @return the solutions
+	 * @return the list of solution paths.
 	 */
 	public ArrayList<ArrayList<WorldNode>> getSolutions(WorldNode start, HashMap<WorldNode, WorldNode> exitNodeMap){
 		ArrayList<ArrayList<WorldNode>> result = new ArrayList<>();
@@ -208,13 +200,9 @@ public class WTS {
 		return result;
 	}
 	
-	
-	/*Semplice visita. Percorre tutti i WorldNode ed una volta esauriti i NormalEdge inizia a scorrere, se presente
-	*La lista degli OPNode ripetendo il processo.
-	*/
-	
 	/**
-	 * WTS visit.
+	 * WTS visit. This algorithm perform a revisited DFS, storing all the possible solutions inside the graph. The first paths checked are
+	 * the normal paths from a WorldNode to a WorldNode, then it analyze every OPNode stored inside the WorldNodes.
 	 *
 	 * @param start
 	 *            the start
@@ -230,6 +218,9 @@ public class WTS {
 	private void WTSVisit(WorldNode start, HashMap<WorldNode, WorldNode> exitNodeMap, ArrayList<ArrayList<WorldNode>> result, 
 			ArrayList<WorldNode> pathNode, HashMap <WorldNode,Integer> checkedNode){
 		
+		/*if the current start node is an exit node, it is stored in the path and the path is stored in the result. Then the start is
+		 * removed from the path.
+		 */
 		if(exitNodeMap.containsKey(start) == true){
 			pathNode.add(start);
 			ArrayList<WorldNode> temp = new ArrayList<>(pathNode);
@@ -238,6 +229,7 @@ public class WTS {
 			return;
 		}
 		
+		/* the first cycle. It check every single NormalEdge of every single not solution WorldNodes present in the graph. */
 		for(NormalEdge edge : this.graph.get(start).getOutcomingEdgeList()){
 			if(checkedNode.containsKey(start) == false){
 				pathNode.add(start);
@@ -247,6 +239,7 @@ public class WTS {
 			}
 		}
 		
+		/* if no more NormalEdges are present, it starts to analyze the OPNodelist and every OPEdge of each OPNode inside the list */
 		for(OPNode node : this.graph.get(start).getOPNodeList()){
 			for(int j=0; j<this.graph.get(start).getOPNodeList().size(); j++){
 				if(checkedNode.containsKey(node.getOutcomingEdge().get(j).getDestination()) == false){

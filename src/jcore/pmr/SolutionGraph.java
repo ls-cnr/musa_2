@@ -11,9 +11,9 @@ import pmr.probexp.ENode;
 import pmr.probexp.ExpansionNode;
 import pmr.probexp.NormalExpansionNode;
 
-// TODO: Auto-generated Javadoc
 /**
- * The Class SolutionGraph.
+ * The SolutionGraph Artifact. It contains the graph of solutions, the score map for each World node, the map of solution WorldNodes
+ * and the map of tokens for each WorldNode.
  */
 public class SolutionGraph {
 	
@@ -23,7 +23,7 @@ public class SolutionGraph {
 	/** The token map. */
 	private HashMap<WorldNode, ArrayList<Token>> tokenMap;
 	
-	/** The score mapping. */
+	/** The score map. */
 	private HashMap<WorldNode, Double> scoreMapping;
 	
 	/** The exit node map. */
@@ -40,9 +40,9 @@ public class SolutionGraph {
 	}
 	
 	/**
-	 * Gets the wts.
+	 * Gets the graph.
 	 *
-	 * @return the wts
+	 * @return the graph
 	 */
 	public HashMap<WorldNode, WorldNode> getWTS(){
 		return this.wts.getWTS();
@@ -100,7 +100,7 @@ public class SolutionGraph {
 	}
 	
 	/**
-	 * Update token map.
+	 * Update the token map.
 	 *
 	 * @param node
 	 *            the node
@@ -130,9 +130,9 @@ public class SolutionGraph {
 	}
 	
 	/**
-	 * Gets the solutions.
+	 * Gets the solution paths.
 	 *
-	 * @return the solutions
+	 * @return the solution paths.
 	 */
 	public ArrayList<ArrayList<WorldNode>> getSolutions(){
 		return this.wts.getSolutions(new WorldNode(null), this.exitNodeMap);

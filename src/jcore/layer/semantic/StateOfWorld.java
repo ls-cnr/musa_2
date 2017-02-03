@@ -14,7 +14,6 @@ import net.sf.tweety.lp.asp.syntax.Rule;
  * This class encapsulate a possible State Of World, i.e. a set of facts describing what the system knows about the environment.  
  * for goal-testing reasons, each fact is given in ASP, i.e. a subclass of DLPHead
  * @author icar-aose
- * @version 1.0.0
  */
 
 public class StateOfWorld {
@@ -44,7 +43,7 @@ public class StateOfWorld {
 	/**
 	 * Gets the facts.
 	 *
-	 * @return the facts
+	 * @return the facts stored on this state of world
 	 */
 	public HashSet<DLPHead>getFacts(){
 		return this.facts;
@@ -60,7 +59,10 @@ public class StateOfWorld {
 	}
 
 	
-	//Numero di fatti contenuti nell'oggetto.
+	/** Gets the number of facts stored in this state of world
+	 * 
+	 * @return the number of facts.
+	 */
 	public int getFactsNumber(){
 		return this.facts.size();
 	}
@@ -95,16 +97,14 @@ public class StateOfWorld {
 	 *
 	 * @param fact_to_remove the fact to remove
 	 */
-	// TO TEST --> verificare che il metodo 'HashSet.remove' funzioni con due istanze di DLPHead che abbiano lo stesso valore
-	// HashSet non permette di aggiungere due istanze con lo stesso valore
 	public void removeFact_safely_asASP(DLPHead fact_to_remove) {
 		facts.remove(fact_to_remove);
 	}
 	
-	/*Ridefinisco l'equala tra oggetti StateOfWorld, confrontando la lista di fatti in essi contenuta. Se i fatti differiscono
-	 * Gli StateOfWorld sono diversi, altrimenti lo StateOfWorld è lo stesso.
-	 * HashSet implementa l'equals facendo il confronto tra la somma degli hashCode() degli elementi contenuti. DLPHead implementa
-	 * una hashCode() da loro ridefinita in maniera opportuna*/
+	/**	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	/* perform an equals between the StateOfWorld stored inside the nodes.*/
 	@Override
 	public boolean equals(Object obj){
 	    if (obj == null) {
@@ -122,9 +122,6 @@ public class StateOfWorld {
 	    }
 	}
 	
-	/*Ridefinisco hashCode() per la classe StateOfWorld, rifacendomi all'hashCode() implementato in Set che come spiegato sopra funziona.
-	 * Inoltre questo valore (che anche se molto raramente, potrebbe risultare essere uguale per set di diversa dimensione) lo moltiplico
-	 * per l'effettivo numero di fatti contenuti, eliminando questa possibilità di collisione*/
 	@Override
 	public int hashCode(){
 		return this.facts.hashCode();
@@ -136,7 +133,5 @@ public class StateOfWorld {
 	public StateOfWorld clone() {
 		return new StateOfWorld( (HashSet<DLPHead>) this.facts.clone() );
 	}
-	
-	// @Override hashCode(), solo se si può creare una funzione che rende gli stati del mondo univoci.
 
 }

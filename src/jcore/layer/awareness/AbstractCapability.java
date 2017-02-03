@@ -13,7 +13,6 @@ import layer.semantic.evolution.EvolutionScenario;
  * intentionally use to address a given evolution of the state of the world. Each abstract capability can be implemented by several
  * concrete capabilities.
  * @author icar-aose
- * @version 1.0.0
  */
 
 //@FreeBuilder
@@ -51,14 +50,27 @@ public class AbstractCapability implements RunTimeEntity {
 		this.post = post;
 	}
 	
+	/**
+	 * Gets the EvolutionScenario Set of this capability.
+	 * 
+	 * @return the evolution_set of this capability.
+	 */
 	public Set<EvolutionScenario> getScenarioSet(){
 		return this.evolution_set;
 	}
 	
+	/**
+	 * Gets the EvolutionScenario Set of this capability.
+	 * 
+	 * @return the evolution_set of this capability.
+	 */
 	public String getId(){
 		return this.unique_id;
 	}
 	
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
 	@Override
 	public boolean equals(Object obj){
 		if(obj instanceof AbstractCapability){
@@ -69,6 +81,9 @@ public class AbstractCapability implements RunTimeEntity {
 		else return false;
 	}
 	
+	/* (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
 	@Override
 	public int hashCode(){
 		int i = 0;
