@@ -123,30 +123,6 @@ public class ProblemExploration {
 	 * @param enode the new eNode created from expansion
 	 * @param startingTokens the list of token to start with
 	 */
-	/*
-	private void applyNet2( ArrayList<String> startingTokens, ENode enode ) {
-		StateOfWorld state = enode.getWorldNode().getWorldState();
-		ArrayList<String> tokens = new ArrayList<>();
-		
-		net.putTokens(startingTokens);	//Prepares the net with tokens
-		
-		//checking and firing
-		for( Transition t : net.getTransitionsAbleToFire() ) //lista aggiornata???
-			if( DomainEntail.getInstance().entailsCondition(state, assumptions, net.getTransitionLabel(t)) ){
-				t.fire();
-				for(Arc arcOut : t.getOutgoing())		//Adding tokens from the fired transition outgoing places 
-					tokens.add(arcOut.getPlace().getName());
-			}
-			else
-				for(Arc arcIn : t.getIncoming())		//Adding tokens from the transition ingoing places
-					tokens.add(arcIn.getPlace().getName());
-		
-		net.removeTokens(tokens); //Cleans the net from tokens
-		
-		fillENode(enode, tokens);//Fills up enode
-	}
-	*/
-	
 	private void applyNet( ArrayList<Token> startingTokens, ENode enode ) {
 		StateOfWorld state = enode.getWorldNode().getWorldState();
 		ArrayList<Token> tokens = new ArrayList<>();
@@ -156,7 +132,7 @@ public class ProblemExploration {
 		ArrayList<Transition> transitionsATF= net.getTransitionsAbleToFire();
 		
 		//checking and firing
-		for( int i = 0; i < transitionsATF.size(); i++ ){
+		for( int i = 0, count = 0; i < transitionsATF.size(); i++ ){
 			Transition t = transitionsATF.get(i);
 			if( DomainEntail.getInstance().entailsCondition(state, assumptions, net.getTransitionLabel(t)) ){
 				Place place = net.getFirstInPlaceFromTransition(t);
@@ -175,8 +151,9 @@ public class ProblemExploration {
 					
 					for(Arc arcOut : t.getOutgoing()){		//Adding tokens from the fired transition outgoing places 
 						Place finalPlace = arcOut.getPlace();
-						tokens.add( new Token(finalPlace.getName(), mulTok) ); //It's sure that it isn't a finalOrPlace
+						tokens.add( new Token(finalPlace.getName(), mulTok, count) ); //It's sure that it isn't a finalOrPlace
 					}
+					count++;
 				}
 				else
 					for( Arc arcOut : t.getOutgoing() ){
@@ -191,7 +168,7 @@ public class ProblemExploration {
 						else
 							for( Token initToken : startingTokens )
 								if( initToken.getPlaceName() == place.getName() )
-									tokens.add( new Token(finalPlace.getName(), initToken.getDependentToken()) );
+									tokens.add( new Token(finalPlace.getName(), initToken.getDependentToken(), initToken.getBranch()) );
 					}
 				
 				t.fire();
@@ -202,9 +179,9 @@ public class ProblemExploration {
 					for( Token initToken : startingTokens )
 						if( initToken.getPlaceName() == p.getName() ){
 							if( initToken instanceof MultipleToken )
-								tokens.add(new MultipleToken(initToken.getPlaceName(), initToken.getDependentToken()));
+								tokens.add(new MultipleToken(initToken.getPlaceName(), initToken.getDependentToken(), initToken.getBranch()));
 							else 
-								tokens.add( new Token(initToken.getPlaceName(), initToken.getDependentToken()) );
+								tokens.add( new Token(initToken.getPlaceName(), initToken.getDependentToken(), initToken.getBranch()) );
 							break;
 						}	
 				}

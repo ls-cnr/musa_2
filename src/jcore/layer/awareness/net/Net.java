@@ -1,8 +1,8 @@
 package layer.awareness.net;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 
 import layer.awareness.goalmodel.GoalModel;
 import layer.semantic.Condition;
@@ -30,13 +30,49 @@ public class Net {
 	}
 	
 	public int hop( ArrayList<Token> tokens ) {
+		ArrayList<MultipleToken> temp = new ArrayList<>();
 		hopMap = new HashMap<>();
 		int hopValue = 0;
+		
 		for( Token token : tokens )
-			if( !token.isDependent() && !(token instanceof MultipleToken) )
-				hopValue += hopToken(getPlace(token.getPlaceName()));
+			if( token.isDependent() )
+				token.getDependentToken().addToken(token);
+			else
+				if( token instanceof MultipleToken )
+					temp.add((MultipleToken) token);
+				else
+					hopValue += hopToken(getPlace(token.getPlaceName()));
+		
+		for( MultipleToken mToken : temp)
+			hopValue += multipleHop(mToken);
+		
 		return hopValue;
 	}
+	
+	private int multipleHop( MultipleToken mToken ) {
+		if( mToken.hasDependents() ){
+			ArrayList<Integer> mHop = new ArrayList<>(Collections.nCopies(mToken.getNumberOfBranch() + 1, 0));
+			for( Token token : mToken.getTokensDependent() ){
+				int i = token.getBranch();
+				if( token instanceof MultipleToken)
+					mHop.set( i, mHop.get(i) + multipleHop((MultipleToken) token) );
+				else
+					mHop.set( i, mHop.get(i) + hopToken(getPlace(token.getPlaceName())) );
+			}
+			return getHopValueFromArray(mHop);
+		}
+		else
+			return hopToken(getPlace(mToken.getPlaceName()));
+	}
+	
+	private int getHopValueFromArray( ArrayList<Integer> mHop ) {
+		int max = mHop.get(0);
+		for( int i = 1; i < mHop.size(); i++ )
+			if( mHop.get(i) > max )
+				max = mHop.get(i);
+			
+		return max;
+	} 
 	
 	private int hopToken( Place place ) {
 		if( place.equals(getLast()) )
@@ -66,35 +102,6 @@ public class Net {
 		}
 	}
 	
-	/*
-	private void hop( Place place ) {
-		int val = hops.get(place) + 1;
-		List<Arc> placeIncoming;
-		
-		if(  (placeIncoming = place.getIncoming())  != null )
-			for( Arc arcP : placeIncoming ){
-				Transition transition = arcP.getTransition();
-				
-				if( transition.hasMoreThanOneOutgoing() ){
-					val = 0;
-					for( Arc arcTOut : transition.getOutgoing() ){
-						Integer i = hops.get( arcTOut.getPlace() );
-						if( i == null ) i = 0;
-						val += i;
-					}
-					val += 1;
-				}
-				
-				for( Arc arcTIn : transition.getIncoming() ){
-					Place next = arcTIn.getPlace();
-					Integer prev;
-					if( ( prev = hops.get(next)) == null ) prev = 0;
-					hops.put(next, max(prev, val) );
-					hop(next);
-				}
-			}
-	}
-	*/
 	public ArrayList<Transition> getTransitionsAbleToFire() {
 		return (ArrayList<Transition>) pn.getTransitionsAbleToFire();
 	}
@@ -186,4 +193,7 @@ public class Net {
 		return initialOrPlaces.containsKey(place);
 	}
 	
+	public Petrinet getPetrinet() {
+		return pn;
+	}
 }
