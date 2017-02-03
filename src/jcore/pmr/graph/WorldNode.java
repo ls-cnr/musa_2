@@ -7,34 +7,28 @@ import layer.awareness.AbstractCapability;
 import layer.semantic.StateOfWorld;
 import net.sf.tweety.lp.asp.syntax.DLPHead;
 
-// TODO: Auto-generated Javadoc
 /**
- * The Class WorldNode.
+ * The Class WorldNode. It's the standard node of the graph of the solutions. It implements the Node Interface
  */
 public class WorldNode implements Node {
 
 	/** The world state. */
-	//stato del mondo associato al nodo
 	private StateOfWorld worldState;
 	
-	/** The Nfacts. */
-	//numero di fatti contenuti nello stato del mondo associato
+	/** The Number of facts stored in the StateOfWorld. */
 	private int Nfacts;
 	
-	/** The outcoming edge list. */
-	//lista degli archi in uscita dal nodo
+	/** The outcoming edges list. */
 	private ArrayList<NormalEdge> outcomingEdgeList;
 	
-	/** The incoming edge list. */
-	//lista degli archi in entrata nel nodo
+	/** The incoming edges list. */
 	private ArrayList<Edge> incomingEdgeList;
 	
-	/** The OP list. */
-	//lista dei nodi fittizzi collegati al nodo
+	/** The OPNodes list. */
 	private ArrayList<OPNode>	OPList;
 	
-	/** The hash code. */
-	//hashCode per velocizzare i calcoli
+	/** The hash code. It's calculated only one time inside the constructor 
+	 * and stored inside the object to speed up the operations inside the HashMap */
 	private int hashCode;
 	
 	/**
@@ -66,7 +60,6 @@ public class WorldNode implements Node {
 	 *            the edge
 	 * @return true, if successful
 	 */
-	//Aggiunge un arco alla lista degli incomingEdge usando l'arco stesso, ritorna falso se la lista contiene già l'arco e non lo aggiunge
 	public boolean addIncomingEdge(Edge edge){
 		NormalEdge nortemp = null;
 		EvolutionEdge evotemp = null;
@@ -100,7 +93,6 @@ public class WorldNode implements Node {
 	 *            the edge
 	 * @return true, if successful
 	 */
-	//Aggiunge un arco alla lista degli outcomingEdge usando l'arco stesso
 	public boolean addOutcomingEdge(NormalEdge edge){
 		if(this.outcomingEdgeList.contains(edge) == true){
 				return false;
@@ -112,33 +104,30 @@ public class WorldNode implements Node {
 	}
 	
 	/**
-	 * Sets the outcoming edge list.
+	 * Sets the outcoming edges list.
 	 *
 	 * @param edges
-	 *            the new outcoming edge list
+	 *            the new outcoming edges list
 	 */
-	//Aggiunge una lista di archi in uscita all'oggetto.
 	public void setOutcomingEdgeList(ArrayList<NormalEdge> edges){
 		 this.outcomingEdgeList = edges;
 	}
 	
 	/**
-	 * Sets the incoming edge list.
+	 * Sets the incoming edges list.
 	 *
 	 * @param edges
-	 *            the new incoming edge list
+	 *            the new incoming edges list
 	 */
-	//Aggiunge una lista di archi in entrata all'oggetto
 	public void setIncomingEdgeList(ArrayList<Edge> edges){
 		this.incomingEdgeList = edges;
 	}
 	
 	/**
-	 * Gets the n facts.
+	 * Gets the number of facts stored in the StateOfWorld.
 	 *
-	 * @return the n facts
+	 * @return the number of facts
 	 */
-	//Restituisce il numero di fatti contenuti nello stato del mondo associato al nodo
 	public int getNFacts(){
 		return this.Nfacts;
 	}
@@ -146,49 +135,44 @@ public class WorldNode implements Node {
 	/**
 	 * Gets the world state.
 	 *
-	 * @return the world state
+	 * @return the state of world of this node.
 	 */
-	//Restituisce lo stato del mondo associato al nodo
 	public StateOfWorld getWorldState(){
 		return this.worldState; 
 	}
 	
 	/**
-	 * Gets the outcoming edge list.
+	 * Gets the outcoming edges list.
 	 *
-	 * @return the outcoming edge list
+	 * @return the outcoming edges of this node.
 	 */
-	//Restituisce la lista degli archi in uscita contenuti nel nodo
 	public ArrayList<NormalEdge> getOutcomingEdgeList(){
 		return this.outcomingEdgeList;
 	}
 	
 	/**
-	 * Gets the incoming edge list.
+	 * Gets the incoming edges list.
 	 *
-	 * @return the incoming edge list
+	 * @return the incoming edges list of this node.
 	 */
-	//Restituisce la lista degli archi in entrata contenuti nel nodo
 	public ArrayList<Edge> getIncomingEdgeList(){
 		return this.incomingEdgeList;
 	}
 	
 	/**
-	 * Gets the facts list.
+	 * Gets the facts list stored inside the StateOfWorld.
 	 *
-	 * @return the facts list
+	 * @return the list of facts of the state of world of this node.
 	 */
-	//Restituisce la lista dei fatti, lista contenuta nello state of world
 	public ArrayList<DLPHead> getFactsList(){
 		return this.worldState.getFactsList();
 	}
 	
 	/**
-	 * Gets the OP node list.
+	 * Gets the OPNode list.
 	 *
-	 * @return the OP node list
+	 * @return the OPNodes list of this node.
 	 */
-	//Restituisce la lista degli OPNode
 	public ArrayList<OPNode> getOPNodeList(){
 		return this.OPList;
 	}
@@ -200,7 +184,6 @@ public class WorldNode implements Node {
 	 *            the edge
 	 * @return true, if successful
 	 */
-	//Rimuove un arco dalla lista degli archi in entrata
 	public boolean removeIncomingEdge(Edge edge){
 		return this.incomingEdgeList.remove(edge);
 	}
@@ -212,19 +195,17 @@ public class WorldNode implements Node {
 	 *            the edge
 	 * @return true, if successful
 	 */
-	//Rimuove un arco dalla lista degli archi in uscita
 	public boolean removeOutcomingEdge(Edge edge){
 		return this.outcomingEdgeList.remove(edge);
 	}
 	
 	/**
-	 * Adds the OP node.
+	 * Adds the OPNode.
 	 *
 	 * @param node
 	 *            the node
 	 * @return true, if successful
 	 */
-	//Aggiunge un nodo finto alla lista dei nodi finti
 	public boolean addOPNode(OPNode node){
 		if(this.OPList.contains(node) == true){
 			return false;
@@ -236,13 +217,12 @@ public class WorldNode implements Node {
 	}
 	
 	/**
-	 * Removes the OP node.
+	 * Removes the OPNode.
 	 *
 	 * @param node
 	 *            the node
-	 * @return the OP node
+	 * @return the OPNode removed if present, null otherwise.
 	 */
-	//Rimuove un nodo finto dalla lista dei nodi finti
 	public OPNode removeOPNode(OPNode node){
 		return this.OPList.remove(this.OPList.indexOf(node));
 	}
@@ -250,7 +230,6 @@ public class WorldNode implements Node {
 	/* (non-Javadoc)
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
-	//Utilizzo l'equals ridefinito in StateOfWorld per confrontare i nodi.
 	@Override
 	public boolean equals(Object obj){
 	    if (obj == null) {
@@ -273,11 +252,10 @@ public class WorldNode implements Node {
 	}
 	
 	/**
-	 * Hash code once.
+	 * This method calculate the hashcode of the object. the value is stored inside the object.
 	 *
-	 * @return the int
+	 * @return the hashcode, based on the StateOfWorld hashCode(). return 0 if worldstate is null.
 	 */
-	//Ho modifcato equals, di conseguenza modifico l'hashCode() di StateOfWorld per mantenere la regola delgli oggetti true per equals = Stesso hashcode
 	private int hashCode_once(){
 		if(this.worldState != null)	{
 			return this.worldState.hashCode();
@@ -289,7 +267,6 @@ public class WorldNode implements Node {
 	/* (non-Javadoc)
 	 * @see java.lang.Object#hashCode()
 	 */
-	//Richiamo il valore della funzione hashcode eseguita una volta alla creazione, lo stateofworld non cambia dopo l'inizializzazione.
 	@Override
 	public int hashCode(){
 			return this.hashCode;

@@ -5,9 +5,8 @@ import java.util.ArrayList;
 import layer.awareness.AbstractCapability;
 import layer.semantic.evolution.EvolutionScenario;
 
-// TODO: Auto-generated Javadoc
 /**
- * The Class EvolutionEdge.
+ * The Class EvolutionEdge. It connects an OPNode to a WorldNode.
  */
 public class EvolutionEdge implements Edge {
 	
@@ -38,9 +37,9 @@ public class EvolutionEdge implements Edge {
 	}
 	
 	/**
-	 * Gets the scenario.
+	 * Gets the EvolutionScenario.
 	 *
-	 * @return the scenario
+	 * @return the scenario used on the evolution represented by this edge.
 	 */
 	public EvolutionScenario getScenario(){
 		return this.scenario;
@@ -49,7 +48,7 @@ public class EvolutionEdge implements Edge {
 	/**
 	 * Gets the source.
 	 *
-	 * @return the source
+	 * @return the source node of this edge
 	 */
 	public OPNode getSource(){
 		return this.source;
@@ -58,7 +57,7 @@ public class EvolutionEdge implements Edge {
 	/**
 	 * Gets the destination.
 	 *
-	 * @return the destination
+	 * @return the destination node of this edge
 	 */
 	public WorldNode getDestination() {
 		return this.destination;

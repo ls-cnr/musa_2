@@ -2,9 +2,8 @@ package pmr.graph;
 
 import layer.awareness.AbstractCapability;
 
-// TODO: Auto-generated Javadoc
 /**
- * The Class NormalEdge.
+ * The Class NormalEdge. it connects a WorldNode to another.
  */
 public class NormalEdge implements Edge {
 	
@@ -37,7 +36,7 @@ public class NormalEdge implements Edge {
 	/**
 	 * Gets the source.
 	 *
-	 * @return the source
+	 * @return the source node of this edge.
 	 */
 	public WorldNode getSource(){
 		return this.source;
@@ -46,7 +45,7 @@ public class NormalEdge implements Edge {
 	/**
 	 * Gets the destination.
 	 *
-	 * @return the destination
+	 * @return the destination node of this edge
 	 */
 	public WorldNode getDestination() {
 		return this.destination;
@@ -55,7 +54,7 @@ public class NormalEdge implements Edge {
 	/**
 	 * Gets the capability.
 	 *
-	 * @return the capability
+	 * @return the capability used on the expand of the sourceNode of this edge
 	 */
 	public AbstractCapability getCapability() {
 		return this.capability;

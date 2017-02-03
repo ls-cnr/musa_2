@@ -187,7 +187,7 @@ public void setUp(){
 	this.rosso.add(new Token("p11"));
 	this.rosso.add(new Token("p3"));
 	
-	this.exploration = new ProblemExploration(model);
+	this.exploration = new ProblemExploration(model, null);
 	
 }
 

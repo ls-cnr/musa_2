@@ -7,17 +7,15 @@ import layer.awareness.AbstractCapability;
 import layer.semantic.StateOfWorld;
 import layer.semantic.evolution.EvolutionScenario;
 
-// TODO: Auto-generated Javadoc
 /**
- * The Class OPNode.
+ * The Class OPNode. It implements the Node interface.
  */
 public abstract class OPNode implements Node {
 	
-	/** The outcoming list. */
+	/** The outcoming edges list. */
 	private ArrayList <EvolutionEdge> outcomingList;
 	
 	/** The incoming edge. */
-	//Contiene soltanto un arco in entrata
 	private OPEdge incomingEdge;
 	
 	/** The hash code. */
@@ -46,17 +44,15 @@ public abstract class OPNode implements Node {
 	 * @param edge
 	 *            the new incoming edge
 	 */
-	//Setta l'arco in entrata
 	public void setIncomingEdge(OPEdge edge){
 		this.incomingEdge = edge;
 	}
 	
 	 /**
-	 * Gets the outcoming edge.
+	 * Gets the outcoming edges list.
 	 *
-	 * @return the outcoming edge
+	 * @return the outcoming edges list of this node
 	 */
- 	//prende l'arco in uscita;
 	public ArrayList<EvolutionEdge> getOutcomingEdge(){
 		return this.outcomingList;
 	}
@@ -64,9 +60,8 @@ public abstract class OPNode implements Node {
 	 /**
 	 * Gets the incoming edge.
 	 *
-	 * @return the incoming edge
+	 * @return the incoming edge of this node
 	 */
- 	//prende l'arco in entrata;
 	public OPEdge getIncomingEdge(){
 		return this.incomingEdge;
 	}
@@ -74,7 +69,7 @@ public abstract class OPNode implements Node {
 	/**
 	 * Gets the capability.
 	 *
-	 * @return the capability
+	 * @return the capability of this OPNode
 	 */
 	public AbstractCapability getCapability(){
 		return this.capability;
@@ -87,7 +82,6 @@ public abstract class OPNode implements Node {
 	 *            the edge
 	 * @return true, if successful
 	 */
-	//Aggiunge un arco alla lista degli outcomingEdge usando l'arco stesso
 	public boolean addOutcomingEdge(EvolutionEdge edge){
 		if(this.outcomingList.contains(edge) == true){
 				return false;
@@ -109,12 +103,10 @@ public abstract class OPNode implements Node {
 	public boolean removeOutcomingEdge(EvolutionEdge edge){
 			return this.outcomingList.remove(edge);
 	}
-	
-	//Se due OPNode hanno lo stesso source e la stessa capability allora sono uguali, dato che ha senso confrontarli solo all'interno.
+
 	/* (non-Javadoc)
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
-	//Di uno stesso WorldNode
 	@Override
 	public boolean equals(Object obj){
 	    if (obj == null) {
@@ -136,7 +128,6 @@ public abstract class OPNode implements Node {
 	/* (non-Javadoc)
 	 * @see java.lang.Object#hashCode()
 	 */
-	//Ho modifcato equals, di conseguenza modifico l'hashCode() di StateOfWorld per mantenere la regola delgli oggetti true per equals = Stesso hashcode
 	@Override
 	public int hashCode(){
 		if(this.incomingEdge != null && this.incomingEdge.getSource().getWorldState() != null)	{

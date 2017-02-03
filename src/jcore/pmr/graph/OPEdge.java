@@ -3,9 +3,8 @@ package pmr.graph;
 import layer.awareness.AbstractCapability;
 import layer.semantic.evolution.EvolutionScenario;
 
-// TODO: Auto-generated Javadoc
 /**
- * The Class OPEdge.
+ * The Class OPEdge. it Connects a WorldNode to an OPNode. Is stored inside the OPNode
  */
 public class OPEdge implements Edge {
 		
@@ -38,7 +37,7 @@ public class OPEdge implements Edge {
 	/**
 	 * Gets the capability.
 	 *
-	 * @return the capability
+	 * @return the capability, stored in the edge
 	 */
 	public AbstractCapability getCapability(){
 		return this.capability;
@@ -47,7 +46,7 @@ public class OPEdge implements Edge {
 	/**
 	 * Gets the source.
 	 *
-	 * @return the source
+	 * @return the source of this edge.
 	 */
 	public WorldNode getSource(){
 		return this.source;
@@ -56,7 +55,7 @@ public class OPEdge implements Edge {
 	/**
 	 * Gets the destination.
 	 *
-	 * @return the destination
+	 * @return the destination of this edge.
 	 */
 	public OPNode getDestination() {
 		return this.destination;
@@ -91,9 +90,6 @@ public class OPEdge implements Edge {
 	public void setScenario(AbstractCapability capability) {
 		this.capability = capability;
 	}
-	
-	//L'OPNode è unico, ogni WorldNode ha i suoi OPNode, ma non può esistere un OPNode con lo stesso source e lo stesso desintation all'interno
-	//Di un WorldNode
 	
 	/* (non-Javadoc)
 	 * @see java.lang.Object#equals(java.lang.Object)
