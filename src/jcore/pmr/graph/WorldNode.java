@@ -170,7 +170,7 @@ public class WorldNode implements Node {
 	}
 	
 	//Ho modifcato equals, di conseguenza modifico l'hashCode() di StateOfWorld per mantenere la regola delgli oggetti true per equals = Stesso hashcode
-	public int hashCode_once(){
+	private int hashCode_once(){
 		if(this.worldState != null)	{
 			return this.worldState.hashCode();
 		}

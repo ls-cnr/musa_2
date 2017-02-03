@@ -36,6 +36,23 @@ public class ProblemExploration {
 		toVisit.sort(ENode.getScoreComparator());
 	}
 		
+	
+	public void setCapabilities(ArrayList<AbstractCapability> capabilities){
+		this.capabilities = capabilities;
+	}
+	
+	public void addCapability(AbstractCapability capability){
+		this.capabilities.add(capability);
+	}
+	
+	public ExpansionNode getHighestExpansion(){
+		int index = this.expandedList.size() - 1;
+		return this.expandedList.get(index);
+	}
+	
+	public void removeExpandedList(){
+		this.expandedList.removeAll(this.expandedList);
+	}
 	/*
 	START
 	eN <- highestNodeToVisit        (remove)
@@ -69,7 +86,8 @@ public class ProblemExploration {
 	}
 	
 	public ENode getHighestNodeToVisit(){
-		return toVisit.remove(0);
+		int index = toVisit.size() - 1;
+		return toVisit.remove(index);
 	}
 	
 	
@@ -277,7 +295,7 @@ public class ProblemExploration {
 		Collections.sort(this.toVisit, ENode.getScoreComparator());
 	}
 	
-	public void ExpansionListSort(){
+	public void expansionListSort(){
 		Collections.sort(this.expandedList, ExpansionNode.getScoreComparator());
 	}
 }
