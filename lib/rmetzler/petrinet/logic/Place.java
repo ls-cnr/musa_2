@@ -12,8 +12,10 @@ extends PetrinetObject {
     private int tokens = 0;
     private int maxTokens = 1;    
 
-	private List<Arc> incoming = new ArrayList<Arc>(); 	//added
-	private List<Arc> outgoing = new ArrayList<Arc>();	//added
+    /** Added */
+	private List<Arc> incoming = new ArrayList<Arc>(); 	
+	/** Added */
+	private List<Arc> outgoing = new ArrayList<Arc>();	
     
 
     protected Place(String name) {
@@ -78,37 +80,44 @@ extends PetrinetObject {
     }
     
 	 /**
+	  * Added
      * Aggiunge un Arco in entrata
      * @param arc
      */
     public void addIncoming(Arc arc) {
         this.incoming.add(arc);
     }
-
+    
+    /** Added */
   	public void setIncoming(List<Arc> incoming) {
   		this.incoming = incoming;
   	}
     
+  	/** Added */
     public List<Arc> getIncoming() {
   		return incoming;
   	}
     
     /**
+     * Added
      * Aggiunge un Arco in uscita
      * @param arc 
      */
     public void addOutgoing(Arc arc) {
         this.outgoing.add(arc);
     }
-
+    
+    /** Added */
   	public void setOutgoing(List<Arc> outgoing) {
   		this.outgoing = outgoing;
   	}
 
+  	/** Added */
   	public List<Arc> getOutgoing() {
   		return outgoing;
   	}
   	
+  	/** Added */
   	public boolean equals( Place place ) {
   		if( this.getName() == place.getName() )
   			return true;

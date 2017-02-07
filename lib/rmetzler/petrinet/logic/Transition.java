@@ -10,7 +10,9 @@ extends PetrinetObject{
         super(name);
     }
 
+    /** Added */
     private List<Arc> incoming = new ArrayList<Arc>();
+    /** Added */
     private List<Arc> outgoing = new ArrayList<Arc>();
     
     /**
@@ -72,14 +74,14 @@ extends PetrinetObject{
     }
 
     /**
-     * @return ist die Transition mit keiner Kante verbunden?
-     * 
      * L'associazione è non associata ad un arco?
+     * @return ist die Transition mit keiner Kante verbunden?
      */
     public boolean isNotConnected() {
         return incoming.isEmpty() && outgoing.isEmpty();
     }
     
+    /** Added */
     public boolean hasMoreThanOneOutgoing() {
     	if( outgoing.size() > 1 )
     		return true;
@@ -87,10 +89,12 @@ extends PetrinetObject{
     		return false;
     }
     
+    /** Added */
     public List<Arc> getIncoming() {
     	return incoming;
     }
     
+    /** Added */
     public List<Arc> getOutgoing() {
     	return outgoing;
     }

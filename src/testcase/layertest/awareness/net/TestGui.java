@@ -69,11 +69,11 @@ public class TestGui {
 		}
 		*/
 		
-		
+		/*
 		Net net = new Net(model);
 		net.getPetrinet().getPlaces().get(0).addTokens(1);
 		PetrinetGUI.displayPetrinet(net.getPetrinet());
-		
+		*/
 	}
 	
 	

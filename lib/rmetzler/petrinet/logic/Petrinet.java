@@ -13,13 +13,12 @@ import cartago.new_array;
  * zum Erstellen von Objekten benutzt werden, anstatt die Konstruktoren 
  * direkt aufzurufen.
  * 
- * @author rmetzler
- * 
  * Una Rete di Petri conosce tutti gli elementi.
  * Pertanto, dovrebbero essere usati questi Factory-Methods 
  * per creare gli oggetti, piuttosto che i costruttori delle
  * rispettive classi.
- *
+ * 
+ * @author rmetzler
  */
 
 public class Petrinet
@@ -31,7 +30,9 @@ extends PetrinetObject {
     List<Arc> arcs                  = new ArrayList<Arc>();
     List<InhibitorArc> inhibitors   = new ArrayList<InhibitorArc>();
     
+    /** Added */
     HashMap<String,Integer> placesPosition = new HashMap<>();
+    /** Added */
     Integer position = 0;
     
     public Petrinet(String name) {
@@ -69,14 +70,14 @@ extends PetrinetObject {
     public Place place(String name) {
         Place p = new Place(name);
         places.add(p);
-        placesPosition.put(name, position++);
+        placesPosition.put(name, position++);//Added
         return p;
     }
     
     public Place place(String name, int initial) {
         Place p = new Place(name, initial);
         places.add(p);
-        placesPosition.put(name, position++);
+        placesPosition.put(name, position++);//Added
         return p;
     }
     
@@ -113,6 +114,7 @@ extends PetrinetObject {
         return sb.toString();
     }
     
+    /** Added */
     public Place getPlace( String name ) {
     	return places.get(placesPosition.get(name));
     }

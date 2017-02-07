@@ -99,6 +99,7 @@ extends PetrinetObject {
     	return transition;
     }
     
+    /** Added */
     public int getDirection() {
     	if( direction == Direction.PLACE_TO_TRANSITION )
     		return 1;
