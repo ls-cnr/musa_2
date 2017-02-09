@@ -54,6 +54,8 @@ public class ProblemExploration {
 		this.capabilities = capabilities;
 		this.assumptions = assumptions;
 		toVisit = new ArrayList<>();
+		visited = new ArrayList<>();
+		expandedList = new ArrayList<>();
 		net = new Net(model);
 	}
 

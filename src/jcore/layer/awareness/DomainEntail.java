@@ -22,8 +22,6 @@ import net.sf.tweety.lp.asp.syntax.Program;
 /**
  * The Class DomainEntail.
  * @author icar-aose
- * @version 1.0.0
- * @author Javadoc author Fontana Alessandro
  */
 
 /* pattern Singleton */
