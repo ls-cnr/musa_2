@@ -358,4 +358,11 @@ public class ProblemExploration {
 		else 
 			return b;
 	}
+	
+	/* metodo utile al testing */
+	public ArrayList<ExpansionNode> getExpandedList(){
+		return this.expandedList;
+	}
+	
+	
 }

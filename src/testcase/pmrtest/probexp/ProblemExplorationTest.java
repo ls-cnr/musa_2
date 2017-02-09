@@ -505,10 +505,6 @@ public void setUp(){
 	
 	AbstractCapability NSM = new AbstractCapability("notify_storehouse_manager", NSM_evo, NSM_pre, null);
 	
-	this.startTokens = new ArrayList<>();
-	this.startTokens.add(new Token("p3"));
-	this.startTokens.add(new Token("p4"));
-	
 	this.wStart = new StateOfWorld();
 	
 	try {
@@ -611,12 +607,22 @@ public void setUp(){
     
     this.capList = new ArrayList<>();
     capList.add(this.CU);
-    ProblemExploration prob = new ProblemExploration(model, capList, domain);
+    this.exploration = new ProblemExploration(model, capList, domain);
+    
+	this.startTokens = new ArrayList<>();
+	this.startTokens.add(new Token("p3"));
+	this.startTokens.add(new Token("p4"));
+	
+    this.eStart = new ENode(nodewStart);
+    this.eStart.setTokens(startTokens);
 }
 	
 
 	@Test
-	public void applyNetTest(){
+	public void expandNodeTest(){
+		this.exploration.addToVisit(this.nodewStart, this.startTokens, 9);
+		this.exploration.expandNode();
+		assertEquals(true,  this.exploration.);
 	}
 }
 
