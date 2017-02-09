@@ -51,7 +51,7 @@ public class ProblemExploration {
 	 *            the Capabilities List proper of the Agent
 	 */
 	public ProblemExploration( GoalModel model, ArrayList<AbstractCapability> capabilities, AssumptionSet assumptions) {
-		this.capabilities = capabilities;
+		this.capabilities = new ArrayList<>(capabilities);
 		this.assumptions = assumptions;
 		toVisit = new ArrayList<>();
 		visited = new ArrayList<>();
@@ -82,8 +82,7 @@ public class ProblemExploration {
 	 */
 	public void expandNode() {
 		ENode enode = getHighestNodeToVisit();
-		
-		for( AbstractCapability capability : capabilities )
+		for( AbstractCapability capability : capabilities ){
 			if(DomainEntail.getInstance().entailsCondition(enode.getWorldNode().getWorldState(), this.assumptions, capability.getPreCondition()) == true){
 				//Starts the expansion
 				ExpansionNode expNode = applyExpand(enode, capability);
@@ -96,6 +95,7 @@ public class ProblemExploration {
 				expandedList.add(expNode);
 				expandedList.sort(ExpansionNode.getScoreComparator());
 			}
+		}
 		
 		visited.add(enode);
 	}	
@@ -360,9 +360,9 @@ public class ProblemExploration {
 		else 
 			return b;
 	}
-	
-	/******/
-	public ArrayList<ExpansionNode> getEx() {
-		return expandedList;
+
+	/* metodo utile al testing */
+	public ArrayList<ExpansionNode> getExpandedList(){
+		return this.expandedList;
 	}
 }

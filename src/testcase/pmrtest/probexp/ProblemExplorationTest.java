@@ -47,6 +47,7 @@ public class ProblemExplorationTest {
 	private StateOfWorld wStart;
 	private StateOfWorld startNode;
 	private StateOfWorld regAndCloud;
+	private StateOfWorld regAndCloud2;
 	private StateOfWorld regNoCloud;
 	private StateOfWorld known;
 	private StateOfWorld unknown;
@@ -58,6 +59,7 @@ public class ProblemExplorationTest {
 	private WorldNode nodeunknown;
 	
 	private ENode eStart;
+	private ENode eregAndcloud;
 	
 	private AbstractCapability NSM;
 	private AbstractCapability SFL;
@@ -70,7 +72,6 @@ public class ProblemExplorationTest {
 	private AbstractCapability SRF;
 	private AbstractCapability CU;
 	
-	private ArrayList<AbstractCapability> capList;
 	
 	
 	private Goal TNF;
@@ -84,11 +85,13 @@ public class ProblemExplorationTest {
 	private GoalModel model;
 	private ArrayList<Token> startTokens;
 	
+	AssumptionSet domain;
+	
 @Before
 public void setUp(){
 	
 	
-	AssumptionSet domain = new AssumptionSet();	 
+	this.domain = new AssumptionSet();	 
 	try {
 
 		domain.addAssumption_asString("role(X) :- user(X).");
@@ -123,11 +126,14 @@ public void setUp(){
 	THO_order.addArgument(doc);
 	FOLAtom THO_user = new FOLAtom( new Predicate("user",1));
 	THO_user.addArgument(usr);
-	Condition THO_tc = new Condition( new Conjunction(THO_received, new Conjunction(THO_order,THO_user)) );
+	Set<Variable> THO_var = new HashSet<Variable>();
+	THO_var.add(doc);
+	THO_var.add(usr);
+	Condition THO_tc = new Condition( new ExistsQuantifiedFormula(new Conjunction(THO_received, new Conjunction(THO_order,THO_user)), THO_var ) );
 	
 	FOLAtom THO_processed = new FOLAtom( new Predicate("processed", 1) );
 	THO_processed.addArgument(doc);
-	Condition THO_fs = new Condition( new Conjunction(THO_processed, THO_order));
+	Condition THO_fs = new Condition( new ExistsQuantifiedFormula(new Conjunction(THO_processed, THO_order), doc));
 	
 	Goal THO = new Goal("to_handle_order", THO_tc, THO_fs);
 	
@@ -139,11 +145,14 @@ public void setUp(){
 	TWO_order.addArgument(doc);
 	FOLAtom TWO_user = new FOLAtom( new Predicate("user",1));
 	TWO_user.addArgument(usr);
-	Condition TWO_tc = new Condition( new Conjunction(TWO_received, new Conjunction(TWO_order,TWO_user)) );
+	Set<Variable> TWO_var = new HashSet<Variable>();
+	TWO_var.add(doc);
+	TWO_var.add(usr);
+	Condition TWO_tc = new Condition( new ExistsQuantifiedFormula(new Conjunction(TWO_received, new Conjunction(TWO_order,TWO_user)), TWO_var ) );
 	
 	FOLAtom TWO_available = new FOLAtom( new Predicate("available",1));
 	TWO_available.addArgument(doc);
-	Condition TWO_fs = new Condition( new Conjunction(TWO_available, TWO_order) );
+	Condition TWO_fs = new Condition( new ExistsQuantifiedFormula(new Conjunction(TWO_available, TWO_order), doc ) );
 	
 	Goal TWO = new Goal("to_wait_order", TWO_tc, TWO_fs);
 	
@@ -156,11 +165,14 @@ public void setUp(){
 	TPO_registered.addArgument(usr);
 	FOLAtom TPO_user = new FOLAtom( new Predicate("user",1));
 	TPO_user.addArgument(usr);
-	Condition TPO_tc = new Condition( new Conjunction(new Conjunction(TPO_available,TPO_order), new Conjunction(TPO_registered,TPO_user)) );
+	Set<Variable> TPO_var = new HashSet<Variable>();
+	TPO_var.add(doc);
+	TPO_var.add(usr);
+	Condition TPO_tc = new Condition( new ExistsQuantifiedFormula(new Conjunction(new Conjunction(TPO_available,TPO_order), new Conjunction(TPO_registered,TPO_user)), TPO_var ) );
 	
 	FOLAtom TPO_processed = new FOLAtom( new Predicate("processed", 1) );
 	TPO_processed.addArgument(doc);
-	Condition TPO_fs = new Condition( new Conjunction(TPO_processed, TPO_order));
+	Condition TPO_fs = new Condition( new ExistsQuantifiedFormula(new Conjunction(TPO_processed, TPO_order), doc ) );
 	
 	Goal TPO = new Goal("to_handle_order", TPO_tc, TPO_fs);
 	
@@ -169,7 +181,7 @@ public void setUp(){
 	TPAO_accepted.addArgument(doc);
 	FOLAtom TPAO_order = new FOLAtom( new Predicate("order",1));
 	TPAO_order.addArgument(doc);
-	Condition TPAO_tc = new Condition( new Conjunction(TPAO_accepted, TPAO_order));
+	Condition TPAO_tc = new Condition( new ExistsQuantifiedFormula(new Conjunction(TPAO_accepted, TPAO_order), doc) );
 	
 	FOLAtom TPAO_send = new FOLAtom( new Predicate("send",2));
 	TPAO_send.addArgument(doc);
@@ -178,7 +190,10 @@ public void setUp(){
 	TPAO_delivery.addArgument(doc);
 	FOLAtom TPAO_manager = new FOLAtom(new Predicate("storehouse_manager", 1));
 	TPAO_manager.addArgument(mng);
-	Condition TPAO_fs = new Condition( new Conjunction(TPAO_send, new Conjunction(TPAO_delivery, TPAO_manager)));
+	Set<Variable> TPAO_var = new HashSet<Variable>();
+	TPAO_var.add(doc);
+	TPAO_var.add(mng);
+	Condition TPAO_fs = new Condition( new ExistsQuantifiedFormula(new Conjunction(TPAO_send, new Conjunction(TPAO_delivery, TPAO_manager)), TPAO_var) );
 	
 	Goal TPAO = new Goal("to_handle_order", TPAO_tc, TPAO_fs);
 	
@@ -191,12 +206,18 @@ public void setUp(){
 	TNI_available.addArgument(doc);
 	FOLAtom TNI_invoice = new FOLAtom( new Predicate("invoice",1));
 	TNI_invoice.addArgument(doc);
-	Condition TNI_tc = new Condition( new Conjunction(new Conjunction(TNI_registered, TNI_user), new Conjunction(TNI_available, TNI_invoice)) );
+	Set<Variable> TNI_var1 = new HashSet<Variable>();
+	TNI_var1.add(usr);
+	TNI_var1.add(doc);
+	Condition TNI_tc = new Condition( new ExistsQuantifiedFormula(new Conjunction(new Conjunction(TNI_registered, TNI_user), new Conjunction(TNI_available, TNI_invoice)), TNI_var1) );
 	
 	FOLAtom TNI_send = new FOLAtom( new Predicate("send",2));
 	TNI_send.addArgument(doc);
-	TNI_send.addArgument(usr);		
-	Condition TNI_fs = new Condition( new Conjunction(TNI_send, new Conjunction(TNI_invoice, TNI_user)) );
+	TNI_send.addArgument(usr);
+	Set<Variable> TNI_var2 = new HashSet<Variable>();
+	TNI_var2.add(doc);
+	TNI_var2.add(usr);		
+	Condition TNI_fs = new Condition( new ExistsQuantifiedFormula(new Conjunction(TNI_send, new Conjunction(TNI_invoice, TNI_user)), TNI_var2) );
 	
 	Goal TNI = new Goal("to_notify_invoice", TNI_tc, TNI_fs);
 	
@@ -208,13 +229,19 @@ public void setUp(){
 	TDO_invoice.addArgument(doc);		
 	FOLAtom TDO_user = new FOLAtom( new Predicate("user",1));
 	TDO_user.addArgument(usr);
-	Condition TDO_tc = new Condition( new Conjunction(TDO_send, new Conjunction(TDO_invoice, TDO_user)) );
+	Set<Variable> TDO_var1 = new HashSet<Variable>();
+	TDO_var1.add(doc);
+	TDO_var1.add(usr);
+	Condition TDO_tc = new Condition( new ExistsQuantifiedFormula(new Conjunction(TDO_send, new Conjunction(TDO_invoice, TDO_user)), TDO_var1) );
 	
 	FOLAtom TDO_delivery = new FOLAtom( new Predicate("delivery_order", 1));
 	TDO_delivery.addArgument(doc);
 	FOLAtom TDO_manager = new FOLAtom(new Predicate("storehouse_manager", 1));
 	TDO_manager.addArgument(mng);
-	Condition TDO_fs = new Condition( new Conjunction(TDO_send, new Conjunction(TDO_delivery, TDO_manager)) );
+	Set<Variable> TDO_var2 = new HashSet<Variable>();
+	TDO_var2.add(doc);
+	TDO_var2.add(mng);
+	Condition TDO_fs = new Condition( new ExistsQuantifiedFormula(new Conjunction(TDO_send, new Conjunction(TDO_delivery, TDO_manager)), TDO_var2) );
 	
 	Goal TDO = new Goal("to_delivery_order", TDO_tc, TDO_fs);
 	
@@ -227,15 +254,17 @@ public void setUp(){
 	TNF_registered.addArgument(usr);
 	FOLAtom TNF_user = new FOLAtom( new Predicate("user",1));
 	TNF_user.addArgument(usr);
-	Condition TNF_tc = new Condition( new Conjunction(new Conjunction(TNF_refused, TNF_order), new Conjunction(TNF_registered, TNF_user)) );
+	Set<Variable> TNF_var1 = new HashSet<Variable>();
+	TNF_var1.add(doc);
+	TNF_var1.add(usr);
+	Condition TNF_tc = new Condition( new ExistsQuantifiedFormula(new Conjunction(new Conjunction(TNF_refused, TNF_order), new Conjunction(TNF_registered, TNF_user)), TNF_var1) );
 	
 	FOLAtom TNF_send = new FOLAtom( new Predicate("send",2));
 	TNF_send.addArgument(new Constant("failure_order"));
 	TNF_send.addArgument(usr);	
-	Condition TNF_fs = new Condition( new Conjunction(TNF_send, TNF_user));
+	Condition TNF_fs = new Condition( new ExistsQuantifiedFormula(new Conjunction(TNF_send, TNF_user), usr) );
 	
 	Goal TNF = new Goal("to_notify_failure", TNF_tc, TNF_fs);
-	
 	/*******************/
 	
 	Constant a_user = new Constant("a_user");
@@ -252,7 +281,7 @@ public void setUp(){
 	CU_available.addArgument(doc);
 	FOLAtom CU_order = new FOLAtom( new Predicate("order",1));
 	CU_order.addArgument(doc);
-	Condition CU_pre = new Condition( new Conjunction(CU_available, CU_order) );
+	Condition CU_pre = new Condition(new ExistsQuantifiedFormula( new Conjunction(CU_available, CU_order), doc ));
 
 	Set<EvolutionScenario> CU_evo = new HashSet<>();
 	CapabilityEvolutionScenario CU_evo1 = new CapabilityEvolutionScenario("RegisteredUserWithCloud");
@@ -472,7 +501,6 @@ public void setUp(){
 	SFL_Set.add(usr);
 	Condition SFL_pre = new Condition(new ExistsQuantifiedFormula( new Conjunction(new Conjunction(SFL_uploaded_on_cloud, SFL_invoice), new Conjunction(neg2, SFL_user)), SFL_Set ));
 
-	System.out.println("ciao" + SFL_pre.toString());
 	
 	Set<EvolutionScenario> SFL_evo = new HashSet<>();
 	CapabilityEvolutionScenario SFL_evo1 = new CapabilityEvolutionScenario("MailedPermLink");
@@ -504,10 +532,6 @@ public void setUp(){
 	NSM_evo.add(NSM_evo1);
 	
 	AbstractCapability NSM = new AbstractCapability("notify_storehouse_manager", NSM_evo, NSM_pre, null);
-	
-	this.startTokens = new ArrayList<>();
-	this.startTokens.add(new Token("p3"));
-	this.startTokens.add(new Token("p4"));
 	
 	this.wStart = new StateOfWorld();
 	
@@ -609,15 +633,52 @@ public void setUp(){
     model.addOrArcs(TPO, secondLevel);
     model.addAndArcs(TPAO, thirdLevel);
     
-    this.capList = new ArrayList<>();
-    capList.add(this.CU);
-    ProblemExploration prob = new ProblemExploration(model, capList, domain);
+    this.exploration = new ProblemExploration(model, new ArrayList<AbstractCapability>(), this.domain);
+    this.exploration.addCapability(CU);
+    
+	this.startTokens = new ArrayList<>();
+	this.startTokens.add(new Token("p3"));
+	this.startTokens.add(new Token("p4"));
+	
+    this.eregAndcloud = new ENode(this.noderegAndCloud);
 }
 	
 
 	@Test
-	public void applyNetTest(){
+	public void expandNodeTest(){
+		this.exploration.addToVisit(this.nodewStart, this.startTokens, 9);
+		this.exploration.expandNode();
+		assertEquals(1, this.exploration.getExpandedList().size());
+		assertEquals(true,  this.exploration.getExpandedList().get(0).getDestination().contains(this.eregAndcloud));
+	}
+
+
+	@Test
+	public void expandNodeTest_2(){
+		this.exploration.addToVisit(this.nodewStart, this.startTokens, 9);
+		this.exploration.expandNode();
+		this.regAndCloud2 = new StateOfWorld();
+		try {
+			this.regAndCloud2.addFact_asString("order(an_order).");
+			this.regAndCloud2.addFact_asString("available(an_order).");
+			this.regAndCloud2.addFact_asString("user(a_user).");
+			this.regAndCloud2.addFact_asString("user_data(the_user_data).");
+			this.regAndCloud2.addFact_asString("registered(a_user).");
+			this.regAndCloud2.addFact_asString("has_cloud_space(a_user).");
+		} catch (ParseException e) {
+			e.printStackTrace();
+		} catch (layer.semantic.exception.NotAllowedInAStateOfWorld e) {
+			e.printStackTrace();
+		}
+		ENode temp = new ENode(new WorldNode(this.regAndCloud2));
+		
+		MultipleExpansionNode nk = (MultipleExpansionNode) this.exploration.getExpandedList().get(0);
+	    
+	    for( ENode ex : exploration.getExpandedList().get(0).getDestination() ){
+	      System.out.println(nk.getScenario(ex).getName() + " " + ex.getWorldNode().getWorldState().getFactsNumber());
+	    }
+		
+		assertEquals(1, this.exploration.getExpandedList().size());
+		assertEquals(true,  this.exploration.getExpandedList().get(0).getDestination().contains(temp));
 	}
 }
-
-

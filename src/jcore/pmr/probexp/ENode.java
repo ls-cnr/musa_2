@@ -130,6 +130,36 @@ public class ENode implements Node{
 	public boolean isExitNode(){
 		return this.exit;
 	}
+
+	@Override
+	public boolean equals(Object obj){
+	    if (obj == null) {
+	        return false;
+	    }
+	    if (!ENode.class.isAssignableFrom(obj.getClass())) {
+	        return false;
+	    }
+	    ENode other = (ENode) obj;
+	    
+	    if(this.getWorldNode().getWorldState() == null && other.getWorldNode().getWorldState() == null){
+	    	return true;
+	    }
+	    else if (this.getWorldNode().getWorldState() != null && this.getWorldNode().getWorldState().equals(other.getWorldNode().getWorldState())) {
+	        return true;
+	    }
+	    else {
+	        return false;
+	    }
+	}
+	
+	
+	/* (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode(){
+			return this.getWorldNode().hashCode();
+	}	
 	
 	@Override
 	  public boolean equals(Object obj){
