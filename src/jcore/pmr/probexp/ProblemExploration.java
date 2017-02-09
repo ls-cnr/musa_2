@@ -143,9 +143,9 @@ public class ProblemExploration {
 			//Uno StateOfWorld, che verrà inglobato in un nodo che a sua volta finirà nella lista delle destinazioni
 			//Del MultipleExpansioNode. Inoltre si aggiunge alla mappa dei nodi-scenari associati, la coppia nodo-scenario.
 			MultipleExpansionNode expNode = new MultipleExpansionNode(enode, new ArrayList<ENode>(), capability);
-			WorldEvolution evo = new WorldEvolution(this.assumptions, enode.getWorldNode().getWorldState());
 			Iterator i = capability.getScenarioSet().iterator();
 			while(i.hasNext()){
+				WorldEvolution evo = new WorldEvolution(this.assumptions, enode.getWorldNode().getWorldState());
 				EvolutionScenario temp = (EvolutionScenario) i.next();
 				evo.addEvolution(temp.getOperators());
 				ENode newEnode = new ENode(new WorldNode(evo.getEvolution().getLast()));
@@ -359,5 +359,10 @@ public class ProblemExploration {
 			return a;
 		else 
 			return b;
+	}
+	
+	/******/
+	public ArrayList<ExpansionNode> getEx() {
+		return expandedList;
 	}
 }
