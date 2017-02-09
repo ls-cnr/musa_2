@@ -260,7 +260,10 @@ public class Prova {
 		AU_unregistered.addArgument(usr);
 		FOLAtom AU_user = new FOLAtom( new Predicate("user",1));
 		AU_user.addArgument(usr);
-		Condition AU_pre = new Condition( new Conjunction(new Conjunction(AU_complete, AU_user_data), new Conjunction(AU_unregistered, AU_user)) );
+		Set<Variable> AU_Set = new HashSet<Variable>();
+		AU_Set.add(doc);
+		AU_Set.add(usr);
+		Condition AU_pre = new Condition(new ExistsQuantifiedFormula(new Conjunction(new Conjunction(AU_complete, AU_user_data), new Conjunction(AU_unregistered, AU_user)), AU_Set));
 
 		Set<EvolutionScenario> AU_evo = new HashSet<>();
 		CapabilityEvolutionScenario AU_evo1 = new CapabilityEvolutionScenario("RegisteredUser");
@@ -279,7 +282,10 @@ public class Prova {
 		SRF_unregistered.addArgument(usr);
 		FOLAtom SRF_user = new FOLAtom( new Predicate("user",1));
 		SRF_user.addArgument(usr);
-		Condition SRF_pre = new Condition( new Conjunction(new Conjunction(SRF_uncomplete, SRF_user_data), new Conjunction(SRF_unregistered, SRF_user)) );
+		Set<Variable> SRF_Set = new HashSet<Variable>();
+		SRF_Set.add(doc);
+		SRF_Set.add(usr);
+		Condition SRF_pre = new Condition(new ExistsQuantifiedFormula( new Conjunction(new Conjunction(SRF_uncomplete, SRF_user_data), new Conjunction(SRF_unregistered, SRF_user)), SRF_Set ));
 
 		Set<EvolutionScenario> SRF_evo = new HashSet<>();
 		CapabilityEvolutionScenario SRF_evo1 = new CapabilityEvolutionScenario("UncompleteRegistrationForm");
@@ -294,7 +300,7 @@ public class Prova {
 		WUD_uncomplete.addArgument(doc);
 		FOLAtom WUD_registration_form = new FOLAtom( new Predicate("registration_form",1));
 		WUD_registration_form.addArgument(doc);
-		Condition WUD_pre = new Condition( new Conjunction(WUD_uncomplete, WUD_registration_form) );
+		Condition WUD_pre = new Condition( new ExistsQuantifiedFormula( new Conjunction(WUD_uncomplete, WUD_registration_form), doc));
 
 		Set<EvolutionScenario> WUD_evo = new HashSet<>();
 		CapabilityEvolutionScenario WUD_evo1 = new CapabilityEvolutionScenario("CompleteForm");
@@ -317,7 +323,10 @@ public class Prova {
 		CS_registered.addArgument(usr);
 		FOLAtom CS_user = new FOLAtom( new Predicate("user",1));
 		CS_user.addArgument(usr);
-		Condition CS_pre = new Condition( new Conjunction(new Conjunction(CS_available, CS_order), new Conjunction(CS_registered, CS_user)) );
+		Set<Variable> CS_Set = new HashSet<Variable>();
+		CS_Set.add(doc);
+		CS_Set.add(usr);
+		Condition CS_pre = new Condition(new ExistsQuantifiedFormula( new Conjunction(new Conjunction(CS_available, CS_order), new Conjunction(CS_registered, CS_user)), CS_Set ));
 
 		Set<EvolutionScenario> CS_evo = new HashSet<>();
 		CapabilityEvolutionScenario CS_evo1 = new CapabilityEvolutionScenario("AcceptableOrder");
@@ -340,7 +349,10 @@ public class Prova {
 		NSF_registered.addArgument(usr);
 		FOLAtom NSF_user = new FOLAtom( new Predicate("user",1));
 		NSF_user.addArgument(usr);
-		Condition NSF_pre = new Condition( new Conjunction(new Conjunction(NSF_refused, NSF_order), new Conjunction(NSF_registered, NSF_user)) );
+		Set<Variable> NSF_Set = new HashSet<Variable>();
+		NSF_Set.add(doc);
+		NSF_Set.add(usr);
+		Condition NSF_pre = new Condition(new ExistsQuantifiedFormula( new Conjunction(new Conjunction(NSF_refused, NSF_order), new Conjunction(NSF_registered, NSF_user)), NSF_Set ));
 
 		Set<EvolutionScenario> NSF_evo = new HashSet<>();
 		CapabilityEvolutionScenario NSF_evo1 = new CapabilityEvolutionScenario("Failure");
@@ -359,7 +371,10 @@ public class Prova {
 		GI_registered.addArgument(usr);
 		FOLAtom GI_user = new FOLAtom( new Predicate("user",1));
 		GI_user.addArgument(usr);
-		Condition GI_pre = new Condition( new Conjunction(new Conjunction(GI_accepted, GI_order), new Conjunction(GI_registered, GI_user)) );
+		Set<Variable> GT_Set = new HashSet<Variable>();
+		GT_Set.add(doc);
+		GT_Set.add(usr);
+		Condition GI_pre = new Condition(new ExistsQuantifiedFormula( new Conjunction(new Conjunction(GI_accepted, GI_order), new Conjunction(GI_registered, GI_user)), GT_Set) );
 
 		Set<EvolutionScenario> GI_evo = new HashSet<>();
 		CapabilityEvolutionScenario GI_evo1 = new CapabilityEvolutionScenario("AvailableInvoice");
@@ -378,7 +393,10 @@ public class Prova {
 		UOUCS_has_cloud_space.addArgument(usr);
 		FOLAtom UOUCS_user = new FOLAtom( new Predicate("user",1));
 		UOUCS_user.addArgument(usr);
-		Condition UOUCS_pre = new Condition( new Conjunction(new Conjunction(UOUCS_available, UOUCS_invoice), new Conjunction(UOUCS_has_cloud_space, UOUCS_user)) );
+		Set<Variable> UOUCS_Set = new HashSet<Variable>();
+		UOUCS_Set.add(doc);
+		UOUCS_Set.add(usr);
+		Condition UOUCS_pre = new Condition(new ExistsQuantifiedFormula( new Conjunction(new Conjunction(UOUCS_available, UOUCS_invoice), new Conjunction(UOUCS_has_cloud_space, UOUCS_user)), UOUCS_Set ));
 
 		Set<EvolutionScenario> UOUCS_evo = new HashSet<>();
 		CapabilityEvolutionScenario UOUCS_evo1 = new CapabilityEvolutionScenario("UploadedOnCloud");
@@ -398,7 +416,10 @@ public class Prova {
 		Negation neg1 = new Negation(UOPCS_not_has_cloud_space);
 		FOLAtom UOPCS_user = new FOLAtom( new Predicate("user",1));
 		UOPCS_user.addArgument(usr);
-		Condition UOPCS_pre = new Condition( new Conjunction(new Conjunction(UOPCS_available, UOPCS_invoice), new Conjunction(neg1, UOPCS_user)) );
+		Set<Variable> UOPCS_Set = new HashSet<Variable>();
+		UOPCS_Set.add(doc);
+		UOPCS_Set.add(usr);
+		Condition UOPCS_pre = new Condition(new ExistsQuantifiedFormula( new Conjunction(new Conjunction(UOPCS_available, UOPCS_invoice), new Conjunction(neg1, UOPCS_user)), UOPCS_Set ));
 
 		Set<EvolutionScenario> UOPCS_evo = new HashSet<>();
 		CapabilityEvolutionScenario UOPCS_evo1 = new CapabilityEvolutionScenario("UploadedOnCloud");
@@ -418,7 +439,12 @@ public class Prova {
 		Negation neg2 = new Negation(SFL_not_has_cloud_space);
 		FOLAtom SFL_user = new FOLAtom( new Predicate("user",1));
 		SFL_user.addArgument(usr);
-		Condition SFL_pre = new Condition( new Conjunction(new Conjunction(SFL_uploaded_on_cloud, SFL_invoice), new Conjunction(neg2, SFL_user)) );
+		Set<Variable> SFL_Set = new HashSet<Variable>();
+		SFL_Set.add(doc);
+		SFL_Set.add(usr);
+		Condition SFL_pre = new Condition(new ExistsQuantifiedFormula( new Conjunction(new Conjunction(SFL_uploaded_on_cloud, SFL_invoice), new Conjunction(neg2, SFL_user)), SFL_Set ));
+
+		System.out.println("ciao" + SFL_pre.toString());
 		
 		Set<EvolutionScenario> SFL_evo = new HashSet<>();
 		CapabilityEvolutionScenario SFL_evo1 = new CapabilityEvolutionScenario("MailedPermLink");
@@ -437,7 +463,10 @@ public class Prova {
 		NSM_invoice.addArgument(doc);
 		FOLAtom NSM_user = new FOLAtom( new Predicate("user",1));
 		NSM_user.addArgument(usr);
-		Condition NSM_pre = new Condition( new Conjunction(NSM_notified, new Conjunction(NSM_invoice, NSM_user)) );
+		Set<Variable> NSM_Set = new HashSet<Variable>();
+		NSM_Set.add(doc);
+		NSM_Set.add(usr);
+		Condition NSM_pre = new Condition(new ExistsQuantifiedFormula( new Conjunction(NSM_notified, new Conjunction(NSM_invoice, NSM_user)), NSM_Set ));
 
 		Set<EvolutionScenario> NSM_evo = new HashSet<>();
 		CapabilityEvolutionScenario NSM_evo1 = new CapabilityEvolutionScenario("SentDeliveryOrderToStorehouseManager");
@@ -447,6 +476,7 @@ public class Prova {
 		NSM_evo.add(NSM_evo1);
 		
 		AbstractCapability NSM = new AbstractCapability("notify_storehouse_manager", NSM_evo, NSM_pre, null);
+		
 		
 	}
 
