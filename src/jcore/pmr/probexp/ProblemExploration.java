@@ -88,7 +88,7 @@ public class ProblemExploration {
 				ExpansionNode expNode = applyExpand(enode, capability);
 				//Applies the net to ultimate the expansion
 				for( ENode destination : expNode.getDestination() )
-					applyNet(expNode.getSource().getTokens(), destination);
+					applyNet(expNode.getSource().getTokens(), destination, /*debug*/ expNode);
 				//Elaborates the Expansion score
 				score(expNode);
 				//Adds the Expansion to the List in order 
@@ -180,15 +180,20 @@ public class ProblemExploration {
 	 * @param enode
 	 *            the new eNode created from expansion
 	 */
-	private void applyNet( ArrayList<Token> startingTokens, ENode enode ) {
+	private void applyNet( ArrayList<Token> startingTokens, ENode enode , /*debug*/ ExpansionNode mast) {
+		/*debug*/
+		MultipleExpansionNode nk = (MultipleExpansionNode) mast;
+		System.out.println(nk.getScenario(enode).getName());
+		/*****/
 		StateOfWorld state = enode.getWorldNode().getWorldState();
 		ArrayList<Token> tokens = new ArrayList<>();
 		//Prepares the net with tokens
-		net.putTokens(startingTokens);	
+		net.putTokens(startingTokens);
 		ArrayList<Transition> transitionsATF= net.getTransitionsAbleToFire();
 		
 		//Checking compatibility with StateOfWorld for every Transition and Firing
 		for( int i = 0, count = 0; i < transitionsATF.size(); i++ ){
+			/*debug*/ System.out.println("transitions able " + transitionsATF.size());
 			Transition t = transitionsATF.get(i);
 			
 			if( DomainEntail.getInstance().entailsCondition(state, assumptions, net.getTransitionLabel(t)) ){
@@ -251,6 +256,7 @@ public class ProblemExploration {
 		
 		//Cleans the net from tokens
 		net.removeTokens(tokens); 
+		/*debug System.out.println("tokens removed " + tokens.size());*/
 		
 		//Fills up ENode
 		fillENode(enode, tokens);

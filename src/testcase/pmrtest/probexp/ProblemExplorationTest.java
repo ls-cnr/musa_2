@@ -174,7 +174,7 @@ public void setUp(){
 	TPO_processed.addArgument(doc);
 	Condition TPO_fs = new Condition( new ExistsQuantifiedFormula(new Conjunction(TPO_processed, TPO_order), doc ) );
 	
-	Goal TPO = new Goal("to_handle_order", TPO_tc, TPO_fs);
+	Goal TPO = new Goal("to_process_order", TPO_tc, TPO_fs);
 	
 	/*to_process_accepted_order*/
 	FOLAtom TPAO_accepted = new FOLAtom( new Predicate("accepted",1));
@@ -195,7 +195,7 @@ public void setUp(){
 	TPAO_var.add(mng);
 	Condition TPAO_fs = new Condition( new ExistsQuantifiedFormula(new Conjunction(TPAO_send, new Conjunction(TPAO_delivery, TPAO_manager)), TPAO_var) );
 	
-	Goal TPAO = new Goal("to_handle_order", TPAO_tc, TPAO_fs);
+	Goal TPAO = new Goal("to_process_accepted_order", TPAO_tc, TPAO_fs);
 	
 	/*to_notify_invoce*/
 	FOLAtom TNI_registered = new FOLAtom( new Predicate("registered",1));

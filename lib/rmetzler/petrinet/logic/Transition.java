@@ -37,6 +37,7 @@ extends PetrinetObject{
         for (Arc arc : outgoing) {
             canFire = canFire & arc.canFire();
         }
+
         return canFire;
     }
     

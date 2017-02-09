@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import layer.awareness.AbstractCapability;
@@ -150,7 +151,7 @@ public class PENetTest {
 		TPO_processed.addArgument(doc);
 		Condition TPO_fs = new Condition( new ExistsQuantifiedFormula(new Conjunction(TPO_processed, TPO_order), doc ) );
 		
-		Goal TPO = new Goal("to_handle_order", TPO_tc, TPO_fs);
+		Goal TPO = new Goal("to_process_order", TPO_tc, TPO_fs);
 		
 		/*to_process_accepted_order*/
 		FOLAtom TPAO_accepted = new FOLAtom( new Predicate("accepted",1));
@@ -171,7 +172,7 @@ public class PENetTest {
 		TPAO_var.add(mng);
 		Condition TPAO_fs = new Condition( new ExistsQuantifiedFormula(new Conjunction(TPAO_send, new Conjunction(TPAO_delivery, TPAO_manager)), TPAO_var) );
 		
-		Goal TPAO = new Goal("to_handle_order", TPAO_tc, TPAO_fs);
+		Goal TPAO = new Goal("to_process_accepted_order", TPAO_tc, TPAO_fs);
 		
 		/*to_notify_invoce*/
 		FOLAtom TNI_registered = new FOLAtom( new Predicate("registered",1));
@@ -469,8 +470,6 @@ public class PENetTest {
 		SFL_Set.add(usr);
 		Condition SFL_pre = new Condition(new ExistsQuantifiedFormula( new Conjunction(new Conjunction(SFL_uploaded_on_cloud, SFL_invoice), new Conjunction(neg2, SFL_user)), SFL_Set ));
 
-		System.out.println("ciao" + SFL_pre.toString());
-		
 		Set<EvolutionScenario> SFL_evo = new HashSet<>();
 		CapabilityEvolutionScenario SFL_evo1 = new CapabilityEvolutionScenario("MailedPermLink");
 		SFL_evo1.addOperator( new AddStatement( new DLPHead(new DLPAtom("mailed_perm_link", the_invoice, a_user)) ) );
@@ -541,6 +540,7 @@ public class PENetTest {
 		problem.addToVisit(new WorldNode(wStart), tokens, 9);
 	}
 	
+	@Ignore
 	@Test
 	public void test1() {
 				
@@ -572,6 +572,14 @@ public class PENetTest {
 		assertEquals( problem.getExpandedList().size(), 1);
 		assertTrue( problem.getExpandedList().get(0).getDestination().contains(e) );
 		
+	}
+	
+	@Test
+	public void testNet1() {
+		problem.addCapability(CU);
+		problem.expandNode();
+		for( ENode e : problem.getExpandedList().get(0).getDestination() )
+			System.out.println(e.getTokens().size());
 	}
 
 }
