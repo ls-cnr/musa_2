@@ -8,7 +8,8 @@ import pmr.graph.Node;
 import pmr.graph.WorldNode;
 /**
  * The Class ENode.
- * @author Alessandro Fontana, Mirko Zichichi
+ * @author Alessandro Fontana
+ * @author Mirko Zichichi
  */
 public class ENode implements Node{
 	

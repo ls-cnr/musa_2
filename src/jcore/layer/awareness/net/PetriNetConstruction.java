@@ -10,6 +10,7 @@ import petrinet.logic.*;
 
 /**
  * Used to construct a PetriNet from a GoalModel.
+ * @author Mirko Zichichi
  */
 public class PetriNetConstruction {
 	
@@ -19,14 +20,22 @@ public class PetriNetConstruction {
 	/** The PetriNet. It contains Places, Transitions and Arcs */
 	private Petrinet pn;
 	
-	/** The structure that maintains associations between transitions and goals conditions (trigger condition, final state)*/
+	/**
+	 * The structure that maintains associations between transitions and goals
+	 * conditions (trigger condition, final state).
+	 */
 	private HashMap<Transition, Condition> labels;
 	
-	/** */
+	/** A structure used to relate an initialOrPlace with a finalOrPlace */
 	private HashMap<Place, Place> initialOrPlaces;	
+	
+	/** A structure used to relate a finalOrPlace with an initialOrPlace */
 	private HashMap<Place, Place> finalOrPlaces;
 	
-	/** These variables are used to name places, transitions and arcs in a correct order */
+	/**
+	 * These variables are used to name places, transitions and arcs in a
+	 * correct order.
+	 */
 	private static int p = 0;
 	private static int t = 0;
 	private static int a = 0;
@@ -56,6 +65,11 @@ public class PetriNetConstruction {
 		return pn;
 	}
 	
+	/**
+	 * Gets the labels.
+	 *
+	 * @return the labels
+	 */
 	HashMap<Transition, Condition> getLabels() {
 		return labels;
 	}
@@ -210,8 +224,10 @@ public class PetriNetConstruction {
 	/**
 	 * Adds the trigger condition to a Transition.
 	 *
-	 * @param transition 
+	 * @param transition
+	 *            the transition
 	 * @param goal
+	 *            the goal
 	 */
 	private void addTriggerCondition( Transition transition, Goal goal) {
 		labels.put(transition, goal.getTrigger_condition());
@@ -221,21 +237,41 @@ public class PetriNetConstruction {
 	 * Adds the final state to a Transition.
 	 *
 	 * @param transition
+	 *            the transition
 	 * @param goal
+	 *            the goal
 	 */
 	private void addFinalState( Transition transition, Goal goal) {
 		labels.put(transition, goal.getFinal_state());
 	}
 	
+	/**
+	 * This method relates initialOrPlaces and finalOrPlaces.
+	 *
+	 * @param initialOr
+	 *            the initial or
+	 * @param finalOr
+	 *            the final or
+	 */
 	private void setTwins( Place initialOr, Place finalOr ) {
 		initialOrPlaces.put(initialOr, finalOr);
 		finalOrPlaces.put(finalOr, initialOr);
 	}
 	
+	/**
+	 * Gets the initial or places.
+	 *
+	 * @return the initial or places
+	 */
 	public HashMap<Place,Place>	getInitialOrPlaces() {
 		return initialOrPlaces;
 	}
 	
+	/**
+	 * Gets the final or places.
+	 *
+	 * @return the final or places
+	 */
 	public HashMap<Place,Place>	getFinalOrPlaces() {
 		return finalOrPlaces;
 	}

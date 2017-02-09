@@ -10,6 +10,7 @@ import layer.awareness.Goal;
  * The Class GoalTree is used to create a Tree containing goals and arcs. Construction, starting from the root, 
  * consists in two parts: adding And or Or arcs to a node contained in the main structure and then putting the new nodes in.
  * A second structure is used to maintain access to goals.
+ * @author Mirko Zichichi
  */
 public class GoalTree {
 	

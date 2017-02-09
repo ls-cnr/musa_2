@@ -7,7 +7,6 @@ import layer.awareness.AbstractCapability;
 import pmr.graph.Node;
 import pmr.graph.WorldNode;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class ExpansionNode.
  */

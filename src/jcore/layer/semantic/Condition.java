@@ -32,4 +32,8 @@ public class Condition {
 		return formula;
 	}
 	
+	public String toString() {
+		return formula.toString();
+	}
+	
 }

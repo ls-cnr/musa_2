@@ -9,24 +9,37 @@ import layer.awareness.goalmodel.GoalModel;
 
 import java.util.ArrayList;
 
+/**
+ * The TestCase for GoalModel.
+ */
 public class GoalModelTest {
 	
+	/** The model. */
 	private GoalModel model;
 
-	@Before	//Initializing the test
+	/**
+	 * Initializing the test
+	 */
+	@Before	
 	public void init() {
 		Goal g = new Goal("root", null, null);
 		model = new GoalModel(g);
 	}
 	
-	@Test //Testing root presence
+	/**
+	 * Testing root presence
+	 */
+	@Test 
 	public void testRoot() {
 		Goal h = new Goal("root", null, null);
 		assertEquals(model.getRoot(), h);
 	}
 	
-	@Test //Testing if it doesn't add any arc (the goal named root in the model is already in there, 
-		  //so a new goal shouldn't be added and an arc to itself neither)
+	/**
+	 * Testing if it doesn't add any arc (the goal named root in the model is already in there, 
+	 * so a new goal shouldn't be added and an arc to itself neither)
+	 */
+	@Test 
 	public void testSameRoot() {
 		ArrayList<Goal> a = new ArrayList<>();
 		a.add(new Goal("root", null, null));	//New goal but already present in the model (Same name)
@@ -34,7 +47,10 @@ public class GoalModelTest {
 		assertNull( model.getArcs(model.getRoot()));
 	}
 	
-	@Test //Testing if it adds a new Arc
+	/**
+	 * Testing if it adds a new Arc
+	 */
+	@Test 
 	public void testAddArc() {
 		ArrayList<Goal> a = new ArrayList<>();
 		Goal g = new Goal("second", null, null);
@@ -43,7 +59,10 @@ public class GoalModelTest {
 		assertEquals( model.getArcs(model.getRoot()).get(0).getNextNode(), g);
 	}
 	
-	@Test //Testing if it doesn't add the same Goal (equal by name) twice
+	/**
+	 * Testing if it doesn't add the same Goal (equal by name) twice
+	 */
+	@Test
 	public void testSameGoals() {
 		ArrayList<Goal> a = new ArrayList<>();
 		Goal g = new Goal("second", null, null);	// These goals are considered

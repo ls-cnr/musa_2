@@ -19,7 +19,8 @@ import pmr.graph.WorldNode;
 /**
  * The Artifact ProblemExploration. It's used by an Agent to perform evolution for the various StateOfWorld passed, using his Capability.
  * It keeps a list of all the expanded nodes ready for bidding in auctions.
- * @author Alessandro Fontana, Mirko Zichichi
+ * @author Alessandro Fontana
+ * @author Mirko Zichichi
  */
 public class ProblemExploration {
 
@@ -225,7 +226,7 @@ public class ProblemExploration {
 						else
 							for( Token initToken : startingTokens )
 								if( initToken.getPlaceName() == place.getName() )
-									tokens.add( new Token(finalPlace.getName(), initToken.getDependentToken(), initToken.getBranch()) );
+									tokens.add( new Token(finalPlace.getName(), initToken.getDependingToken(), initToken.getBranch()) );
 					}
 				
 				t.fire();
@@ -237,9 +238,9 @@ public class ProblemExploration {
 					for( Token initToken : startingTokens )
 						if( initToken.getPlaceName() == p.getName() ){
 							if( initToken instanceof MultipleToken )
-								tokens.add(new MultipleToken(initToken.getPlaceName(), initToken.getDependentToken(), initToken.getBranch()));
+								tokens.add(new MultipleToken(initToken.getPlaceName(), initToken.getDependingToken(), initToken.getBranch()));
 							else 
-								tokens.add( new Token(initToken.getPlaceName(), initToken.getDependentToken(), initToken.getBranch()) );
+								tokens.add( new Token(initToken.getPlaceName(), initToken.getDependingToken(), initToken.getBranch()) );
 							break;
 						}	
 				}

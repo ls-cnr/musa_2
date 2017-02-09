@@ -7,6 +7,7 @@ import layer.awareness.RunTimeEntity;
 
 /**
  * The Class GoalModel is used to visit a Goal Tree. 
+ * @author Mirko Zichichi
  */
 public class GoalModel implements RunTimeEntity{
 	

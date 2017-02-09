@@ -4,6 +4,7 @@ import layer.awareness.Goal;
 
 /**
  * The Class OrArc, used to represent the And Arc in the model.
+ * @author Mirko Zichichi
  */
 public class OrArc extends RefinementArc {
 	

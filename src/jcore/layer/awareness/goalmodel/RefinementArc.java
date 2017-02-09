@@ -4,6 +4,7 @@ import layer.awareness.Goal;
 
 /**
  * The Class RefinementArc, used as generalization for And and Or arcs.
+ * @author Mirko Zichichi
  */
 public abstract class RefinementArc {
 	

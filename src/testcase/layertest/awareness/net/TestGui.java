@@ -8,8 +8,18 @@ import petrinet.logic.Petrinet;
 
 import java.util.ArrayList;
 
+/**
+ * This test is used to show an instance of PetriNet
+ * @author Mirko Zichichi
+ */
 public class TestGui {
 
+	/**
+	 * The main method.
+	 *
+	 * @param args
+	 *            the arguments
+	 */
 	public static void main(String[] args) {
 		GoalModel model = new GoalModel(new Goal("root", null, null));		
 		ArrayList<Goal> gs = new ArrayList<>();
@@ -38,7 +48,6 @@ public class TestGui {
 		*/
 		
 		/*Test 4*/
-		//model = new GoalModel(new Goal("root", null, null));
 		ArrayList<Goal> rootAnd = new ArrayList<>();
 		ArrayList<Goal> rootAndOr1 = new ArrayList<>();
 		ArrayList<Goal> rootAndOr2 = new ArrayList<>();

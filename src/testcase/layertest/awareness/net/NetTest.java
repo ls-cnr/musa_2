@@ -11,11 +11,20 @@ import layer.awareness.net.*;
 
 import java.util.ArrayList;
 
+/**
+ * The Class NetTest.
+ */
 public class NetTest {
 
+	/** The model. */
 	private GoalModel model;
+	
+	/** The net. */
 	private Net net;
 	
+	/**
+	 * Test parallel template.
+	 */
 	@Ignore
 	@Test
 	public void testParallelTemplate() {
@@ -27,6 +36,9 @@ public class NetTest {
 		net = new Net(model);
 	}
 	
+	/**
+	 * Test hops 1.
+	 */
 	@Ignore
 	@Test
 	public void testHops1() {
@@ -48,6 +60,9 @@ public class NetTest {
 		assertEquals(net.hop(t1), 8);
 	}
 	
+	/**
+	 * Test hops 3.
+	 */
 	@Ignore
 	@Test
 	public void testHops3() {
@@ -106,6 +121,9 @@ public class NetTest {
 		
 	}
 	
+	/**
+	 * Test hops 4.
+	 */
 	@Test
 	public void testHops4() {
 		model = new GoalModel(new Goal("root", null, null));
