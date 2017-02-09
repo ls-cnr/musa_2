@@ -1,4 +1,4 @@
-package layertest.awareness.net;
+ package layertest.awareness.net;
 
 import static org.junit.Assert.*;
 

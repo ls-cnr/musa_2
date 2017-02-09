@@ -22,8 +22,6 @@ import net.sf.tweety.lp.asp.syntax.Program;
 /**
  * The Class DomainEntail.
  * @author icar-aose
- * @version 1.0.0
- * @author Javadoc author Fontana Alessandro
  */
 
 /* pattern Singleton */
@@ -109,7 +107,7 @@ public class DomainEntail {
 	 */
 	private String setPath(){
 		if( System.getProperty("os.name").startsWith("Windows") )
-			return "./ext/dlv.nimgw.exe";
+			return "./ext/dlv.mingw.exe";
 		else //TODO considering other OS, such as Mac OS or Linux based OS
 			return "./ext/dlv.i368-apple-darwin.bin";
 	}

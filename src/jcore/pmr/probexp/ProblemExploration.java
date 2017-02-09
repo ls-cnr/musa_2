@@ -50,9 +50,12 @@ public class ProblemExploration {
 	 * @param capabilities
 	 *            the Capabilities List proper of the Agent
 	 */
-	public ProblemExploration( GoalModel model, ArrayList<AbstractCapability> capabilities) {
+	public ProblemExploration( GoalModel model, ArrayList<AbstractCapability> capabilities, AssumptionSet assumptions) {
 		this.capabilities = capabilities;
+		this.assumptions = assumptions;
 		toVisit = new ArrayList<>();
+		visited = new ArrayList<>();
+		expandedList = new ArrayList<>();
 		net = new Net(model);
 	}
 
