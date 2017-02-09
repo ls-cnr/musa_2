@@ -51,7 +51,7 @@ public class ProblemExploration {
 	 *            the Capabilities List proper of the Agent
 	 */
 	public ProblemExploration( GoalModel model, ArrayList<AbstractCapability> capabilities, AssumptionSet assumptions) {
-		this.capabilities = capabilities;
+		this.capabilities = new ArrayList<>(capabilities);
 		this.assumptions = assumptions;
 		toVisit = new ArrayList<>();
 		visited = new ArrayList<>();
@@ -82,8 +82,7 @@ public class ProblemExploration {
 	 */
 	public void expandNode() {
 		ENode enode = getHighestNodeToVisit();
-		
-		for( AbstractCapability capability : capabilities )
+		for( AbstractCapability capability : capabilities ){
 			if(DomainEntail.getInstance().entailsCondition(enode.getWorldNode().getWorldState(), this.assumptions, capability.getPreCondition()) == true){
 				//Starts the expansion
 				ExpansionNode expNode = applyExpand(enode, capability);
@@ -96,6 +95,7 @@ public class ProblemExploration {
 				expandedList.add(expNode);
 				expandedList.sort(ExpansionNode.getScoreComparator());
 			}
+		}
 		
 		visited.add(enode);
 	}	
@@ -143,9 +143,9 @@ public class ProblemExploration {
 			//Uno StateOfWorld, che verrà inglobato in un nodo che a sua volta finirà nella lista delle destinazioni
 			//Del MultipleExpansioNode. Inoltre si aggiunge alla mappa dei nodi-scenari associati, la coppia nodo-scenario.
 			MultipleExpansionNode expNode = new MultipleExpansionNode(enode, new ArrayList<ENode>(), capability);
-			WorldEvolution evo = new WorldEvolution(this.assumptions, enode.getWorldNode().getWorldState());
 			Iterator i = capability.getScenarioSet().iterator();
 			while(i.hasNext()){
+				WorldEvolution evo = new WorldEvolution(this.assumptions, enode.getWorldNode().getWorldState());
 				EvolutionScenario temp = (EvolutionScenario) i.next();
 				evo.addEvolution(temp.getOperators());
 				ENode newEnode = new ENode(new WorldNode(evo.getEvolution().getLast()));

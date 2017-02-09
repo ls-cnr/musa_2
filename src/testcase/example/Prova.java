@@ -224,7 +224,7 @@ public class Prova {
 		CU_available.addArgument(doc);
 		FOLAtom CU_order = new FOLAtom( new Predicate("order",1));
 		CU_order.addArgument(doc);
-		Condition CU_pre = new Condition( new Conjunction(CU_available, CU_order) );
+		Condition CU_pre = new Condition(new ExistsQuantifiedFormula( new Conjunction(CU_available, CU_order), doc ));
 
 		Set<EvolutionScenario> CU_evo = new HashSet<>();
 		CapabilityEvolutionScenario CU_evo1 = new CapabilityEvolutionScenario("RegisteredUserWithCloud");
