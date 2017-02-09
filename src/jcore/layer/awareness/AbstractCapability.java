@@ -6,6 +6,7 @@ import org.inferred.freebuilder.FreeBuilder;
 
 import layer.semantic.Condition;
 import layer.semantic.evolution.AddStatement;
+import layer.semantic.evolution.CapabilityEvoScenario;
 import layer.semantic.evolution.EvolutionScenario;
 
 /**
