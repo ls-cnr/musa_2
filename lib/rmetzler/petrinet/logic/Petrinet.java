@@ -116,7 +116,6 @@ extends PetrinetObject {
     
     /** Added */
     public Place getPlace( String name ) {
-    	System.out.println(places.get(1));
     	return places.get(placesPosition.get(name));
     }
 

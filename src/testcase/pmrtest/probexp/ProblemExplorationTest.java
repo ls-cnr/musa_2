@@ -52,15 +52,60 @@ public class ProblemExplorationTest {
 	private StateOfWorld regNoCloud;
 	private StateOfWorld known;
 	private StateOfWorld unknown;
+	private StateOfWorld uncompleteRegForm;
+	private StateOfWorld acceptedOrderNoCloud;
+	private StateOfWorld acceptedOrderCloud;
+	private StateOfWorld refusedOrderNoCloud;
+	private StateOfWorld refusedOrderCloud;
+	private StateOfWorld notifyFailureCloud;
+	private StateOfWorld notifyFailureNoCloud;
+	private StateOfWorld availableInvoiceCloud;
+	private StateOfWorld availableInvoiceNoCloud;
+	private StateOfWorld uploadedOnUserCloud;
+	private StateOfWorld uploadedOnPrivateCloud;
+	private StateOfWorld sharedLink;
+	private StateOfWorld notifiedStoreHouseCloud;
+	private StateOfWorld notifiedStoreHouseNoCloud;
 	
 	private WorldNode nodewStart;
 	private WorldNode noderegAndCloud;
 	private WorldNode noderegNoCloud;
 	private WorldNode nodeknown;
 	private WorldNode nodeunknown;
+	private WorldNode nodeuncompleteRegForm;
+	private WorldNode nodeacceptedOrderNoCloud;
+	private WorldNode nodeacceptedOrderCloud;
+	private WorldNode noderefusedOrderNoCloud;
+	private WorldNode noderefusedOrderCloud;
+	private WorldNode nodenotifyFailureCloud;
+	private WorldNode nodenotifyFailureNoCloud;
+	private WorldNode nodeavailableInvoiceCloud;
+	private WorldNode nodeavailableInvoiceNoCloud;
+	private WorldNode nodeuploadedOnUserCloud;
+	private WorldNode nodeuploadedOnPrivateCloud;
+	private WorldNode nodesharedLink;
+	private WorldNode nodenotifiedStoreHouseCloud;
+	private WorldNode nodenotifiedStoreHouseNoCloud;
 	
 	private ENode eStart;
 	private ENode eregAndcloud;
+	private ENode eregNoCloud;
+	private ENode eknown;
+	private ENode eunknown;
+	private ENode euncompleteRegForm;
+	private ENode eacceptedOrderNoCloud;
+	private ENode eacceptedOrderCloud;
+	private ENode erefusedOrderNoCloud;
+	private ENode erefusedOrderCloud;
+	private ENode enotifyFailureCloud;
+	private ENode enotifyFailureNoCloud;
+	private ENode eavailableInvoiceCloud;
+	private ENode eavailableInvoiceNoCloud;
+	private ENode euploadedOnUserCloud;
+	private ENode euploadedOnPrivateCloud;
+	private ENode esharedLink;
+	private ENode enotifiedStoreHouseCloud;
+	private ENode enotifiedStoreHouseNoCloud;
 	
 	private AbstractCapability NSM;
 	private AbstractCapability SFL;
@@ -276,6 +321,8 @@ public void setUp(){
 	Constant the_invoice = new Constant("the_invoice");
 	Constant the_delivery_order = new Constant("the_delivery_order");
 	Constant a_storehouse_manager = new Constant("a_storehouse_manager");
+	Constant the_user_space = new Constant("the_user_space");
+	Constant the_system_space = new Constant("the_system_space");
 	
 	/*check_user*/
 	FOLAtom CU_available = new FOLAtom( new Predicate("available",1));
@@ -601,7 +648,231 @@ public void setUp(){
 	} catch (layer.semantic.exception.NotAllowedInAStateOfWorld e) {
 		e.printStackTrace();
 	}
+	this.uncompleteRegForm = new StateOfWorld();
+	try {
+		this.uncompleteRegForm.addFact_asString("order(an_order).");
+		this.uncompleteRegForm.addFact_asString("available(an_order).");
+		this.uncompleteRegForm.addFact_asString("user(a_user).");
+		this.uncompleteRegForm.addFact_asString("user_data(the_user_data).");
+		this.uncompleteRegForm.addFact_asString("uncomplete(the_user_data).");
+		this.uncompleteRegForm.addFact_asString("unregistered(a_user).");
+		this.uncompleteRegForm.addFact_asString("uncomplete(the_registration_form).");
+	} catch (ParseException e) {
+		e.printStackTrace();
+	} catch (layer.semantic.exception.NotAllowedInAStateOfWorld e) {
+		e.printStackTrace();
+	} 
+	
+	
 
+	this.acceptedOrderNoCloud = new StateOfWorld();
+	try{
+		this.acceptedOrderNoCloud.addFact_asString("order(an_order).");
+		this.acceptedOrderNoCloud.addFact_asString("available(an_order).");
+		this.acceptedOrderNoCloud.addFact_asString("user(a_user).");
+		this.acceptedOrderNoCloud.addFact_asString("user_data(the_user_data).");
+		this.acceptedOrderNoCloud.addFact_asString("registered(a_user).");
+		this.acceptedOrderNoCloud.addFact_asString("accepted(the_order).");
+	} catch (ParseException e) {
+		e.printStackTrace();
+	} catch (layer.semantic.exception.NotAllowedInAStateOfWorld e) {
+		e.printStackTrace();
+	}
+	
+	this.acceptedOrderCloud = new StateOfWorld();
+	try{
+		this.acceptedOrderCloud.addFact_asString("order(an_order).");
+		this.acceptedOrderCloud.addFact_asString("available(an_order).");
+		this.acceptedOrderCloud.addFact_asString("user(a_user).");
+		this.acceptedOrderCloud.addFact_asString("user_data(the_user_data).");
+		this.acceptedOrderCloud.addFact_asString("registered(a_user).");
+		this.acceptedOrderCloud.addFact_asString("has_cloud_space(a_user).");
+		this.acceptedOrderCloud.addFact_asString("accepted(the_order).");
+	} catch (ParseException e) {
+		e.printStackTrace();
+	} catch (layer.semantic.exception.NotAllowedInAStateOfWorld e) {
+		e.printStackTrace();
+	}
+
+	
+	this.refusedOrderNoCloud = new StateOfWorld();
+	try{
+		this.refusedOrderNoCloud.addFact_asString("order(an_order).");
+		this.refusedOrderNoCloud.addFact_asString("available(an_order).");
+		this.refusedOrderNoCloud.addFact_asString("user(a_user).");
+		this.refusedOrderNoCloud.addFact_asString("user_data(the_user_data).");
+		this.refusedOrderNoCloud.addFact_asString("registered(a_user).");
+		this.refusedOrderNoCloud.addFact_asString("refused(the_order).");
+	} catch (ParseException e) {
+		e.printStackTrace();
+	} catch (layer.semantic.exception.NotAllowedInAStateOfWorld e) {
+		e.printStackTrace();
+	}
+	
+	
+	this.refusedOrderCloud = new StateOfWorld();
+	try{
+		this.refusedOrderCloud.addFact_asString("order(an_order).");
+		this.refusedOrderCloud.addFact_asString("available(an_order).");
+		this.refusedOrderCloud.addFact_asString("user(a_user).");
+		this.refusedOrderCloud.addFact_asString("user_data(the_user_data).");
+		this.refusedOrderCloud.addFact_asString("registered(a_user).");
+		this.refusedOrderCloud.addFact_asString("has_cloud_space(a_user).");
+		this.refusedOrderCloud.addFact_asString("refused(the_order).");
+	} catch (ParseException e) {
+		e.printStackTrace();
+	} catch (layer.semantic.exception.NotAllowedInAStateOfWorld e) {
+		e.printStackTrace();
+	}
+	
+	this.notifyFailureCloud = new StateOfWorld();
+	try{
+		this.notifyFailureCloud.addFact_asString("order(an_order).");
+		this.notifyFailureCloud.addFact_asString("available(an_order).");
+		this.notifyFailureCloud.addFact_asString("user(a_user).");
+		this.notifyFailureCloud.addFact_asString("user_data(the_user_data).");
+		this.notifyFailureCloud.addFact_asString("registered(a_user).");
+		this.notifyFailureCloud.addFact_asString("has_cloud_space(a_user).");
+		this.notifyFailureCloud.addFact_asString("refused(the_order).");
+		this.notifyFailureCloud.addFact_asString("sent(failure_order, the_user).");
+	} catch (ParseException e) {
+		e.printStackTrace();
+	} catch (layer.semantic.exception.NotAllowedInAStateOfWorld e) {
+		e.printStackTrace();
+	}
+	
+	this.notifyFailureNoCloud = new StateOfWorld();
+	try{
+		this.notifyFailureNoCloud.addFact_asString("order(an_order).");
+		this.notifyFailureNoCloud.addFact_asString("available(an_order).");
+		this.notifyFailureNoCloud.addFact_asString("user(a_user).");
+		this.notifyFailureNoCloud.addFact_asString("user_data(the_user_data).");
+		this.notifyFailureNoCloud.addFact_asString("registered(a_user).");
+		this.notifyFailureNoCloud.addFact_asString("refused(the_order).");
+		this.notifyFailureNoCloud.addFact_asString("sent(failure_order, the_user).");
+	} catch (ParseException e) {
+		e.printStackTrace();
+	} catch (layer.semantic.exception.NotAllowedInAStateOfWorld e) {
+		e.printStackTrace();
+	}
+	
+	
+	this.availableInvoiceCloud = new StateOfWorld();
+	try{
+		this.availableInvoiceCloud.addFact_asString("order(an_order).");
+		this.availableInvoiceCloud.addFact_asString("available(an_order).");
+		this.availableInvoiceCloud.addFact_asString("user(a_user).");
+		this.availableInvoiceCloud.addFact_asString("user_data(the_user_data).");
+		this.availableInvoiceCloud.addFact_asString("registered(a_user).");
+		this.availableInvoiceCloud.addFact_asString("has_cloud_space(a_user).");
+		this.availableInvoiceCloud.addFact_asString("accepted(the_order).");
+		this.availableInvoiceCloud.addFact_asString("available(the_invoice).");
+	} catch (ParseException e) {
+		e.printStackTrace();
+	} catch (layer.semantic.exception.NotAllowedInAStateOfWorld e) {
+		e.printStackTrace();
+	}
+	
+	this.availableInvoiceNoCloud = new StateOfWorld();
+	try{
+		this.availableInvoiceNoCloud.addFact_asString("order(an_order).");
+		this.availableInvoiceNoCloud.addFact_asString("available(an_order).");
+		this.availableInvoiceNoCloud.addFact_asString("user(a_user).");
+		this.availableInvoiceNoCloud.addFact_asString("user_data(the_user_data).");
+		this.availableInvoiceNoCloud.addFact_asString("registered(a_user).");
+		this.availableInvoiceNoCloud.addFact_asString("accepted(the_order).");
+		this.availableInvoiceNoCloud.addFact_asString("available(the_invoice).");
+	} catch (ParseException e) {
+		e.printStackTrace();
+	} catch (layer.semantic.exception.NotAllowedInAStateOfWorld e) {
+		e.printStackTrace();
+	}	
+	
+	this.uploadedOnUserCloud = new StateOfWorld();
+	try{
+		this.uploadedOnUserCloud.addFact_asString("order(an_order).");
+		this.uploadedOnUserCloud.addFact_asString("available(an_order).");
+		this.uploadedOnUserCloud.addFact_asString("user(a_user).");
+		this.uploadedOnUserCloud.addFact_asString("user_data(the_user_data).");
+		this.uploadedOnUserCloud.addFact_asString("registered(a_user).");
+		this.uploadedOnUserCloud.addFact_asString("has_cloud_space(a_user).");
+		this.uploadedOnUserCloud.addFact_asString("accepted(the_order).");
+		this.uploadedOnUserCloud.addFact_asString("available(the_invoice).");
+		this.uploadedOnUserCloud.addFact_asString("uploaded_on_cloud(the_invoice).");
+	} catch (ParseException e) {
+		e.printStackTrace();
+	} catch (layer.semantic.exception.NotAllowedInAStateOfWorld e) {
+		e.printStackTrace();
+	}
+	
+	this.uploadedOnPrivateCloud = new StateOfWorld();
+	try{
+		this.uploadedOnPrivateCloud.addFact_asString("order(an_order).");
+		this.uploadedOnPrivateCloud.addFact_asString("available(an_order).");
+		this.uploadedOnPrivateCloud.addFact_asString("user(a_user).");
+		this.uploadedOnPrivateCloud.addFact_asString("user_data(the_user_data).");
+		this.uploadedOnPrivateCloud.addFact_asString("registered(a_user).");
+		this.uploadedOnPrivateCloud.addFact_asString("accepted(the_order).");
+		this.uploadedOnPrivateCloud.addFact_asString("available(the_invoice).");
+		this.uploadedOnPrivateCloud.addFact_asString("uploaded_on_cloud(the_invoice).");
+	} catch (ParseException e) {
+		e.printStackTrace();
+	} catch (layer.semantic.exception.NotAllowedInAStateOfWorld e) {
+		e.printStackTrace();
+	}
+	
+	this.sharedLink = new StateOfWorld();
+	try{
+		this.sharedLink.addFact_asString("order(an_order).");
+		this.sharedLink.addFact_asString("available(an_order).");
+		this.sharedLink.addFact_asString("user(a_user).");
+		this.sharedLink.addFact_asString("user_data(the_user_data).");
+		this.sharedLink.addFact_asString("registered(a_user).");
+		this.sharedLink.addFact_asString("accepted(the_order).");
+		this.sharedLink.addFact_asString("available(the_invoice).");
+		this.sharedLink.addFact_asString("uploaded_on_cloud(the_invoice).");
+		this.sharedLink.addFact_asString("mailed_perm_link(the_invoice, a_user).");
+	} catch (ParseException e) {
+		e.printStackTrace();
+	} catch (layer.semantic.exception.NotAllowedInAStateOfWorld e) {
+		e.printStackTrace();
+	}
+
+	this.notifiedStoreHouseNoCloud = new StateOfWorld();
+	try{
+		this.notifiedStoreHouseNoCloud.addFact_asString("order(an_order).");
+		this.notifiedStoreHouseNoCloud.addFact_asString("available(an_order).");
+		this.notifiedStoreHouseNoCloud.addFact_asString("user(a_user).");
+		this.notifiedStoreHouseNoCloud.addFact_asString("user_data(the_user_data).");
+		this.notifiedStoreHouseNoCloud.addFact_asString("registered(a_user).");
+		this.notifiedStoreHouseNoCloud.addFact_asString("accepted(the_order).");
+		this.notifiedStoreHouseNoCloud.addFact_asString("available(the_invoice).");
+		this.notifiedStoreHouseNoCloud.addFact_asString("uploaded_on_cloud(the_invoice).");
+		this.notifiedStoreHouseNoCloud.addFact_asString("mailed_perm_link(the_invoice, a_user).");
+		this.notifiedStoreHouseNoCloud.addFact_asString("sent(the_delivery_order, a_storehouse_manager).");
+	} catch (ParseException e) {
+		e.printStackTrace();
+	} catch (layer.semantic.exception.NotAllowedInAStateOfWorld e) {
+		e.printStackTrace();
+	}
+	
+	this.notifiedStoreHouseCloud = new StateOfWorld();
+	try{
+		this.notifiedStoreHouseCloud.addFact_asString("order(an_order).");
+		this.notifiedStoreHouseCloud.addFact_asString("available(an_order).");
+		this.notifiedStoreHouseCloud.addFact_asString("user(a_user).");
+		this.notifiedStoreHouseCloud.addFact_asString("user_data(the_user_data).");
+		this.notifiedStoreHouseCloud.addFact_asString("registered(a_user).");
+		this.notifiedStoreHouseCloud.addFact_asString("has_cloud_space(a_user).");
+		this.notifiedStoreHouseCloud.addFact_asString("accepted(the_order).");
+		this.notifiedStoreHouseCloud.addFact_asString("available(the_invoice).");
+		this.notifiedStoreHouseCloud.addFact_asString("uploaded_on_cloud(the_invoice).");
+		this.notifiedStoreHouseCloud.addFact_asString("sent(the_delivery_order, a_storehouse_manager).");
+	} catch (ParseException e) {
+		e.printStackTrace();
+	} catch (layer.semantic.exception.NotAllowedInAStateOfWorld e) {
+		e.printStackTrace();
+	}
 	this.noderegAndCloud = new WorldNode(this.regAndCloud);
 	this.noderegNoCloud = new WorldNode(this.regNoCloud);
 	this.nodeknown = new WorldNode(this.known);
@@ -672,11 +943,7 @@ public void setUp(){
 		}
 		ENode temp = new ENode(new WorldNode(this.regAndCloud2));
 		
-		MultipleExpansionNode nk = (MultipleExpansionNode) this.exploration.getExpandedList().get(0);
-	    
-	   /* for( ENode ex : exploration.getExpandedList().get(0).getDestination() ){
-	      System.out.println(nk.getScenario(ex).getName() + " " + ex.getWorldNode().getWorldState().getFactsNumber());
-	    }*/
+		MultipleExpansionNode nk = (MultipleExpansionNode) this.exploration.getExpandedList().get(0);	    
 		
 		assertEquals(1, this.exploration.getExpandedList().size());
 		assertEquals(true,  this.exploration.getExpandedList().get(0).getDestination().contains(temp));

@@ -36,9 +36,9 @@ public class PetriNetConstruction {
 	 * These variables are used to name places, transitions and arcs in a
 	 * correct order.
 	 */
-	private static int p = 0;
-	private static int t = 0;
-	private static int a = 0;
+	private int p = 0;
+	private int t = 0;
+	private int a = 0;
 	
 	/**
 	 * Instantiates a new Net.

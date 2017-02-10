@@ -38,11 +38,6 @@ public class SolutionGraphTest {
 	private WorldNode n5;
 	private WorldNode n6;
 	
-	private XORNode x1;
-	private XORNode x2;
-	private XORNode x3;
-	private XORNode x4;
-	
 	private ENode e1;
 	private ENode e2;
 	private ENode e3;
