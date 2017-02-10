@@ -36,6 +36,7 @@ public class SolutionGraphTest {
 	private WorldNode n3;
 	private WorldNode n4;
 	private WorldNode n5;
+	private WorldNode n6;
 	
 	private XORNode x1;
 	private XORNode x2;
@@ -56,6 +57,7 @@ public class SolutionGraphTest {
 	private ExpansionNode ex4;
 	private ExpansionNode ex5;
 	private ExpansionNode ex6;
+	private ExpansionNode ex7;
 	
 	private ExpansionNode ex1Repeat;
 	
@@ -139,18 +141,19 @@ public void setUp(){
 	this.n3 = new WorldNode(w3);
 	this.n4 = new WorldNode(w4);
 	this.n5 = new WorldNode(w5);
+	this.n6 = new WorldNode(w6);
 	
 	this.e1 = new ENode(n1);
 	this.e2 = new ENode(n2);
 	this.e3 = new ENode(n3);
 	this.e4 = new ENode(n4);
-	this.e5 = new ENode(new WorldNode(null));
-	this.e6 = new ENode(n5);
+	this.e5 = new ENode(n5);
+	this.e6 = new ENode(n6);
 	
-	ArrayList<ENode> ENodeList123 = new ArrayList<ENode>();
-	ENodeList123.add(e1);
-	ENodeList123.add(e2);
-	ENodeList123.add(e3);
+	ArrayList<ENode> ENodeList345 = new ArrayList<ENode>();
+	ENodeList345.add(e3);
+	ENodeList345.add(e4);
+	ENodeList345.add(e5);
 	
 	ArrayList<ENode> ENodeList1 = new ArrayList<ENode>();
 	ENodeList1.add(e1);
@@ -163,14 +166,21 @@ public void setUp(){
 	
 	ArrayList<ENode> ENodeList4 = new ArrayList<ENode>();
 	ENodeList4.add(e4);
+	
+	ArrayList<ENode> ENodeList5 = new ArrayList<ENode>();
+	ENodeList5.add(e5);
+	
+	ArrayList<ENode> ENodeList6 = new ArrayList<ENode>();
+	ENodeList6.add(e6);
 
 	this.ex0 = new NormalExpansionNode(new ENode(new WorldNode(null)), ENodeList1, cap1);
-	this.ex1 = new NormalExpansionNode(e1, ENodeList2, cap1);
+	this.ex1 = new MultipleExpansionNode(e1, ENodeList345, cap1);
 	this.ex2 = new NormalExpansionNode(e2, ENodeList3, cap2);
-	this.ex3 = new NormalExpansionNode(e3, ENodeList4, cap3);
-	this.ex4 = new MultipleExpansionNode(e4, ENodeList123, cap1);
-	this.ex5 = new MultipleExpansionNode(e5, ENodeList123, cap1);
-	this.ex6 = new MultipleExpansionNode(e6, ENodeList123, cap1);
+	this.ex3 = new NormalExpansionNode(e3, ENodeList6, cap3);
+	this.ex4 = new NormalExpansionNode(e4, ENodeList5, cap1);
+	this.ex5 = new MultipleExpansionNode(e5, ENodeList345, cap1);
+	this.ex6 = new NormalExpansionNode(e6, ENodeList3, cap1);
+	this.ex7 = new NormalExpansionNode(e6, ENodeList4, cap2);
 	
 	this.graph = new SolutionGraph();
 }
@@ -294,4 +304,18 @@ public void setUp(){
 		assertEquals(4, solution.get(0).size());
 	}
 
+	//Wnull->n1 -> n3, n3 -> n4_n5_n6, n4 -> n7, n5 -> n6, n7 -> n4_n5
+	@Test
+	public void visitTest2(){
+		this.e5.setExit(true);
+		this.graph.addNode(ex0);
+		this.graph.addNode(ex1);
+		this.graph.addNode(ex4);
+		this.graph.addNode(ex3);
+		this.graph.addNode(ex6);
+		this.graph.addNode(ex7);
+		assertEquals(6, this.graph.getWTS().size());
+		ArrayList<ArrayList<WorldNode>> solution = this.graph.getSolutions();
+		assertEquals(3, solution.size());
+	}
 }

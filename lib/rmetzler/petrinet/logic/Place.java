@@ -119,7 +119,7 @@ extends PetrinetObject {
   	
   	/** Added */
   	public boolean equals( Place place ) {
-  		if( this.getName() == place.getName() )
+  		if( this.getName().equals(place.getName()) )
   			return true;
   		else 
   			return false;

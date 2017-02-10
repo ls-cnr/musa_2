@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import layer.awareness.AbstractCapability;
@@ -643,7 +644,7 @@ public void setUp(){
     this.eregAndcloud = new ENode(this.noderegAndCloud);
 }
 	
-
+	
 	@Test
 	public void expandNodeTest(){
 		this.exploration.addToVisit(this.nodewStart, this.startTokens, 9);
@@ -651,7 +652,6 @@ public void setUp(){
 		assertEquals(1, this.exploration.getExpandedList().size());
 		assertEquals(true,  this.exploration.getExpandedList().get(0).getDestination().contains(this.eregAndcloud));
 	}
-
 
 	@Test
 	public void expandNodeTest_2(){
@@ -674,9 +674,9 @@ public void setUp(){
 		
 		MultipleExpansionNode nk = (MultipleExpansionNode) this.exploration.getExpandedList().get(0);
 	    
-	    for( ENode ex : exploration.getExpandedList().get(0).getDestination() ){
+	   /* for( ENode ex : exploration.getExpandedList().get(0).getDestination() ){
 	      System.out.println(nk.getScenario(ex).getName() + " " + ex.getWorldNode().getWorldState().getFactsNumber());
-	    }
+	    }*/
 		
 		assertEquals(1, this.exploration.getExpandedList().size());
 		assertEquals(true,  this.exploration.getExpandedList().get(0).getDestination().contains(temp));
