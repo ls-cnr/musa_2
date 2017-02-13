@@ -88,7 +88,7 @@ public class ProblemExploration {
 				ExpansionNode expNode = applyExpand(enode, capability);
 				//Applies the net to ultimate the expansion
 				for( ENode destination : expNode.getDestination() )
-					applyNet(expNode.getSource().getTokens(), destination, /*debug*/ expNode);
+					applyNet(expNode.getSource().getTokens(), destination);
 				//Elaborates the Expansion score
 				score(expNode);
 				//Adds the Expansion to the List in order 
@@ -135,6 +135,7 @@ public class ProblemExploration {
 			ArrayList<ENode> newEnodeList = new ArrayList<ENode>();
 			ENode newEnode = new ENode(new WorldNode(evo.getEvolution().getLast()));
 			newEnodeList.add(newEnode);
+			this.toVisit.add(newEnode);
 			ExpansionNode result = new NormalExpansionNode(enode, newEnodeList, capability);
 			return result;
 		}
@@ -149,6 +150,7 @@ public class ProblemExploration {
 				EvolutionScenario temp = (EvolutionScenario) i.next();
 				evo.addEvolution(temp.getOperators());
 				ENode newEnode = new ENode(new WorldNode(evo.getEvolution().getLast()));
+				this.toVisit.add(newEnode);
 				expNode.addDestination(newEnode);
 				expNode.addScenario(newEnode, temp);
 			}
@@ -180,11 +182,8 @@ public class ProblemExploration {
 	 * @param enode
 	 *            the new eNode created from expansion
 	 */
-	private void applyNet( ArrayList<Token> startingTokens, ENode enode , /*debug*/ ExpansionNode mast) {
-		/*debug*/
-		MultipleExpansionNode nk = (MultipleExpansionNode) mast;
-		System.out.println(nk.getScenario(enode).getName());
-		/*****/
+	private void applyNet( ArrayList<Token> startingTokens, ENode enode) {
+
 		StateOfWorld state = enode.getWorldNode().getWorldState();
 		ArrayList<Token> tokens = new ArrayList<>();
 		//Prepares the net with tokens
@@ -193,7 +192,6 @@ public class ProblemExploration {
 		
 		//Checking compatibility with StateOfWorld for every Transition and Firing
 		for( int i = 0, count = 0; i < transitionsATF.size(); i++ ){
-			/*debug*/ System.out.println("transitions able " + transitionsATF.size());
 			Transition t = transitionsATF.get(i);
 			
 			if( DomainEntail.getInstance().entailsCondition(state, assumptions, net.getTransitionLabel(t)) ){
@@ -370,5 +368,8 @@ public class ProblemExploration {
 	/* metodo utile al testing */
 	public ArrayList<ExpansionNode> getExpandedList(){
 		return this.expandedList;
+	}
+	public ArrayList<ENode> getToVisit(){
+		return this.toVisit;
 	}
 }
