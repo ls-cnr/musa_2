@@ -505,10 +505,13 @@ public void setUp(){
 	GI_registered.addArgument(usr);
 	FOLAtom GI_user = new FOLAtom( new Predicate("user",1));
 	GI_user.addArgument(usr);
+	FOLAtom GI_invoice = new FOLAtom( new Predicate("available", 1));
+	GI_invoice.addArgument(doc);
+	Negation GI_notAvailable = new Negation(GI_invoice);
 	Set GT_Set = new HashSet<Variable>();
 	GT_Set.add(doc);
 	GT_Set.add(usr);
-	Condition GI_pre = new Condition(new ExistsQuantifiedFormula( new Conjunction(new Conjunction(GI_accepted, GI_order), new Conjunction(GI_registered, GI_user)), GT_Set) );
+	Condition GI_pre = new Condition(new ExistsQuantifiedFormula(new Conjunction( new Conjunction(new Conjunction(GI_accepted, GI_order), new Conjunction(GI_registered, GI_user)), GI_notAvailable), GT_Set) );
 
 	Set<EvolutionScenario> GI_evo = new HashSet<>();
 	CapabilityEvolutionScenario GI_evo1 = new CapabilityEvolutionScenario("AvailableInvoice");
@@ -527,10 +530,13 @@ public void setUp(){
 	UOUCS_has_cloud_space.addArgument(usr);
 	FOLAtom UOUCS_user = new FOLAtom( new Predicate("user",1));
 	UOUCS_user.addArgument(usr);
+	FOLAtom UOUCS_uploaded = new FOLAtom(new Predicate("uploaded_on_cloud",1));
+	UOUCS_uploaded.addArgument(doc);
+	Negation UOUCS_notUploaded = new Negation(UOUCS_uploaded);
 	Set UOUCS_Set = new HashSet<Variable>();
 	UOUCS_Set.add(doc);
 	UOUCS_Set.add(usr);
-	Condition UOUCS_pre = new Condition(new ExistsQuantifiedFormula( new Conjunction(new Conjunction(UOUCS_available, UOUCS_invoice), new Conjunction(UOUCS_has_cloud_space, UOUCS_user)), UOUCS_Set ));
+	Condition UOUCS_pre = new Condition(new ExistsQuantifiedFormula(new Conjunction( new Conjunction(new Conjunction(UOUCS_available, UOUCS_invoice), new Conjunction(UOUCS_has_cloud_space, UOUCS_user)), UOUCS_notUploaded), UOUCS_Set ));
 
 	Set<EvolutionScenario> UOUCS_evo = new HashSet<>();
 	CapabilityEvolutionScenario UOUCS_evo1 = new CapabilityEvolutionScenario("UploadedOnCloud");
@@ -550,10 +556,13 @@ public void setUp(){
 	Negation neg1 = new Negation(UOPCS_not_has_cloud_space);
 	FOLAtom UOPCS_user = new FOLAtom( new Predicate("user",1));
 	UOPCS_user.addArgument(usr);
+	FOLAtom UOPCS_uploaded = new FOLAtom(new Predicate("uploaded_on_cloud",1));
+	UOPCS_uploaded.addArgument(doc);
+	Negation UOPCS_notUploaded = new Negation(UOUCS_uploaded);
 	Set UOPCS_Set = new HashSet<Variable>();
 	UOPCS_Set.add(doc);
 	UOPCS_Set.add(usr);
-	Condition UOPCS_pre = new Condition(new ExistsQuantifiedFormula( new Conjunction(new Conjunction(UOPCS_available, UOPCS_invoice), new Conjunction(neg1, UOPCS_user)), UOPCS_Set ));
+	Condition UOPCS_pre = new Condition(new ExistsQuantifiedFormula(new Conjunction( new Conjunction(new Conjunction(UOPCS_available, UOPCS_invoice), new Conjunction(neg1, UOPCS_user)), UOPCS_notUploaded), UOPCS_Set ));
 
 	Set<EvolutionScenario> UOPCS_evo = new HashSet<>();
 	CapabilityEvolutionScenario UOPCS_evo1 = new CapabilityEvolutionScenario("UploadedOnCloud");
@@ -573,10 +582,14 @@ public void setUp(){
 	Negation neg2 = new Negation(SFL_not_has_cloud_space);
 	FOLAtom SFL_user = new FOLAtom( new Predicate("user",1));
 	SFL_user.addArgument(usr);
+	FOLAtom SFL_mailed = new FOLAtom( new Predicate("mailed_perm_link",2));
+	SFL_mailed.addArgument(doc);
+	SFL_mailed.addArgument(usr);
+	Negation SFL_notMailed = new Negation(SFL_mailed);
 	Set SFL_Set = new HashSet<Variable>();
 	SFL_Set.add(doc);
 	SFL_Set.add(usr);
-	Condition SFL_pre = new Condition(new ExistsQuantifiedFormula( new Conjunction(new Conjunction(SFL_uploaded_on_cloud, SFL_invoice), new Conjunction(neg2, SFL_user)), SFL_Set ));
+	Condition SFL_pre = new Condition(new ExistsQuantifiedFormula(new Conjunction( new Conjunction(new Conjunction(SFL_uploaded_on_cloud, SFL_invoice), new Conjunction(neg2, SFL_user)), SFL_notMailed), SFL_Set ));
 
 	
 	Set<EvolutionScenario> SFL_evo = new HashSet<>();
@@ -599,7 +612,11 @@ public void setUp(){
 	Set NSM_Set = new HashSet<Variable>();
 	NSM_Set.add(doc);
 	NSM_Set.add(usr);
-	Condition NSM_pre = new Condition(new ExistsQuantifiedFormula( new Conjunction(NSM_notified, new Conjunction(NSM_invoice, NSM_user)), NSM_Set ));
+	FOLAtom NSM_sent = new FOLAtom ( new Predicate("sent",2));
+	NSM_sent.addArgument(doc);
+	NSM_sent.addArgument(usr);
+	Negation NSM_notSent = new Negation(NSM_sent);
+	Condition NSM_pre = new Condition(new ExistsQuantifiedFormula( new Conjunction(new Conjunction(NSM_notified, NSM_notSent), new Conjunction(NSM_invoice, NSM_user)), NSM_Set ));
 
 	Set<EvolutionScenario> NSM_evo = new HashSet<>();
 	CapabilityEvolutionScenario NSM_evo1 = new CapabilityEvolutionScenario("SentDeliveryOrderToStorehouseManager");
