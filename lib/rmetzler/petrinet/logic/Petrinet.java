@@ -25,13 +25,13 @@ public class Petrinet
 extends PetrinetObject {
 
     private static final String nl = "\n";
-    List<Place> places              = new ArrayList<Place>();
-    List<Transition> transitions    = new ArrayList<Transition>();
-    List<Arc> arcs                  = new ArrayList<Arc>();
-    List<InhibitorArc> inhibitors   = new ArrayList<InhibitorArc>();
+     List<Place> places              = new ArrayList<Place>();
+     List<Transition> transitions    = new ArrayList<Transition>();
+     List<Arc> arcs                  = new ArrayList<Arc>();
+     List<InhibitorArc> inhibitors   = new ArrayList<InhibitorArc>();
     
     /** Added */
-    HashMap<String,Integer> placesPosition = new HashMap<>();
+     HashMap<String,Integer> placesPosition = new HashMap<>();
     /** Added */
     Integer position = 0;
     

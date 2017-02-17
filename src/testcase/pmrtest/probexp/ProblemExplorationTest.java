@@ -4,9 +4,11 @@ import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import layer.awareness.AbstractCapability;
@@ -51,15 +53,60 @@ public class ProblemExplorationTest {
 	private StateOfWorld regNoCloud;
 	private StateOfWorld known;
 	private StateOfWorld unknown;
+	private StateOfWorld uncompleteRegForm;
+	private StateOfWorld acceptedOrderNoCloud;
+	private StateOfWorld acceptedOrderCloud;
+	private StateOfWorld refusedOrderNoCloud;
+	private StateOfWorld refusedOrderCloud;
+	private StateOfWorld notifyFailureCloud;
+	private StateOfWorld notifyFailureNoCloud;
+	private StateOfWorld availableInvoiceCloud;
+	private StateOfWorld availableInvoiceNoCloud;
+	private StateOfWorld uploadedOnUserCloud;
+	private StateOfWorld uploadedOnPrivateCloud;
+	private StateOfWorld sharedLink;
+	private StateOfWorld notifiedStoreHouseCloud;
+	private StateOfWorld notifiedStoreHouseNoCloud;
 	
 	private WorldNode nodewStart;
 	private WorldNode noderegAndCloud;
 	private WorldNode noderegNoCloud;
 	private WorldNode nodeknown;
 	private WorldNode nodeunknown;
+	private WorldNode nodeuncompleteRegForm;
+	private WorldNode nodeacceptedOrderNoCloud;
+	private WorldNode nodeacceptedOrderCloud;
+	private WorldNode noderefusedOrderNoCloud;
+	private WorldNode noderefusedOrderCloud;
+	private WorldNode nodenotifyFailureCloud;
+	private WorldNode nodenotifyFailureNoCloud;
+	private WorldNode nodeavailableInvoiceCloud;
+	private WorldNode nodeavailableInvoiceNoCloud;
+	private WorldNode nodeuploadedOnUserCloud;
+	private WorldNode nodeuploadedOnPrivateCloud;
+	private WorldNode nodesharedLink;
+	private WorldNode nodenotifiedStoreHouseCloud;
+	private WorldNode nodenotifiedStoreHouseNoCloud;
 	
 	private ENode eStart;
-	private ENode eregAndcloud;
+	private ENode eregAndCloud;
+	private ENode eregNoCloud;
+	private ENode eknown;
+	private ENode eunknown;
+	private ENode euncompleteRegForm;
+	private ENode eacceptedOrderNoCloud;
+	private ENode eacceptedOrderCloud;
+	private ENode erefusedOrderNoCloud;
+	private ENode erefusedOrderCloud;
+	private ENode enotifyFailureCloud;
+	private ENode enotifyFailureNoCloud;
+	private ENode eavailableInvoiceCloud;
+	private ENode eavailableInvoiceNoCloud;
+	private ENode euploadedOnUserCloud;
+	private ENode euploadedOnPrivateCloud;
+	private ENode esharedLink;
+	private ENode enotifiedStoreHouseCloud;
+	private ENode enotifiedStoreHouseNoCloud;
 	
 	private AbstractCapability NSM;
 	private AbstractCapability SFL;
@@ -71,7 +118,7 @@ public class ProblemExplorationTest {
 	private AbstractCapability WUD;
 	private AbstractCapability SRF;
 	private AbstractCapability CU;
-	
+	private AbstractCapability AU;
 	
 	
 	private Goal TNF;
@@ -85,7 +132,7 @@ public class ProblemExplorationTest {
 	private GoalModel model;
 	private ArrayList<Token> startTokens;
 	
-	AssumptionSet domain;
+	private AssumptionSet domain;
 	
 @Before
 public void setUp(){
@@ -117,6 +164,7 @@ public void setUp(){
 	Variable doc = new Variable("Doc");
 	Variable usr = new Variable("Usr");
 	Variable mng = new Variable("Mng");
+	Variable fail = new Variable("Fail");
 	
 	/*to_handle_order*/
 	FOLAtom THO_received = new FOLAtom( new Predicate("received",2));
@@ -275,38 +323,55 @@ public void setUp(){
 	Constant the_invoice = new Constant("the_invoice");
 	Constant the_delivery_order = new Constant("the_delivery_order");
 	Constant a_storehouse_manager = new Constant("a_storehouse_manager");
+	Constant the_user_space = new Constant("the_user_space");
+	Constant the_system_space = new Constant("the_system_space");
 	
 	/*check_user*/
 	FOLAtom CU_available = new FOLAtom( new Predicate("available",1));
 	CU_available.addArgument(doc);
 	FOLAtom CU_order = new FOLAtom( new Predicate("order",1));
 	CU_order.addArgument(doc);
-	Condition CU_pre = new Condition(new ExistsQuantifiedFormula( new Conjunction(CU_available, CU_order), doc ));
+	FOLAtom CU_notLogged = new FOLAtom( new Predicate("logged",1));
+	CU_notLogged.addArgument(usr);
+	Negation CU_neg = new Negation(CU_notLogged);
+	FOLAtom CU_user = new FOLAtom( new Predicate("user",1));
+	CU_user.addArgument(usr);
+	
+	Set CU_Set = new HashSet<Variable>();
+	CU_Set.add(doc);
+	CU_Set.add(usr);
+	Condition CU_pre = new Condition(new ExistsQuantifiedFormula(new Conjunction( new Conjunction(CU_available, CU_order), new Conjunction(CU_neg, CU_user) ), CU_Set ));
 
 	Set<EvolutionScenario> CU_evo = new HashSet<>();
 	CapabilityEvolutionScenario CU_evo1 = new CapabilityEvolutionScenario("RegisteredUserWithCloud");
 	CU_evo1.addOperator( new AddStatement( new DLPHead(new DLPAtom("registered", a_user)) ) );
 	CU_evo1.addOperator( new AddStatement( new DLPHead(new DLPAtom("has_cloud_space", a_user)) ) );
 	CU_evo1.addOperator( new AddStatement( new DLPHead(new DLPAtom("user", a_user)) ) );
+	CU_evo1.addOperator( new RemoveStatement( new DLPHead(new DLPAtom("user_data", the_user_data)) ) );
+	CU_evo1.addOperator( new AddStatement( new DLPHead(new DLPAtom("logged", a_user)) ) );
 	CU_evo.add(CU_evo1);
 	CapabilityEvolutionScenario CU_evo2 = new CapabilityEvolutionScenario("RegisteredUserWithoutCloud");
 	CU_evo2.addOperator( new AddStatement( new DLPHead(new DLPAtom("registered", a_user)) ) );
 	CU_evo2.addOperator( new AddStatement( new DLPHead(new DLPAtom("user", a_user)) ) );
+	CU_evo2.addOperator( new RemoveStatement( new DLPHead(new DLPAtom("user_data", the_user_data)) ) );
+	CU_evo2.addOperator( new AddStatement( new DLPHead(new DLPAtom("logged", a_user)) ) );
 	CU_evo.add(CU_evo2);
 	CapabilityEvolutionScenario CU_evo3 = new CapabilityEvolutionScenario("KnownUser");
 	CU_evo3.addOperator( new AddStatement( new DLPHead(new DLPAtom("complete", the_user_data)) ) );
 	CU_evo3.addOperator( new AddStatement( new DLPHead(new DLPAtom("user_data", the_user_data)) ) );
 	CU_evo3.addOperator( new AddStatement( new DLPHead(new DLPAtom("unregistered", a_user)) ) );
 	CU_evo3.addOperator( new AddStatement( new DLPHead(new DLPAtom("user", a_user)) ) );
+	CU_evo3.addOperator( new AddStatement( new DLPHead(new DLPAtom("logged", a_user)) ) );
 	CU_evo.add(CU_evo3);
 	CapabilityEvolutionScenario CU_evo4 = new CapabilityEvolutionScenario("UnknownUser");
 	CU_evo4.addOperator( new AddStatement( new DLPHead(new DLPAtom("uncomplete", the_user_data)) ) );
 	CU_evo4.addOperator( new AddStatement( new DLPHead(new DLPAtom("user_data", the_user_data)) ) );
 	CU_evo4.addOperator( new AddStatement( new DLPHead(new DLPAtom("unregistered", a_user)) ) );
 	CU_evo4.addOperator( new AddStatement( new DLPHead(new DLPAtom("user", a_user)) ) );
+	CU_evo4.addOperator( new AddStatement( new DLPHead(new DLPAtom("logged", a_user)) ) );
 	CU_evo.add(CU_evo4);
 	
-	AbstractCapability CU = new AbstractCapability("check_user", CU_evo, CU_pre, null);
+	this.CU = new AbstractCapability("check_user", CU_evo, CU_pre, null);
 	
 	/*add_user*/
 	FOLAtom AU_complete = new FOLAtom( new Predicate("complete",1));
@@ -326,9 +391,12 @@ public void setUp(){
 	CapabilityEvolutionScenario AU_evo1 = new CapabilityEvolutionScenario("RegisteredUser");
 	AU_evo1.addOperator( new AddStatement( new DLPHead(new DLPAtom("registered", a_user)) ) );
 	AU_evo1.addOperator( new AddStatement( new DLPHead(new DLPAtom("user", a_user)) ) );
+	AU_evo1.addOperator(new RemoveStatement(new DLPHead(new DLPAtom("unregistered", a_user))));
+	AU_evo1.addOperator(new RemoveStatement(new DLPHead(new DLPAtom("complete", the_user_data))));
+	AU_evo1.addOperator(new RemoveStatement(new DLPHead(new DLPAtom("user_data", the_user_data))));
 	AU_evo.add(AU_evo1);
 	
-	AbstractCapability AU = new AbstractCapability("add_user", AU_evo, AU_pre, null);
+	this.AU = new AbstractCapability("add_user", AU_evo, AU_pre, null);
 	
 	/*send_registration_form*/
 	FOLAtom SRF_uncomplete = new FOLAtom( new Predicate("uncomplete",1));
@@ -350,7 +418,7 @@ public void setUp(){
 	SRF_evo1.addOperator( new AddStatement( new DLPHead(new DLPAtom("registration_form", the_registration_form)) ) );
 	SRF_evo.add(SRF_evo1);
 	
-	AbstractCapability SRF = new AbstractCapability("send_registration_form", SRF_evo, SRF_pre, null);
+	this.SRF = new AbstractCapability("send_registration_form", SRF_evo, SRF_pre, null);
 	
 	/*wait_user_data*/
 	FOLAtom WUD_uncomplete = new FOLAtom( new Predicate("uncomplete",1));
@@ -361,15 +429,17 @@ public void setUp(){
 
 	Set<EvolutionScenario> WUD_evo = new HashSet<>();
 	CapabilityEvolutionScenario WUD_evo1 = new CapabilityEvolutionScenario("CompleteForm");
-	WUD_evo1.addOperator( new RemoveStatement( new DLPHead(new DLPAtom("uncomplete", the_registration_form)) ) );
 	WUD_evo1.addOperator( new AddStatement( new DLPHead(new DLPAtom("complete", the_user_data)) ) );
-	WUD_evo1.addOperator( new AddStatement( new DLPHead(new DLPAtom("user_data", the_user_data)) ) );
+	WUD_evo1.addOperator(new RemoveStatement(new DLPHead(new DLPAtom("uncomplete", the_user_data))));
+	WUD_evo1.addOperator(new RemoveStatement(new DLPHead(new DLPAtom("uncomplete", the_registration_form))));
+	WUD_evo1.addOperator( new RemoveStatement( new DLPHead(new DLPAtom("registration_form", the_registration_form)) ) );
 	WUD_evo.add(WUD_evo1);
 	CapabilityEvolutionScenario WUD_evo2 = new CapabilityEvolutionScenario("UncompleteForm");
 	WUD_evo2.addOperator( new RemoveStatement( new DLPHead(new DLPAtom("uncomplete", the_registration_form)) ) );
+	WUD_evo2.addOperator( new RemoveStatement( new DLPHead(new DLPAtom("registration_form", the_registration_form)) ) );
 	WUD_evo.add(WUD_evo2);
 	
-	AbstractCapability WUD = new AbstractCapability("wait_user_data", WUD_evo, WUD_pre, null);
+	this.WUD = new AbstractCapability("wait_user_data", WUD_evo, WUD_pre, null);
 	
 	/*check_storehouse*/
 	FOLAtom CS_available = new FOLAtom( new Predicate("available",1));
@@ -389,13 +459,15 @@ public void setUp(){
 	CapabilityEvolutionScenario CS_evo1 = new CapabilityEvolutionScenario("AcceptableOrder");
 	CS_evo1.addOperator( new AddStatement( new DLPHead(new DLPAtom("accepted", an_order)) ) );
 	CS_evo1.addOperator( new AddStatement( new DLPHead(new DLPAtom("order", an_order)) ) );
+	CS_evo1.addOperator( new RemoveStatement( new DLPHead(new DLPAtom("available", an_order)) ) );
 	CS_evo.add(CS_evo1);
 	CapabilityEvolutionScenario CS_evo2 = new CapabilityEvolutionScenario("UnacceptableOrder");
 	CS_evo2.addOperator( new AddStatement( new DLPHead(new DLPAtom("refused", an_order)) ) );
 	CS_evo2.addOperator( new AddStatement( new DLPHead(new DLPAtom("order", an_order)) ) );
+	CS_evo2.addOperator( new RemoveStatement( new DLPHead(new DLPAtom("available", an_order)) ) );
 	CS_evo.add(CS_evo2);
 	
-	AbstractCapability CS = new AbstractCapability("check_storehouse", CS_evo, CS_pre, null);
+	this.CS = new AbstractCapability("check_storehouse", CS_evo, CS_pre, null);
 	
 	/*notify_stock_failure*/
 	FOLAtom NSF_refused = new FOLAtom( new Predicate("refused",1));
@@ -406,18 +478,23 @@ public void setUp(){
 	NSF_registered.addArgument(usr);
 	FOLAtom NSF_user = new FOLAtom( new Predicate("user",1));
 	NSF_user.addArgument(usr);
+	FOLAtom NSF_failed = new FOLAtom( new Predicate("failure_order",1));
+	NSF_failed.addArgument(fail);
+	Negation NSF_notfailed = new Negation(NSF_failed);
 	Set NSF_Set = new HashSet<Variable>();
 	NSF_Set.add(doc);
 	NSF_Set.add(usr);
-	Condition NSF_pre = new Condition(new ExistsQuantifiedFormula( new Conjunction(new Conjunction(NSF_refused, NSF_order), new Conjunction(NSF_registered, NSF_user)), NSF_Set ));
+	NSF_Set.add(fail);
+	Condition NSF_pre = new Condition(new ExistsQuantifiedFormula( new Conjunction(new Conjunction(NSF_refused, NSF_order), new Conjunction( new Conjunction(NSF_registered, NSF_user), NSF_notfailed)), NSF_Set ));
 
 	Set<EvolutionScenario> NSF_evo = new HashSet<>();
 	CapabilityEvolutionScenario NSF_evo1 = new CapabilityEvolutionScenario("Failure");
+	NSF_evo1.addOperator( new AddStatement( new DLPHead(new DLPAtom("failure_order", failure_order)) ) );
 	NSF_evo1.addOperator( new AddStatement( new DLPHead(new DLPAtom("sent", failure_order, a_user)) ) );
 	NSF_evo1.addOperator( new AddStatement( new DLPHead(new DLPAtom("user", a_user)) ) );
 	NSF_evo.add(NSF_evo1);
 	
-	AbstractCapability NSF = new AbstractCapability("notify_stock_failure", NSF_evo, NSF_pre, null);
+	this.NSF = new AbstractCapability("notify_stock_failure", NSF_evo, NSF_pre, null);
 	
 	/*generate_invoice*/
 	FOLAtom GI_accepted = new FOLAtom( new Predicate("accepted",1));
@@ -428,10 +505,13 @@ public void setUp(){
 	GI_registered.addArgument(usr);
 	FOLAtom GI_user = new FOLAtom( new Predicate("user",1));
 	GI_user.addArgument(usr);
+	FOLAtom GI_invoice = new FOLAtom( new Predicate("available", 1));
+	GI_invoice.addArgument(doc);
+	Negation GI_notAvailable = new Negation(GI_invoice);
 	Set GT_Set = new HashSet<Variable>();
 	GT_Set.add(doc);
 	GT_Set.add(usr);
-	Condition GI_pre = new Condition(new ExistsQuantifiedFormula( new Conjunction(new Conjunction(GI_accepted, GI_order), new Conjunction(GI_registered, GI_user)), GT_Set) );
+	Condition GI_pre = new Condition(new ExistsQuantifiedFormula(new Conjunction( new Conjunction(new Conjunction(GI_accepted, GI_order), new Conjunction(GI_registered, GI_user)), GI_notAvailable), GT_Set) );
 
 	Set<EvolutionScenario> GI_evo = new HashSet<>();
 	CapabilityEvolutionScenario GI_evo1 = new CapabilityEvolutionScenario("AvailableInvoice");
@@ -439,7 +519,7 @@ public void setUp(){
 	GI_evo1.addOperator( new AddStatement( new DLPHead(new DLPAtom("invoice", the_invoice)) ) );
 	GI_evo.add(GI_evo1);
 	
-	AbstractCapability GI = new AbstractCapability("generate_invoice", GI_evo, GI_pre, null);
+	this.GI = new AbstractCapability("generate_invoice", GI_evo, GI_pre, null);
 	
 	/*upload_on_user_cloud_storage*/
 	FOLAtom UOUCS_available = new FOLAtom( new Predicate("available",1));
@@ -450,10 +530,13 @@ public void setUp(){
 	UOUCS_has_cloud_space.addArgument(usr);
 	FOLAtom UOUCS_user = new FOLAtom( new Predicate("user",1));
 	UOUCS_user.addArgument(usr);
+	FOLAtom UOUCS_uploaded = new FOLAtom(new Predicate("uploaded_on_cloud",1));
+	UOUCS_uploaded.addArgument(doc);
+	Negation UOUCS_notUploaded = new Negation(UOUCS_uploaded);
 	Set UOUCS_Set = new HashSet<Variable>();
 	UOUCS_Set.add(doc);
 	UOUCS_Set.add(usr);
-	Condition UOUCS_pre = new Condition(new ExistsQuantifiedFormula( new Conjunction(new Conjunction(UOUCS_available, UOUCS_invoice), new Conjunction(UOUCS_has_cloud_space, UOUCS_user)), UOUCS_Set ));
+	Condition UOUCS_pre = new Condition(new ExistsQuantifiedFormula(new Conjunction( new Conjunction(new Conjunction(UOUCS_available, UOUCS_invoice), new Conjunction(UOUCS_has_cloud_space, UOUCS_user)), UOUCS_notUploaded), UOUCS_Set ));
 
 	Set<EvolutionScenario> UOUCS_evo = new HashSet<>();
 	CapabilityEvolutionScenario UOUCS_evo1 = new CapabilityEvolutionScenario("UploadedOnCloud");
@@ -461,7 +544,7 @@ public void setUp(){
 	UOUCS_evo1.addOperator( new AddStatement( new DLPHead(new DLPAtom("invoice", the_invoice)) ) );
 	UOUCS_evo.add(UOUCS_evo1);
 	
-	AbstractCapability UOUCS = new AbstractCapability("upload_on_user_cloud_storage", UOUCS_evo, UOUCS_pre, null);
+	this.UOUCS = new AbstractCapability("upload_on_user_cloud_storage", UOUCS_evo, UOUCS_pre, null);
 	
 	/*upload_on_private_cloud_storage*/
 	FOLAtom UOPCS_available = new FOLAtom( new Predicate("available",1));
@@ -473,10 +556,13 @@ public void setUp(){
 	Negation neg1 = new Negation(UOPCS_not_has_cloud_space);
 	FOLAtom UOPCS_user = new FOLAtom( new Predicate("user",1));
 	UOPCS_user.addArgument(usr);
+	FOLAtom UOPCS_uploaded = new FOLAtom(new Predicate("uploaded_on_cloud",1));
+	UOPCS_uploaded.addArgument(doc);
+	Negation UOPCS_notUploaded = new Negation(UOUCS_uploaded);
 	Set UOPCS_Set = new HashSet<Variable>();
 	UOPCS_Set.add(doc);
 	UOPCS_Set.add(usr);
-	Condition UOPCS_pre = new Condition(new ExistsQuantifiedFormula( new Conjunction(new Conjunction(UOPCS_available, UOPCS_invoice), new Conjunction(neg1, UOPCS_user)), UOPCS_Set ));
+	Condition UOPCS_pre = new Condition(new ExistsQuantifiedFormula(new Conjunction( new Conjunction(new Conjunction(UOPCS_available, UOPCS_invoice), new Conjunction(neg1, UOPCS_user)), UOPCS_notUploaded), UOPCS_Set ));
 
 	Set<EvolutionScenario> UOPCS_evo = new HashSet<>();
 	CapabilityEvolutionScenario UOPCS_evo1 = new CapabilityEvolutionScenario("UploadedOnCloud");
@@ -484,7 +570,7 @@ public void setUp(){
 	UOPCS_evo1.addOperator( new AddStatement( new DLPHead(new DLPAtom("invoice", the_invoice)) ) );
 	UOPCS_evo.add(UOPCS_evo1);
 	
-	AbstractCapability UOPCS = new AbstractCapability("upload_on_private_cloud_storage", UOPCS_evo, UOPCS_pre, null);
+	this.UOPCS = new AbstractCapability("upload_on_private_cloud_storage", UOPCS_evo, UOPCS_pre, null);
 	
 	/*share_file_link*/
 	FOLAtom SFL_uploaded_on_cloud = new FOLAtom( new Predicate("uploaded_on_cloud",1));
@@ -496,10 +582,14 @@ public void setUp(){
 	Negation neg2 = new Negation(SFL_not_has_cloud_space);
 	FOLAtom SFL_user = new FOLAtom( new Predicate("user",1));
 	SFL_user.addArgument(usr);
+	FOLAtom SFL_mailed = new FOLAtom( new Predicate("mailed_perm_link",2));
+	SFL_mailed.addArgument(doc);
+	SFL_mailed.addArgument(usr);
+	Negation SFL_notMailed = new Negation(SFL_mailed);
 	Set SFL_Set = new HashSet<Variable>();
 	SFL_Set.add(doc);
 	SFL_Set.add(usr);
-	Condition SFL_pre = new Condition(new ExistsQuantifiedFormula( new Conjunction(new Conjunction(SFL_uploaded_on_cloud, SFL_invoice), new Conjunction(neg2, SFL_user)), SFL_Set ));
+	Condition SFL_pre = new Condition(new ExistsQuantifiedFormula(new Conjunction( new Conjunction(new Conjunction(SFL_uploaded_on_cloud, SFL_invoice), new Conjunction(neg2, SFL_user)), SFL_notMailed), SFL_Set ));
 
 	
 	Set<EvolutionScenario> SFL_evo = new HashSet<>();
@@ -509,7 +599,7 @@ public void setUp(){
 	SFL_evo1.addOperator( new AddStatement( new DLPHead(new DLPAtom("user", a_user)) ) );
 	SFL_evo.add(SFL_evo1);
 	
-	AbstractCapability SFL = new AbstractCapability("share_file_link", SFL_evo, SFL_pre, null);
+	this.SFL = new AbstractCapability("share_file_link", SFL_evo, SFL_pre, null);
 	
 	/*notify_storehouse_manager*/
 	FOLAtom NSM_notified = new FOLAtom( new Predicate("notified",2));
@@ -522,7 +612,11 @@ public void setUp(){
 	Set NSM_Set = new HashSet<Variable>();
 	NSM_Set.add(doc);
 	NSM_Set.add(usr);
-	Condition NSM_pre = new Condition(new ExistsQuantifiedFormula( new Conjunction(NSM_notified, new Conjunction(NSM_invoice, NSM_user)), NSM_Set ));
+	FOLAtom NSM_sent = new FOLAtom ( new Predicate("sent",2));
+	NSM_sent.addArgument(doc);
+	NSM_sent.addArgument(usr);
+	Negation NSM_notSent = new Negation(NSM_sent);
+	Condition NSM_pre = new Condition(new ExistsQuantifiedFormula( new Conjunction(new Conjunction(NSM_notified, NSM_notSent), new Conjunction(NSM_invoice, NSM_user)), NSM_Set ));
 
 	Set<EvolutionScenario> NSM_evo = new HashSet<>();
 	CapabilityEvolutionScenario NSM_evo1 = new CapabilityEvolutionScenario("SentDeliveryOrderToStorehouseManager");
@@ -531,7 +625,7 @@ public void setUp(){
 	NSM_evo1.addOperator( new AddStatement( new DLPHead(new DLPAtom("storehouse_manager", a_storehouse_manager)) ) );
 	NSM_evo.add(NSM_evo1);
 	
-	AbstractCapability NSM = new AbstractCapability("notify_storehouse_manager", NSM_evo, NSM_pre, null);
+	this.NSM = new AbstractCapability("notify_storehouse_manager", NSM_evo, NSM_pre, null);
 	
 	this.wStart = new StateOfWorld();
 	
@@ -551,9 +645,9 @@ public void setUp(){
 		this.regAndCloud.addFact_asString("order(an_order).");
 		this.regAndCloud.addFact_asString("available(an_order).");
 		this.regAndCloud.addFact_asString("user(a_user).");
-		this.regAndCloud.addFact_asString("user_data(the_user_data).");
 		this.regAndCloud.addFact_asString("registered(a_user).");
 		this.regAndCloud.addFact_asString("has_cloud_space(a_user).");
+		this.regAndCloud.addFact_asString("logged(a_user).");
 	} catch (ParseException e) {
 		e.printStackTrace();
 	} catch (layer.semantic.exception.NotAllowedInAStateOfWorld e) {
@@ -565,8 +659,8 @@ public void setUp(){
 		this.regNoCloud.addFact_asString("order(an_order).");
 		this.regNoCloud.addFact_asString("available(an_order).");
 		this.regNoCloud.addFact_asString("user(a_user).");
-		this.regNoCloud.addFact_asString("user_data(the_user_data).");
 		this.regNoCloud.addFact_asString("registered(a_user).");
+		this.regNoCloud.addFact_asString("logged(a_user).");
 	} catch (ParseException e) {
 		e.printStackTrace();
 	} catch (layer.semantic.exception.NotAllowedInAStateOfWorld e) {
@@ -578,6 +672,7 @@ public void setUp(){
 		this.unknown.addFact_asString("order(an_order).");
 		this.unknown.addFact_asString("available(an_order).");
 		this.unknown.addFact_asString("user(a_user).");
+		this.unknown.addFact_asString("logged(a_user).");
 		this.unknown.addFact_asString("user_data(the_user_data).");
 		this.unknown.addFact_asString("uncomplete(the_user_data).");
 		this.unknown.addFact_asString("unregistered(a_user).");
@@ -592,6 +687,7 @@ public void setUp(){
 		this.known.addFact_asString("order(an_order).");
 		this.known.addFact_asString("available(an_order).");
 		this.known.addFact_asString("user(a_user).");
+		this.known.addFact_asString("logged(a_user).");
 		this.known.addFact_asString("user_data(the_user_data).");
 		this.known.addFact_asString("complete(the_user_data).");
 		this.known.addFact_asString("unregistered(a_user).");
@@ -600,11 +696,223 @@ public void setUp(){
 	} catch (layer.semantic.exception.NotAllowedInAStateOfWorld e) {
 		e.printStackTrace();
 	}
+	
+	
+	this.uncompleteRegForm = new StateOfWorld();
+	try {
+		this.uncompleteRegForm.addFact_asString("order(an_order).");
+		this.uncompleteRegForm.addFact_asString("available(an_order).");
+		this.uncompleteRegForm.addFact_asString("user(a_user).");
+		this.uncompleteRegForm.addFact_asString("logged(a_user).");
+		this.uncompleteRegForm.addFact_asString("user_data(the_user_data).");
+		this.uncompleteRegForm.addFact_asString("uncomplete(the_user_data).");
+		this.uncompleteRegForm.addFact_asString("unregistered(a_user).");
+		this.uncompleteRegForm.addFact_asString("uncomplete(the_registration_form).");
+		this.uncompleteRegForm.addFact_asString("registration_form(the_registration_form).");
+	} catch (ParseException e) {
+		e.printStackTrace();
+	} catch (layer.semantic.exception.NotAllowedInAStateOfWorld e) {
+		e.printStackTrace();
+	} 
+	
+	
 
-	this.noderegAndCloud = new WorldNode(this.regAndCloud);
-	this.noderegNoCloud = new WorldNode(this.regNoCloud);
-	this.nodeknown = new WorldNode(this.known);
-	this.nodeunknown = new WorldNode(this.unknown);
+	this.acceptedOrderNoCloud = new StateOfWorld();
+	try{
+		this.acceptedOrderNoCloud.addFact_asString("order(an_order).");
+		this.acceptedOrderNoCloud.addFact_asString("user(a_user).");
+		this.acceptedOrderNoCloud.addFact_asString("logged(a_user).");
+		this.acceptedOrderNoCloud.addFact_asString("registered(a_user).");
+		this.acceptedOrderNoCloud.addFact_asString("accepted(an_order).");
+	} catch (ParseException e) {
+		e.printStackTrace();
+	} catch (layer.semantic.exception.NotAllowedInAStateOfWorld e) {
+		e.printStackTrace();
+	}
+	
+	this.acceptedOrderCloud = new StateOfWorld();
+	try{
+		this.acceptedOrderCloud.addFact_asString("order(an_order).");
+		this.acceptedOrderCloud.addFact_asString("user(a_user).");
+		this.acceptedOrderCloud.addFact_asString("logged(a_user).");
+		this.acceptedOrderCloud.addFact_asString("registered(a_user).");
+		this.acceptedOrderCloud.addFact_asString("has_cloud_space(a_user).");
+		this.acceptedOrderCloud.addFact_asString("accepted(an_order).");
+	} catch (ParseException e) {
+		e.printStackTrace();
+	} catch (layer.semantic.exception.NotAllowedInAStateOfWorld e) {
+		e.printStackTrace();
+	}
+
+	
+	this.refusedOrderNoCloud = new StateOfWorld();
+	try{
+		this.refusedOrderNoCloud.addFact_asString("order(an_order).");
+		this.refusedOrderNoCloud.addFact_asString("user(a_user).");
+		this.refusedOrderNoCloud.addFact_asString("logged(a_user).");
+		this.refusedOrderNoCloud.addFact_asString("registered(a_user).");
+		this.refusedOrderNoCloud.addFact_asString("refused(an_order).");
+	} catch (ParseException e) {
+		e.printStackTrace();
+	} catch (layer.semantic.exception.NotAllowedInAStateOfWorld e) {
+		e.printStackTrace();
+	}
+	
+	
+	this.refusedOrderCloud = new StateOfWorld();
+	try{
+		this.refusedOrderCloud.addFact_asString("order(an_order).");
+		this.refusedOrderCloud.addFact_asString("available(an_order).");
+		this.refusedOrderCloud.addFact_asString("user(a_user).");
+		this.refusedOrderCloud.addFact_asString("logged(a_user).");
+		this.refusedOrderCloud.addFact_asString("registered(a_user).");
+		this.refusedOrderCloud.addFact_asString("has_cloud_space(a_user).");
+		this.refusedOrderCloud.addFact_asString("refused(an_order).");
+	} catch (ParseException e) {
+		e.printStackTrace();
+	} catch (layer.semantic.exception.NotAllowedInAStateOfWorld e) {
+		e.printStackTrace();
+	}
+	
+	this.notifyFailureCloud = new StateOfWorld();
+	try{
+		this.notifyFailureCloud.addFact_asString("order(an_order).");
+		this.notifyFailureCloud.addFact_asString("user(a_user).");
+		this.notifyFailureCloud.addFact_asString("logged(a_user).");
+		this.notifyFailureCloud.addFact_asString("registered(a_user).");
+		this.notifyFailureCloud.addFact_asString("has_cloud_space(a_user).");
+		this.notifyFailureCloud.addFact_asString("refused(an_order).");
+		this.notifyFailureCloud.addFact_asString("sent(failure_order, a_user).");
+	} catch (ParseException e) {
+		e.printStackTrace();
+	} catch (layer.semantic.exception.NotAllowedInAStateOfWorld e) {
+		e.printStackTrace();
+	}
+	
+	this.notifyFailureNoCloud = new StateOfWorld();
+	try{
+		this.notifyFailureNoCloud.addFact_asString("order(an_order).");
+		this.notifyFailureNoCloud.addFact_asString("user(a_user).");
+		this.notifyFailureNoCloud.addFact_asString("logged(a_user).");
+		this.notifyFailureNoCloud.addFact_asString("registered(a_user).");
+		this.notifyFailureNoCloud.addFact_asString("refused(an_order).");
+		this.notifyFailureNoCloud.addFact_asString("sent(failure_order, a_user).");
+	} catch (ParseException e) {
+		e.printStackTrace();
+	} catch (layer.semantic.exception.NotAllowedInAStateOfWorld e) {
+		e.printStackTrace();
+	}
+	
+	
+	this.availableInvoiceCloud = new StateOfWorld();
+	try{
+		this.availableInvoiceCloud.addFact_asString("order(an_order).");
+		this.availableInvoiceCloud.addFact_asString("user(a_user).");
+		this.availableInvoiceCloud.addFact_asString("logged(a_user).");
+		this.availableInvoiceCloud.addFact_asString("registered(a_user).");
+		this.availableInvoiceCloud.addFact_asString("has_cloud_space(a_user).");
+		this.availableInvoiceCloud.addFact_asString("accepted(an_order).");
+		this.availableInvoiceCloud.addFact_asString("available(the_invoice).");
+	} catch (ParseException e) {
+		e.printStackTrace();
+	} catch (layer.semantic.exception.NotAllowedInAStateOfWorld e) {
+		e.printStackTrace();
+	}
+	
+	this.availableInvoiceNoCloud = new StateOfWorld();
+	try{
+		this.availableInvoiceNoCloud.addFact_asString("order(an_order).");
+		this.availableInvoiceNoCloud.addFact_asString("user(a_user).");
+		this.availableInvoiceNoCloud.addFact_asString("logged(a_user).");
+		this.availableInvoiceNoCloud.addFact_asString("registered(a_user).");
+		this.availableInvoiceNoCloud.addFact_asString("accepted(an_order).");
+		this.availableInvoiceNoCloud.addFact_asString("available(the_invoice).");
+	} catch (ParseException e) {
+		e.printStackTrace();
+	} catch (layer.semantic.exception.NotAllowedInAStateOfWorld e) {
+		e.printStackTrace();
+	}	
+	
+	this.uploadedOnUserCloud = new StateOfWorld();
+	try{
+		this.uploadedOnUserCloud.addFact_asString("order(an_order).");
+		this.uploadedOnUserCloud.addFact_asString("user(a_user).");
+		this.uploadedOnUserCloud.addFact_asString("logged(a_user).");
+		this.uploadedOnUserCloud.addFact_asString("registered(a_user).");
+		this.uploadedOnUserCloud.addFact_asString("has_cloud_space(a_user).");
+		this.uploadedOnUserCloud.addFact_asString("accepted(an_order).");
+		this.uploadedOnUserCloud.addFact_asString("available(the_invoice).");
+		this.uploadedOnUserCloud.addFact_asString("uploaded_on_cloud(the_invoice).");
+	} catch (ParseException e) {
+		e.printStackTrace();
+	} catch (layer.semantic.exception.NotAllowedInAStateOfWorld e) {
+		e.printStackTrace();
+	}
+	
+	this.uploadedOnPrivateCloud = new StateOfWorld();
+	try{
+		this.uploadedOnPrivateCloud.addFact_asString("order(an_order).");
+		this.uploadedOnPrivateCloud.addFact_asString("user(a_user).");
+		this.uploadedOnPrivateCloud.addFact_asString("logged(a_user).");
+		this.uploadedOnPrivateCloud.addFact_asString("registered(a_user).");
+		this.uploadedOnPrivateCloud.addFact_asString("accepted(an_order).");
+		this.uploadedOnPrivateCloud.addFact_asString("available(the_invoice).");
+		this.uploadedOnPrivateCloud.addFact_asString("uploaded_on_cloud(the_invoice).");
+	} catch (ParseException e) {
+		e.printStackTrace();
+	} catch (layer.semantic.exception.NotAllowedInAStateOfWorld e) {
+		e.printStackTrace();
+	}
+	
+	this.sharedLink = new StateOfWorld();
+	try{
+		this.sharedLink.addFact_asString("order(an_order).");
+		this.sharedLink.addFact_asString("user(a_user).");
+		this.sharedLink.addFact_asString("logged(a_user).");
+		this.sharedLink.addFact_asString("registered(a_user).");
+		this.sharedLink.addFact_asString("accepted(an_order).");
+		this.sharedLink.addFact_asString("available(the_invoice).");
+		this.sharedLink.addFact_asString("uploaded_on_cloud(the_invoice).");
+		this.sharedLink.addFact_asString("mailed_perm_link(the_invoice, a_user).");
+	} catch (ParseException e) {
+		e.printStackTrace();
+	} catch (layer.semantic.exception.NotAllowedInAStateOfWorld e) {
+		e.printStackTrace();
+	}
+
+	this.notifiedStoreHouseNoCloud = new StateOfWorld();
+	try{
+		this.notifiedStoreHouseNoCloud.addFact_asString("order(an_order).");
+		this.notifiedStoreHouseNoCloud.addFact_asString("user(a_user).");
+		this.notifiedStoreHouseNoCloud.addFact_asString("logged(a_user).");
+		this.notifiedStoreHouseNoCloud.addFact_asString("registered(a_user).");
+		this.notifiedStoreHouseNoCloud.addFact_asString("accepted(an_order).");
+		this.notifiedStoreHouseNoCloud.addFact_asString("available(the_invoice).");
+		this.notifiedStoreHouseNoCloud.addFact_asString("uploaded_on_cloud(the_invoice).");
+		this.notifiedStoreHouseNoCloud.addFact_asString("mailed_perm_link(the_invoice, a_user).");
+		this.notifiedStoreHouseNoCloud.addFact_asString("sent(the_delivery_order, a_storehouse_manager).");
+	} catch (ParseException e) {
+		e.printStackTrace();
+	} catch (layer.semantic.exception.NotAllowedInAStateOfWorld e) {
+		e.printStackTrace();
+	}
+	
+	this.notifiedStoreHouseCloud = new StateOfWorld();
+	try{
+		this.notifiedStoreHouseCloud.addFact_asString("order(an_order).");
+		this.notifiedStoreHouseCloud.addFact_asString("user(a_user).");
+		this.notifiedStoreHouseCloud.addFact_asString("registered(a_user).");
+		this.notifiedStoreHouseCloud.addFact_asString("logged(a_user).");
+		this.notifiedStoreHouseCloud.addFact_asString("has_cloud_space(a_user).");
+		this.notifiedStoreHouseCloud.addFact_asString("accepted(the_order).");
+		this.notifiedStoreHouseCloud.addFact_asString("available(the_invoice).");
+		this.notifiedStoreHouseCloud.addFact_asString("uploaded_on_cloud(the_invoice).");
+		this.notifiedStoreHouseCloud.addFact_asString("sent(the_delivery_order, a_storehouse_manager).");
+	} catch (ParseException e) {
+		e.printStackTrace();
+	} catch (layer.semantic.exception.NotAllowedInAStateOfWorld e) {
+		e.printStackTrace();
+	}
 
 
 
@@ -632,29 +940,54 @@ public void setUp(){
     model.addAndArcs(THO, firstLevel);
     model.addOrArcs(TPO, secondLevel);
     model.addAndArcs(TPAO, thirdLevel);
-    
-    this.exploration = new ProblemExploration(model, new ArrayList<AbstractCapability>(), this.domain);
-    this.exploration.addCapability(CU);
+
     
 	this.startTokens = new ArrayList<>();
 	this.startTokens.add(new Token("p3"));
 	this.startTokens.add(new Token("p4"));
 	
-    this.eregAndcloud = new ENode(this.noderegAndCloud);
+	this.noderegAndCloud = new WorldNode(this.regAndCloud);
+	this.noderegNoCloud = new WorldNode(this.regNoCloud);
+	this.nodeknown = new WorldNode(this.known);
+	this.nodeunknown = new WorldNode(this.unknown);
+	this.nodeuncompleteRegForm = new WorldNode(this.uncompleteRegForm);
+	this.nodeacceptedOrderNoCloud = new WorldNode(this.acceptedOrderNoCloud);
+	this.nodeacceptedOrderCloud = new WorldNode(this.acceptedOrderCloud);
+	this.noderefusedOrderNoCloud = new WorldNode(this.refusedOrderNoCloud);
+	this.noderefusedOrderCloud = new WorldNode(this.refusedOrderCloud);
+	this.nodeavailableInvoiceNoCloud = new WorldNode(this.availableInvoiceNoCloud);
+	this.nodenotifyFailureNoCloud = new WorldNode(this.notifyFailureNoCloud);
+	
+    this.eregAndCloud = new ENode(this.noderegAndCloud);
+    this.euncompleteRegForm = new ENode(this.nodeuncompleteRegForm);
+    this.eregNoCloud = new ENode(this.noderegNoCloud);
+    this.eknown = new ENode(this.nodeknown);
+    this.eunknown = new ENode(this.nodeunknown);
+    this.eacceptedOrderCloud = new ENode(this.nodeacceptedOrderCloud);
+    this.eacceptedOrderNoCloud = new ENode(this.nodeacceptedOrderNoCloud);
+    this.erefusedOrderCloud = new ENode(this.noderefusedOrderCloud);
+    this.erefusedOrderNoCloud = new ENode(this.noderefusedOrderNoCloud);
+    this.eavailableInvoiceNoCloud = new ENode(this.nodeavailableInvoiceNoCloud);
+    this.enotifyFailureNoCloud = new ENode(this.nodenotifyFailureNoCloud);
+
 }
 	
-
+	
 	@Test
 	public void expandNodeTest(){
+	    this.exploration = new ProblemExploration(this.model, new ArrayList<AbstractCapability>(), this.domain);
+	    this.exploration.addCapability(CU);
 		this.exploration.addToVisit(this.nodewStart, this.startTokens, 9);
+		assertEquals(1, this.exploration.getToVisit().size());
 		this.exploration.expandNode();
 		assertEquals(1, this.exploration.getExpandedList().size());
-		assertEquals(true,  this.exploration.getExpandedList().get(0).getDestination().contains(this.eregAndcloud));
+		assertEquals(true,  this.exploration.getExpandedList().get(0).getDestination().contains(this.eregAndCloud));
 	}
-
 
 	@Test
 	public void expandNodeTest_2(){
+	    this.exploration = new ProblemExploration(this.model, new ArrayList<AbstractCapability>(), this.domain);
+	    this.exploration.addCapability(CU);
 		this.exploration.addToVisit(this.nodewStart, this.startTokens, 9);
 		this.exploration.expandNode();
 		this.regAndCloud2 = new StateOfWorld();
@@ -662,7 +995,7 @@ public void setUp(){
 			this.regAndCloud2.addFact_asString("order(an_order).");
 			this.regAndCloud2.addFact_asString("available(an_order).");
 			this.regAndCloud2.addFact_asString("user(a_user).");
-			this.regAndCloud2.addFact_asString("user_data(the_user_data).");
+			this.regAndCloud2.addFact_asString("logged(a_user).");
 			this.regAndCloud2.addFact_asString("registered(a_user).");
 			this.regAndCloud2.addFact_asString("has_cloud_space(a_user).");
 		} catch (ParseException e) {
@@ -672,13 +1005,58 @@ public void setUp(){
 		}
 		ENode temp = new ENode(new WorldNode(this.regAndCloud2));
 		
-		MultipleExpansionNode nk = (MultipleExpansionNode) this.exploration.getExpandedList().get(0);
-	    
-	    for( ENode ex : exploration.getExpandedList().get(0).getDestination() ){
-	      System.out.println(nk.getScenario(ex).getName() + " " + ex.getWorldNode().getWorldState().getFactsNumber());
-	    }
+		MultipleExpansionNode nk = (MultipleExpansionNode) this.exploration.getExpandedList().get(0);	    
 		
 		assertEquals(1, this.exploration.getExpandedList().size());
 		assertEquals(true,  this.exploration.getExpandedList().get(0).getDestination().contains(temp));
+	}
+	
+	@Test
+	public void doubleExpandTest(){
+	    this.exploration = new ProblemExploration(this.model, new ArrayList<AbstractCapability>(), this.domain);
+	    this.exploration.addCapability(CU);
+		this.exploration.addToVisit(this.nodewStart, this.startTokens, 9);
+		this.exploration.expandNode();
+		assertEquals(4, this.exploration.getToVisit().size());
+		this.exploration.expandNode();
+		this.exploration.expandNode();
+		this.exploration.expandNode();
+		this.exploration.expandNode();
+		assertEquals(1, this.exploration.getExpandedList().size());
+	}
+	
+	@Test
+	public void allExpandTest(){
+	    this.exploration = new ProblemExploration(this.model, new ArrayList<AbstractCapability>(), this.domain);
+	    this.exploration.addCapability(NSM);
+	    this.exploration.addCapability(UOPCS);
+	    this.exploration.addCapability(SFL);
+	    this.exploration.addCapability(UOUCS);
+	    this.exploration.addCapability(GI);	    
+	    this.exploration.addCapability(NSF);
+	    this.exploration.addCapability(WUD);
+	    this.exploration.addCapability(SRF);
+	    this.exploration.addCapability(CU);
+	    this.exploration.addCapability(CS);
+	    this.exploration.addCapability(AU);
+		this.exploration.addToVisit(this.nodewStart, this.startTokens, 9);
+		
+		//4 nodi iniziali
+		this.exploration.expandNode();
+		assertEquals(1, this.exploration.getExpandedList().size());
+		assertEquals(4, this.exploration.getToVisit().size());
+		
+		int flag = 0;
+		Iterator i = this.exploration.getExpandedList().iterator();
+		while(i.hasNext()){
+			ExpansionNode temp = (ExpansionNode)i.next();
+			if(temp.getDestination().contains(this.euncompleteRegForm))	flag = 1;
+			assertEquals(true, temp.getDestination().contains(this.eregAndCloud));
+		}
+		assertEquals(0, flag);
+		
+		for(int j = 0; j < 15; j++)
+			this.exploration.expandNode();
+		assertEquals(16, this.exploration.getExpandedList().size());
 	}
 }

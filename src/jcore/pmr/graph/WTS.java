@@ -241,7 +241,7 @@ public class WTS {
 		
 		/* if no more NormalEdges are present, it starts to analyze the OPNodelist and every OPEdge of each OPNode inside the list */
 		for(OPNode node : this.graph.get(start).getOPNodeList()){
-			for(int j=0; j<this.graph.get(start).getOPNodeList().size(); j++){
+			for(int j=0; j<node.getOutcomingEdge().size(); j++){
 				if(checkedNode.containsKey(node.getOutcomingEdge().get(j).getDestination()) == false){
 					pathNode.add(node.getOutcomingEdge().get(j).getDestination());
 					checkedNode.put(start, 1);
