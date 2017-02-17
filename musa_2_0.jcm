@@ -14,8 +14,20 @@
 
 mas musa_2_0 {
 
-    agent sample_agent
+    agent specification_manager {
+    		join: musa_wp
+    }
+
+    agent explorer1 {
+    		join: musa_wp
+    }
+
+	workspace musa_wp {
+	    artifact agent_directory: directory.AgentDirectory()
+	}
     
+    class-path: lib, ext
+        
     // agent source path
     asl-path: src/agt
               src/agt/inc

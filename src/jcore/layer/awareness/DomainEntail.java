@@ -109,7 +109,7 @@ public class DomainEntail {
 		if( System.getProperty("os.name").startsWith("Windows") )
 			return "./ext/dlv.mingw.exe";
 		else //TODO considering other OS, such as Mac OS or Linux based OS
-			return "./ext/dlv.i368-apple-darwin.bin";
+			return "./ext/dlv.i386-apple-darwin.bin";
 	}
 	
 }
