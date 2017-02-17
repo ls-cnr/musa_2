@@ -23,8 +23,6 @@
 	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry exported="true" kind="lib" path="lib/jacamo-0.5/lib/c4jason.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jacamo-0.5/lib/cartago.jar"/>
-	<classpathentry kind="lib" path="lib/junit.jar"/>
 	<classpathentry kind="lib" path="lib/jacamo-0.5/lib/jason.jar"/>
-	<classpathentry kind="lib" path="lib/jacamo-0.5/lib/jacamo.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>
