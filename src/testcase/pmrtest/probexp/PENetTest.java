@@ -34,6 +34,7 @@ import net.sf.tweety.lp.asp.syntax.DLPAtom;
 import net.sf.tweety.lp.asp.syntax.DLPHead;
 import pmr.graph.WorldNode;
 import pmr.probexp.ENode;
+import pmr.probexp.ExpansionNode;
 import pmr.probexp.MultipleExpansionNode;
 import pmr.probexp.ProblemExploration;
 
@@ -573,13 +574,80 @@ public class PENetTest {
 		assertTrue( problem.getExpandedList().get(0).getDestination().contains(e) );
 		
 	}
-	
+	@Ignore
 	@Test
 	public void testNet1() {
 		problem.addCapability(CU);
 		problem.expandNode();
-		for( ENode e : problem.getExpandedList().get(0).getDestination() )
-			System.out.println(e.getTokens().size());
+		
+		MultipleExpansionNode nk = (MultipleExpansionNode) problem.getExpandedList().get(0);
+		
+		for( ENode e : nk.getDestination() ){
+			String scenarioName = nk.getScenario(e).getName();
+			System.out.print(scenarioName + " ");
+			for( Token tok : e.getTokens() )
+				System.out.print(tok.getPlaceName() + " ");
+			System.out.println("");
+			switch( scenarioName ){
+			 case "UnknownUser":
+				 assertEquals(e.getTokens().get(1).getPlaceName(), "p4");
+				 break;
+			 case "RegisteredUserWithCloud":
+				 assertEquals(e.getTokens().get(1).getPlaceName(), "p5");
+				 break;
+			 case "RegisteredUserWithoutCloud":
+				 assertEquals(e.getTokens().get(1).getPlaceName(), "p5");
+				 break;
+			 case "KnownUser":
+				 assertEquals(e.getTokens().get(1).getPlaceName(), "p4");
+				 break;
+			}
+		}
+	}
+	
+	@Test
+	public void testNet2() {
+		problem.addCapability(CU);
+		problem.addCapability(CS);
+		//while( !problem.toVisitIsEmpty() )
+			problem.expandNode();
+			problem.expandNode();
+			problem.expandNode();
+			problem.expandNode();
+			problem.expandNode();
+			problem.expandNode();
+			problem.expandNode();
+			problem.expandNode();
+			problem.expandNode();
+			problem.expandNode();
+			problem.expandNode();
+		
+		//MultipleExpansionNode nk = (MultipleExpansionNode) problem.getExpandedList().get(1);
+		
+		ExpansionNode nk = problem.getExpandedList().get(0);
+			
+		for( ENode e : nk.getDestination() ){
+			//String scenarioName = nk.getScenario(e).getName();
+			//System.out.print(scenarioName + " ");
+			for( Token tok : e.getTokens() )
+				System.out.print(tok.getPlaceName() + " ");
+			System.out.println("");/*
+			switch( scenarioName ){
+			 case "UnknownUser":
+				 assertEquals(e.getTokens().get(1).getPlaceName(), "p4");
+				 break;
+			 case "RegisteredUserWithCloud":
+				 assertEquals(e.getTokens().get(1).getPlaceName(), "p5");
+				 break;
+			 case "RegisteredUserWithoutCloud":
+				 assertEquals(e.getTokens().get(1).getPlaceName(), "p5");
+				 break;
+			 case "KnownUser":
+				 assertEquals(e.getTokens().get(1).getPlaceName(), "p4");
+				 break;
+			}
+			*/
+		}
 	}
 
 }
