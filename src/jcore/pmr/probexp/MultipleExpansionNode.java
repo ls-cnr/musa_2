@@ -29,7 +29,7 @@ public class MultipleExpansionNode extends ExpansionNode{
 	 * @param capability
 	 *            the capability
 	 */
-	public MultipleExpansionNode(ENode source, ArrayList<ENode> destination, AbstractCapability capability){
+	public MultipleExpansionNode(ENode source, ArrayList<ENode> destination, String capability){
 		super(source, destination, capability);
 		this.scenarioList = new HashMap<ENode, EvolutionScenario>();
 		//if(destination != null)	this.findScore();

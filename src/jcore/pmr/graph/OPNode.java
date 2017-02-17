@@ -22,7 +22,10 @@ public abstract class OPNode implements Node {
 	private int hashCode;
 	
 	/** The capability. */
-	private AbstractCapability capability;
+	private String capability;
+	
+	/** The score. */
+	private int score;
 	
 	/**
 	 * Instantiates a new OP node.
@@ -30,12 +33,13 @@ public abstract class OPNode implements Node {
 	 * @param capability
 	 *            the capability
 	 */
-	public OPNode(AbstractCapability capability){
+	public OPNode(String capability, int score){
 		super();
 		this.outcomingList = new ArrayList <EvolutionEdge>();
 		this.incomingEdge = null;
 		this.hashCode = this.hashCode();
 		this.capability = capability;
+		this.score = score;
 	}
 	
 	/**
@@ -71,7 +75,7 @@ public abstract class OPNode implements Node {
 	 *
 	 * @return the capability of this OPNode
 	 */
-	public AbstractCapability getCapability(){
+	public String getCapability(){
 		return this.capability;
 	}
 	

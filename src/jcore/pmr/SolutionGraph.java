@@ -9,6 +9,7 @@ import pmr.graph.WTS;
 import pmr.graph.WorldNode;
 import pmr.probexp.ENode;
 import pmr.probexp.ExpansionNode;
+import pmr.probexp.MultipleExpansionNode;
 import pmr.probexp.NormalExpansionNode;
 
 /**
@@ -24,7 +25,7 @@ public class SolutionGraph {
 	private HashMap<WorldNode, ArrayList<Token>> tokenMap;
 	
 	/** The score map. */
-	private HashMap<WorldNode, Double> scoreMapping;
+	private HashMap<WorldNode, Integer> scoreMapping;
 	
 	/** The exit node map. */
 	private HashMap<WorldNode, WorldNode> exitNodeMap;
@@ -62,7 +63,7 @@ public class SolutionGraph {
 	 *
 	 * @return the score mapping
 	 */
-	public HashMap<WorldNode, Double> getScoreMapping(){
+	public HashMap<WorldNode, Integer> getScoreMapping(){
 		return this.scoreMapping;
 	}
 	
@@ -84,7 +85,7 @@ public class SolutionGraph {
 	public void addNode(ExpansionNode node){
 		this.wts.addNode(node);
 		this.updateTokenMap(node);
-		this.updateExitNodeList(node);
+		this.updateExitNodeMap(node);
 	}
 	
 	/**
@@ -120,7 +121,7 @@ public class SolutionGraph {
 	 * @param node
 	 *            the node
 	 */
-	public void updateExitNodeList(ExpansionNode node){
+	public void updateExitNodeMap(ExpansionNode node){
 		if(node.getSource().isExitNode() == true)	this.exitNodeMap.put(node.getSource().getWorldNode(), node.getSource().getWorldNode());
 		Iterator<ENode> i = node.getDestination().iterator();
 		while (i.hasNext()){
@@ -128,6 +129,29 @@ public class SolutionGraph {
 			if(temp.isExitNode() == true)	this.exitNodeMap.put(temp.getWorldNode(), temp.getWorldNode());
 		}
 	}
+	
+	public void updateScoreMapping(ExpansionNode node){
+		Iterator i = node.getDestination().iterator();
+		NormalExpansionNode nodeToAdd;
+		MultipleExpansionNode listToAdd;
+		while(i.hasNext()){
+			ExpansionNode temp =(ExpansionNode) i.next();
+			if(temp instanceof NormalExpansionNode){
+				nodeToAdd =(NormalExpansionNode) temp;
+				this.scoreMapping.put(nodeToAdd.getDestination().get(0).getWorldNode(), nodeToAdd.getDestination().get(0).getScore());
+			}
+			else{
+				listToAdd = (MultipleExpansionNode) temp;
+				Iterator<ENode> j = node.getDestination().iterator();
+				while (j.hasNext()){
+					ENode Etemp = j.next();
+					this.scoreMapping.put(Etemp.getWorldNode(), Etemp.getScore());
+				}
+			}
+		}
+	}
+
+	
 	
 	/**
 	 * Gets the solution paths.

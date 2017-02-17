@@ -55,7 +55,7 @@ public class WTS {
 			MultipleExpansionNode exptempnode = (MultipleExpansionNode) newnode;
 			this.addSafeNode(exptempnode.getSource().getWorldNode());
 			WorldNode source2 = this.graph.get(exptempnode.getSource().getWorldNode());
-			OPNode faketempnode = new XORNode(exptempnode.getCapability());
+			OPNode faketempnode = new XORNode(exptempnode.getCapability(), exptempnode.getScore());
 			faketempnode.setIncomingEdge(new OPEdge(source2, faketempnode, exptempnode.getCapability()));
 			
 			if(source2.getOPNodeList().contains(faketempnode))	return;
@@ -98,7 +98,7 @@ public class WTS {
 	 * @param capability
 	 *            the capability
 	 */
-	public void addEdge(WorldNode sourcenode, WorldNode destnode, AbstractCapability capability){
+	public void addEdge(WorldNode sourcenode, WorldNode destnode, String capability){
 			sourcenode.addOutcomingEdge(new NormalEdge(sourcenode, destnode, capability));
 			destnode.addIncomingEdge(new NormalEdge(sourcenode, destnode, capability));
 	}

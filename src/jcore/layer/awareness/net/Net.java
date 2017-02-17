@@ -244,13 +244,13 @@ public class Net {
 	private void remove( Place initial, Place place, ArrayList<Token> tokens ) {
 		if( place.getName() == initial.getName() )
 			for( int i = 0; i < tokens.size(); i++ )
-				if( tokens.get(i).getPlaceName() == place.getName() )
+				if( tokens.get(i).getPlaceName().equals(place.getName()) )
 					tokens.remove(i);
 		else{
 			if( place.hasAtLeastTokens(1) ){ 
 				place.removeTokens(1);
 				for( int j = 0; j < tokens.size(); j++ )
-					if( tokens.get(j).getPlaceName() == place.getName() )
+					if( tokens.get(j).getPlaceName().equals(place.getName()) )
 						tokens.remove(j);
 			}
 			

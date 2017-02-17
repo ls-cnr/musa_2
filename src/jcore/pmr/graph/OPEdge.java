@@ -15,7 +15,7 @@ public class OPEdge implements Edge {
 	private OPNode destination;
 	
 	/** The capability. */
-	private AbstractCapability capability; 
+	private String capability; 
 	
 	/**
 	 * Instantiates a new OP edge.
@@ -27,7 +27,7 @@ public class OPEdge implements Edge {
 	 * @param capability
 	 *            the capability
 	 */
-	public OPEdge(WorldNode source, OPNode destination, AbstractCapability capability){
+	public OPEdge(WorldNode source, OPNode destination, String capability){
 		super();
 		this.source = source;
 		this.destination = destination;
@@ -39,7 +39,7 @@ public class OPEdge implements Edge {
 	 *
 	 * @return the capability, stored in the edge
 	 */
-	public AbstractCapability getCapability(){
+	public String getCapability(){
 		return this.capability;
 	}
 	
@@ -87,7 +87,7 @@ public class OPEdge implements Edge {
 	 * @param capability
 	 *            the new scenario
 	 */
-	public void setScenario(AbstractCapability capability) {
+	public void setScenario(String capability) {
 		this.capability = capability;
 	}
 	
