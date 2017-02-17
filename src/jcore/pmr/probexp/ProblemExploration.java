@@ -129,7 +129,7 @@ public class ProblemExploration {
 				int debugapplyNetCount = 0;
 				
 				for( ENode destination : expNode.getDestination() ){
-					applyNet(expNode.getSource().getTokens(), destination);
+					applyNet(expNode.getSource().getTokens(), destination, expNode);
 					debugapplyNetCount++;
 				}
 				
