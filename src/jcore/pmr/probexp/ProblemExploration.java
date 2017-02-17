@@ -94,6 +94,7 @@ public class ProblemExploration {
 		long debuggetHighestTimeStart = System.currentTimeMillis();
 		
 		ENode enode = getHighestNodeToVisit();
+		if(enode == null)	return;
 		
 		//Debug time
 		long debuggetHighestTimeStop = System.currentTimeMillis();
@@ -129,7 +130,7 @@ public class ProblemExploration {
 				int debugapplyNetCount = 0;
 				
 				for( ENode destination : expNode.getDestination() ){
-					applyNet(expNode.getSource().getTokens(), destination);
+					applyNet(expNode.getSource().getTokens(), destination, expNode);
 					debugapplyNetCount++;
 				}
 				
@@ -210,14 +211,14 @@ public class ProblemExploration {
 			ENode newEnode = new ENode(new WorldNode(evo.getEvolution().getLast()));
 			newEnodeList.add(newEnode);
 			this.toVisit.add(newEnode);
-			ExpansionNode result = new NormalExpansionNode(enode, newEnodeList, capability);
+			ExpansionNode result = new NormalExpansionNode(enode, newEnodeList, capability.getId());
 			return result;
 		}
 		else{
 			//Se la capability ha più scenari, devo creare una WorldEvolution per scenario. Ogni WorldEvolution produrrà
 			//Uno StateOfWorld, che verrà inglobato in un nodo che a sua volta finirà nella lista delle destinazioni
 			//Del MultipleExpansioNode. Inoltre si aggiunge alla mappa dei nodi-scenari associati, la coppia nodo-scenario.
-			MultipleExpansionNode expNode = new MultipleExpansionNode(enode, new ArrayList<ENode>(), capability);
+			MultipleExpansionNode expNode = new MultipleExpansionNode(enode, new ArrayList<ENode>(), capability.getId());
 			
 			//Debug time
 			long debugWorldEvolutionTimeStart2 = System.currentTimeMillis();

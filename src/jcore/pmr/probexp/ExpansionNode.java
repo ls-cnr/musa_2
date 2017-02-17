@@ -13,7 +13,7 @@ import pmr.graph.WorldNode;
 public abstract class ExpansionNode implements Node{
 	
 	/** The capability. */
-	protected AbstractCapability capability;
+	protected String capability;
 	
 	/** The destination. */
 	protected ArrayList<ENode> destination;
@@ -34,7 +34,7 @@ public abstract class ExpansionNode implements Node{
 	 * @param capability
 	 *            the capability
 	 */
-	public ExpansionNode(ENode source, ArrayList<ENode> destination, AbstractCapability capability){
+	public ExpansionNode(ENode source, ArrayList<ENode> destination, String capability){
 		this.capability = capability;
 		this.source = source;
 		this.destination = destination;
@@ -45,7 +45,7 @@ public abstract class ExpansionNode implements Node{
 	 *
 	 * @return the capability
 	 */
-	public AbstractCapability getCapability() {
+	public String getCapability() {
 		return capability;
 	}
 	
@@ -93,7 +93,7 @@ public abstract class ExpansionNode implements Node{
 	 * @param capability
 	 *            the new capability
 	 */
-	public void setCapability(AbstractCapability capability) {
+	public void setCapability(String capability) {
 		this.capability = capability;
 	}
 	

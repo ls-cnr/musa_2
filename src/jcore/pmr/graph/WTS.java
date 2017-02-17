@@ -98,7 +98,7 @@ public class WTS {
 	 * @param capability
 	 *            the capability
 	 */
-	public void addEdge(WorldNode sourcenode, WorldNode destnode, AbstractCapability capability){
+	public void addEdge(WorldNode sourcenode, WorldNode destnode, String capability){
 			sourcenode.addOutcomingEdge(new NormalEdge(sourcenode, destnode, capability));
 			destnode.addIncomingEdge(new NormalEdge(sourcenode, destnode, capability));
 	}
