@@ -164,6 +164,9 @@ public class ProblemExploration {
 	 * @return the highest ExpansionNode
 	 */
 	public ExpansionNode getHighestExpansion(){
+		
+		if(this.expandedList.size() == 0)	return null;
+		
 		expandedList.sort(ExpansionNode.getScoreComparator());
 		int index = this.expandedList.size() - 1;
 		return this.expandedList.get(index);
@@ -408,6 +411,9 @@ public class ProblemExploration {
 	 * @return the highest node to visit
 	 */
 	private ENode getHighestNodeToVisit(){
+		
+		if(toVisit.size() == 0)	return null;
+		
 		int index = toVisit.size() - 1;
 		System.out.println(index);
 		return toVisit.remove(index);
