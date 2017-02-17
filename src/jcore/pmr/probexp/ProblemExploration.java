@@ -94,6 +94,7 @@ public class ProblemExploration {
 		long debuggetHighestTimeStart = System.currentTimeMillis();
 		
 		ENode enode = getHighestNodeToVisit();
+		if(enode == null)	return;
 		
 		//Debug time
 		long debuggetHighestTimeStop = System.currentTimeMillis();
