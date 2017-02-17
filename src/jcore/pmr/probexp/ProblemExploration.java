@@ -57,19 +57,7 @@ public class ProblemExploration {
 		visited = new ArrayList<>();
 		expandedList = new ArrayList<>();
 		
-		//Debug time
-		long debugnewNetTimeStart = System.currentTimeMillis();
-		
 		net = new Net(model);
-		
-		//Debug time
-		long debugnewNetTimeStop = System.currentTimeMillis();
-		long debugnewNetTimeElapse = debugnewNetTimeStop - debugnewNetTimeStart;
-<<<<<<< HEAD
-		//System.out.println("new Net, eseguito in: " + debugnewNetTimeElapse);
-=======
-		////System.out.println("new Net, eseguito in: " + debugnewNetTimeElapse);
->>>>>>> 25d6da9f960c90055d6b9c34dfe561b12cfd84cf
 	}
 
 	/**
@@ -93,88 +81,22 @@ public class ProblemExploration {
 	 * Finally, whatever the case is, it adds the ENode to the visited List. 
 	 */
 	public void expandNode() {
-
-		//Debug time
-		long debuggetHighestTimeStart = System.currentTimeMillis();
 		
 		ENode enode = getHighestNodeToVisit();
 		if(enode == null)	return;
 		
-		//Debug time
-		long debuggetHighestTimeStop = System.currentTimeMillis();
-		long debuggetHighestTimeElapse = debuggetHighestTimeStop - debuggetHighestTimeStart;
-<<<<<<< HEAD
-		//System.out.println("getHighest, metodo eseguito in: " + debuggetHighestTimeElapse);
-=======
-		////System.out.println("getHighest, metodo eseguito in: " + debuggetHighestTimeElapse);
->>>>>>> 25d6da9f960c90055d6b9c34dfe561b12cfd84cf
-		
-		for( AbstractCapability capability : capabilities ){
-			
-			//Debug time
-			long debugDomainEntailTimeStart = System.currentTimeMillis();
-			
+		for( AbstractCapability capability : capabilities ){			
 			if(DomainEntail.getInstance().entailsCondition(enode.getWorldState(), this.assumptions, capability.getPreCondition()) == true){
 				//Starts the expansion
-				//Debug time
-				long debugDomainEntailTimeStop = System.currentTimeMillis();
-				long debugDomainEntailElapse = debugDomainEntailTimeStop - debugDomainEntailTimeStart;
-<<<<<<< HEAD
-				//System.out.println("DomainEntail, tempo trascorso per il confronto: " + debugDomainEntailElapse);
-=======
-				////System.out.println("DomainEntail, tempo trascorso per il confronto: " + debugDomainEntailElapse);
->>>>>>> 25d6da9f960c90055d6b9c34dfe561b12cfd84cf
-				
-				//Debug time
-				long debugapplyExpandTimeStart = System.currentTimeMillis();
-				
 				ExpansionNode expNode = applyExpand(enode, capability);
-				
-				//Debug time
-				long debugapplyExpandTimeStop = System.currentTimeMillis();
-				long debugapplyExpandTimeElapse = debugapplyExpandTimeStop - debugapplyExpandTimeStart;
-<<<<<<< HEAD
-				//System.out.println("applyExpand, eseguito in: " + debugapplyExpandTimeElapse);
-=======
-				////System.out.println("applyExpand, eseguito in: " + debugapplyExpandTimeElapse);
->>>>>>> 25d6da9f960c90055d6b9c34dfe561b12cfd84cf
-				
-				//Applies the net to ultimate the expansion
-				
-				//Debug time
-				long debugapplyNetTimeStart = System.currentTimeMillis();	
-				int debugapplyNetCount = 0;
-				
-				for( ENode destination : expNode.getDestination() ){
+								
+				//Applies the net to ultimate the expansion						
+				for( ENode destination : expNode.getDestination() )
 					applyNet(expNode.getSource().getTokens(), destination, expNode);
-					debugapplyNetCount++;
-				}
 				
-				//Debug time
-				long debugapplyNetTimeStop = System.currentTimeMillis();
-				long debugapplyNetTimeElapse = debugapplyNetTimeStop - debugapplyNetTimeStart;
-<<<<<<< HEAD
-				//System.out.println("applyNet, numero cicli:" +debugapplyNetCount+ ", eseguiti in: " + debugapplyNetTimeElapse);
-=======
-				////System.out.println("applyNet, numero cicli:" +debugapplyNetCount+ ", eseguiti in: " + debugapplyNetTimeElapse);
->>>>>>> 25d6da9f960c90055d6b9c34dfe561b12cfd84cf
-				
-				//Elaborates the Expansion score
-				
-				//Debug time
-				long debugscoreTimeStart = System.currentTimeMillis();
-				
+				//Elaborates the Expansion score				
 				score(expNode);
-				
-				//Debug time
-				long debugscoreTimeStop = System.currentTimeMillis();
-				long debugscoreTimeElapse = debugscoreTimeStop - debugscoreTimeStart;
-<<<<<<< HEAD
-				//System.out.println("score, metodo eseguito in: " + debugscoreTimeElapse);
-=======
-				////System.out.println("score, metodo eseguito in: " + debugscoreTimeElapse);
->>>>>>> 25d6da9f960c90055d6b9c34dfe561b12cfd84cf
-				
+								
 				//Adds the Expansion to the List in order 
 				expandedList.add(expNode);
 			}
@@ -294,13 +216,8 @@ public class ProblemExploration {
 	
 	private void applyNet( ArrayList<Token> startingTokens, ENode enode , /*debug*/ ExpansionNode mast) {
 		/*debug*/
-<<<<<<< HEAD
 		//MultipleExpansionNode nk = (MultipleExpansionNode) mast;
 		//System.out.println(nk.getScenario(enode).getName());
-=======
-		MultipleExpansionNode nk = (MultipleExpansionNode) mast;
-		////System.out.println(nk.getScenario(enode).getName());
->>>>>>> 25d6da9f960c90055d6b9c34dfe561b12cfd84cf
 		/*****/
 		StateOfWorld state = enode.getWorldState();
 		ArrayList<Token> tokens = new ArrayList<>(startingTokens);
