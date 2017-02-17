@@ -65,7 +65,7 @@ public class ProblemExploration {
 		//Debug time
 		long debugnewNetTimeStop = System.currentTimeMillis();
 		long debugnewNetTimeElapse = debugnewNetTimeStop - debugnewNetTimeStart;
-		System.out.println("new Net, eseguito in: " + debugnewNetTimeElapse);
+		//System.out.println("new Net, eseguito in: " + debugnewNetTimeElapse);
 	}
 
 	/**
@@ -99,7 +99,7 @@ public class ProblemExploration {
 		//Debug time
 		long debuggetHighestTimeStop = System.currentTimeMillis();
 		long debuggetHighestTimeElapse = debuggetHighestTimeStop - debuggetHighestTimeStart;
-		System.out.println("getHighest, metodo eseguito in: " + debuggetHighestTimeElapse);
+		//System.out.println("getHighest, metodo eseguito in: " + debuggetHighestTimeElapse);
 		
 		for( AbstractCapability capability : capabilities ){
 			
@@ -111,7 +111,7 @@ public class ProblemExploration {
 				//Debug time
 				long debugDomainEntailTimeStop = System.currentTimeMillis();
 				long debugDomainEntailElapse = debugDomainEntailTimeStop - debugDomainEntailTimeStart;
-				System.out.println("DomainEntail, tempo trascorso per il confronto: " + debugDomainEntailElapse);
+				//System.out.println("DomainEntail, tempo trascorso per il confronto: " + debugDomainEntailElapse);
 				
 				//Debug time
 				long debugapplyExpandTimeStart = System.currentTimeMillis();
@@ -121,7 +121,7 @@ public class ProblemExploration {
 				//Debug time
 				long debugapplyExpandTimeStop = System.currentTimeMillis();
 				long debugapplyExpandTimeElapse = debugapplyExpandTimeStop - debugapplyExpandTimeStart;
-				System.out.println("applyExpand, eseguito in: " + debugapplyExpandTimeElapse);
+				//System.out.println("applyExpand, eseguito in: " + debugapplyExpandTimeElapse);
 				
 				//Applies the net to ultimate the expansion
 				
@@ -137,7 +137,7 @@ public class ProblemExploration {
 				//Debug time
 				long debugapplyNetTimeStop = System.currentTimeMillis();
 				long debugapplyNetTimeElapse = debugapplyNetTimeStop - debugapplyNetTimeStart;
-				System.out.println("applyNet, numero cicli:" +debugapplyNetCount+ ", eseguiti in: " + debugapplyNetTimeElapse);
+				//System.out.println("applyNet, numero cicli:" +debugapplyNetCount+ ", eseguiti in: " + debugapplyNetTimeElapse);
 				
 				//Elaborates the Expansion score
 				
@@ -149,7 +149,7 @@ public class ProblemExploration {
 				//Debug time
 				long debugscoreTimeStop = System.currentTimeMillis();
 				long debugscoreTimeElapse = debugscoreTimeStop - debugscoreTimeStart;
-				System.out.println("score, metodo eseguito in: " + debugscoreTimeElapse);
+				//System.out.println("score, metodo eseguito in: " + debugscoreTimeElapse);
 				
 				//Adds the Expansion to the List in order 
 				expandedList.add(expNode);
@@ -205,7 +205,7 @@ public class ProblemExploration {
 			//Debug time
 			long debugWorldEvolutionTimeStop = System.currentTimeMillis();
 			long debugWorldEvolutionTimeElapse = debugWorldEvolutionTimeStop - debugWorldEvolutionTimeStart;
-			System.out.println("WordEvolution(NormalExpansionNode), numero cicli: "+debugWorldEvolutionCount+", eseguiti in: " + debugWorldEvolutionTimeElapse);
+			//System.out.println("WordEvolution(NormalExpansionNode), numero cicli: "+debugWorldEvolutionCount+", eseguiti in: " + debugWorldEvolutionTimeElapse);
 			
 			ArrayList<ENode> newEnodeList = new ArrayList<ENode>();
 			ENode newEnode = new ENode(new WorldNode(evo.getEvolution().getLast()));
@@ -237,7 +237,7 @@ public class ProblemExploration {
 			//Debug time
 			long debugWorldEvolutionTimeStop2 = System.currentTimeMillis();
 			long debugWorldEvolutionTimeElapse2 = debugWorldEvolutionTimeStop2 - debugWorldEvolutionTimeStart2;
-			System.out.println("WordEvolution(MultipleExpantionNode), ciclo eseguito in: " + debugWorldEvolutionTimeElapse2);
+			//System.out.println("WordEvolution(MultipleExpantionNode), ciclo eseguito in: " + debugWorldEvolutionTimeElapse2);
 			ExpansionNode result = expNode;
 			return result;
 		}
@@ -269,7 +269,7 @@ public class ProblemExploration {
 	
 	private void applyNet( ArrayList<Token> startingTokens, ENode enode , /*debug*/ ExpansionNode mast) {
 		/*debug*/
-		MultipleExpansionNode nk = (MultipleExpansionNode) mast;
+		//MultipleExpansionNode nk = (MultipleExpansionNode) mast;
 		//System.out.println(nk.getScenario(enode).getName());
 		/*****/
 		StateOfWorld state = enode.getWorldNode().getWorldState();
