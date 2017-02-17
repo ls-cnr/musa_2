@@ -56,7 +56,6 @@ public class ProblemExploration {
 		toVisit = new ArrayList<>();
 		visited = new ArrayList<>();
 		expandedList = new ArrayList<>();
-		
 		net = new Net(model);
 	}
 
@@ -101,7 +100,6 @@ public class ProblemExploration {
 				expandedList.add(expNode);
 			}
 		}
-		
 		visited.add(enode);
 	}	
 	
@@ -137,22 +135,12 @@ public class ProblemExploration {
 			//Uso un iteratore perché il set non mi fa accedere ai singoli elementi. In questo caso l'elemento è uno solo
 			//Ed è l'ultimo della lista delle evoluzioni, dato che in ogni caso WorldEvolution salva lo StateOfWorld source.
 			
-			//Debug time
-			long debugWorldEvolutionTimeStart = System.currentTimeMillis();
-			int debugWorldEvolutionCount = 0;
-			
 			Iterator i = capability.getScenarioSet().iterator();
 			if(i.hasNext()){
 				EvolutionScenario temp =(EvolutionScenario) i.next();
 				evo.addEvolution(temp.getOperators());
-				debugWorldEvolutionCount++;
 			}
-			
-			//Debug time
-			long debugWorldEvolutionTimeStop = System.currentTimeMillis();
-			long debugWorldEvolutionTimeElapse = debugWorldEvolutionTimeStop - debugWorldEvolutionTimeStart;
-			//System.out.println("WordEvolution(NormalExpansionNode), numero cicli: "+debugWorldEvolutionCount+", eseguiti in: " + debugWorldEvolutionTimeElapse);
-			
+		
 			ArrayList<ENode> newEnodeList = new ArrayList<ENode>();
 			ENode newEnode = new ENode(evo.getEvolution().getLast());
 			newEnodeList.add(newEnode);
@@ -167,9 +155,6 @@ public class ProblemExploration {
 			//Del MultipleExpansioNode. Inoltre si aggiunge alla mappa dei nodi-scenari associati, la coppia nodo-scenario.
 			MultipleExpansionNode expNode = new MultipleExpansionNode(enode, new ArrayList<ENode>(), capability.getId());
 			
-			//Debug time
-			long debugWorldEvolutionTimeStart2 = System.currentTimeMillis();
-			
 			Iterator i = capability.getScenarioSet().iterator();
 			while(i.hasNext()){
 				WorldEvolution evo = new WorldEvolution(this.assumptions, enode.getWorldState());
@@ -180,11 +165,6 @@ public class ProblemExploration {
 				expNode.addDestination(newEnode);
 				expNode.addScenario(newEnode, temp.getName());
 			}
-			
-			//Debug time
-			long debugWorldEvolutionTimeStop2 = System.currentTimeMillis();
-			long debugWorldEvolutionTimeElapse2 = debugWorldEvolutionTimeStop2 - debugWorldEvolutionTimeStart2;
-			//System.out.println("WordEvolution(MultipleExpantionNode), ciclo eseguito in: " + debugWorldEvolutionTimeElapse2);
 			ExpansionNode result = expNode;
 			return result;
 		}
