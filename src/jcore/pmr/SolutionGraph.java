@@ -107,11 +107,11 @@ public class SolutionGraph {
 	 *            the node
 	 */
 	public void updateTokenMap(ExpansionNode node){
-		this.tokenMap.put(node.getSource().getWorldNode(), node.getSource().getTokens());
+		this.tokenMap.put(new WorldNode(node.getSource().getWorldState()), node.getSource().getTokens());
 		Iterator<ENode> i = node.getDestination().iterator();
 		while (i.hasNext()){
 			ENode temp = i.next();
-			this.tokenMap.put(temp.getWorldNode(), temp.getTokens());
+			this.tokenMap.put(new WorldNode(temp.getWorldState()), temp.getTokens());
 		}
 	}
 	
@@ -122,11 +122,11 @@ public class SolutionGraph {
 	 *            the node
 	 */
 	public void updateExitNodeMap(ExpansionNode node){
-		if(node.getSource().isExitNode() == true)	this.exitNodeMap.put(node.getSource().getWorldNode(), node.getSource().getWorldNode());
+		if(node.getSource().isExitNode() == true)	this.exitNodeMap.put(new WorldNode(node.getSource().getWorldState()), new WorldNode( node.getSource().getWorldState()));
 		Iterator<ENode> i = node.getDestination().iterator();
 		while (i.hasNext()){
 			ENode temp = i.next();
-			if(temp.isExitNode() == true)	this.exitNodeMap.put(temp.getWorldNode(), temp.getWorldNode());
+			if(temp.isExitNode() == true)	this.exitNodeMap.put(new WorldNode(temp.getWorldState()), new WorldNode(temp.getWorldState()));
 		}
 	}
 	
@@ -138,14 +138,14 @@ public class SolutionGraph {
 			ExpansionNode temp =(ExpansionNode) i.next();
 			if(temp instanceof NormalExpansionNode){
 				nodeToAdd =(NormalExpansionNode) temp;
-				this.scoreMapping.put(nodeToAdd.getDestination().get(0).getWorldNode(), nodeToAdd.getDestination().get(0).getScore());
+				this.scoreMapping.put(new WorldNode(nodeToAdd.getDestination().get(0).getWorldState()), nodeToAdd.getDestination().get(0).getScore());
 			}
 			else{
 				listToAdd = (MultipleExpansionNode) temp;
 				Iterator<ENode> j = node.getDestination().iterator();
 				while (j.hasNext()){
 					ENode Etemp = j.next();
-					this.scoreMapping.put(Etemp.getWorldNode(), Etemp.getScore());
+					this.scoreMapping.put(new WorldNode(Etemp.getWorldState()), Etemp.getScore());
 				}
 			}
 		}

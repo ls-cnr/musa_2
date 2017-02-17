@@ -79,7 +79,7 @@ public class ProblemExploration {
 	 *            the Score associated to that node
 	 */
 	public void addToVisit( WorldNode node, ArrayList<Token> tokens, int score ) {
-		toVisit.add( new ENode(node, tokens, score, false) );
+		toVisit.add( new ENode(node.getWorldState(), tokens, score, false) );
 	}
 	
 	/**
@@ -106,7 +106,7 @@ public class ProblemExploration {
 			//Debug time
 			long debugDomainEntailTimeStart = System.currentTimeMillis();
 			
-			if(DomainEntail.getInstance().entailsCondition(enode.getWorldNode().getWorldState(), this.assumptions, capability.getPreCondition()) == true){
+			if(DomainEntail.getInstance().entailsCondition(enode.getWorldState(), this.assumptions, capability.getPreCondition()) == true){
 				//Starts the expansion
 				//Debug time
 				long debugDomainEntailTimeStop = System.currentTimeMillis();
@@ -187,7 +187,7 @@ public class ProblemExploration {
 	private ExpansionNode applyExpand( ENode enode, AbstractCapability capability) {
 		if(capability.getScenarioSet().size() == 1){
 			//Creo un oggetto di tipo WorldEvolution che dato un AssumptionSet ed un StateOfWorld ci da le evoluzioni.
-			WorldEvolution evo = new WorldEvolution(this.assumptions, enode.getWorldNode().getWorldState());
+			WorldEvolution evo = new WorldEvolution(this.assumptions, enode.getWorldState());
 			//Uso un iteratore perché il set non mi fa accedere ai singoli elementi. In questo caso l'elemento è uno solo
 			//Ed è l'ultimo della lista delle evoluzioni, dato che in ogni caso WorldEvolution salva lo StateOfWorld source.
 			
@@ -208,10 +208,11 @@ public class ProblemExploration {
 			System.out.println("WordEvolution(NormalExpansionNode), numero cicli: "+debugWorldEvolutionCount+", eseguiti in: " + debugWorldEvolutionTimeElapse);
 			
 			ArrayList<ENode> newEnodeList = new ArrayList<ENode>();
-			ENode newEnode = new ENode(new WorldNode(evo.getEvolution().getLast()));
+			ENode newEnode = new ENode(evo.getEvolution().getLast());
 			newEnodeList.add(newEnode);
 			this.toVisit.add(newEnode);
-			ExpansionNode result = new NormalExpansionNode(enode, newEnodeList, capability.getId());
+			String scenario = (String)capability.getScenarioSet().iterator().next().getName();
+			ExpansionNode result = new NormalExpansionNode(enode, newEnodeList, capability.getId(), scenario);
 			return result;
 		}
 		else{
@@ -225,13 +226,13 @@ public class ProblemExploration {
 			
 			Iterator i = capability.getScenarioSet().iterator();
 			while(i.hasNext()){
-				WorldEvolution evo = new WorldEvolution(this.assumptions, enode.getWorldNode().getWorldState());
+				WorldEvolution evo = new WorldEvolution(this.assumptions, enode.getWorldState());
 				EvolutionScenario temp = (EvolutionScenario) i.next();
 				evo.addEvolution(temp.getOperators());
-				ENode newEnode = new ENode(new WorldNode(evo.getEvolution().getLast()));
+				ENode newEnode = new ENode(evo.getEvolution().getLast());
 				this.toVisit.add(newEnode);
 				expNode.addDestination(newEnode);
-				expNode.addScenario(newEnode, temp);
+				expNode.addScenario(newEnode, temp.getName());
 			}
 			
 			//Debug time
@@ -272,7 +273,7 @@ public class ProblemExploration {
 		MultipleExpansionNode nk = (MultipleExpansionNode) mast;
 		//System.out.println(nk.getScenario(enode).getName());
 		/*****/
-		StateOfWorld state = enode.getWorldNode().getWorldState();
+		StateOfWorld state = enode.getWorldState();
 		ArrayList<Token> tokens = new ArrayList<>(startingTokens);
 		//Prepares the net with tokens
 		net.putTokens(startingTokens);

@@ -17,7 +17,7 @@ public class EvolutionEdge implements Edge {
 	private WorldNode destination;
 	
 	/** The scenario. */
-	private EvolutionScenario scenario; 
+	private String scenario; 
 	
 	/**
 	 * Instantiates a new evolution edge.
@@ -29,7 +29,7 @@ public class EvolutionEdge implements Edge {
 	 * @param scenario
 	 *            the scenario
 	 */
-	public EvolutionEdge(OPNode source, WorldNode destination, EvolutionScenario scenario){
+	public EvolutionEdge(OPNode source, WorldNode destination, String scenario){
 		super();
 		this.source = source;
 		this.destination = destination;
@@ -41,7 +41,7 @@ public class EvolutionEdge implements Edge {
 	 *
 	 * @return the scenario used on the evolution represented by this edge.
 	 */
-	public EvolutionScenario getScenario(){
+	public String getScenario(){
 		return this.scenario;
 	}
 	
@@ -89,7 +89,7 @@ public class EvolutionEdge implements Edge {
 	 * @param scenario
 	 *            the new scenario
 	 */
-	public void setScenario(EvolutionScenario scenario) {
+	public void setScenario(String scenario) {
 		this.scenario = scenario;
 	}
 	

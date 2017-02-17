@@ -88,11 +88,11 @@ public class EdgeTest {
 		this.n1 = new WorldNode(w4);
 		this.n2 = new WorldNode(w3);
 		this.n3 = new WorldNode(w1);
-		this.op1 = new XORNode(cap1);
+		this.op1 = new XORNode(cap1.getId(), 0);
 		
-		this.e1 = new NormalEdge(new WorldNode(null), this.n1, this.cap1);
-		this.e2 = new NormalEdge(new WorldNode(null), this.n1, this.cap1);
-		this.e3 = new NormalEdge(this.n1, this.n2, this.cap1);
+		this.e1 = new NormalEdge(new WorldNode(null), this.n1, this.cap1.getId());
+		this.e2 = new NormalEdge(new WorldNode(null), this.n1, this.cap1.getId());
+		this.e3 = new NormalEdge(this.n1, this.n2, this.cap1.getId());
 		
 		this.ev1 = new EvolutionEdge(op1, n1, null);
 	}
@@ -109,6 +109,6 @@ public class EdgeTest {
 	
 	@Test
 	public void test_3() {
-		assertEquals(true, new NormalEdge(new WorldNode(null), this.n1, this.cap1).equals(this.e2));
+		assertEquals(true, new NormalEdge(new WorldNode(null), this.n1, this.cap1.getId()).equals(this.e2));
 	}
 }

@@ -958,17 +958,17 @@ public void setUp(){
 	this.nodeavailableInvoiceNoCloud = new WorldNode(this.availableInvoiceNoCloud);
 	this.nodenotifyFailureNoCloud = new WorldNode(this.notifyFailureNoCloud);
 	
-    this.eregAndCloud = new ENode(this.noderegAndCloud);
-    this.euncompleteRegForm = new ENode(this.nodeuncompleteRegForm);
-    this.eregNoCloud = new ENode(this.noderegNoCloud);
-    this.eknown = new ENode(this.nodeknown);
-    this.eunknown = new ENode(this.nodeunknown);
-    this.eacceptedOrderCloud = new ENode(this.nodeacceptedOrderCloud);
-    this.eacceptedOrderNoCloud = new ENode(this.nodeacceptedOrderNoCloud);
-    this.erefusedOrderCloud = new ENode(this.noderefusedOrderCloud);
-    this.erefusedOrderNoCloud = new ENode(this.noderefusedOrderNoCloud);
-    this.eavailableInvoiceNoCloud = new ENode(this.nodeavailableInvoiceNoCloud);
-    this.enotifyFailureNoCloud = new ENode(this.nodenotifyFailureNoCloud);
+    this.eregAndCloud = new ENode(this.regAndCloud);
+    this.euncompleteRegForm = new ENode(this.uncompleteRegForm);
+    this.eregNoCloud = new ENode(this.regNoCloud);
+    this.eknown = new ENode(this.known);
+    this.eunknown = new ENode(this.known);
+    this.eacceptedOrderCloud = new ENode(this.acceptedOrderCloud);
+    this.eacceptedOrderNoCloud = new ENode(this.acceptedOrderNoCloud);
+    this.erefusedOrderCloud = new ENode(this.refusedOrderCloud);
+    this.erefusedOrderNoCloud = new ENode(this.refusedOrderNoCloud);
+    this.eavailableInvoiceNoCloud = new ENode(this.availableInvoiceNoCloud);
+    this.enotifyFailureNoCloud = new ENode(this.notifyFailureNoCloud);
 
 }
 	
@@ -1003,7 +1003,7 @@ public void setUp(){
 		} catch (layer.semantic.exception.NotAllowedInAStateOfWorld e) {
 			e.printStackTrace();
 		}
-		ENode temp = new ENode(new WorldNode(this.regAndCloud2));
+		ENode temp = new ENode(this.regAndCloud2);
 		
 		MultipleExpansionNode nk = (MultipleExpansionNode) this.exploration.getExpandedList().get(0);	    
 		
