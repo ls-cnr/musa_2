@@ -10,6 +10,7 @@ import layer.awareness.AbstractCapability;
  */
 public class NormalExpansionNode extends ExpansionNode{
 		
+	private String Scenario;
 	/**
 	 * Instantiates a new normal expansion node.
 	 *
@@ -20,8 +21,9 @@ public class NormalExpansionNode extends ExpansionNode{
 	 * @param capability
 	 *            the capability
 	 */
-	public NormalExpansionNode(ENode source, ArrayList<ENode> destination, String capability){
+	public NormalExpansionNode(ENode source, ArrayList<ENode> destination, String capability, String scenario){
 		super(source, destination, capability);
+		this.Scenario = scenario;
 	}
 	
 	

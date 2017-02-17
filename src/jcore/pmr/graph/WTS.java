@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 
 import layer.awareness.AbstractCapability;
+import layer.semantic.StateOfWorld;
 import pmr.probexp.ENode;
 import pmr.probexp.ExpansionNode;
 import pmr.probexp.MultipleExpansionNode;
@@ -24,7 +25,16 @@ public class WTS {
 	 */
 	public WTS(){ 
 		this.graph = new HashMap<WorldNode, WorldNode> ();
-		this.graph.put(new WorldNode(null), new WorldNode(null));
+	}
+	
+	/**
+	 * Set the first Node of the graph. It creates a new WorldNode using the StateOfWorld param.
+	 *
+	 * @param state
+	 *            the first StateOfWorld
+	 */
+	public void setInitialState(StateOfWorld state){
+		this.graph.put(new WorldNode(state), new WorldNode(state));
 	}
 	
 	
@@ -41,10 +51,10 @@ public class WTS {
 		if(newnode instanceof NormalExpansionNode){
 			/* it normally adds The WorldNodes in newnode. The destinationList of newnode has size = 1. */
 			NormalExpansionNode tempnode = (NormalExpansionNode) newnode;
-			this.addSafeNode(tempnode.getSource().getWorldNode());
-			this.addSafeNode(tempnode.getDestination().get(0).getWorldNode());
-			WorldNode destination2 = this.graph.get(tempnode.getDestination().get(0).getWorldNode());
-			this.addEdge(this.graph.get(tempnode.getSource().getWorldNode()), destination2, tempnode.getCapability());			
+			this.addSafeNode(new WorldNode(tempnode.getSource().getWorldState()));
+			this.addSafeNode (new WorldNode(tempnode.getDestination().get(0).getWorldState()));
+			WorldNode destination2 = this.graph.get(new WorldNode(tempnode.getDestination().get(0).getWorldState()));
+			this.addEdge(this.graph.get(new WorldNode(tempnode.getSource().getWorldState())), destination2, tempnode.getCapability());			
 		}
 		else{
 			/* it normally adds the source node in newnode, then it generates an OPNode that connect the source with all 
@@ -53,15 +63,15 @@ public class WTS {
 			 * if the source already contains that OPNode, it makes no actions and exit from the method.
 			 */
 			MultipleExpansionNode exptempnode = (MultipleExpansionNode) newnode;
-			this.addSafeNode(exptempnode.getSource().getWorldNode());
-			WorldNode source2 = this.graph.get(exptempnode.getSource().getWorldNode());
+			this.addSafeNode(new WorldNode(exptempnode.getSource().getWorldState()));
+			WorldNode source2 = this.graph.get(new WorldNode(exptempnode.getSource().getWorldState()));
 			OPNode faketempnode = new XORNode(exptempnode.getCapability(), exptempnode.getScore());
 			faketempnode.setIncomingEdge(new OPEdge(source2, faketempnode, exptempnode.getCapability()));
 			
 			if(source2.getOPNodeList().contains(faketempnode))	return;
 			
 			for(ENode etemp : newnode.getDestination()){
-				WorldNode wnode = etemp.getWorldNode();
+				WorldNode wnode = new WorldNode(etemp.getWorldState());
 				this.addSafeNode(wnode);
 				faketempnode.addOutcomingEdge(new EvolutionEdge(faketempnode, wnode, exptempnode.getScenario(etemp)));
 			}

@@ -17,7 +17,7 @@ import pmr.graph.WorldNode;
 public class MultipleExpansionNode extends ExpansionNode{
 
 	/** The scenario list. */
-	private HashMap<ENode, EvolutionScenario> scenarioList;
+	private HashMap<ENode, String> scenarioList;
 	
 	/**
 	 * Instantiates a new multiple expansion node.
@@ -31,7 +31,7 @@ public class MultipleExpansionNode extends ExpansionNode{
 	 */
 	public MultipleExpansionNode(ENode source, ArrayList<ENode> destination, String capability){
 		super(source, destination, capability);
-		this.scenarioList = new HashMap<ENode, EvolutionScenario>();
+		this.scenarioList = new HashMap<ENode, String>();
 		//if(destination != null)	this.findScore();
 	}
 	
@@ -43,7 +43,7 @@ public class MultipleExpansionNode extends ExpansionNode{
 	 * @param scenario
 	 *            the scenario
 	 */
-	public void addScenario(ENode node, EvolutionScenario scenario){
+	public void addScenario(ENode node, String scenario){
 		this.scenarioList.put(node, scenario);
 	}
 	
@@ -52,7 +52,7 @@ public class MultipleExpansionNode extends ExpansionNode{
 	 *
 	 * @return the scenario map
 	 */
-	public HashMap<ENode, EvolutionScenario>getScenarioMap(){
+	public HashMap<ENode, String>getScenarioMap(){
 		return this.scenarioList;
 	}
 	
@@ -63,7 +63,7 @@ public class MultipleExpansionNode extends ExpansionNode{
 	 *            the node
 	 * @return the scenario
 	 */
-	public EvolutionScenario getScenario(ENode node){
+	public String getScenario(ENode node){
 		return this.scenarioList.get(node);
 	}
 	

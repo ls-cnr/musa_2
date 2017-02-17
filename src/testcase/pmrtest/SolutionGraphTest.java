@@ -138,12 +138,12 @@ public void setUp(){
 	this.n5 = new WorldNode(w5);
 	this.n6 = new WorldNode(w6);
 	
-	this.e1 = new ENode(n1);
-	this.e2 = new ENode(n2);
-	this.e3 = new ENode(n3);
-	this.e4 = new ENode(n4);
-	this.e5 = new ENode(n5);
-	this.e6 = new ENode(n6);
+	this.e1 = new ENode(w1);
+	this.e2 = new ENode(w2);
+	this.e3 = new ENode(w3);
+	this.e4 = new ENode(w4);
+	this.e5 = new ENode(w5);
+	this.e6 = new ENode(w6);
 	
 	ArrayList<ENode> ENodeList345 = new ArrayList<ENode>();
 	ENodeList345.add(e3);
@@ -168,14 +168,14 @@ public void setUp(){
 	ArrayList<ENode> ENodeList6 = new ArrayList<ENode>();
 	ENodeList6.add(e6);
 
-	this.ex0 = new NormalExpansionNode(new ENode(new WorldNode(null)), ENodeList1, cap1);
-	this.ex1 = new MultipleExpansionNode(e1, ENodeList345, cap1);
-	this.ex2 = new NormalExpansionNode(e2, ENodeList3, cap2);
-	this.ex3 = new NormalExpansionNode(e3, ENodeList6, cap3);
-	this.ex4 = new NormalExpansionNode(e4, ENodeList5, cap1);
-	this.ex5 = new MultipleExpansionNode(e5, ENodeList345, cap1);
-	this.ex6 = new NormalExpansionNode(e6, ENodeList3, cap1);
-	this.ex7 = new NormalExpansionNode(e6, ENodeList4, cap2);
+	this.ex0 = new NormalExpansionNode(new ENode(null), ENodeList1, cap1.getId());
+	this.ex1 = new MultipleExpansionNode(e1, ENodeList345, cap1.getId());
+	this.ex2 = new NormalExpansionNode(e2, ENodeList3, cap2.getId());
+	this.ex3 = new NormalExpansionNode(e3, ENodeList6, cap3.getId());
+	this.ex4 = new NormalExpansionNode(e4, ENodeList5, cap1.getId());
+	this.ex5 = new MultipleExpansionNode(e5, ENodeList345, cap1.getId());
+	this.ex6 = new NormalExpansionNode(e6, ENodeList3, cap1.getId());
+	this.ex7 = new NormalExpansionNode(e6, ENodeList4, cap2.getId());
 	
 	this.graph = new SolutionGraph();
 }
@@ -196,7 +196,7 @@ public void setUp(){
 //Il nodo iniziale viene sempre riconosciuto tramite un new WorldNode(null)
 	@Test
 	public void addNodeTest(){
-		assertEquals(true, this.graph.getWTS().containsKey(ex0.getSource().getWorldNode()));
+		assertEquals(true, this.graph.getWTS().containsKey(new WorldNode(ex0.getSource().getWorldState())));
 		assertEquals(null, this.graph.getWTS().get(new WorldNode(null)).getWorldState());
 		assertEquals(true, this.graph.getWTS().get(new WorldNode(null)).equals(new WorldNode(null)));
 
@@ -210,7 +210,7 @@ public void setUp(){
 	public void addNodeTest2(){
 		this.graph.addNode(ex1);
 		this.graph.addNode(ex2);
-		assertEquals(true, this.graph.getWTS().containsKey(ex2.getDestination().get(0).getWorldNode()));
+		assertEquals(true, this.graph.getWTS().containsKey(new WorldNode(ex2.getDestination().get(0).getWorldState())));
 	}	
 	
 	//Dovrei aver aggiunto tutti gli stateOfWorld diversi: w1,w3,w4,w5,wnull = 5
@@ -252,21 +252,21 @@ public void setUp(){
 	public void exitNodeTest(){
 		this.e2.setExit(true);
 		this.graph.addNode(ex2);
-		assertEquals(true, this.graph.getExitNodeMap().containsKey(e2.getWorldNode()));
+		assertEquals(true, this.graph.getExitNodeMap().containsKey(new WorldNode(e2.getWorldState())));
 	}
 	
 	@Test
 	public void exitNodeTest2(){
 		this.e2.setExit(true);
 		this.graph.addNode(ex2);
-		assertEquals(false, this.graph.getExitNodeMap().containsKey(e3.getWorldNode()));
+		assertEquals(false, this.graph.getExitNodeMap().containsKey(new WorldNode(e3.getWorldState())));
 	}
 	
 	@Test
 	public void exitNodeTest3(){
 		this.e3.setExit(true);
 		this.graph.addNode(ex3);
-		assertEquals(true, this.graph.getExitNodeMap().containsKey(e3.getWorldNode()));
+		assertEquals(true, this.graph.getExitNodeMap().containsKey(new WorldNode(e3.getWorldState())));
 	}
 	
 	

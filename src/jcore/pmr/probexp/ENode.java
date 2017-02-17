@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 
 import layer.awareness.net.Token;
+import layer.semantic.StateOfWorld;
 import pmr.graph.Node;
 import pmr.graph.WorldNode;
 /**
@@ -14,7 +15,7 @@ import pmr.graph.WorldNode;
 public class ENode implements Node{
 	
 	/** The WorldNode coming from the WTS */
-	private WorldNode node;
+	private StateOfWorld node;
 	
 	/** The Tokens to put on the Net associated to the node */
 	private ArrayList<Token> tokens;
@@ -31,7 +32,7 @@ public class ENode implements Node{
 	 * @param node
 	 *            the WorldNode
 	 */
-	public ENode( WorldNode node ) {
+	public ENode( StateOfWorld node ) {
 		this.node = node;
 		this.exit = false;
 	}
@@ -48,7 +49,7 @@ public class ENode implements Node{
 	 * @param exit
 	 *            the Exit condition
 	 */
-	public ENode( WorldNode node, ArrayList<Token> tokens, int score, boolean exit ) {
+	public ENode( StateOfWorld node, ArrayList<Token> tokens, int score, boolean exit ) {
 		this.node = node;
 		this.tokens = tokens;
 		this.score = score;
@@ -60,7 +61,7 @@ public class ENode implements Node{
 	 *
 	 * @return the WorldNode
 	 */
-	public WorldNode getWorldNode() {
+	public StateOfWorld getWorldState() {
 		return node;
 	}
 	
@@ -141,10 +142,10 @@ public class ENode implements Node{
 	      }
 	      ENode other = (ENode) obj;
 	      
-	      if(this.getWorldNode().getWorldState() == null && other.getWorldNode().getWorldState() == null){
+	      if(this.getWorldState() == null && other.getWorldState() == null){
 	        return true;
 	      }
-	      else if (this.getWorldNode().getWorldState() != null && this.getWorldNode().getWorldState().equals(other.getWorldNode().getWorldState())) {
+	      else if (this.getWorldState() != null && this.getWorldState().equals(other.getWorldState())) {
 	          return true;
 	      }
 	      else {
@@ -158,7 +159,7 @@ public class ENode implements Node{
 	   */
 	  @Override
 	  public int hashCode(){
-	      return this.getWorldNode().hashCode();
+	      return this.getWorldState().hashCode();
 	  }  
 	  
 	  /**

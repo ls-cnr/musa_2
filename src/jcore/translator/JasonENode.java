@@ -13,7 +13,7 @@ import pmr.probexp.ENode;
 public class JasonENode {
 	public static Term object_to_term(ENode node) {
 		Structure term = new Structure("enode",4);
-		Term w = JasonStateOfWorld.object_to_term(node.getWorldNode().getWorldState());
+		Term w = JasonStateOfWorld.object_to_term(node.getWorldState());
 		ListTermImpl token_list = new ListTermImpl();
 		if (node.getTokens() != null) {
 			for (Token t : node.getTokens()) {
@@ -60,7 +60,7 @@ public class JasonENode {
 			regAndCloud2.addFact_asString("registered(a_user).");
 			regAndCloud2.addFact_asString("has_cloud_space(a_user).");
 			
-			ENode temp = new ENode(new WorldNode(regAndCloud2));
+			ENode temp = new ENode(regAndCloud2);
 			
 			Term term = object_to_term(temp);
 			System.out.println("term: "+term);
