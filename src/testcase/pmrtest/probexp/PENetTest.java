@@ -622,6 +622,7 @@ public class PENetTest {
 		assertTrue( problem.getExpandedList().get(0).getDestination().contains(e) );
 		
 	}
+	
 	@Ignore
 	@Test
 	public void testNet1() {
@@ -652,26 +653,17 @@ public class PENetTest {
 			}
 		}
 	}
-	
+
 	@Test
 	public void testNet2() {
 		problem.addCapability(CU);
 		problem.addCapability(CS);
-		//while( !problem.toVisitIsEmpty() )
-			problem.expandNode();
-			problem.expandNode();
-			problem.expandNode();
-			problem.expandNode();
-			problem.expandNode();
-			problem.expandNode();
-			problem.expandNode();
-			problem.expandNode();
-			problem.expandNode();
-			problem.expandNode();
+		problem.addCapability(NSF);
+		int i = 0;
+		while( !problem.toVisitIsEmpty() && i++ < 30 )
 			problem.expandNode();
 		
-		//MultipleExpansionNode nk = (MultipleExpansionNode) problem.getExpandedList().get(1);
-		
+		//MultipleExpansionNode nk = (MultipleExpansionNode) problem.getExpandedList().get(0);
 		ExpansionNode nk = problem.getExpandedList().get(0);
 			
 		for( ENode e : nk.getDestination() ){
@@ -679,22 +671,7 @@ public class PENetTest {
 			//System.out.print(scenarioName + " ");
 			for( Token tok : e.getTokens() )
 				System.out.print(tok.getPlaceName() + " ");
-			System.out.println("");/*
-			switch( scenarioName ){
-			 case "UnknownUser":
-				 assertEquals(e.getTokens().get(1).getPlaceName(), "p4");
-				 break;
-			 case "RegisteredUserWithCloud":
-				 assertEquals(e.getTokens().get(1).getPlaceName(), "p5");
-				 break;
-			 case "RegisteredUserWithoutCloud":
-				 assertEquals(e.getTokens().get(1).getPlaceName(), "p5");
-				 break;
-			 case "KnownUser":
-				 assertEquals(e.getTokens().get(1).getPlaceName(), "p4");
-				 break;
-			}
-			*/
+			System.out.println("");
 		}
 	}
 
