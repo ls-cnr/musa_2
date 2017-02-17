@@ -2,6 +2,7 @@ package pmrtest.probexp;
 
 import static org.junit.Assert.*;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
@@ -164,7 +165,7 @@ public class PENetTest {
 		TPAO_order.addArgument(doc);
 		Condition TPAO_tc = new Condition( new ExistsQuantifiedFormula(new Conjunction(TPAO_accepted, TPAO_order), doc) );
 		
-		FOLAtom TPAO_send = new FOLAtom( new Predicate("send",2));
+		FOLAtom TPAO_send = new FOLAtom( new Predicate("sent",2));
 		TPAO_send.addArgument(doc);
 		TPAO_send.addArgument(mng);
 		FOLAtom TPAO_delivery = new FOLAtom( new Predicate("delivery_order", 1));
@@ -192,7 +193,7 @@ public class PENetTest {
 		TNI_var1.add(doc);
 		Condition TNI_tc = new Condition( new ExistsQuantifiedFormula(new Conjunction(new Conjunction(TNI_registered, TNI_user), new Conjunction(TNI_available, TNI_invoice)), TNI_var1) );
 		
-		FOLAtom TNI_send = new FOLAtom( new Predicate("send",2));
+		FOLAtom TNI_send = new FOLAtom( new Predicate("sent",2));
 		TNI_send.addArgument(doc);
 		TNI_send.addArgument(usr);
 		Set<Variable> TNI_var2 = new HashSet<Variable>();
@@ -203,7 +204,7 @@ public class PENetTest {
 		Goal TNI = new Goal("to_notify_invoice", TNI_tc, TNI_fs);
 		
 		/*to_deliver_order*/
-		FOLAtom TDO_send = new FOLAtom( new Predicate("send",2));
+		FOLAtom TDO_send = new FOLAtom( new Predicate("sent",2));
 		TDO_send.addArgument(doc);
 		TDO_send.addArgument(usr);
 		FOLAtom TDO_invoice = new FOLAtom( new Predicate("invoice",1));
@@ -240,7 +241,7 @@ public class PENetTest {
 		TNF_var1.add(usr);
 		Condition TNF_tc = new Condition( new ExistsQuantifiedFormula(new Conjunction(new Conjunction(TNF_refused, TNF_order), new Conjunction(TNF_registered, TNF_user)), TNF_var1) );
 		
-		FOLAtom TNF_send = new FOLAtom( new Predicate("send",2));
+		FOLAtom TNF_send = new FOLAtom( new Predicate("sent",2));
 		TNF_send.addArgument(new Constant("failure_order"));
 		TNF_send.addArgument(usr);	
 		Condition TNF_fs = new Condition( new ExistsQuantifiedFormula(new Conjunction(TNF_send, TNF_user), usr) );
@@ -401,20 +402,18 @@ public class PENetTest {
 		NSF_registered.addArgument(usr);
 		FOLAtom NSF_user = new FOLAtom( new Predicate("user",1));
 		NSF_user.addArgument(usr);
-		FOLAtom NSF_failed = new FOLAtom( new Predicate("failure_order",1));
-		NSF_failed.addArgument(fail);
-		Negation NSF_notfailed = new Negation(NSF_failed);
+		FOLAtom NSF_ord_fail = new FOLAtom( new Predicate("order_failure",1));
+		NSF_ord_fail.addArgument(doc);
 		Set NSF_Set = new HashSet<Variable>();
 		NSF_Set.add(doc);
 		NSF_Set.add(usr);
-		NSF_Set.add(fail);
-		Condition NSF_pre = new Condition(new ExistsQuantifiedFormula( new Conjunction(new Conjunction(NSF_refused, NSF_order), new Conjunction( new Conjunction(NSF_registered, NSF_user), NSF_notfailed)), NSF_Set ));
+		Condition NSF_pre = new Condition(new ExistsQuantifiedFormula( new Conjunction( new Conjunction(new Conjunction(NSF_refused, NSF_order), new Conjunction(NSF_registered, NSF_user)), new Conjunction(NSF_ord_fail, NSF_order)), NSF_Set ));
 
 		Set<EvolutionScenario> NSF_evo = new HashSet<>();
 		CapabilityEvolutionScenario NSF_evo1 = new CapabilityEvolutionScenario("Failure");
-		NSF_evo1.addOperator( new AddStatement( new DLPHead(new DLPAtom("failure_order", failure_order)) ) );
 		NSF_evo1.addOperator( new AddStatement( new DLPHead(new DLPAtom("sent", failure_order, a_user)) ) );
 		NSF_evo1.addOperator( new AddStatement( new DLPHead(new DLPAtom("user", a_user)) ) );
+		NSF_evo1.addOperator( new RemoveStatement( new DLPHead(new DLPAtom("order_failure", an_order)) ) );
 		NSF_evo.add(NSF_evo1);
 		
 		this.NSF = new AbstractCapability("notify_stock_failure", NSF_evo, NSF_pre, null);
@@ -611,11 +610,11 @@ public class PENetTest {
 			e.printStackTrace();
 		}
 		
-		ENode e = new ENode(new WorldNode(secondStart));
+		ENode e = new ENode(secondStart);
 		MultipleExpansionNode nk = (MultipleExpansionNode) problem.getExpandedList().get(0);
 		
 		for( ENode ex : problem.getExpandedList().get(0).getDestination() ){
-			System.out.println(nk.getScenario(ex).getName() + " " + ex.getWorldNode().getWorldState().getFactsNumber());
+			System.out.println(nk.getScenario(ex) + " " + ex.getWorldState().getFactsNumber());
 		}
 		
 		assertEquals( problem.getExpandedList().size(), 1);
@@ -632,7 +631,7 @@ public class PENetTest {
 		MultipleExpansionNode nk = (MultipleExpansionNode) problem.getExpandedList().get(0);
 		
 		for( ENode e : nk.getDestination() ){
-			String scenarioName = nk.getScenario(e).getName();
+			String scenarioName = nk.getScenario(e);
 			System.out.print(scenarioName + " ");
 			for( Token tok : e.getTokens() )
 				System.out.print(tok.getPlaceName() + " ");
@@ -654,17 +653,57 @@ public class PENetTest {
 		}
 	}
 
+	@Ignore
 	@Test
 	public void testNet2() {
 		problem.addCapability(CU);
 		problem.addCapability(CS);
+		while( !problem.toVisitIsEmpty())
+			problem.expandNode();
+		
+		MultipleExpansionNode nk = (MultipleExpansionNode) problem.getExpandedList().get(1);
+		//ExpansionNode nk = problem.getHighestExpansion();
+			
+		for( ENode e : nk.getDestination() ){
+			String scenarioName = nk.getScenario(e);
+			System.out.print(scenarioName + " ");
+			for( Token tok : e.getTokens() )
+				System.out.print(tok.getPlaceName() + " ");
+			System.out.println("");
+		}
+		System.out.println(nk.getDestination().get(0).getWorldState().getFactsList());
+	}
+	
+	@Test
+	public void testNet3() {
 		problem.addCapability(NSF);
-		int i = 0;
-		while( !problem.toVisitIsEmpty() && i++ < 30 )
+		
+		StateOfWorld refusedOrderNoCloud = new StateOfWorld();
+		try{
+			refusedOrderNoCloud.addFact_asString("order(an_order).");
+			refusedOrderNoCloud.addFact_asString("user(a_user).");
+			refusedOrderNoCloud.addFact_asString("logged(a_user).");
+			refusedOrderNoCloud.addFact_asString("registered(a_user).");
+			refusedOrderNoCloud.addFact_asString("refused(an_order).");
+			refusedOrderNoCloud.addFact_asString("order_failure(an_order).");
+		} catch (ParseException e) {
+			e.printStackTrace();
+		} catch (layer.semantic.exception.NotAllowedInAStateOfWorld e) {
+			e.printStackTrace();
+		}
+		
+		WorldNode en = new WorldNode(refusedOrderNoCloud);
+		ArrayList<Token> tokns = new ArrayList<>();
+		tokns.add(new Token("p3"));
+		tokns.add(new Token("p5"));
+		
+		problem.addToVisit(en, tokns, 5);
+		
+		while( !problem.toVisitIsEmpty())
 			problem.expandNode();
 		
 		//MultipleExpansionNode nk = (MultipleExpansionNode) problem.getExpandedList().get(0);
-		ExpansionNode nk = problem.getExpandedList().get(0);
+		ExpansionNode nk = problem.getHighestExpansion();
 			
 		for( ENode e : nk.getDestination() ){
 			//String scenarioName = nk.getScenario(e).getName();
@@ -673,6 +712,7 @@ public class PENetTest {
 				System.out.print(tok.getPlaceName() + " ");
 			System.out.println("");
 		}
+		System.out.println(nk.getDestination().get(0).getWorldState().getFactsList());
 	}
 
 }

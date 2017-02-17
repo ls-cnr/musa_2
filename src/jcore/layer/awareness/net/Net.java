@@ -228,7 +228,7 @@ public class Net {
 	 */
 	public void removeOrTokens( Place finalOrPlace, ArrayList<Token> tokens ) {
 		Place initialOrPlace = finalOrPlaces.get(finalOrPlace);
-		remove(finalOrPlace, initialOrPlace, tokens);
+		remove(initialOrPlace, finalOrPlace, tokens);
 	}
 	
 	/**
@@ -242,10 +242,14 @@ public class Net {
 	 *            the list of tokens
 	 */
 	private void remove( Place initial, Place place, ArrayList<Token> tokens ) {
-		if( place.getName() == initial.getName() )
+		if( place.getName().equals( initial.getName() ) ){
+			if( place.hasAtLeastTokens(1) ){ 
+				place.removeTokens(1);
+			}
 			for( int i = 0; i < tokens.size(); i++ )
 				if( tokens.get(i).getPlaceName().equals(place.getName()) )
 					tokens.remove(i);
+		}
 		else{
 			if( place.hasAtLeastTokens(1) ){ 
 				place.removeTokens(1);

@@ -80,4 +80,12 @@ public class Token {
 	public MultipleToken getDependingToken() {
 		return dependingToken;
 	}
+	
+	@Override
+	public String toString() {
+		if( this instanceof MultipleToken )
+			return "Mul " + placeName;
+		else 
+			return placeName;
+	}
 }
