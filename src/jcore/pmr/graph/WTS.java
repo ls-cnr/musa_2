@@ -55,7 +55,7 @@ public class WTS {
 			MultipleExpansionNode exptempnode = (MultipleExpansionNode) newnode;
 			this.addSafeNode(exptempnode.getSource().getWorldNode());
 			WorldNode source2 = this.graph.get(exptempnode.getSource().getWorldNode());
-			OPNode faketempnode = new XORNode(exptempnode.getCapability());
+			OPNode faketempnode = new XORNode(exptempnode.getCapability(), exptempnode.getScore());
 			faketempnode.setIncomingEdge(new OPEdge(source2, faketempnode, exptempnode.getCapability()));
 			
 			if(source2.getOPNodeList().contains(faketempnode))	return;

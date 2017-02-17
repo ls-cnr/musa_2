@@ -5,7 +5,7 @@ import layer.semantic.StateOfWorld;
 import layer.semantic.evolution.EvolutionScenario;
 
 public class XORNode extends OPNode{
-	public XORNode(String capability){
-		super(capability);
+	public XORNode(String capability, int score){
+		super(capability, score);
 	}
 }
