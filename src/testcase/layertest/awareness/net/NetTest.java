@@ -63,7 +63,6 @@ public class NetTest {
 	/**
 	 * Test hops 3.
 	 */
-	@Ignore
 	@Test
 	public void testHops3() {
 		model = new GoalModel(new Goal("root", null, null));
