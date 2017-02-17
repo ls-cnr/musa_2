@@ -14,7 +14,7 @@ public class NormalEdge implements Edge {
 	private WorldNode destination;
 	
 	/** The capability. */
-	private AbstractCapability capability;
+	private String capability;
 
 	/**
 	 * Instantiates a new normal edge.
@@ -26,7 +26,7 @@ public class NormalEdge implements Edge {
 	 * @param capability
 	 *            the capability
 	 */
-	public NormalEdge(WorldNode source, WorldNode destination, AbstractCapability capability){
+	public NormalEdge(WorldNode source, WorldNode destination, String capability){
 		super();
 		this.source = source;
 		this.destination = destination;
@@ -56,7 +56,7 @@ public class NormalEdge implements Edge {
 	 *
 	 * @return the capability used on the expand of the sourceNode of this edge
 	 */
-	public AbstractCapability getCapability() {
+	public String getCapability() {
 		return this.capability;
 	}
 	
@@ -86,7 +86,7 @@ public class NormalEdge implements Edge {
 	 * @param capability
 	 *            the new capability
 	 */
-	public void setCapability(AbstractCapability capability) {
+	public void setCapability(String capability) {
 		this.capability = capability;
 	}
 

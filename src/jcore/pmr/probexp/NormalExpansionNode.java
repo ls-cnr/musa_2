@@ -20,7 +20,7 @@ public class NormalExpansionNode extends ExpansionNode{
 	 * @param capability
 	 *            the capability
 	 */
-	public NormalExpansionNode(ENode source, ArrayList<ENode> destination, AbstractCapability capability){
+	public NormalExpansionNode(ENode source, ArrayList<ENode> destination, String capability){
 		super(source, destination, capability);
 	}
 	
