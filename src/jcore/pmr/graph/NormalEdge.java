@@ -108,7 +108,8 @@ public class NormalEdge implements Edge {
 				if(this.destination == null && temp.getDestination() == null )	return true;
 			
 			if(this.source.equals(temp.getSource()) == true)					
-				if(this.destination.equals(temp.getDestination()) == true)	return true;
+				if(this.destination.equals(temp.getDestination()) == true)
+					if(this.getCapability().equals(temp.getCapability()) == true)	return true;
 			
 			return false;
 			

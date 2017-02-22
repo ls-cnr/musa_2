@@ -153,9 +153,9 @@ public class WTSTest {
 		ArrayList<ENode> ENodeList3 = new ArrayList<ENode>();
 		ENodeList3.add(e3);
 
-		this.ex1 = new NormalExpansionNode(e5, ENodeList2, cap1.getId());
-		this.ex2 = new NormalExpansionNode(e2, ENodeList3, cap2.getId());
-		this.ex3 = new NormalExpansionNode(e3, ENodeList1, cap3.getId());
+		this.ex1 = new NormalExpansionNode(e5, ENodeList2, cap1.getId(), null);
+		this.ex2 = new NormalExpansionNode(e2, ENodeList3, cap2.getId(), null);
+		this.ex3 = new NormalExpansionNode(e3, ENodeList1, cap3.getId(), null);
 		this.ex4 = new MultipleExpansionNode(e4, ENodeList1, cap1.getId());
 		this.ex5 = new MultipleExpansionNode(e5, ENodeList1, cap1.getId());
 		this.ex6 = new MultipleExpansionNode(e6, ENodeList1, cap1.getId());

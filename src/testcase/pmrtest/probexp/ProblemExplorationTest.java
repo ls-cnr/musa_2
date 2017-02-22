@@ -164,7 +164,6 @@ public void setUp(){
 	Variable doc = new Variable("Doc");
 	Variable usr = new Variable("Usr");
 	Variable mng = new Variable("Mng");
-	Variable fail = new Variable("Fail");
 	
 	/*to_handle_order*/
 	FOLAtom THO_received = new FOLAtom( new Predicate("received",2));
@@ -231,7 +230,7 @@ public void setUp(){
 	TPAO_order.addArgument(doc);
 	Condition TPAO_tc = new Condition( new ExistsQuantifiedFormula(new Conjunction(TPAO_accepted, TPAO_order), doc) );
 	
-	FOLAtom TPAO_send = new FOLAtom( new Predicate("send",2));
+	FOLAtom TPAO_send = new FOLAtom( new Predicate("sent",2));
 	TPAO_send.addArgument(doc);
 	TPAO_send.addArgument(mng);
 	FOLAtom TPAO_delivery = new FOLAtom( new Predicate("delivery_order", 1));
@@ -259,7 +258,7 @@ public void setUp(){
 	TNI_var1.add(doc);
 	Condition TNI_tc = new Condition( new ExistsQuantifiedFormula(new Conjunction(new Conjunction(TNI_registered, TNI_user), new Conjunction(TNI_available, TNI_invoice)), TNI_var1) );
 	
-	FOLAtom TNI_send = new FOLAtom( new Predicate("send",2));
+	FOLAtom TNI_send = new FOLAtom( new Predicate("sent",2));
 	TNI_send.addArgument(doc);
 	TNI_send.addArgument(usr);
 	Set<Variable> TNI_var2 = new HashSet<Variable>();
@@ -270,7 +269,7 @@ public void setUp(){
 	Goal TNI = new Goal("to_notify_invoice", TNI_tc, TNI_fs);
 	
 	/*to_deliver_order*/
-	FOLAtom TDO_send = new FOLAtom( new Predicate("send",2));
+	FOLAtom TDO_send = new FOLAtom( new Predicate("sent",2));
 	TDO_send.addArgument(doc);
 	TDO_send.addArgument(usr);
 	FOLAtom TDO_invoice = new FOLAtom( new Predicate("invoice",1));
@@ -307,7 +306,7 @@ public void setUp(){
 	TNF_var1.add(usr);
 	Condition TNF_tc = new Condition( new ExistsQuantifiedFormula(new Conjunction(new Conjunction(TNF_refused, TNF_order), new Conjunction(TNF_registered, TNF_user)), TNF_var1) );
 	
-	FOLAtom TNF_send = new FOLAtom( new Predicate("send",2));
+	FOLAtom TNF_send = new FOLAtom( new Predicate("sent",2));
 	TNF_send.addArgument(new Constant("failure_order"));
 	TNF_send.addArgument(usr);	
 	Condition TNF_fs = new Condition( new ExistsQuantifiedFormula(new Conjunction(TNF_send, TNF_user), usr) );
@@ -478,20 +477,20 @@ public void setUp(){
 	NSF_registered.addArgument(usr);
 	FOLAtom NSF_user = new FOLAtom( new Predicate("user",1));
 	NSF_user.addArgument(usr);
-	FOLAtom NSF_failed = new FOLAtom( new Predicate("failure_order",1));
-	NSF_failed.addArgument(fail);
-	Negation NSF_notfailed = new Negation(NSF_failed);
-	Set NSF_Set = new HashSet<Variable>();
+	FOLAtom NSF_sent = new FOLAtom( new Predicate("sent",2));
+	NSF_sent.addArgument(doc);
+	NSF_sent.addArgument(usr);
+	Negation NSF_notSent = new Negation(NSF_sent);
+	Set<Variable> NSF_Set = new HashSet<Variable>();
 	NSF_Set.add(doc);
 	NSF_Set.add(usr);
-	NSF_Set.add(fail);
-	Condition NSF_pre = new Condition(new ExistsQuantifiedFormula( new Conjunction(new Conjunction(NSF_refused, NSF_order), new Conjunction( new Conjunction(NSF_registered, NSF_user), NSF_notfailed)), NSF_Set ));
+	Condition NSF_pre = new Condition(new ExistsQuantifiedFormula(new Conjunction( new Conjunction(new Conjunction(NSF_refused, NSF_order), new Conjunction(NSF_registered, NSF_user)), NSF_notSent), NSF_Set ));
 
 	Set<EvolutionScenario> NSF_evo = new HashSet<>();
 	CapabilityEvolutionScenario NSF_evo1 = new CapabilityEvolutionScenario("Failure");
-	NSF_evo1.addOperator( new AddStatement( new DLPHead(new DLPAtom("failure_order", failure_order)) ) );
 	NSF_evo1.addOperator( new AddStatement( new DLPHead(new DLPAtom("sent", failure_order, a_user)) ) );
 	NSF_evo1.addOperator( new AddStatement( new DLPHead(new DLPAtom("user", a_user)) ) );
+	NSF_evo1.addOperator( new RemoveStatement( new DLPHead(new DLPAtom("refused", an_order)) ) );
 	NSF_evo.add(NSF_evo1);
 	
 	this.NSF = new AbstractCapability("notify_stock_failure", NSF_evo, NSF_pre, null);
@@ -508,7 +507,7 @@ public void setUp(){
 	FOLAtom GI_invoice = new FOLAtom( new Predicate("available", 1));
 	GI_invoice.addArgument(doc);
 	Negation GI_notAvailable = new Negation(GI_invoice);
-	Set GT_Set = new HashSet<Variable>();
+	Set<Variable> GT_Set = new HashSet<Variable>();
 	GT_Set.add(doc);
 	GT_Set.add(usr);
 	Condition GI_pre = new Condition(new ExistsQuantifiedFormula(new Conjunction( new Conjunction(new Conjunction(GI_accepted, GI_order), new Conjunction(GI_registered, GI_user)), GI_notAvailable), GT_Set) );
@@ -517,6 +516,8 @@ public void setUp(){
 	CapabilityEvolutionScenario GI_evo1 = new CapabilityEvolutionScenario("AvailableInvoice");
 	GI_evo1.addOperator( new AddStatement( new DLPHead(new DLPAtom("available", the_invoice)) ) );
 	GI_evo1.addOperator( new AddStatement( new DLPHead(new DLPAtom("invoice", the_invoice)) ) );
+	GI_evo1.addOperator( new RemoveStatement( new DLPHead(new DLPAtom("accepted", an_order)) ) );
+	GI_evo1.addOperator( new RemoveStatement( new DLPHead(new DLPAtom("order", an_order)) ) );
 	GI_evo.add(GI_evo1);
 	
 	this.GI = new AbstractCapability("generate_invoice", GI_evo, GI_pre, null);
@@ -541,7 +542,7 @@ public void setUp(){
 	Set<EvolutionScenario> UOUCS_evo = new HashSet<>();
 	CapabilityEvolutionScenario UOUCS_evo1 = new CapabilityEvolutionScenario("UploadedOnCloud");
 	UOUCS_evo1.addOperator( new AddStatement( new DLPHead(new DLPAtom("uploaded_on_cloud", the_invoice)) ) );
-	UOUCS_evo1.addOperator( new AddStatement( new DLPHead(new DLPAtom("invoice", the_invoice)) ) );
+	UOUCS_evo1.addOperator( new RemoveStatement( new DLPHead(new DLPAtom("available", the_invoice)) ) );
 	UOUCS_evo.add(UOUCS_evo1);
 	
 	this.UOUCS = new AbstractCapability("upload_on_user_cloud_storage", UOUCS_evo, UOUCS_pre, null);
@@ -567,7 +568,7 @@ public void setUp(){
 	Set<EvolutionScenario> UOPCS_evo = new HashSet<>();
 	CapabilityEvolutionScenario UOPCS_evo1 = new CapabilityEvolutionScenario("UploadedOnCloud");
 	UOPCS_evo1.addOperator( new AddStatement( new DLPHead(new DLPAtom("uploaded_on_cloud", the_invoice)) ) );
-	UOPCS_evo1.addOperator( new AddStatement( new DLPHead(new DLPAtom("invoice", the_invoice)) ) );
+	UOPCS_evo1.addOperator( new RemoveStatement( new DLPHead(new DLPAtom("available", the_invoice)) ) );
 	UOPCS_evo.add(UOPCS_evo1);
 	
 	this.UOPCS = new AbstractCapability("upload_on_private_cloud_storage", UOPCS_evo, UOPCS_pre, null);
@@ -595,7 +596,6 @@ public void setUp(){
 	Set<EvolutionScenario> SFL_evo = new HashSet<>();
 	CapabilityEvolutionScenario SFL_evo1 = new CapabilityEvolutionScenario("MailedPermLink");
 	SFL_evo1.addOperator( new AddStatement( new DLPHead(new DLPAtom("mailed_perm_link", the_invoice, a_user)) ) );
-	SFL_evo1.addOperator( new AddStatement( new DLPHead(new DLPAtom("invoice", the_invoice)) ) );
 	SFL_evo1.addOperator( new AddStatement( new DLPHead(new DLPAtom("user", a_user)) ) );
 	SFL_evo.add(SFL_evo1);
 	
@@ -762,7 +762,6 @@ public void setUp(){
 	this.refusedOrderCloud = new StateOfWorld();
 	try{
 		this.refusedOrderCloud.addFact_asString("order(an_order).");
-		this.refusedOrderCloud.addFact_asString("available(an_order).");
 		this.refusedOrderCloud.addFact_asString("user(a_user).");
 		this.refusedOrderCloud.addFact_asString("logged(a_user).");
 		this.refusedOrderCloud.addFact_asString("registered(a_user).");
@@ -781,7 +780,6 @@ public void setUp(){
 		this.notifyFailureCloud.addFact_asString("logged(a_user).");
 		this.notifyFailureCloud.addFact_asString("registered(a_user).");
 		this.notifyFailureCloud.addFact_asString("has_cloud_space(a_user).");
-		this.notifyFailureCloud.addFact_asString("refused(an_order).");
 		this.notifyFailureCloud.addFact_asString("sent(failure_order, a_user).");
 	} catch (ParseException e) {
 		e.printStackTrace();
@@ -795,7 +793,6 @@ public void setUp(){
 		this.notifyFailureNoCloud.addFact_asString("user(a_user).");
 		this.notifyFailureNoCloud.addFact_asString("logged(a_user).");
 		this.notifyFailureNoCloud.addFact_asString("registered(a_user).");
-		this.notifyFailureNoCloud.addFact_asString("refused(an_order).");
 		this.notifyFailureNoCloud.addFact_asString("sent(failure_order, a_user).");
 	} catch (ParseException e) {
 		e.printStackTrace();
@@ -1058,5 +1055,100 @@ public void setUp(){
 		for(int j = 0; j < 15; j++)
 			this.exploration.expandNode();
 		assertEquals(16, this.exploration.getExpandedList().size());
+		
+		Iterator j = this.exploration.getExpandedList().iterator();
+		int flag2 = 0;
+		while(j.hasNext()){
+			ExpansionNode temp = (ExpansionNode)j.next();
+			if(temp.getDestination().contains(this.enotifyFailureNoCloud))	flag2 = 1;
+		}
+		assertEquals(1,flag2);
 	}
+	
+	@Test
+	public void testLogic(){
+	    this.exploration = new ProblemExploration(this.model, new ArrayList<AbstractCapability>(), this.domain);
+	    
+		Constant a_user = new Constant("a_user");
+		Constant an_order = new Constant("an_order");
+		Constant the_user_data = new Constant("the_user_data");
+		Constant the_registration_form = new Constant("the_registration_form");
+		Constant a_failure_order = new Constant("a_failure_order");
+		Constant the_invoice = new Constant("the_invoice");
+		Constant the_delivery_order = new Constant("the_delivery_order");
+		Constant a_storehouse_manager = new Constant("a_storehouse_manager");
+		Constant the_user_space = new Constant("the_user_space");
+		Constant the_system_space = new Constant("the_system_space");
+		//Constant the_test = new Constant("the_test");
+		
+		Variable doc = new Variable ("Doc");
+		Variable usr = new Variable ("Usr");
+		
+		/*notify_stock_failure*/
+		FOLAtom NSF_refused1 = new FOLAtom( new Predicate("refused",1));
+		NSF_refused1.addArgument(doc);
+		FOLAtom NSF_order1 = new FOLAtom( new Predicate("order",1));
+		NSF_order1.addArgument(doc);
+		FOLAtom NSF_registered1 = new FOLAtom( new Predicate("registered",1));
+		NSF_registered1.addArgument(usr);
+		FOLAtom NSF_user1 = new FOLAtom( new Predicate("user",1));
+		NSF_user1.addArgument(usr);
+		FOLAtom NSF_Test = new FOLAtom( new Predicate("test"));
+		Negation NSF_NotTest = new Negation(NSF_Test);
+		Set NSF_Set1 = new HashSet<Variable>();
+		NSF_Set1.add(doc);
+		NSF_Set1.add(usr);
+		Condition NSF_pre = new Condition(new ExistsQuantifiedFormula(new Conjunction( new Conjunction(new Conjunction(NSF_refused1, NSF_order1), new Conjunction(NSF_registered1, NSF_user1)), NSF_NotTest), NSF_Set1 ));
+
+		Set<EvolutionScenario> NSF_evo = new HashSet<>();
+		CapabilityEvolutionScenario NSF_evo1 = new CapabilityEvolutionScenario("Failure");
+		NSF_evo1.addOperator( new AddStatement( new DLPHead(new DLPAtom("sent", a_failure_order, a_user)) ) );
+		NSF_evo1.addOperator( new AddStatement( new DLPHead(new DLPAtom("user", a_user)) ) );
+		NSF_evo1.addOperator( new RemoveStatement( new DLPHead(new DLPAtom("refused", an_order)) ) );
+		//NSF_evo1.addOperator( new AddStatement( new DLPHead(new DLPAtom("test", the_test)) ) );
+		NSF_evo1.addOperator( new AddStatement( new DLPHead(new DLPAtom("test")) ) );
+		NSF_evo.add(NSF_evo1);
+		
+		AbstractCapability NSF1 = new AbstractCapability("notify_stock_failure", NSF_evo, NSF_pre, null);
+		
+		StateOfWorld refusedOrderCloud1 = new StateOfWorld();
+		try{
+			refusedOrderCloud1.addFact_asString("order(an_order).");
+			refusedOrderCloud1.addFact_asString("user(a_user).");
+			refusedOrderCloud1.addFact_asString("logged(a_user).");
+			refusedOrderCloud1.addFact_asString("registered(a_user).");
+			refusedOrderCloud1.addFact_asString("has_cloud_space(a_user).");
+			refusedOrderCloud1.addFact_asString("refused(an_order).");
+		} catch (ParseException e) {
+			e.printStackTrace();
+		} catch (layer.semantic.exception.NotAllowedInAStateOfWorld e) {
+			e.printStackTrace();
+		}
+		
+		StateOfWorld notifyFailureCloud1 = new StateOfWorld();
+		try{
+			notifyFailureCloud1.addFact_asString("order(an_order).");
+			notifyFailureCloud1.addFact_asString("user(a_user).");
+			notifyFailureCloud1.addFact_asString("logged(a_user).");
+			notifyFailureCloud1.addFact_asString("registered(a_user).");
+			notifyFailureCloud1.addFact_asString("has_cloud_space(a_user).");
+			notifyFailureCloud1.addFact_asString("test.");
+			notifyFailureCloud1.addFact_asString("sent(a_failure_order, a_user).");
+		} catch (ParseException e) {
+			e.printStackTrace();
+		} catch (layer.semantic.exception.NotAllowedInAStateOfWorld e) {
+			e.printStackTrace();
+		}
+		
+		ArrayList<Token> tokens = new ArrayList<>();
+		tokens.add(new Token("p3"));
+		tokens.add(new Token("p5"));
+		this.exploration.addToVisit(new WorldNode(refusedOrderCloud1), tokens, 5);
+		this.exploration.addCapability(NSF1);
+		
+		this.exploration.expandNode();
+		
+		assertEquals(true, this.exploration.getHighestExpansion().getDestination().get(0).getWorldState().equals(notifyFailureCloud1));
+	}
+
 }

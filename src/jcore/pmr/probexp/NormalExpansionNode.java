@@ -26,5 +26,16 @@ public class NormalExpansionNode extends ExpansionNode{
 		this.Scenario = scenario;
 	}
 	
+	public NormalExpansionNode(ENode source, ArrayList<ENode> destination, String capability){
+		super(source, destination, capability);
+	}
+	
+	public void setScenario(String scenario){
+		this.Scenario = scenario;
+	}
+	
+	public String getScenario(){
+		return this.Scenario;
+	}
 	
 }
