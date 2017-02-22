@@ -154,6 +154,22 @@ public class WTS {
 	 *            the node
 	 */
 	public void removeNode(WorldNode node){
+		NormalEdge Nedge;
+		EvolutionEdge Eedge;
+		Iterator i = node.getIncomingEdgeList().iterator();
+		
+		while(i.hasNext()){
+			
+			Edge temp = (Edge) i.next();
+			if(temp instanceof NormalEdge){
+				Nedge = (NormalEdge) temp;
+				Nedge.getSource().removeOutcomingEdge(new NormalEdge(Nedge.getSource(), node, Nedge.getCapability()));
+			}
+			else{
+				Eedge = (EvolutionEdge) temp;
+				Eedge.getSource().removeOutcomingEdge(new EvolutionEdge(Eedge.getSource(), node, Eedge.getSource().getCapability()));
+			}
+		}
 		this.graph.remove(node);
 	}
 	

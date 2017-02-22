@@ -86,12 +86,15 @@ public class ProblemExploration {
 		
 		ENode enode = getHighestNodeToVisit();
 		if(enode == null)	return;
+	
+		visited.add(enode.getWorldState());
 		
 		for( AbstractCapability capability : capabilities ){			
 			if(DomainEntail.getInstance().entailsCondition(enode.getWorldState(), this.assumptions, capability.getPreCondition()) == true){
 				//Starts the expansion
 				ExpansionNode expNode = applyExpand(enode, capability);
-								
+				
+				if (expNode == null)	return;
 				//Applies the net to ultimate the expansion						
 				for( ENode destination : expNode.getDestination() )
 					applyNet(expNode.getSource().getTokens(), destination, expNode);
@@ -103,7 +106,6 @@ public class ProblemExploration {
 				expandedList.add(expNode);
 			}
 		}
-		visited.add(enode.getWorldState());
 	}	
 	
 	/**
@@ -145,12 +147,15 @@ public class ProblemExploration {
 			}
 		
 			ArrayList<ENode> newEnodeList = new ArrayList<ENode>();
-			ENode newEnode = new ENode(evo.getEvolution().getLast());
-			newEnodeList.add(newEnode);
-			this.toVisit.add(newEnode);
-			String scenario = (String)capability.getScenarioSet().iterator().next().getName();
-			ExpansionNode result = new NormalExpansionNode(enode, newEnodeList, capability.getId(), scenario);
-			return result;
+			if(evo.getEvolution().getLast().equals(enode.getWorldState()) == false){
+				ENode newEnode = new ENode(evo.getEvolution().getLast());
+				newEnodeList.add(newEnode);
+				this.toVisit.add(newEnode);
+				String scenario = (String)capability.getScenarioSet().iterator().next().getName();
+				ExpansionNode result = new NormalExpansionNode(enode, newEnodeList, capability.getId(), scenario);
+				return result;
+			}
+			else	return null;
 		}
 		else{
 			//Se la capability ha più scenari, devo creare una WorldEvolution per scenario. Ogni WorldEvolution produrrà
@@ -163,10 +168,12 @@ public class ProblemExploration {
 				WorldEvolution evo = new WorldEvolution(this.assumptions, enode.getWorldState());
 				EvolutionScenario temp = (EvolutionScenario) i.next();
 				evo.addEvolution(temp.getOperators());
-				ENode newEnode = new ENode(evo.getEvolution().getLast());
-				this.toVisit.add(newEnode);
-				expNode.addDestination(newEnode);
-				expNode.addScenario(newEnode, temp.getName());
+				if(evo.getEvolution().getLast().equals(enode.getWorldState()) == false){
+					ENode newEnode = new ENode(evo.getEvolution().getLast());
+					this.toVisit.add(newEnode);
+					expNode.addDestination(newEnode);
+					expNode.addScenario(newEnode, temp.getName());
+				}
 			}
 			ExpansionNode result = expNode;
 			return result;

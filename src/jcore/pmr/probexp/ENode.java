@@ -153,6 +153,15 @@ public class ENode implements Node{
 	      }
 	  }
 	  
+	
+	  /* (non-Javadoc)
+	   * @see java.lang.Object#hashCode()
+	   */
+	  @Override
+	  public String toString(){
+	      return this.getWorldState().toString();
+	  }  
+	
 	  
 	  /* (non-Javadoc)
 	   * @see java.lang.Object#hashCode()

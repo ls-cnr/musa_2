@@ -490,7 +490,6 @@ public void setUp(){
 	CapabilityEvolutionScenario NSF_evo1 = new CapabilityEvolutionScenario("Failure");
 	NSF_evo1.addOperator( new AddStatement( new DLPHead(new DLPAtom("sent", failure_order, a_user)) ) );
 	NSF_evo1.addOperator( new AddStatement( new DLPHead(new DLPAtom("user", a_user)) ) );
-	NSF_evo1.addOperator( new RemoveStatement( new DLPHead(new DLPAtom("refused", an_order)) ) );
 	NSF_evo.add(NSF_evo1);
 	
 	this.NSF = new AbstractCapability("notify_stock_failure", NSF_evo, NSF_pre, null);
@@ -516,8 +515,6 @@ public void setUp(){
 	CapabilityEvolutionScenario GI_evo1 = new CapabilityEvolutionScenario("AvailableInvoice");
 	GI_evo1.addOperator( new AddStatement( new DLPHead(new DLPAtom("available", the_invoice)) ) );
 	GI_evo1.addOperator( new AddStatement( new DLPHead(new DLPAtom("invoice", the_invoice)) ) );
-	GI_evo1.addOperator( new RemoveStatement( new DLPHead(new DLPAtom("accepted", an_order)) ) );
-	GI_evo1.addOperator( new RemoveStatement( new DLPHead(new DLPAtom("order", an_order)) ) );
 	GI_evo.add(GI_evo1);
 	
 	this.GI = new AbstractCapability("generate_invoice", GI_evo, GI_pre, null);
@@ -542,7 +539,6 @@ public void setUp(){
 	Set<EvolutionScenario> UOUCS_evo = new HashSet<>();
 	CapabilityEvolutionScenario UOUCS_evo1 = new CapabilityEvolutionScenario("UploadedOnCloud");
 	UOUCS_evo1.addOperator( new AddStatement( new DLPHead(new DLPAtom("uploaded_on_cloud", the_invoice)) ) );
-	UOUCS_evo1.addOperator( new RemoveStatement( new DLPHead(new DLPAtom("available", the_invoice)) ) );
 	UOUCS_evo.add(UOUCS_evo1);
 	
 	this.UOUCS = new AbstractCapability("upload_on_user_cloud_storage", UOUCS_evo, UOUCS_pre, null);
@@ -780,6 +776,7 @@ public void setUp(){
 		this.notifyFailureCloud.addFact_asString("logged(a_user).");
 		this.notifyFailureCloud.addFact_asString("registered(a_user).");
 		this.notifyFailureCloud.addFact_asString("has_cloud_space(a_user).");
+		this.notifyFailureCloud.addFact_asString("refused(an_order).");
 		this.notifyFailureCloud.addFact_asString("sent(failure_order, a_user).");
 	} catch (ParseException e) {
 		e.printStackTrace();
@@ -793,6 +790,7 @@ public void setUp(){
 		this.notifyFailureNoCloud.addFact_asString("user(a_user).");
 		this.notifyFailureNoCloud.addFact_asString("logged(a_user).");
 		this.notifyFailureNoCloud.addFact_asString("registered(a_user).");
+		this.notifyFailureNoCloud.addFact_asString("refused(an_order).");
 		this.notifyFailureNoCloud.addFact_asString("sent(failure_order, a_user).");
 	} catch (ParseException e) {
 		e.printStackTrace();
@@ -1085,10 +1083,22 @@ public void setUp(){
 		
 		Iterator i = this.exploration.getExpandedList().iterator();
 		int flag = 0;
+		int flag1 = 0;
+		int flag2 = 0;
+		int flag3 = 0;
 		while(i.hasNext()){
 			ExpansionNode temp = (ExpansionNode)i.next();
-			if(temp.getDestination().contains(new ENode(this.notifyFailureCloud)))	flag = 1;
+			if(temp.getDestination().contains(new ENode(this.notifyFailureNoCloud)))	flag = 1;
+			if(temp.getDestination().contains(new ENode(this.availableInvoiceNoCloud)))	flag1 = 1;
+			if(temp.getDestination().contains(new ENode(this.acceptedOrderNoCloud)))	flag2 = 1;
+			if(temp.getDestination().contains(new ENode(this.regNoCloud)))	flag3 = 1;
+			System.out.println(temp.getDestination());
+			System.out.println("\n\n");
 		}
+		//assertEquals(16, this.exploration.getExpandedList().size());
+		assertEquals(1, flag3);
+		assertEquals(1, flag2);
+		assertEquals(1, flag1);
 		assertEquals(1, flag);
 	}
 

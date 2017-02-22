@@ -122,6 +122,23 @@ public class StateOfWorld {
 	    }
 	}
 	
+	/* (non-Javadoc)
+	 * @see java.lang.Object#clone()
+	 */
+	@Override
+	public String toString(){
+		String res = new String(""); 
+		Iterator i = this.facts.iterator();
+		while(i.hasNext()){
+			DLPHead temp = (DLPHead) i.next();
+			res = res + temp.toString() + "\n";
+		}
+		return res;
+	}
+	
+	/* (non-Javadoc)
+	 * @see java.lang.Object#clone()
+	 */
 	@Override
 	public int hashCode(){
 		return this.facts.hashCode();
