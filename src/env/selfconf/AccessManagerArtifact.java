@@ -45,7 +45,7 @@ public class AccessManagerArtifact extends Artifact {
 			execLinkedOp("mygraph","set_initial_state",node_string);
 			StateOfWorld w = JasonStateOfWorld.term_string_to_object(node_string);
 			
-			ENode enode = new ENode(new WorldNode(w));
+			ENode enode = new ENode(w);
 			Term term=JasonENode.object_to_term(enode);
 			signal("announcement_new_node",spec_id_string,term);
 			

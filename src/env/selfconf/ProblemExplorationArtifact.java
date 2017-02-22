@@ -31,6 +31,7 @@ import pmr.probexp.ExpansionNode;
 import pmr.probexp.ProblemExploration;
 import translator.JasonENode;
 import translator.JasonExpansionNode;
+import pmr.graph.WorldNode;
 import pmr.probexp.ENode;
 
 
@@ -58,7 +59,7 @@ public class ProblemExplorationArtifact extends Artifact {
 	public void addToVisit( String term_string ) {
 		ENode node = JasonENode.term_string_to_object(term_string);
 		if (!node.isExitNode()) {
-			pe.addToVisit(node.getWorldNode(), node.getTokens(), node.getScore() );
+			pe.addToVisit(new WorldNode(node.getWorldState()), node.getTokens(), node.getScore() );
 		}
 	}
 	

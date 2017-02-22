@@ -1068,87 +1068,28 @@ public void setUp(){
 	@Test
 	public void testLogic(){
 	    this.exploration = new ProblemExploration(this.model, new ArrayList<AbstractCapability>(), this.domain);
-	    
-		Constant a_user = new Constant("a_user");
-		Constant an_order = new Constant("an_order");
-		Constant the_user_data = new Constant("the_user_data");
-		Constant the_registration_form = new Constant("the_registration_form");
-		Constant a_failure_order = new Constant("a_failure_order");
-		Constant the_invoice = new Constant("the_invoice");
-		Constant the_delivery_order = new Constant("the_delivery_order");
-		Constant a_storehouse_manager = new Constant("a_storehouse_manager");
-		Constant the_user_space = new Constant("the_user_space");
-		Constant the_system_space = new Constant("the_system_space");
-		//Constant the_test = new Constant("the_test");
+	    this.exploration.addCapability(NSM);
+	    this.exploration.addCapability(UOPCS);
+	    this.exploration.addCapability(SFL);
+	    this.exploration.addCapability(UOUCS);
+	    this.exploration.addCapability(GI);	    
+	    this.exploration.addCapability(NSF);
+	    this.exploration.addCapability(WUD);
+	    this.exploration.addCapability(SRF);
+	    this.exploration.addCapability(CU);
+	    this.exploration.addCapability(CS);
+	    this.exploration.addCapability(AU);
+		this.exploration.addToVisit(this.nodewStart, this.startTokens, 9);
 		
-		Variable doc = new Variable ("Doc");
-		Variable usr = new Variable ("Usr");
+		for (int i = 0; i<16; i++)	this.exploration.expandNode();
 		
-		/*notify_stock_failure*/
-		FOLAtom NSF_refused1 = new FOLAtom( new Predicate("refused",1));
-		NSF_refused1.addArgument(doc);
-		FOLAtom NSF_order1 = new FOLAtom( new Predicate("order",1));
-		NSF_order1.addArgument(doc);
-		FOLAtom NSF_registered1 = new FOLAtom( new Predicate("registered",1));
-		NSF_registered1.addArgument(usr);
-		FOLAtom NSF_user1 = new FOLAtom( new Predicate("user",1));
-		NSF_user1.addArgument(usr);
-		FOLAtom NSF_Test = new FOLAtom( new Predicate("test"));
-		Negation NSF_NotTest = new Negation(NSF_Test);
-		Set NSF_Set1 = new HashSet<Variable>();
-		NSF_Set1.add(doc);
-		NSF_Set1.add(usr);
-		Condition NSF_pre = new Condition(new ExistsQuantifiedFormula(new Conjunction( new Conjunction(new Conjunction(NSF_refused1, NSF_order1), new Conjunction(NSF_registered1, NSF_user1)), NSF_NotTest), NSF_Set1 ));
-
-		Set<EvolutionScenario> NSF_evo = new HashSet<>();
-		CapabilityEvolutionScenario NSF_evo1 = new CapabilityEvolutionScenario("Failure");
-		NSF_evo1.addOperator( new AddStatement( new DLPHead(new DLPAtom("sent", a_failure_order, a_user)) ) );
-		NSF_evo1.addOperator( new AddStatement( new DLPHead(new DLPAtom("user", a_user)) ) );
-		NSF_evo1.addOperator( new RemoveStatement( new DLPHead(new DLPAtom("refused", an_order)) ) );
-		//NSF_evo1.addOperator( new AddStatement( new DLPHead(new DLPAtom("test", the_test)) ) );
-		NSF_evo1.addOperator( new AddStatement( new DLPHead(new DLPAtom("test")) ) );
-		NSF_evo.add(NSF_evo1);
-		
-		AbstractCapability NSF1 = new AbstractCapability("notify_stock_failure", NSF_evo, NSF_pre, null);
-		
-		StateOfWorld refusedOrderCloud1 = new StateOfWorld();
-		try{
-			refusedOrderCloud1.addFact_asString("order(an_order).");
-			refusedOrderCloud1.addFact_asString("user(a_user).");
-			refusedOrderCloud1.addFact_asString("logged(a_user).");
-			refusedOrderCloud1.addFact_asString("registered(a_user).");
-			refusedOrderCloud1.addFact_asString("has_cloud_space(a_user).");
-			refusedOrderCloud1.addFact_asString("refused(an_order).");
-		} catch (ParseException e) {
-			e.printStackTrace();
-		} catch (layer.semantic.exception.NotAllowedInAStateOfWorld e) {
-			e.printStackTrace();
+		Iterator i = this.exploration.getExpandedList().iterator();
+		int flag = 0;
+		while(i.hasNext()){
+			ExpansionNode temp = (ExpansionNode)i.next();
+			if(temp.getDestination().contains(new ENode(this.notifyFailureCloud)))	flag = 1;
 		}
-		
-		StateOfWorld notifyFailureCloud1 = new StateOfWorld();
-		try{
-			notifyFailureCloud1.addFact_asString("order(an_order).");
-			notifyFailureCloud1.addFact_asString("user(a_user).");
-			notifyFailureCloud1.addFact_asString("logged(a_user).");
-			notifyFailureCloud1.addFact_asString("registered(a_user).");
-			notifyFailureCloud1.addFact_asString("has_cloud_space(a_user).");
-			notifyFailureCloud1.addFact_asString("test.");
-			notifyFailureCloud1.addFact_asString("sent(a_failure_order, a_user).");
-		} catch (ParseException e) {
-			e.printStackTrace();
-		} catch (layer.semantic.exception.NotAllowedInAStateOfWorld e) {
-			e.printStackTrace();
-		}
-		
-		ArrayList<Token> tokens = new ArrayList<>();
-		tokens.add(new Token("p3"));
-		tokens.add(new Token("p5"));
-		this.exploration.addToVisit(new WorldNode(refusedOrderCloud1), tokens, 5);
-		this.exploration.addCapability(NSF1);
-		
-		this.exploration.expandNode();
-		
-		assertEquals(true, this.exploration.getHighestExpansion().getDestination().get(0).getWorldState().equals(notifyFailureCloud1));
+		assertEquals(1, flag);
 	}
 
 }
