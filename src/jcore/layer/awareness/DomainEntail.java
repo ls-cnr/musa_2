@@ -8,6 +8,7 @@ import layer.semantic.StateOfWorld;
 import net.sf.tweety.lp.asp.syntax.Rule;
 import net.sf.tweety.lp.asp.util.AnswerSet;
 import net.sf.tweety.lp.asp.util.AnswerSetList;
+import translator.ExtDLPHead;
 import net.sf.tweety.logics.fol.semantics.HerbrandInterpretation;
 import net.sf.tweety.logics.fol.syntax.FOLAtom;
 import net.sf.tweety.logics.fol.syntax.FolFormula;
@@ -73,7 +74,7 @@ public class DomainEntail {
 	 */
 	public boolean entailsCondition(StateOfWorld world,  AssumptionSet assumptions, Condition condition) {
 		Program test = assumptions.getASPClone();
-		Iterator<DLPHead> fact_it = world.getFacts().iterator();
+		Iterator<ExtDLPHead> fact_it = world.getFacts().iterator();
 		while (fact_it.hasNext()) {
 			test.addFact(fact_it.next());
 		}

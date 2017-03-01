@@ -26,11 +26,12 @@ import net.sf.tweety.logics.fol.syntax.FOLAtom;
 import net.sf.tweety.logics.fol.syntax.Negation;
 import net.sf.tweety.lp.asp.parser.ParseException;
 import net.sf.tweety.lp.asp.syntax.DLPAtom;
-import net.sf.tweety.lp.asp.syntax.DLPHead;
 import pmr.probexp.ExpansionNode;
 import pmr.probexp.ProblemExploration;
+import translator.ExtDLPHead;
 import translator.JasonENode;
 import translator.JasonExpansionNode;
+import translator.TranslateError;
 import pmr.graph.WorldNode;
 import pmr.probexp.ENode;
 
@@ -57,7 +58,10 @@ public class ProblemExplorationArtifact extends Artifact {
 	
 	@OPERATION
 	public void addToVisit( String term_string ) {
-		ENode node = JasonENode.term_string_to_object(term_string);
+		ENode node;
+		try{
+			node = JasonENode.term_string_to_object(term_string);
+		}catch(TranslateError t){return;}
 		if (!node.isExitNode()) {
 			pe.addToVisit(new WorldNode(node.getWorldState()), node.getTokens(), node.getScore() );
 		}
@@ -272,31 +276,31 @@ public class ProblemExplorationArtifact extends Artifact {
 
 		Set<EvolutionScenario> CU_evo = new HashSet<>();
 		CapabilityEvolutionScenario CU_evo1 = new CapabilityEvolutionScenario("RegisteredUserWithCloud");
-		CU_evo1.addOperator( new AddStatement( new DLPHead(new DLPAtom("registered", a_user)) ) );
-		CU_evo1.addOperator( new AddStatement( new DLPHead(new DLPAtom("has_cloud_space", a_user)) ) );
-		CU_evo1.addOperator( new AddStatement( new DLPHead(new DLPAtom("user", a_user)) ) );
-		CU_evo1.addOperator( new RemoveStatement( new DLPHead(new DLPAtom("user_data", the_user_data)) ) );
-		CU_evo1.addOperator( new AddStatement( new DLPHead(new DLPAtom("logged", a_user)) ) );
+		CU_evo1.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("registered", a_user)) ) );
+		CU_evo1.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("has_cloud_space", a_user)) ) );
+		CU_evo1.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("user", a_user)) ) );
+		CU_evo1.addOperator( new RemoveStatement( new ExtDLPHead(new DLPAtom("user_data", the_user_data)) ) );
+		CU_evo1.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("logged", a_user)) ) );
 		CU_evo.add(CU_evo1);
 		CapabilityEvolutionScenario CU_evo2 = new CapabilityEvolutionScenario("RegisteredUserWithoutCloud");
-		CU_evo2.addOperator( new AddStatement( new DLPHead(new DLPAtom("registered", a_user)) ) );
-		CU_evo2.addOperator( new AddStatement( new DLPHead(new DLPAtom("user", a_user)) ) );
-		CU_evo2.addOperator( new RemoveStatement( new DLPHead(new DLPAtom("user_data", the_user_data)) ) );
-		CU_evo2.addOperator( new AddStatement( new DLPHead(new DLPAtom("logged", a_user)) ) );
+		CU_evo2.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("registered", a_user)) ) );
+		CU_evo2.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("user", a_user)) ) );
+		CU_evo2.addOperator( new RemoveStatement( new ExtDLPHead(new DLPAtom("user_data", the_user_data)) ) );
+		CU_evo2.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("logged", a_user)) ) );
 		CU_evo.add(CU_evo2);
 		CapabilityEvolutionScenario CU_evo3 = new CapabilityEvolutionScenario("KnownUser");
-		CU_evo3.addOperator( new AddStatement( new DLPHead(new DLPAtom("complete", the_user_data)) ) );
-		CU_evo3.addOperator( new AddStatement( new DLPHead(new DLPAtom("user_data", the_user_data)) ) );
-		CU_evo3.addOperator( new AddStatement( new DLPHead(new DLPAtom("unregistered", a_user)) ) );
-		CU_evo3.addOperator( new AddStatement( new DLPHead(new DLPAtom("user", a_user)) ) );
-		CU_evo3.addOperator( new AddStatement( new DLPHead(new DLPAtom("logged", a_user)) ) );
+		CU_evo3.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("complete", the_user_data)) ) );
+		CU_evo3.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("user_data", the_user_data)) ) );
+		CU_evo3.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("unregistered", a_user)) ) );
+		CU_evo3.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("user", a_user)) ) );
+		CU_evo3.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("logged", a_user)) ) );
 		CU_evo.add(CU_evo3);
 		CapabilityEvolutionScenario CU_evo4 = new CapabilityEvolutionScenario("UnknownUser");
-		CU_evo4.addOperator( new AddStatement( new DLPHead(new DLPAtom("uncomplete", the_user_data)) ) );
-		CU_evo4.addOperator( new AddStatement( new DLPHead(new DLPAtom("user_data", the_user_data)) ) );
-		CU_evo4.addOperator( new AddStatement( new DLPHead(new DLPAtom("unregistered", a_user)) ) );
-		CU_evo4.addOperator( new AddStatement( new DLPHead(new DLPAtom("user", a_user)) ) );
-		CU_evo4.addOperator( new AddStatement( new DLPHead(new DLPAtom("logged", a_user)) ) );
+		CU_evo4.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("uncomplete", the_user_data)) ) );
+		CU_evo4.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("user_data", the_user_data)) ) );
+		CU_evo4.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("unregistered", a_user)) ) );
+		CU_evo4.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("user", a_user)) ) );
+		CU_evo4.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("logged", a_user)) ) );
 		CU_evo.add(CU_evo4);
 		
 		AbstractCapability CU = new AbstractCapability("check_user", CU_evo, CU_pre, null);

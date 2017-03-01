@@ -24,6 +24,8 @@ public abstract class ExpansionNode implements Node{
 	/** The score. */
 	protected int score;
 	
+	protected String agent;
+	
 	/**
 	 * Instantiates a new expansion node.
 	 *
@@ -40,6 +42,28 @@ public abstract class ExpansionNode implements Node{
 		this.destination = destination;
 	}
 	
+	public ExpansionNode(ENode source, ArrayList<ENode> destination, String capability, int score){
+		this.capability = capability;
+		this.source = source;
+		this.destination = destination;
+		this.score = score;
+	}
+	
+	public ExpansionNode(ENode source, ArrayList<ENode> destination, String capability, String agent){
+		this.capability = capability;
+		this.source = source;
+		this.destination = destination;
+		this.score = score;
+		this.agent = agent;
+	}
+	
+	public ExpansionNode(ENode source, ArrayList<ENode> destination, String capability, int score, String agent){
+		this.capability = capability;
+		this.source = source;
+		this.destination = destination;
+		this.score = score;
+		this.agent = agent;
+	}
 	/**
 	 * Gets the capability.
 	 *
@@ -124,6 +148,15 @@ public abstract class ExpansionNode implements Node{
 	 */
 	public void setScore(int score) {
 		this.score = score;
+	}
+	
+	
+	public String getAgent(){
+		return this.agent;
+	}
+	
+	public void setAgent(String agent){
+		this.agent = agent;
 	}
 
 	/**

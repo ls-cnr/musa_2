@@ -243,9 +243,8 @@ public void setUp(){
 		this.graph.addNode(ex5);
 		this.graph.addNode(ex6);
 		int a = 0;
-		a = this.graph.getWTS().get(n4).getOPNodeList().size() + this.graph.getWTS().get(n5).getOPNodeList().size()
-				+ this.graph.getWTS().get(new WorldNode(null)).getOPNodeList().size();
-		assertEquals(3, a);
+		a = this.graph.getWTS().get(n4).getOPNodeList().size() + this.graph.getWTS().get(n5).getOPNodeList().size();
+		assertEquals(0, a);
 	}
 	
 	@Test

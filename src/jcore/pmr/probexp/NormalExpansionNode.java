@@ -9,8 +9,7 @@ import layer.awareness.AbstractCapability;
  * The Class NormalExpansionNode.
  */
 public class NormalExpansionNode extends ExpansionNode{
-		
-	private String Scenario;
+	
 	/**
 	 * Instantiates a new normal expansion node.
 	 *
@@ -21,21 +20,21 @@ public class NormalExpansionNode extends ExpansionNode{
 	 * @param capability
 	 *            the capability
 	 */
-	public NormalExpansionNode(ENode source, ArrayList<ENode> destination, String capability, String scenario){
-		super(source, destination, capability);
-		this.Scenario = scenario;
-	}
 	
 	public NormalExpansionNode(ENode source, ArrayList<ENode> destination, String capability){
 		super(source, destination, capability);
 	}
 	
-	public void setScenario(String scenario){
-		this.Scenario = scenario;
+	public NormalExpansionNode(ENode source, ArrayList<ENode> destination, String capability, int score){
+		super(source, destination, capability, score);
 	}
 	
-	public String getScenario(){
-		return this.Scenario;
+	public NormalExpansionNode(ENode source, ArrayList<ENode> destination, String capability, String agent){
+		super(source, destination, capability, agent);
+	}
+	
+	public NormalExpansionNode(ENode source, ArrayList<ENode> destination, String capability, int score, String agent){
+		super(source, destination, capability, score, agent);
 	}
 	
 }

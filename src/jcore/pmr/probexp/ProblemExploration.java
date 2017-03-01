@@ -71,8 +71,8 @@ public class ProblemExploration {
 	 * @param score
 	 *            the Score associated to that node
 	 */
-	public void addToVisit( WorldNode node, ArrayList<Token> tokens, int score ) {
-		if( !visited.contains(node.getWorldState()) && !toVisit.contains(new ENode(node.getWorldState())) )
+	public void addToVisit( WorldNode node, ArrayList<Token> tokens, int score) {
+		if( !visited.contains(node.getWorldState()) && !toVisit.contains(new ENode(node.getWorldState())))
 			toVisit.add( new ENode(node.getWorldState(), tokens, score, false) );
 	}
 	
@@ -96,8 +96,10 @@ public class ProblemExploration {
 				
 				if (expNode == null)	return;
 				//Applies the net to ultimate the expansion						
-				for( ENode destination : expNode.getDestination() )
+				for( ENode destination : expNode.getDestination() ){
 					applyNet(expNode.getSource().getTokens(), destination, expNode);
+					if(destination.isExitNode() == false)	this.toVisit.add(destination);
+				}
 				
 				//Elaborates the Expansion score				
 				score(expNode);
@@ -150,9 +152,8 @@ public class ProblemExploration {
 			if(evo.getEvolution().getLast().equals(enode.getWorldState()) == false){
 				ENode newEnode = new ENode(evo.getEvolution().getLast());
 				newEnodeList.add(newEnode);
-				this.toVisit.add(newEnode);
 				String scenario = (String)capability.getScenarioSet().iterator().next().getName();
-				ExpansionNode result = new NormalExpansionNode(enode, newEnodeList, capability.getId(), scenario);
+				ExpansionNode result = new NormalExpansionNode(enode, newEnodeList, capability.getId());
 				return result;
 			}
 			else	return null;
@@ -170,7 +171,6 @@ public class ProblemExploration {
 				evo.addEvolution(temp.getOperators());
 				if(evo.getEvolution().getLast().equals(enode.getWorldState()) == false){
 					ENode newEnode = new ENode(evo.getEvolution().getLast());
-					this.toVisit.add(newEnode);
 					expNode.addDestination(newEnode);
 					expNode.addScenario(newEnode, temp.getName());
 				}

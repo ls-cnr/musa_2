@@ -7,12 +7,12 @@ import java.util.Iterator;
 import layer.semantic.exception.*;
 import net.sf.tweety.lp.asp.parser.ASPParser;
 import net.sf.tweety.lp.asp.parser.ParseException;
-import net.sf.tweety.lp.asp.syntax.DLPHead;
 import net.sf.tweety.lp.asp.syntax.Rule;
+import translator.ExtDLPHead;
 
 /**                                                                            
  * This class encapsulate a possible State Of World, i.e. a set of facts describing what the system knows about the environment.  
- * for goal-testing reasons, each fact is given in ASP, i.e. a subclass of DLPHead
+ * for goal-testing reasons, each fact is given in ASP, i.e. a subclass of MyDLPHead
  * @author icar-aose
  */
 
@@ -22,13 +22,13 @@ public class StateOfWorld {
 	 * Facts: Set of Facts.
 	 * A fact is considered as a first order variable-free statement to which is possible to assign a truth value. 
 	 * */
-	private HashSet<DLPHead> facts;
+	private HashSet<ExtDLPHead> facts;
 	
 	/**
 	 * Instantiates a new state of world.
 	 */
 	public StateOfWorld() {
-		facts = new HashSet<DLPHead>();
+		facts = new HashSet<ExtDLPHead>();
 	}
 
 	/**
@@ -36,7 +36,7 @@ public class StateOfWorld {
 	 *
 	 * @param facts the facts
 	 */
-	protected StateOfWorld(HashSet<DLPHead> facts) {
+	protected StateOfWorld(HashSet<ExtDLPHead> facts) {
 		this.facts = facts;
 	}
 
@@ -45,13 +45,13 @@ public class StateOfWorld {
 	 *
 	 * @return the facts stored on this state of world
 	 */
-	public HashSet<DLPHead>getFacts(){
+	public HashSet<ExtDLPHead>getFacts(){
 		return this.facts;
 	}
 	
-	public ArrayList<DLPHead> getFactsList(){
-		ArrayList<DLPHead> factlist = new ArrayList<DLPHead>();
-		Iterator<DLPHead> it = this.facts.iterator();
+	public ArrayList<ExtDLPHead> getFactsList(){
+		ArrayList<ExtDLPHead> factlist = new ArrayList<ExtDLPHead>();
+		Iterator<ExtDLPHead> it = this.facts.iterator();
 		while(it.hasNext() == true){
 			factlist.add(it.next());
 		}
@@ -77,7 +77,7 @@ public class StateOfWorld {
 	public void addFact_asString(String fact_to_add) throws ParseException, NotAllowedInAStateOfWorld {
 		Rule r = ASPParser.parseRule(fact_to_add);
 		if (r.isFact()) {
-			facts.add(r.getConclusion());
+			facts.add(new ExtDLPHead(r.getConclusion().get(0)));
 		} else {
 			throw new NotAllowedInAStateOfWorld();
 		}
@@ -88,7 +88,7 @@ public class StateOfWorld {
 	 *
 	 * @param fact_to_add the fact to add
 	 */
-	public void addFact_asASP(DLPHead fact_to_add) {
+	public void addFact_asASP(ExtDLPHead fact_to_add) {
 		facts.add(fact_to_add);
 	}
 
@@ -97,7 +97,7 @@ public class StateOfWorld {
 	 *
 	 * @param fact_to_remove the fact to remove
 	 */
-	public void removeFact_safely_asASP(DLPHead fact_to_remove) {
+	public void removeFact_safely_asASP(ExtDLPHead fact_to_remove) {
 		facts.remove(fact_to_remove);
 	}
 	
@@ -114,7 +114,7 @@ public class StateOfWorld {
 	        return false;
 	    }
 	    StateOfWorld other = (StateOfWorld) obj;
-	    if (this.facts.equals(other.getFacts()) && this.facts.size() == other.getFactsNumber()) {
+	    if (this.facts.size() == other.getFactsNumber() && this.facts.equals(other.getFacts()) == true) {
 	        return true;
 	    }
 	    else {
@@ -130,9 +130,11 @@ public class StateOfWorld {
 		String res = new String(""); 
 		Iterator i = this.facts.iterator();
 		while(i.hasNext()){
-			DLPHead temp = (DLPHead) i.next();
+			ExtDLPHead temp = (ExtDLPHead) i.next();
 			res = res + temp.toString() + "\n";
 		}
+
+		//System.out.println(res);
 		return res;
 	}
 	
@@ -148,7 +150,7 @@ public class StateOfWorld {
 	 */
 	@SuppressWarnings("unchecked")
 	public StateOfWorld clone() {
-		return new StateOfWorld( (HashSet<DLPHead>) this.facts.clone() );
+		return new StateOfWorld( (HashSet<ExtDLPHead>) this.facts.clone() );
 	}
 
 }

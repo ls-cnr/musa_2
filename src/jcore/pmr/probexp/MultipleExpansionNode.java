@@ -35,6 +35,41 @@ public class MultipleExpansionNode extends ExpansionNode{
 		//if(destination != null)	this.findScore();
 	}
 	
+	
+	public MultipleExpansionNode(ENode source, ArrayList<ENode> destination, String capability, int score){
+		super(source, destination, capability, score);
+		this.scenarioList = new HashMap<ENode, String>();
+		//if(destination != null)	this.findScore();
+	}
+	
+	
+	public MultipleExpansionNode(ENode source, ArrayList<ENode> destination, String capability, String agent){
+		super(source, destination, capability, agent);
+		this.scenarioList = new HashMap<ENode, String>();
+		//if(destination != null)	this.findScore();
+	}
+	
+	public MultipleExpansionNode(ENode source, ArrayList<ENode> destination, String capability, HashMap<ENode, String> scenarioList){
+		super(source, destination, capability);
+		this.scenarioList = scenarioList;
+	}
+	
+	public MultipleExpansionNode(ENode source, ArrayList<ENode> destination, String capability, HashMap<ENode, String> scenarioList, String agent){
+		super(source, destination, capability, agent);
+		this.scenarioList = scenarioList;
+	}
+	
+	
+	public MultipleExpansionNode(ENode source, ArrayList<ENode> destination, String capability, int score, HashMap<ENode, String> scenarioList){
+		super(source, destination, capability, score);
+		this.scenarioList = scenarioList;
+	}
+	
+	public MultipleExpansionNode(ENode source, ArrayList<ENode> destination, String capability, int score, HashMap<ENode, String> scenarioList, String agent){
+		super(source, destination, capability, score, agent);
+		this.scenarioList = scenarioList;
+	}
+	
 	/**
 	 * Adds the scenario.
 	 *

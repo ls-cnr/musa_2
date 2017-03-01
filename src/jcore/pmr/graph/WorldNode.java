@@ -6,6 +6,7 @@ import java.util.HashSet;
 import layer.awareness.AbstractCapability;
 import layer.semantic.StateOfWorld;
 import net.sf.tweety.lp.asp.syntax.DLPHead;
+import translator.ExtDLPHead;
 
 /**
  * The Class WorldNode. It's the standard node of the graph of the solutions. It implements the Node Interface
@@ -164,7 +165,7 @@ public class WorldNode implements Node {
 	 *
 	 * @return the list of facts of the state of world of this node.
 	 */
-	public ArrayList<DLPHead> getFactsList(){
+	public ArrayList<ExtDLPHead> getFactsList(){
 		return this.worldState.getFactsList();
 	}
 	

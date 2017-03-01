@@ -1,7 +1,7 @@
 package layer.semantic.evolution;
 
 import layer.semantic.StateOfWorld;
-import net.sf.tweety.lp.asp.syntax.DLPHead;
+import translator.ExtDLPHead;
 
 /**
  * The Class AddStatement.
@@ -10,14 +10,14 @@ import net.sf.tweety.lp.asp.syntax.DLPHead;
 public class AddStatement implements  EvolutionOperator {
 	
 	/** The new statement. */
-	private DLPHead new_statement;
+	private ExtDLPHead new_statement;
 
 	/**
 	 * Instantiates a new adds the statement.
 	 *
 	 * @param statement the statement
 	 */
-	public AddStatement(DLPHead statement) {
+	public AddStatement(ExtDLPHead statement) {
 		this.new_statement = statement;
 	}
 	

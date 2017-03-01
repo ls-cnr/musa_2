@@ -54,7 +54,7 @@ public class WTS {
 			this.addSafeNode(new WorldNode(tempnode.getSource().getWorldState()));
 			this.addSafeNode (new WorldNode(tempnode.getDestination().get(0).getWorldState()));
 			WorldNode destination2 = this.graph.get(new WorldNode(tempnode.getDestination().get(0).getWorldState()));
-			this.addEdge(this.graph.get(new WorldNode(tempnode.getSource().getWorldState())), destination2, tempnode.getCapability());			
+			this.addEdge(this.graph.get(new WorldNode(tempnode.getSource().getWorldState())), destination2, tempnode.getCapability(), tempnode.getAgent());			
 		}
 		else{
 			/* it normally adds the source node in newnode, then it generates an OPNode that connect the source with all 
@@ -65,8 +65,8 @@ public class WTS {
 			MultipleExpansionNode exptempnode = (MultipleExpansionNode) newnode;
 			this.addSafeNode(new WorldNode(exptempnode.getSource().getWorldState()));
 			WorldNode source2 = this.graph.get(new WorldNode(exptempnode.getSource().getWorldState()));
-			OPNode faketempnode = new XORNode(exptempnode.getCapability(), exptempnode.getScore());
-			faketempnode.setIncomingEdge(new OPEdge(source2, faketempnode, exptempnode.getCapability()));
+			OPNode faketempnode = new XORNode(exptempnode.getCapability(), exptempnode.getScore(), exptempnode.getAgent());
+			faketempnode.setIncomingEdge(new OPEdge(source2, faketempnode, exptempnode.getCapability(), exptempnode.getAgent()));
 			
 			if(source2.getOPNodeList().contains(faketempnode))	return;
 			
@@ -112,6 +112,11 @@ public class WTS {
 			sourcenode.addOutcomingEdge(new NormalEdge(sourcenode, destnode, capability));
 			destnode.addIncomingEdge(new NormalEdge(sourcenode, destnode, capability));
 	}
+	
+	public void addEdge(WorldNode sourcenode, WorldNode destnode, String capability, String agent){
+		sourcenode.addOutcomingEdge(new NormalEdge(sourcenode, destnode, capability, agent));
+		destnode.addIncomingEdge(new NormalEdge(sourcenode, destnode, capability, agent));
+}
 	
 	/**
 	 * return the Edge to edit if present, null otherwise.

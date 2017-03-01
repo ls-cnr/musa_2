@@ -17,6 +17,9 @@ public class OPEdge implements Edge {
 	/** The capability. */
 	private String capability; 
 	
+
+	private String agent;
+	
 	/**
 	 * Instantiates a new OP edge.
 	 *
@@ -32,6 +35,15 @@ public class OPEdge implements Edge {
 		this.source = source;
 		this.destination = destination;
 		this.capability = capability;
+	}
+	
+	
+	public OPEdge(WorldNode source, OPNode destination, String capability, String agent){
+		super();
+		this.source = source;
+		this.destination = destination;
+		this.capability = capability;
+		this.agent = agent;
 	}
 	
 	/**
@@ -50,6 +62,16 @@ public class OPEdge implements Edge {
 	 */
 	public WorldNode getSource(){
 		return this.source;
+	}
+	
+	
+	public void setAgent(String agent){
+		this.agent = agent;
+	}
+	
+	
+	public String getAgent(){
+		return this.agent;
 	}
 
 	/**

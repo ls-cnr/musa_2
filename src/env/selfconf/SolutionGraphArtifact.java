@@ -37,7 +37,10 @@ public class SolutionGraphArtifact extends Artifact {
 	/* interface: EXPAND */
 	@LINK
 	void expand(String expansion_node) {
-		ExpansionNode exp = JasonExpansionNode.term_string_to_object(expansion_node);
+		ExpansionNode exp;
+		try{
+		exp = JasonExpansionNode.term_string_to_object(expansion_node);
+		}catch(TranslateError t){return;}
 		graph.addNode(exp);
 	}
 

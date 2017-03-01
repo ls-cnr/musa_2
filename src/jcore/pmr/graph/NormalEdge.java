@@ -15,6 +15,9 @@ public class NormalEdge implements Edge {
 	
 	/** The capability. */
 	private String capability;
+	
+
+	private String agent;
 
 	/**
 	 * Instantiates a new normal edge.
@@ -31,6 +34,15 @@ public class NormalEdge implements Edge {
 		this.source = source;
 		this.destination = destination;
 		this.capability = capability;
+	}
+	
+	
+	public NormalEdge(WorldNode source, WorldNode destination, String capability, String agent){
+		super();
+		this.source = source;
+		this.destination = destination;
+		this.capability = capability;
+		this.agent = agent;
 	}
 	
 	/**
@@ -78,6 +90,16 @@ public class NormalEdge implements Edge {
 	 */
 	public void setDestination(WorldNode destination) {
 		this.destination = destination;
+	}
+	
+	
+	public void setAgent(String agent){
+		this.agent = agent;
+	}
+	
+	
+	public String getAgent(){
+		return this.agent;
 	}
 	
 	/**

@@ -14,7 +14,7 @@ public class JasonStateOfWorld {
 		Structure term = new Structure("w",1);
 		ListTermImpl facts = new ListTermImpl();
 		if (node != null) {
-			for (DLPHead fact : node.getFactsList()) {
+			for (ExtDLPHead fact : node.getFactsList()) {
 				Term item = JasonDLPHead.object_to_term(fact);
 				facts.add(item);
 			}		
@@ -32,12 +32,11 @@ public class JasonStateOfWorld {
 				ListTermImpl facts = (ListTermImpl) s.getTerm(0);
 				world = new StateOfWorld();
 				for (Term t : facts ) {
-					DLPHead h = JasonDLPHead.term_to_object(t);
+					ExtDLPHead h = JasonDLPHead.term_to_object(t);
 					world.addFact_asASP(h);
 				}				
 			}
 		}
-		
 		return world;
 	}
 

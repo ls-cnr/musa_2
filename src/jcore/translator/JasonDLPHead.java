@@ -11,7 +11,7 @@ import net.sf.tweety.lp.asp.syntax.DLPLiteral;
 
 public class JasonDLPHead {
 
-	public static Term object_to_term(DLPHead object) {
+	public static Term object_to_term(ExtDLPHead object) {
 		DLPLiteral l = object.get(0);
 		Structure term = new Structure(l.getName(),l.getArguments().size());
 		for (net.sf.tweety.logics.commons.syntax.interfaces.Term<?> arg : l.getArguments()) {
@@ -21,8 +21,8 @@ public class JasonDLPHead {
 	}
 	
 	
-	public static DLPHead term_to_object(Term term) throws TranslateError {
-		DLPHead head =null;
+	public static ExtDLPHead term_to_object(Term term) throws TranslateError {
+		ExtDLPHead head =null;
 		
 		if (!term.isStructure()) {
 			throw new TranslateError();
@@ -35,7 +35,7 @@ public class JasonDLPHead {
 				atom.addArgument(dlp_arg);
 			}
 			
-			head = new DLPHead(atom);
+			head = new ExtDLPHead(atom);
 		}
 		
 		return head;
@@ -51,7 +51,7 @@ public class JasonDLPHead {
 	public static void test1() {
 		Constant tweety = new Constant("tweety");
 		DLPAtom tweety_penguin = new DLPAtom("penguin",tweety);
-		DLPHead head = new DLPHead(tweety_penguin);
+		ExtDLPHead head = new ExtDLPHead(tweety_penguin);
 		
 		Term term = JasonDLPHead.object_to_term(head);
 		System.out.println("term: "+term);

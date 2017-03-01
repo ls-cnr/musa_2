@@ -19,6 +19,8 @@ public class EvolutionEdge implements Edge {
 	/** The scenario. */
 	private String scenario; 
 	
+	private String agent;
+	
 	/**
 	 * Instantiates a new evolution edge.
 	 *
@@ -34,6 +36,15 @@ public class EvolutionEdge implements Edge {
 		this.source = source;
 		this.destination = destination;
 		this.scenario = scenario;
+	}
+	
+	
+	public EvolutionEdge(OPNode source, WorldNode destination, String scenario, String agent){
+		super();
+		this.source = source;
+		this.destination = destination;
+		this.scenario = scenario;
+		this.agent = agent;
 	}
 	
 	/**
@@ -72,6 +83,17 @@ public class EvolutionEdge implements Edge {
 	public void setSource(OPNode source){
 		this.source = source;
 	}
+	
+	
+	public void setAgent(String agent){
+		this.agent = agent;
+	}
+	
+	
+	public String getAgent(){
+		return this.agent;
+	}
+	
 
 	/**
 	 * Sets the destination.

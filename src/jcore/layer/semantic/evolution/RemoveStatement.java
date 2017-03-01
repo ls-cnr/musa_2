@@ -1,7 +1,7 @@
 package layer.semantic.evolution;
 
 import layer.semantic.StateOfWorld;
-import net.sf.tweety.lp.asp.syntax.DLPHead;
+import translator.ExtDLPHead;
 
 /**
  * The Class RemoveStatement.
@@ -10,14 +10,14 @@ import net.sf.tweety.lp.asp.syntax.DLPHead;
 public class RemoveStatement implements EvolutionOperator {
 	
 	/** The new statement. */
-	private DLPHead new_statement;
+	private ExtDLPHead new_statement;
 	
 	/**
 	 * Instantiates a new removes the statement.
 	 *
 	 * @param statement the statement
 	 */
-	public RemoveStatement(DLPHead statement) {
+	public RemoveStatement(ExtDLPHead statement) {
 		this.new_statement = statement;
 	}
 	

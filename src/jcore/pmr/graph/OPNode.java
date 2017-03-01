@@ -27,6 +27,8 @@ public abstract class OPNode implements Node {
 	/** The score. */
 	private int score;
 	
+	private String agent;
+	
 	/**
 	 * Instantiates a new OP node.
 	 *
@@ -40,6 +42,16 @@ public abstract class OPNode implements Node {
 		this.hashCode = this.hashCode();
 		this.capability = capability;
 		this.score = score;
+	}
+	
+	public OPNode(String capability, int score, String agent){
+		super();
+		this.outcomingList = new ArrayList <EvolutionEdge>();
+		this.incomingEdge = null;
+		this.hashCode = this.hashCode();
+		this.capability = capability;
+		this.score = score;
+		this.agent = agent;
 	}
 	
 	/**
@@ -104,6 +116,16 @@ public abstract class OPNode implements Node {
 	 *            the edge
 	 * @return true, if successful
 	 */
+	
+	
+	public void setAgent(String agent){
+		this.agent = agent;
+	}
+	
+	public String getAgent(){
+		return this.agent;
+	}
+	
 	public boolean removeOutcomingEdge(EvolutionEdge edge){
 			return this.outcomingList.remove(edge);
 	}

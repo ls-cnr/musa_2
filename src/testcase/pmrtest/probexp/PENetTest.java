@@ -32,12 +32,12 @@ import net.sf.tweety.logics.fol.syntax.FolFormula;
 import net.sf.tweety.logics.fol.syntax.Negation;
 import net.sf.tweety.lp.asp.parser.ParseException;
 import net.sf.tweety.lp.asp.syntax.DLPAtom;
-import net.sf.tweety.lp.asp.syntax.DLPHead;
 import pmr.graph.WorldNode;
 import pmr.probexp.ENode;
 import pmr.probexp.ExpansionNode;
 import pmr.probexp.MultipleExpansionNode;
 import pmr.probexp.ProblemExploration;
+import translator.ExtDLPHead;
 
 public class PENetTest {
 
@@ -268,31 +268,31 @@ public class PENetTest {
 
 		Set<EvolutionScenario> CU_evo = new HashSet<>();
 		CapabilityEvolutionScenario CU_evo1 = new CapabilityEvolutionScenario("RegisteredUserWithCloud");
-		CU_evo1.addOperator( new AddStatement( new DLPHead(new DLPAtom("registered", a_user)) ) );
-		CU_evo1.addOperator( new AddStatement( new DLPHead(new DLPAtom("has_cloud_space", a_user)) ) );
-		CU_evo1.addOperator( new AddStatement( new DLPHead(new DLPAtom("user", a_user)) ) );
-		CU_evo1.addOperator( new RemoveStatement( new DLPHead(new DLPAtom("user_data", the_user_data)) ) );
-		CU_evo1.addOperator( new AddStatement( new DLPHead(new DLPAtom("logged", a_user)) ) );
+		CU_evo1.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("registered", a_user)) ) );
+		CU_evo1.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("has_cloud_space", a_user)) ) );
+		CU_evo1.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("user", a_user)) ) );
+		CU_evo1.addOperator( new RemoveStatement( new ExtDLPHead(new DLPAtom("user_data", the_user_data)) ) );
+		CU_evo1.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("logged", a_user)) ) );
 		CU_evo.add(CU_evo1);
 		CapabilityEvolutionScenario CU_evo2 = new CapabilityEvolutionScenario("RegisteredUserWithoutCloud");
-		CU_evo2.addOperator( new AddStatement( new DLPHead(new DLPAtom("registered", a_user)) ) );
-		CU_evo2.addOperator( new AddStatement( new DLPHead(new DLPAtom("user", a_user)) ) );
-		CU_evo2.addOperator( new RemoveStatement( new DLPHead(new DLPAtom("user_data", the_user_data)) ) );
-		CU_evo2.addOperator( new AddStatement( new DLPHead(new DLPAtom("logged", a_user)) ) );
+		CU_evo2.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("registered", a_user)) ) );
+		CU_evo2.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("user", a_user)) ) );
+		CU_evo2.addOperator( new RemoveStatement( new ExtDLPHead(new DLPAtom("user_data", the_user_data)) ) );
+		CU_evo2.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("logged", a_user)) ) );
 		CU_evo.add(CU_evo2);
 		CapabilityEvolutionScenario CU_evo3 = new CapabilityEvolutionScenario("KnownUser");
-		CU_evo3.addOperator( new AddStatement( new DLPHead(new DLPAtom("complete", the_user_data)) ) );
-		CU_evo3.addOperator( new AddStatement( new DLPHead(new DLPAtom("user_data", the_user_data)) ) );
-		CU_evo3.addOperator( new AddStatement( new DLPHead(new DLPAtom("unregistered", a_user)) ) );
-		CU_evo3.addOperator( new AddStatement( new DLPHead(new DLPAtom("user", a_user)) ) );
-		CU_evo3.addOperator( new AddStatement( new DLPHead(new DLPAtom("logged", a_user)) ) );
+		CU_evo3.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("complete", the_user_data)) ) );
+		CU_evo3.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("user_data", the_user_data)) ) );
+		CU_evo3.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("unregistered", a_user)) ) );
+		CU_evo3.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("user", a_user)) ) );
+		CU_evo3.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("logged", a_user)) ) );
 		CU_evo.add(CU_evo3);
 		CapabilityEvolutionScenario CU_evo4 = new CapabilityEvolutionScenario("UnknownUser");
-		CU_evo4.addOperator( new AddStatement( new DLPHead(new DLPAtom("uncomplete", the_user_data)) ) );
-		CU_evo4.addOperator( new AddStatement( new DLPHead(new DLPAtom("user_data", the_user_data)) ) );
-		CU_evo4.addOperator( new AddStatement( new DLPHead(new DLPAtom("unregistered", a_user)) ) );
-		CU_evo4.addOperator( new AddStatement( new DLPHead(new DLPAtom("user", a_user)) ) );
-		CU_evo4.addOperator( new AddStatement( new DLPHead(new DLPAtom("logged", a_user)) ) );
+		CU_evo4.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("uncomplete", the_user_data)) ) );
+		CU_evo4.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("user_data", the_user_data)) ) );
+		CU_evo4.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("unregistered", a_user)) ) );
+		CU_evo4.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("user", a_user)) ) );
+		CU_evo4.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("logged", a_user)) ) );
 		CU_evo.add(CU_evo4);
 		
 		this.CU = new AbstractCapability("check_user", CU_evo, CU_pre, null);
@@ -313,11 +313,11 @@ public class PENetTest {
 
 		Set<EvolutionScenario> AU_evo = new HashSet<>();
 		CapabilityEvolutionScenario AU_evo1 = new CapabilityEvolutionScenario("RegisteredUser");
-		AU_evo1.addOperator( new AddStatement( new DLPHead(new DLPAtom("registered", a_user)) ) );
-		AU_evo1.addOperator( new AddStatement( new DLPHead(new DLPAtom("user", a_user)) ) );
-		AU_evo1.addOperator(new RemoveStatement(new DLPHead(new DLPAtom("unregistered", a_user))));
-		AU_evo1.addOperator(new RemoveStatement(new DLPHead(new DLPAtom("complete", the_user_data))));
-		AU_evo1.addOperator(new RemoveStatement(new DLPHead(new DLPAtom("user_data", the_user_data))));
+		AU_evo1.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("registered", a_user)) ) );
+		AU_evo1.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("user", a_user)) ) );
+		AU_evo1.addOperator(new RemoveStatement(new ExtDLPHead(new DLPAtom("unregistered", a_user))));
+		AU_evo1.addOperator(new RemoveStatement(new ExtDLPHead(new DLPAtom("complete", the_user_data))));
+		AU_evo1.addOperator(new RemoveStatement(new ExtDLPHead(new DLPAtom("user_data", the_user_data))));
 		AU_evo.add(AU_evo1);
 		
 		this.AU = new AbstractCapability("add_user", AU_evo, AU_pre, null);
@@ -338,8 +338,8 @@ public class PENetTest {
 
 		Set<EvolutionScenario> SRF_evo = new HashSet<>();
 		CapabilityEvolutionScenario SRF_evo1 = new CapabilityEvolutionScenario("UncompleteRegistrationForm");
-		SRF_evo1.addOperator( new AddStatement( new DLPHead(new DLPAtom("uncomplete", the_registration_form)) ) );
-		SRF_evo1.addOperator( new AddStatement( new DLPHead(new DLPAtom("registration_form", the_registration_form)) ) );
+		SRF_evo1.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("uncomplete", the_registration_form)) ) );
+		SRF_evo1.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("registration_form", the_registration_form)) ) );
 		SRF_evo.add(SRF_evo1);
 		
 		this.SRF = new AbstractCapability("send_registration_form", SRF_evo, SRF_pre, null);
@@ -353,14 +353,14 @@ public class PENetTest {
 
 		Set<EvolutionScenario> WUD_evo = new HashSet<>();
 		CapabilityEvolutionScenario WUD_evo1 = new CapabilityEvolutionScenario("CompleteForm");
-		WUD_evo1.addOperator( new AddStatement( new DLPHead(new DLPAtom("complete", the_user_data)) ) );
-		WUD_evo1.addOperator(new RemoveStatement(new DLPHead(new DLPAtom("uncomplete", the_user_data))));
-		WUD_evo1.addOperator(new RemoveStatement(new DLPHead(new DLPAtom("uncomplete", the_registration_form))));
-		WUD_evo1.addOperator( new RemoveStatement( new DLPHead(new DLPAtom("registration_form", the_registration_form)) ) );
+		WUD_evo1.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("complete", the_user_data)) ) );
+		WUD_evo1.addOperator(new RemoveStatement(new ExtDLPHead(new DLPAtom("uncomplete", the_user_data))));
+		WUD_evo1.addOperator(new RemoveStatement(new ExtDLPHead(new DLPAtom("uncomplete", the_registration_form))));
+		WUD_evo1.addOperator( new RemoveStatement( new ExtDLPHead(new DLPAtom("registration_form", the_registration_form)) ) );
 		WUD_evo.add(WUD_evo1);
 		CapabilityEvolutionScenario WUD_evo2 = new CapabilityEvolutionScenario("UncompleteForm");
-		WUD_evo2.addOperator( new RemoveStatement( new DLPHead(new DLPAtom("uncomplete", the_registration_form)) ) );
-		WUD_evo2.addOperator( new RemoveStatement( new DLPHead(new DLPAtom("registration_form", the_registration_form)) ) );
+		WUD_evo2.addOperator( new RemoveStatement( new ExtDLPHead(new DLPAtom("uncomplete", the_registration_form)) ) );
+		WUD_evo2.addOperator( new RemoveStatement( new ExtDLPHead(new DLPAtom("registration_form", the_registration_form)) ) );
 		WUD_evo.add(WUD_evo2);
 		
 		this.WUD = new AbstractCapability("wait_user_data", WUD_evo, WUD_pre, null);
@@ -381,14 +381,14 @@ public class PENetTest {
 
 		Set<EvolutionScenario> CS_evo = new HashSet<>();
 		CapabilityEvolutionScenario CS_evo1 = new CapabilityEvolutionScenario("AcceptableOrder");
-		CS_evo1.addOperator( new AddStatement( new DLPHead(new DLPAtom("accepted", an_order)) ) );
-		CS_evo1.addOperator( new AddStatement( new DLPHead(new DLPAtom("order", an_order)) ) );
-		CS_evo1.addOperator( new RemoveStatement( new DLPHead(new DLPAtom("available", an_order)) ) );
+		CS_evo1.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("accepted", an_order)) ) );
+		CS_evo1.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("order", an_order)) ) );
+		CS_evo1.addOperator( new RemoveStatement( new ExtDLPHead(new DLPAtom("available", an_order)) ) );
 		CS_evo.add(CS_evo1);
 		CapabilityEvolutionScenario CS_evo2 = new CapabilityEvolutionScenario("UnacceptableOrder");
-		CS_evo2.addOperator( new AddStatement( new DLPHead(new DLPAtom("refused", an_order)) ) );
-		CS_evo2.addOperator( new AddStatement( new DLPHead(new DLPAtom("order", an_order)) ) );
-		CS_evo2.addOperator( new RemoveStatement( new DLPHead(new DLPAtom("available", an_order)) ) );
+		CS_evo2.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("refused", an_order)) ) );
+		CS_evo2.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("order", an_order)) ) );
+		CS_evo2.addOperator( new RemoveStatement( new ExtDLPHead(new DLPAtom("available", an_order)) ) );
 		CS_evo.add(CS_evo2);
 		
 		this.CS = new AbstractCapability("check_storehouse", CS_evo, CS_pre, null);
@@ -411,9 +411,9 @@ public class PENetTest {
 
 		Set<EvolutionScenario> NSF_evo = new HashSet<>();
 		CapabilityEvolutionScenario NSF_evo1 = new CapabilityEvolutionScenario("Failure");
-		NSF_evo1.addOperator( new AddStatement( new DLPHead(new DLPAtom("sent", failure_order, a_user)) ) );
-		NSF_evo1.addOperator( new AddStatement( new DLPHead(new DLPAtom("user", a_user)) ) );
-		NSF_evo1.addOperator( new RemoveStatement( new DLPHead(new DLPAtom("order_failure", an_order)) ) );
+		NSF_evo1.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("sent", failure_order, a_user)) ) );
+		NSF_evo1.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("user", a_user)) ) );
+		NSF_evo1.addOperator( new RemoveStatement( new ExtDLPHead(new DLPAtom("order_failure", an_order)) ) );
 		NSF_evo.add(NSF_evo1);
 		
 		this.NSF = new AbstractCapability("notify_stock_failure", NSF_evo, NSF_pre, null);
@@ -437,8 +437,8 @@ public class PENetTest {
 
 		Set<EvolutionScenario> GI_evo = new HashSet<>();
 		CapabilityEvolutionScenario GI_evo1 = new CapabilityEvolutionScenario("AvailableInvoice");
-		GI_evo1.addOperator( new AddStatement( new DLPHead(new DLPAtom("available", the_invoice)) ) );
-		GI_evo1.addOperator( new AddStatement( new DLPHead(new DLPAtom("invoice", the_invoice)) ) );
+		GI_evo1.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("available", the_invoice)) ) );
+		GI_evo1.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("invoice", the_invoice)) ) );
 		GI_evo.add(GI_evo1);
 		
 		this.GI = new AbstractCapability("generate_invoice", GI_evo, GI_pre, null);
@@ -462,8 +462,8 @@ public class PENetTest {
 
 		Set<EvolutionScenario> UOUCS_evo = new HashSet<>();
 		CapabilityEvolutionScenario UOUCS_evo1 = new CapabilityEvolutionScenario("UploadedOnCloud");
-		UOUCS_evo1.addOperator( new AddStatement( new DLPHead(new DLPAtom("uploaded_on_cloud", the_invoice)) ) );
-		UOUCS_evo1.addOperator( new AddStatement( new DLPHead(new DLPAtom("invoice", the_invoice)) ) );
+		UOUCS_evo1.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("uploaded_on_cloud", the_invoice)) ) );
+		UOUCS_evo1.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("invoice", the_invoice)) ) );
 		UOUCS_evo.add(UOUCS_evo1);
 		
 		this.UOUCS = new AbstractCapability("upload_on_user_cloud_storage", UOUCS_evo, UOUCS_pre, null);
@@ -488,8 +488,8 @@ public class PENetTest {
 
 		Set<EvolutionScenario> UOPCS_evo = new HashSet<>();
 		CapabilityEvolutionScenario UOPCS_evo1 = new CapabilityEvolutionScenario("UploadedOnCloud");
-		UOPCS_evo1.addOperator( new AddStatement( new DLPHead(new DLPAtom("uploaded_on_cloud", the_invoice)) ) );
-		UOPCS_evo1.addOperator( new AddStatement( new DLPHead(new DLPAtom("invoice", the_invoice)) ) );
+		UOPCS_evo1.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("uploaded_on_cloud", the_invoice)) ) );
+		UOPCS_evo1.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("invoice", the_invoice)) ) );
 		UOPCS_evo.add(UOPCS_evo1);
 		
 		this.UOPCS = new AbstractCapability("upload_on_private_cloud_storage", UOPCS_evo, UOPCS_pre, null);
@@ -516,9 +516,9 @@ public class PENetTest {
 		
 		Set<EvolutionScenario> SFL_evo = new HashSet<>();
 		CapabilityEvolutionScenario SFL_evo1 = new CapabilityEvolutionScenario("MailedPermLink");
-		SFL_evo1.addOperator( new AddStatement( new DLPHead(new DLPAtom("mailed_perm_link", the_invoice, a_user)) ) );
-		SFL_evo1.addOperator( new AddStatement( new DLPHead(new DLPAtom("invoice", the_invoice)) ) );
-		SFL_evo1.addOperator( new AddStatement( new DLPHead(new DLPAtom("user", a_user)) ) );
+		SFL_evo1.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("mailed_perm_link", the_invoice, a_user)) ) );
+		SFL_evo1.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("invoice", the_invoice)) ) );
+		SFL_evo1.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("user", a_user)) ) );
 		SFL_evo.add(SFL_evo1);
 		
 		this.SFL = new AbstractCapability("share_file_link", SFL_evo, SFL_pre, null);
@@ -542,9 +542,9 @@ public class PENetTest {
 
 		Set<EvolutionScenario> NSM_evo = new HashSet<>();
 		CapabilityEvolutionScenario NSM_evo1 = new CapabilityEvolutionScenario("SentDeliveryOrderToStorehouseManager");
-		NSM_evo1.addOperator( new AddStatement( new DLPHead(new DLPAtom("sent", the_delivery_order , a_storehouse_manager)) ) );
-		NSM_evo1.addOperator( new AddStatement( new DLPHead(new DLPAtom("delivery_order", the_delivery_order)) ) );
-		NSM_evo1.addOperator( new AddStatement( new DLPHead(new DLPAtom("storehouse_manager", a_storehouse_manager)) ) );
+		NSM_evo1.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("sent", the_delivery_order , a_storehouse_manager)) ) );
+		NSM_evo1.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("delivery_order", the_delivery_order)) ) );
+		NSM_evo1.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("storehouse_manager", a_storehouse_manager)) ) );
 		NSM_evo.add(NSM_evo1);
 		
 		this.NSM = new AbstractCapability("notify_storehouse_manager", NSM_evo, NSM_pre, null);
