@@ -208,7 +208,7 @@ public class Prova {
 		
 		Goal TNF = new Goal("to_notify_failure", TNF_tc, TNF_fs);
 		
-		/*******************/
+		/******************
 		
 		Constant a_user = new Constant("a_user");
 		Constant an_order = new Constant("an_order");
@@ -219,7 +219,7 @@ public class Prova {
 		Constant the_delivery_order = new Constant("the_delivery_order");
 		Constant a_storehouse_manager = new Constant("a_storehouse_manager");
 		
-		/*check_user*/
+		/*check_user
 		FOLAtom CU_available = new FOLAtom( new Predicate("available",1));
 		CU_available.addArgument(doc);
 		FOLAtom CU_order = new FOLAtom( new Predicate("order",1));
@@ -251,7 +251,7 @@ public class Prova {
 		
 		AbstractCapability CU = new AbstractCapability("check_user", CU_evo, CU_pre, null);
 		
-		/*add_user*/
+		/*add_user
 		FOLAtom AU_complete = new FOLAtom( new Predicate("complete",1));
 		AU_complete.addArgument(doc);
 		FOLAtom AU_user_data = new FOLAtom( new Predicate("user_data",1));
@@ -273,7 +273,7 @@ public class Prova {
 		
 		AbstractCapability AU = new AbstractCapability("add_user", AU_evo, AU_pre, null);
 		
-		/*send_registration_form*/
+		/*send_registration_form
 		FOLAtom SRF_uncomplete = new FOLAtom( new Predicate("uncomplete",1));
 		SRF_uncomplete.addArgument(doc);
 		FOLAtom SRF_user_data = new FOLAtom( new Predicate("user_data",1));
@@ -295,7 +295,7 @@ public class Prova {
 		
 		AbstractCapability SRF = new AbstractCapability("send_registration_form", SRF_evo, SRF_pre, null);
 		
-		/*wait_user_data*/
+		/*wait_user_data
 		FOLAtom WUD_uncomplete = new FOLAtom( new Predicate("uncomplete",1));
 		WUD_uncomplete.addArgument(doc);
 		FOLAtom WUD_registration_form = new FOLAtom( new Predicate("registration_form",1));
@@ -314,7 +314,7 @@ public class Prova {
 		
 		AbstractCapability WUD = new AbstractCapability("wait_user_data", WUD_evo, WUD_pre, null);
 		
-		/*check_storehouse*/
+		/*check_storehouse
 		FOLAtom CS_available = new FOLAtom( new Predicate("available",1));
 		CS_available.addArgument(doc);
 		FOLAtom CS_order = new FOLAtom( new Predicate("order",1));
@@ -340,7 +340,7 @@ public class Prova {
 		
 		AbstractCapability CS = new AbstractCapability("check_storehouse", CS_evo, CS_pre, null);
 		
-		/*notify_stock_failure*/
+		/*notify_stock_failure
 		FOLAtom NSF_refused = new FOLAtom( new Predicate("refused",1));
 		NSF_refused.addArgument(doc);
 		FOLAtom NSF_order = new FOLAtom( new Predicate("order",1));
@@ -362,7 +362,7 @@ public class Prova {
 		
 		AbstractCapability NSF = new AbstractCapability("notify_stock_failure", NSF_evo, NSF_pre, null);
 		
-		/*generate_invoice*/
+		/*generate_invoice
 		FOLAtom GI_accepted = new FOLAtom( new Predicate("accepted",1));
 		GI_accepted.addArgument(doc);
 		FOLAtom GI_order = new FOLAtom( new Predicate("order",1));
@@ -384,7 +384,7 @@ public class Prova {
 		
 		AbstractCapability GI = new AbstractCapability("generate_invoice", GI_evo, GI_pre, null);
 		
-		/*upload_on_user_cloud_storage*/
+		/*upload_on_user_cloud_storage
 		FOLAtom UOUCS_available = new FOLAtom( new Predicate("available",1));
 		UOUCS_available.addArgument(doc);
 		FOLAtom UOUCS_invoice = new FOLAtom( new Predicate("invoice",1));
@@ -406,7 +406,7 @@ public class Prova {
 		
 		AbstractCapability UOUCS = new AbstractCapability("upload_on_user_cloud_storage", UOUCS_evo, UOUCS_pre, null);
 		
-		/*upload_on_private_cloud_storage*/
+		/*upload_on_private_cloud_storage
 		FOLAtom UOPCS_available = new FOLAtom( new Predicate("available",1));
 		UOPCS_available.addArgument(doc);
 		FOLAtom UOPCS_invoice = new FOLAtom( new Predicate("invoice",1));
@@ -429,7 +429,7 @@ public class Prova {
 		
 		AbstractCapability UOPCS = new AbstractCapability("upload_on_private_cloud_storage", UOPCS_evo, UOPCS_pre, null);
 		
-		/*share_file_link*/
+		/*share_file_link
 		FOLAtom SFL_uploaded_on_cloud = new FOLAtom( new Predicate("uploaded_on_cloud",1));
 		SFL_uploaded_on_cloud.addArgument(doc);
 		FOLAtom SFL_invoice = new FOLAtom( new Predicate("invoice",1));
@@ -453,7 +453,7 @@ public class Prova {
 		
 		AbstractCapability SFL = new AbstractCapability("share_file_link", SFL_evo, SFL_pre, null);
 		
-		/*notify_storehouse_manager*/
+		/*notify_storehouse_manager
 		FOLAtom NSM_notified = new FOLAtom( new Predicate("notified",2));
 		NSM_notified.addArgument(doc);
 		NSM_notified.addArgument(usr);
@@ -475,7 +475,7 @@ public class Prova {
 		
 		AbstractCapability NSM = new AbstractCapability("notify_storehouse_manager", NSM_evo, NSM_pre, null);
 		
-		
+		*/
 	}
 
 }

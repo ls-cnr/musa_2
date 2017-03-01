@@ -5,7 +5,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import layer.awareness.Goal;
-import layer.awareness.goalmodel.GoalModel;
+import layer.awareness.goalmodel.GoalTreeModel;
 
 import java.util.ArrayList;
 
@@ -15,7 +15,7 @@ import java.util.ArrayList;
 public class GoalModelTest {
 	
 	/** The model. */
-	private GoalModel model;
+	private GoalTreeModel model;
 
 	/**
 	 * Initializing the test
@@ -23,7 +23,7 @@ public class GoalModelTest {
 	@Before	
 	public void init() {
 		Goal g = new Goal("root", null, null);
-		model = new GoalModel(g);
+		model = new GoalTreeModel(g);
 	}
 	
 	/**

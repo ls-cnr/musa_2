@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 
-import layer.awareness.goalmodel.GoalModel;
+import layer.awareness.goalmodel.GoalTreeModel;
 import layer.semantic.Condition;
 import petrinet.logic.*;
 
@@ -40,7 +40,7 @@ public class Net {
 	 * @param model
 	 *            the GoalModel to start from
 	 */
-	public Net( GoalModel model ) {
+	public Net( GoalTreeModel model ) {
 		PetriNetConstruction construction = new PetriNetConstruction(model);
 		construction.construct();
 		pn = construction.getPetrinet();

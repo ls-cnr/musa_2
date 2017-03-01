@@ -1,7 +1,7 @@
 package layertest.awareness.net;
 
 import layer.awareness.*;
-import layer.awareness.goalmodel.GoalModel;
+import layer.awareness.goalmodel.GoalTreeModel;
 import layer.awareness.net.Net;
 import layer.semantic.Condition;
 import net.sf.tweety.logics.commons.syntax.Constant;
@@ -31,7 +31,7 @@ public class TestGui {
 	 */
 	public static void main(String[] args) {
 		/*
-		GoalModel model = new GoalModel(new Goal("root", null, null));		
+		GoalTreeModel model = new GoalTreeModel(new Goal("root", null, null));		
 		ArrayList<Goal> gs = new ArrayList<>();
 		*/
 		/*Test And
@@ -237,7 +237,7 @@ public class TestGui {
 		Goal TNF = new Goal("to_notify_failure", TNF_tc, TNF_fs);
 		/*************/
 
-		GoalModel model = new GoalModel(THO);
+		GoalTreeModel model = new GoalTreeModel(THO);
 		ArrayList<Goal> firstLevel = new ArrayList<>();
 		firstLevel.add(TWO);
 		firstLevel.add(TPO);
