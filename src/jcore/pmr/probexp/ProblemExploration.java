@@ -8,6 +8,7 @@ import java.util.Set;
 import layer.awareness.AbstractCapability;
 import layer.awareness.DomainEntail;
 import layer.awareness.goalmodel.GoalModel;
+import layer.awareness.goalmodel.GoalTreeModel;
 import layer.awareness.net.*;
 import layer.semantic.AssumptionSet;
 import layer.semantic.StateOfWorld;
@@ -52,7 +53,7 @@ public class ProblemExploration {
 	 * @param capabilities
 	 *            the Capabilities List proper of the Agent
 	 */
-	public ProblemExploration( GoalModel model, ArrayList<AbstractCapability> capabilities, AssumptionSet assumptions) {
+	public ProblemExploration( GoalTreeModel model, ArrayList<AbstractCapability> capabilities, AssumptionSet assumptions) {
 		this.capabilities = new ArrayList<>(capabilities);
 		this.assumptions = assumptions;
 		toVisit = new ArrayList<>();

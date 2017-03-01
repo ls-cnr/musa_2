@@ -6,7 +6,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import layer.awareness.*;
-import layer.awareness.goalmodel.GoalModel;
+import layer.awareness.goalmodel.GoalTreeModel;
 import layer.awareness.net.*;
 
 import java.util.ArrayList;
@@ -17,7 +17,7 @@ import java.util.ArrayList;
 public class NetTest {
 
 	/** The model. */
-	private GoalModel model;
+	private GoalTreeModel model;
 	
 	/** The net. */
 	private Net net;
@@ -28,7 +28,7 @@ public class NetTest {
 	@Ignore
 	@Test
 	public void testParallelTemplate() {
-		model = new GoalModel(new Goal("root", null, null));
+		model = new GoalTreeModel(new Goal("root", null, null));
 		ArrayList<Goal> gs = new ArrayList<>();
 		gs.add(new Goal("secondo", null, null));
 		gs.add(new Goal("terzo", null, null));
@@ -42,7 +42,7 @@ public class NetTest {
 	@Ignore
 	@Test
 	public void testHops1() {
-		model = new GoalModel(new Goal("root", null, null));
+		model = new GoalTreeModel(new Goal("root", null, null));
 		ArrayList<Goal> gs = new ArrayList<>();
 		ArrayList<Goal> gsor = new ArrayList<>();
 		gs.add(new Goal("secondo", null, null));
@@ -65,7 +65,7 @@ public class NetTest {
 	 */
 	@Test
 	public void testHops3() {
-		model = new GoalModel(new Goal("root", null, null));
+		model = new GoalTreeModel(new Goal("root", null, null));
 		ArrayList<Goal> gs = new ArrayList<>();
 		ArrayList<Goal> gsor = new ArrayList<>();
 		ArrayList<Goal> gsandor = new ArrayList<>();
@@ -125,7 +125,7 @@ public class NetTest {
 	 */
 	@Test
 	public void testHops4() {
-		model = new GoalModel(new Goal("root", null, null));
+		model = new GoalTreeModel(new Goal("root", null, null));
 		ArrayList<Goal> rootAnd = new ArrayList<>();
 		ArrayList<Goal> rootAndOr1 = new ArrayList<>();
 		ArrayList<Goal> rootAndOr2 = new ArrayList<>();

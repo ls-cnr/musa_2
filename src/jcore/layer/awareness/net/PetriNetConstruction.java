@@ -15,7 +15,7 @@ import petrinet.logic.*;
 public class PetriNetConstruction {
 	
 	/** The GoalModel used to construct the Net. */
-	private GoalModel model;
+	private GoalTreeModel model;
 	 
 	/** The PetriNet. It contains Places, Transitions and Arcs */
 	private Petrinet pn;
@@ -45,9 +45,9 @@ public class PetriNetConstruction {
 	 *
 	 * @param m the GoalModel
 	 */
-	PetriNetConstruction( GoalModel m ) {
+	PetriNetConstruction( GoalTreeModel m ) {
 		pn = new Petrinet("petrinet");
-		model = m;
+		model =  m;
 		labels = new HashMap<>();
 		initialOrPlaces = new HashMap<>();
 		finalOrPlaces = new HashMap<>();

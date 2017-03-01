@@ -10,7 +10,7 @@ import cartago.*;
 import jason.asSyntax.Term;
 import layer.awareness.AbstractCapability;
 import layer.awareness.Goal;
-import layer.awareness.goalmodel.GoalModel;
+import layer.awareness.goalmodel.GoalTreeModel;
 import layer.semantic.AssumptionSet;
 import layer.semantic.Condition;
 import layer.semantic.evolution.AddStatement;
@@ -49,7 +49,7 @@ public class ProblemExplorationArtifact extends Artifact {
 		ArrayList<AbstractCapability> capabilities = get_capabilities_for_test();
 
 		// a regime vanno presi dal artefatto Specification
-		GoalModel model = get_goal_model_for_test();
+		GoalTreeModel model = get_goal_model_for_test();
 		AssumptionSet assumptions=get_domain_assumption_for_test();
 		
 		pe = new ProblemExploration( model, capabilities, assumptions);
@@ -78,7 +78,7 @@ public class ProblemExplorationArtifact extends Artifact {
 		expansion.set( JasonExpansionNode.object_to_term(exp) );
 	}
 	
-	private GoalModel get_goal_model_for_test() {
+	private GoalTreeModel get_goal_model_for_test() {
 		Variable doc = new Variable("Doc");
 		Variable usr = new Variable("Usr");
 		Variable mng = new Variable("Mng");
@@ -233,7 +233,7 @@ public class ProblemExplorationArtifact extends Artifact {
 		Goal TNF = new Goal("to_notify_failure", TNF_tc, TNF_fs);
 
 		/*Model construction*/
-	    GoalModel model = new GoalModel(THO);
+		GoalTreeModel model = new GoalTreeModel(THO);
 	    ArrayList<Goal> firstLevel = new ArrayList<>();
 	    firstLevel.add(TWO);
 	    firstLevel.add(TPO);

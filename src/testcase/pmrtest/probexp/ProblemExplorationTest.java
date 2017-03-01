@@ -13,7 +13,7 @@ import org.junit.Test;
 
 import layer.awareness.AbstractCapability;
 import layer.awareness.Goal;
-import layer.awareness.goalmodel.GoalModel;
+import layer.awareness.goalmodel.GoalTreeModel;
 import layer.awareness.net.Net;
 import layer.awareness.net.Token;
 import layer.semantic.AssumptionSet;
@@ -129,7 +129,7 @@ public class ProblemExplorationTest {
 	private Goal TWO;
 	private Goal THO;
 	
-	private GoalModel model;
+	private GoalTreeModel model;
 	private ArrayList<Token> startTokens;
 	
 	private AssumptionSet domain;
@@ -921,7 +921,7 @@ public void setUp(){
 	this.nodewStart = new WorldNode(this.wStart);
 	
 	/*Model construction*/
-    model = new GoalModel(THO);
+    model = new GoalTreeModel(THO);
     ArrayList<Goal> firstLevel = new ArrayList<>();
     firstLevel.add(TWO);
     firstLevel.add(TPO);

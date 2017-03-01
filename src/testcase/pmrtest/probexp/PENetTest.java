@@ -13,7 +13,7 @@ import org.junit.Test;
 
 import layer.awareness.AbstractCapability;
 import layer.awareness.Goal;
-import layer.awareness.goalmodel.GoalModel;
+import layer.awareness.goalmodel.GoalTreeModel;
 import layer.awareness.net.Token;
 import layer.semantic.AssumptionSet;
 import layer.semantic.Condition;
@@ -42,7 +42,7 @@ import translator.ExtDLPHead;
 public class PENetTest {
 
 	private AssumptionSet domain;
-	private GoalModel model;
+	private GoalTreeModel model;
 	private ProblemExploration problem; 
 	
 
@@ -552,7 +552,7 @@ public class PENetTest {
 		/**************************************************/
 		
 		/*Model construction*/
-		model = new GoalModel(THO);
+		model = new GoalTreeModel(THO);
 		ArrayList<Goal> firstLevel = new ArrayList<>();
 		firstLevel.add(TWO);
 		firstLevel.add(TPO);
@@ -699,7 +699,7 @@ public class PENetTest {
 		
 		problem.addToVisit(en, tokns, 5);
 		
-		while( !problem.toVisitIsEmpty())
+		while( !problem.toVisitIsEmpty()){
 			problem.expandNode();
 		
 		//MultipleExpansionNode nk = (MultipleExpansionNode) problem.getExpandedList().get(0);
@@ -713,6 +713,7 @@ public class PENetTest {
 			System.out.println("");
 		}
 		System.out.println(nk.getDestination().get(0).getWorldState().getFactsList());
+		}
 	}
 
 }
