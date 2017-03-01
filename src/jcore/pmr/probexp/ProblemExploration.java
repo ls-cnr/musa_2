@@ -74,6 +74,7 @@ public class ProblemExploration {
 	public void addToVisit( WorldNode node, ArrayList<Token> tokens, int score) {
 		if( !visited.contains(node.getWorldState()) && !toVisit.contains(new ENode(node.getWorldState())))
 			toVisit.add( new ENode(node.getWorldState(), tokens, score, false) );
+		System.out.println("ADD TO VISIT sizeToVisit: " + this.toVisit.size());
 	}
 	
 	/**
@@ -85,6 +86,8 @@ public class ProblemExploration {
 	public void expandNode() {
 		
 		ENode enode = getHighestNodeToVisit();
+		//debug
+		System.out.println("EXPANDNODE toVisit size:" + this.toVisit.size());
 		if(enode == null)	return;
 	
 		visited.add(enode.getWorldState());

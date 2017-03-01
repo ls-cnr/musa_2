@@ -22,6 +22,8 @@ import pmr.probexp.NormalExpansionNode;
 public class JasonExpansionNode {
 	public static Term object_to_term(ExpansionNode exp) {
 		
+		if(exp == null)	return null;
+		
 		MultipleExpansionNode temp;
 		Structure map = new Structure("map", 2);
 		Structure term = new Structure("expansionNode",6);
@@ -71,6 +73,9 @@ public class JasonExpansionNode {
 	}
 
 	public static ExpansionNode term_to_object(Term exp) throws TranslateError {
+		
+		if(exp == null)	return null;
+		
 		ENode source = null;
 		ArrayList<ENode> dest = new ArrayList<>();
 		int score;

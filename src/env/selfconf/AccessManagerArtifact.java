@@ -46,6 +46,7 @@ public class AccessManagerArtifact extends Artifact {
 			StateOfWorld w = JasonStateOfWorld.term_string_to_object(node_string);
 			
 			ENode enode = new ENode(w);
+			enode.setExit(false);
 			Term term=JasonENode.object_to_term(enode);
 			signal("announcement_new_node",spec_id_string,term);
 			

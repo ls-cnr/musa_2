@@ -49,9 +49,12 @@
 <-
 	?solution_management_info(SpecId,AccessManagerId,_);
 	
-	startAuction[artifact_id[AccessManagerId]];
+	
+	.print("sto per far partire l'asta");	
+	
+	startAuction[artifact_id(AccessManagerId)];
 	.wait(100);
-	closeAuction[artifact_id[AccessManagerId]];
+	closeAuction[artifact_id(AccessManagerId)];
 	
 	?auction_loop_delay(SpecIdString,AuctionDelay);
 	.wait(AuctionDelay);
