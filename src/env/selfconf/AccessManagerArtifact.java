@@ -86,6 +86,7 @@ public class AccessManagerArtifact extends Artifact {
 	@OPERATION
 	void bid(int auction_id,String participant, double utility) {
 		if (auction_id == this.auction_id && bid_phase==true) {
+			System.out.println("SONO DENTRO BID");
 			bids.add(new Bid(participant,utility));
 		}
 	}

@@ -22,48 +22,50 @@ import pmr.probexp.NormalExpansionNode;
 public class JasonExpansionNode {
 	public static Term object_to_term(ExpansionNode exp) {
 		
-		if(exp == null)	return null;
+		if(exp == null)	 {
+			return new Structure("null_expansion",0);
+		}
 		
 		MultipleExpansionNode temp;
 		Structure map = new Structure("map", 2);
-		Structure term = new Structure("expansionNode",6);
+		Structure term = new Structure("expansionNode",5);
 		
 		Term source = JasonENode.object_to_term(exp.getSource());
 		
 		ListTermImpl dest_list = new ListTermImpl();
+		ListTermImpl scenarioValue = new ListTermImpl();
+		
+		
 		if (exp.getDestination() != null) {
+			
+			if(exp instanceof MultipleExpansionNode){
+				MultipleExpansionNode multiexp = (MultipleExpansionNode)exp;
+				for (ENode t : multiexp.getDestination()) {
+					Term enodeTerm = JasonENode.object_to_term(t);
+					dest_list.add(enodeTerm);
+						StringTermImpl value = new StringTermImpl(multiexp.getScenario(t));
+						scenarioValue.add(value);
+					}
+				}			
+		else{
 			for (ENode t : exp.getDestination()) {
-				Term token_term = JasonENode.object_to_term(t);
-				dest_list.add(token_term);
-			}			
+				Term enodeTerm = JasonENode.object_to_term(t);
+				dest_list.add(enodeTerm);
+				StringTermImpl value = new StringTermImpl("Simple");
+				scenarioValue.add(value);
+				}
+			}
 		}
+		map.addTerm(dest_list);
+		map.addTerm(scenarioValue);
 
 		NumberTermImpl score = new NumberTermImpl(exp.getScore());
 		StringTermImpl capability = new StringTermImpl(exp.getCapability());
-		
-		if(exp instanceof MultipleExpansionNode){
-			temp = (MultipleExpansionNode)exp;
-			Iterator i = temp.getScenarioMap().entrySet().iterator();
-			ListTermImpl scenarioKey = new ListTermImpl();
-			ListTermImpl scenarioValue = new ListTermImpl();
-			while(i.hasNext()){
-				Entry<ENode, String> entry =(Entry<ENode, String>) i.next();
-				Term key = JasonENode.object_to_term(entry.getKey());
-				scenarioKey.add(key);
-				Structure value = new Structure(entry.getValue());
-				scenarioValue.add(value);
-			}
-			map.addTerm(scenarioKey);
-			map.addTerm(scenarioValue);
-		}
-		else
-			map = null;
 		
 
 		StringTermImpl agent = new StringTermImpl(exp.getAgent());
 		
 		term.addTerm(source);
-		term.addTerm(dest_list);
 		term.addTerm(capability);
 		term.addTerm(score);
 		term.addTerm(map);
@@ -91,37 +93,42 @@ public class JasonExpansionNode {
 			source = JasonENode.term_to_object(s.getTerm(0));
 			}catch(TranslateError e1){throw new TranslateError();}
 			
-			ListTermImpl destIterator = (ListTermImpl) s.getTerm(1);
-			List<Term> iterator = destIterator.getAsList();
-			for(Term temp : iterator){
-				dest.add(JasonENode.term_to_object(temp));
-			}
 			
-			NumberTermImpl number =(NumberTermImpl) s.getTerm(3);
-			score = (int)number.solve();
-			
-			StringTermImpl tempCap = (StringTermImpl) s.getTerm(2);
+			StringTermImpl tempCap = (StringTermImpl) s.getTerm(1);
 			String capability = tempCap.getString();
 			
-			StringTermImpl tempAgent = (StringTermImpl) s.getTerm(5);
+			
+			NumberTermImpl number =(NumberTermImpl) s.getTerm(2);
+			score = (int)number.solve();
+			
+			
+			StringTermImpl tempAgent = (StringTermImpl) s.getTerm(4);
 			String agent = tempAgent.getString();
 			
-			if(s.getTerm(4) == null)
-				return new NormalExpansionNode(source, dest, capability, score, agent);
-			else{
-				Structure map =(Structure) s.getTerm(4);
-				ListTermImpl keyList = (ListTermImpl) map.getTerm(0);
-				ListTermImpl valueList = (ListTermImpl) map.getTerm(1);
-				List<Term> values = valueList.getAsList();
-				List<Term> keys = keyList.getAsList();
-				
-				for(int i = 0; i<keys.size(); i++){
-					Term tempKey = keyList.get(i);
-					StringTermImpl tempValue = (StringTermImpl)valueList.get(i);
-					scenarioMap.put(JasonENode.term_to_object(tempKey),tempValue.getString() );
+			
+			Structure destScenario =(Structure) s.getTerm(3);
+			ListTermImpl destIterator = (ListTermImpl) destScenario.getTerm(0);
+			ListTermImpl scenarioiterator = (ListTermImpl) destScenario.getTerm(1);
+			List<Term> iterator = destIterator.getAsList();
+			List<Term> sceniterator = scenarioiterator.getAsList();
+			
+			if(scenarioiterator.size() != 1){
+				for(int i = 0 ; i<iterator.size(); i++){
+					Term temp = iterator.get(i);
+					ENode putnode = JasonENode.term_to_object(temp);
+					dest.add(putnode);
+					StringTermImpl tempValue = (StringTermImpl)sceniterator.get(i);
+					scenarioMap.put(putnode,tempValue.getString());
 				}
-				return new MultipleExpansionNode(source, dest, capability, score, scenarioMap, agent);
+				return new MultipleExpansionNode(source, dest, capability, score, agent, scenarioMap);
 			}
+			else{
+				Term temp = iterator.get(0);
+				ENode putnode = JasonENode.term_to_object(temp);
+				dest.add(putnode);
+				return new NormalExpansionNode(source, dest, capability, score, agent);			
+			}
+
 		}
 	}
 

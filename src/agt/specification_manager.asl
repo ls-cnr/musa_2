@@ -40,7 +40,7 @@
 	+auction_loop_delay(SpecIdString,300);														// this allows to change loop frequency during the execution
 	
 	.wait(1000);
-	set_initial_node(world([]))[artifact_id(AccessManagerId)];
+	set_initial_node(w([order(an_order),available(an_order),user(a_user),user_data(the_user_data)]))[artifact_id(AccessManagerId)];
 	
 	!auction_loop(SpecId);
 .
@@ -55,6 +55,7 @@
 	startAuction[artifact_id(AccessManagerId)];
 	.wait(100);
 	closeAuction[artifact_id(AccessManagerId)];
+	
 	
 	?auction_loop_delay(SpecIdString,AuctionDelay);
 	.wait(AuctionDelay);

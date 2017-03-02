@@ -54,7 +54,7 @@ public class MultipleExpansionNode extends ExpansionNode{
 		this.scenarioList = scenarioList;
 	}
 	
-	public MultipleExpansionNode(ENode source, ArrayList<ENode> destination, String capability, HashMap<ENode, String> scenarioList, String agent){
+	public MultipleExpansionNode(ENode source, ArrayList<ENode> destination, String capability, String agent, HashMap<ENode, String> scenarioList){
 		super(source, destination, capability, agent);
 		this.scenarioList = scenarioList;
 	}
@@ -65,7 +65,7 @@ public class MultipleExpansionNode extends ExpansionNode{
 		this.scenarioList = scenarioList;
 	}
 	
-	public MultipleExpansionNode(ENode source, ArrayList<ENode> destination, String capability, int score, HashMap<ENode, String> scenarioList, String agent){
+	public MultipleExpansionNode(ENode source, ArrayList<ENode> destination, String capability, int score, String agent, HashMap<ENode, String> scenarioList){
 		super(source, destination, capability, score, agent);
 		this.scenarioList = scenarioList;
 	}

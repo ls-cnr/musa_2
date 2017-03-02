@@ -11,8 +11,10 @@ import jason.asSyntax.Term;
 import layer.awareness.AbstractCapability;
 import layer.awareness.Goal;
 import layer.awareness.goalmodel.GoalTreeModel;
+import layer.awareness.net.Token;
 import layer.semantic.AssumptionSet;
 import layer.semantic.Condition;
+import layer.semantic.StateOfWorld;
 import layer.semantic.evolution.AddStatement;
 import layer.semantic.evolution.CapabilityEvolutionScenario;
 import layer.semantic.evolution.EvolutionScenario;
@@ -53,6 +55,7 @@ public class ProblemExplorationArtifact extends Artifact {
 		AssumptionSet assumptions=get_domain_assumption_for_test();
 		
 		pe = new ProblemExploration( model, capabilities, assumptions);
+		//this.debugSetInitialNode();
 
 	}
 	
@@ -69,6 +72,9 @@ public class ProblemExplorationArtifact extends Artifact {
 	
 	@OPERATION
 	void expand_local_graph() {
+		System.out.println("Sto per espandere il nodo");
+		System.out.println("Dimensione lista nodi da visitare:" + this.pe.getToVisit().size());
+		System.out.println("Dimensione lista expansionNode: " + this.pe.getExpandedList().size());
 		pe.expandNode();
 	}
 	
@@ -76,6 +82,15 @@ public class ProblemExplorationArtifact extends Artifact {
 	void getMostPromisingExpansion(OpFeedbackParam<Term> expansion) {
 		ExpansionNode exp = pe.getHighestExpansion();
 		expansion.set( JasonExpansionNode.object_to_term(exp) );
+	}
+	
+	@OPERATION
+	void removeWinnerNode(String node){
+		ExpansionNode exp = null;
+		try{
+			exp = JasonExpansionNode.term_string_to_object(node);
+		}catch(TranslateError t){}
+		this.pe.removeExpandedNode(exp);
 	}
 	
 	private GoalTreeModel get_goal_model_for_test() {
@@ -257,6 +272,7 @@ public class ProblemExplorationArtifact extends Artifact {
 		Variable usr = new Variable("Usr");
 		Constant a_user = new Constant("a_user");
 		Constant the_user_data = new Constant("the_user_data");
+		Constant an_order = new Constant("an_order");
 
 		/*check_user*/
 		FOLAtom CU_available = new FOLAtom( new Predicate("available",1));
@@ -304,7 +320,64 @@ public class ProblemExplorationArtifact extends Artifact {
 		CU_evo.add(CU_evo4);
 		
 		AbstractCapability CU = new AbstractCapability("check_user", CU_evo, CU_pre, null);
+		
+		/*add_user*/
+		FOLAtom AU_complete = new FOLAtom( new Predicate("complete",1));
+		AU_complete.addArgument(doc);
+		FOLAtom AU_user_data = new FOLAtom( new Predicate("user_data",1));
+		AU_user_data.addArgument(doc);
+		FOLAtom AU_unregistered = new FOLAtom( new Predicate("unregistered",1));
+		AU_unregistered.addArgument(usr);
+		FOLAtom AU_user = new FOLAtom( new Predicate("user",1));
+		AU_user.addArgument(usr);
+		Set AU_Set = new HashSet<Variable>();
+		AU_Set.add(doc);
+		AU_Set.add(usr);
+		Condition AU_pre = new Condition(new ExistsQuantifiedFormula(new Conjunction(new Conjunction(AU_complete, AU_user_data), new Conjunction(AU_unregistered, AU_user)), AU_Set));
+
+		Set<EvolutionScenario> AU_evo = new HashSet<>();
+		CapabilityEvolutionScenario AU_evo1 = new CapabilityEvolutionScenario("RegisteredUser");
+		AU_evo1.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("registered", a_user)) ) );
+		AU_evo1.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("user", a_user)) ) );
+		AU_evo1.addOperator(new RemoveStatement(new ExtDLPHead(new DLPAtom("unregistered", a_user))));
+		AU_evo1.addOperator(new RemoveStatement(new ExtDLPHead(new DLPAtom("complete", the_user_data))));
+		AU_evo1.addOperator(new RemoveStatement(new ExtDLPHead(new DLPAtom("user_data", the_user_data))));
+		AU_evo.add(AU_evo1);
+		
+		AbstractCapability AU = new AbstractCapability("add_user", AU_evo, AU_pre, null);
+		
+		/*check_storehouse*/
+		FOLAtom CS_available = new FOLAtom( new Predicate("available",1));
+		CS_available.addArgument(doc);
+		FOLAtom CS_order = new FOLAtom( new Predicate("order",1));
+		CS_order.addArgument(doc);
+		FOLAtom CS_registered = new FOLAtom( new Predicate("registered",1));
+		CS_registered.addArgument(usr);
+		FOLAtom CS_user = new FOLAtom( new Predicate("user",1));
+		CS_user.addArgument(usr);
+		Set CS_Set = new HashSet<Variable>();
+		CS_Set.add(doc);
+		CS_Set.add(usr);
+		Condition CS_pre = new Condition(new ExistsQuantifiedFormula( new Conjunction(new Conjunction(CS_available, CS_order), new Conjunction(CS_registered, CS_user)), CS_Set ));
+
+		Set<EvolutionScenario> CS_evo = new HashSet<>();
+		CapabilityEvolutionScenario CS_evo1 = new CapabilityEvolutionScenario("AcceptableOrder");
+		CS_evo1.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("accepted", an_order)) ) );
+		CS_evo1.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("order", an_order)) ) );
+		CS_evo1.addOperator( new RemoveStatement( new ExtDLPHead(new DLPAtom("available", an_order)) ) );
+		CS_evo.add(CS_evo1);
+		CapabilityEvolutionScenario CS_evo2 = new CapabilityEvolutionScenario("UnacceptableOrder");
+		CS_evo2.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("refused", an_order)) ) );
+		CS_evo2.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("order", an_order)) ) );
+		CS_evo2.addOperator( new RemoveStatement( new ExtDLPHead(new DLPAtom("available", an_order)) ) );
+		CS_evo.add(CS_evo2);
+		
+		AbstractCapability CS = new AbstractCapability("check_storehouse", CS_evo, CS_pre, null);
+		
+		
 		list.add(CU);
+		list.add(AU);
+		list.add(CS);
 		return list;
 	}
 	
@@ -332,5 +405,23 @@ public class ProblemExplorationArtifact extends Artifact {
 		return domain;
 	}
 	
+	private void debugSetInitialNode(){
+		StateOfWorld regNoCloud = new StateOfWorld();
+		try {
+			regNoCloud.addFact_asString("order(an_order).");
+			regNoCloud.addFact_asString("available(an_order).");
+			regNoCloud.addFact_asString("user(a_user).");
+			regNoCloud.addFact_asString("user_data(the_user_data).");
+		} catch (ParseException e) {
+			e.printStackTrace();
+		} catch (layer.semantic.exception.NotAllowedInAStateOfWorld e) {
+			e.printStackTrace();
+		}
+		
+		ArrayList<Token> tokens = new ArrayList<>();
+		tokens.add(new Token("p3"));
+		tokens.add(new Token("p4"));
+		this.pe.addToVisit(new WorldNode(regNoCloud), tokens, 9);
+	}
 }
 

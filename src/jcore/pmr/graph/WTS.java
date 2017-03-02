@@ -54,7 +54,9 @@ public class WTS {
 			this.addSafeNode(new WorldNode(tempnode.getSource().getWorldState()));
 			this.addSafeNode (new WorldNode(tempnode.getDestination().get(0).getWorldState()));
 			WorldNode destination2 = this.graph.get(new WorldNode(tempnode.getDestination().get(0).getWorldState()));
-			this.addEdge(this.graph.get(new WorldNode(tempnode.getSource().getWorldState())), destination2, tempnode.getCapability(), tempnode.getAgent());			
+			this.addEdge(this.graph.get(new WorldNode(tempnode.getSource().getWorldState())), destination2, tempnode.getCapability(), tempnode.getAgent());	
+			
+			System.out.println(new WorldNode(tempnode.getDestination().get(0).getWorldState()).getWorldState());
 		}
 		else{
 			/* it normally adds the source node in newnode, then it generates an OPNode that connect the source with all 
@@ -74,6 +76,9 @@ public class WTS {
 				WorldNode wnode = new WorldNode(etemp.getWorldState());
 				this.addSafeNode(wnode);
 				faketempnode.addOutcomingEdge(new EvolutionEdge(faketempnode, wnode, exptempnode.getScenario(etemp)));
+				
+				System.out.println(wnode.getWorldState());
+				
 			}
 			source2.addOPNode(faketempnode);
 		}

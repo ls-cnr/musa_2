@@ -2,6 +2,7 @@ package pmr.probexp;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Iterator;
 
 import layer.awareness.AbstractCapability;
 import pmr.graph.Node;
@@ -175,5 +176,46 @@ public abstract class ExpansionNode implements Node{
 		return comp;
 	}
 	
+	
+	@Override
+	  public boolean equals(Object obj){
+	      if (obj == null) {
+	          return false;
+	      }
+	      if (!ExpansionNode.class.isAssignableFrom(obj.getClass())) {
+	          return false;
+	      }
+	      ExpansionNode other = (ExpansionNode) obj;
+	      
+	      if(this.getSource().getWorldState() == null && other.getSource().getWorldState() == null){
+	        return true;
+	      }
+	      else if (this.getSource().getWorldState() != null && this.getSource().getWorldState().equals(other.getSource().getWorldState())) {
+	          Iterator<ENode> i = this.getDestination().iterator();
+	          
+	          while(i.hasNext()){
+	        	  ENode temp = (ENode) i.next();
+	        	  if (this.destination.contains(temp) == false)	return false;
+	          }
+	          return true;
+	      }
+	      else {
+	          return false;
+	      }
+	  }  
+	
+	  
+	  /* (non-Javadoc)
+	   * @see java.lang.Object#hashCode()
+	   */
+	  @Override
+	  public int hashCode(){
+		  int hash = 0;
+	      for(int i = 0; i<this.destination.size(); i++){
+	    	  hash += this.destination.get(i).hashCode();
+	      }
+		  
+		  return this.getSource().getWorldState().hashCode() + hash;
+	  }  
 
 }

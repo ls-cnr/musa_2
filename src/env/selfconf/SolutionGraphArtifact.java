@@ -42,6 +42,7 @@ public class SolutionGraphArtifact extends Artifact {
 		exp = JasonExpansionNode.term_string_to_object(expansion_node);
 		}catch(TranslateError t){return;}
 		graph.addNode(exp);
+		System.out.println("Ho aggiunto un nodo al grafo. Il grafo coniente ora " + this.graph.getWTS().size() + "nodi.");
 	}
 
 	/* interface: VISIT */

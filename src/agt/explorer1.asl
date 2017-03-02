@@ -37,7 +37,8 @@
 <-
 	focusWhenAvailable(GraphAccessManager);
 	
-	.concat("pe_",SpecIdString,ArtifactName);
+	.concat("pe_",SpecIdString,ArtifactNameTemp);
+	.concat(MyName, ArtifactNameTemp, ArtifactName);
 	makeArtifact(ArtifactName,"selfconf.ProblemExplorationArtifact",[],PEId);
 	.println("Created ", ArtifactName ," for ( ", SpecIdString," ) PEId: ", PEId);
 	
@@ -64,8 +65,11 @@
 	getMostPromisingExpansion(Expansion)[artifact_id(PEId)];
 	
 	.my_name(MyName);
-	Expansion = expansionnode(_,_,_,Score);
-	if(Expansion =~ null){
+	
+	.println("SONO IN NEW_AUCTION");
+	if(Expansion \== null_expansion){
+		.println("Expansion:",Expansion);
+		Expansion = expansionNode(_,_,Score,_,_);
 		bid(AuctionId,MyName,Score) [artifact_id(AccessManagerId)];	
 		-+placed_bid(AuctionId,SpecIdString,Expansion);	// remember the Expansion selected for bidding
 	}
@@ -76,15 +80,14 @@
 	.my_name(Me) & .term2string(Me,WinnerName)
 <-
 	?placed_bid(AuctionId,SpecIdString,Expansion);
-	apply_changes(Expansion) [auction_id(AccessManagerId)];
+	apply_changes(Expansion) [artifact_id(AccessManagerId)];
+	removeWinnerNode(Expansion)[artifact_id(PEId)];
 .
 
 
 +!expand_local_graph_loop(SpecIdString)
 <-
 	?problem_exploration_info(SpecIdString,PEId);
-	.println("using: ", PEId," for ( ", SpecIdString," )");
-	.print(PEId);
 	expand_local_graph[artifact_id(PEId)];
 	?expand_loop_dalay(SpecIdString,ExpandLoopDelay);
 	.wait(ExpandLoopDelay);

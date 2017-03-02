@@ -75,7 +75,6 @@ public class ProblemExploration {
 	public void addToVisit( WorldNode node, ArrayList<Token> tokens, int score) {
 		if( !visited.contains(node.getWorldState()) && !toVisit.contains(new ENode(node.getWorldState())))
 			toVisit.add( new ENode(node.getWorldState(), tokens, score, false) );
-		System.out.println("ADD TO VISIT sizeToVisit: " + this.toVisit.size());
 	}
 	
 	/**
@@ -87,24 +86,26 @@ public class ProblemExploration {
 	public void expandNode() {
 		
 		ENode enode = getHighestNodeToVisit();
-		//debug
-		System.out.println("EXPANDNODE toVisit size:" + this.toVisit.size());
+
 		if(enode == null)	return;
-	
+		
 		visited.add(enode.getWorldState());
 		
-		for( AbstractCapability capability : capabilities ){			
+		for( AbstractCapability capability : capabilities ){
+			
 			if(DomainEntail.getInstance().entailsCondition(enode.getWorldState(), this.assumptions, capability.getPreCondition()) == true){
 				//Starts the expansion
+
 				ExpansionNode expNode = applyExpand(enode, capability);
 				
 				if (expNode == null)	return;
+				
 				//Applies the net to ultimate the expansion						
 				for( ENode destination : expNode.getDestination() ){
 					applyNet(expNode.getSource().getTokens(), destination, expNode);
 					if(destination.isExitNode() == false)	this.toVisit.add(destination);
 				}
-				
+			
 				//Elaborates the Expansion score				
 				score(expNode);
 								
@@ -126,6 +127,12 @@ public class ProblemExploration {
 		expandedList.sort(ExpansionNode.getScoreComparator());
 		int index = this.expandedList.size() - 1;
 		return this.expandedList.get(index);
+	}
+	
+	public void removeExpandedNode(ExpansionNode node){
+		if(node == null)	return;
+		if(this.expandedList.remove(node))
+			System.out.println("HO RIMOSSO IL NODO.");
 	}
 	
 	//Funzione che crea gli stati del mondo successivi, applicando un'evoluzione agli scenari associati alla capability passata
