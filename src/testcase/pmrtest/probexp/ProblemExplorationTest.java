@@ -1150,9 +1150,9 @@ public void setUp(){
 	    this.exploration = new ProblemExploration(this.model, new ArrayList<AbstractCapability>(), this.domain);	    
 	    this.exploration.addCapability(NSM);
 	    this.exploration.addCapability(UOPCS);
+	    this.exploration.addCapability(GI);	
 	    this.exploration.addCapability(SFL);
-	    this.exploration.addCapability(UOUCS);
-	    this.exploration.addCapability(GI);	    
+	    this.exploration.addCapability(UOUCS);    
 	    this.exploration.addCapability(NSF);
 	    this.exploration.addCapability(WUD);
 	    this.exploration.addCapability(SRF);

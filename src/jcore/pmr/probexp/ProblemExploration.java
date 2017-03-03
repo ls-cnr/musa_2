@@ -96,22 +96,21 @@ public class ProblemExploration {
 			if(DomainEntail.getInstance().entailsCondition(enode.getWorldState(), this.assumptions, capability.getPreCondition()) == true){
 				//Starts the expansion
 
-				System.out.println("sto usando la capability: "+capability.getId());
 				ExpansionNode expNode = applyExpand(enode, capability);
+
+				if (expNode != null){
+					//Applies the net to ultimate the expansion						
+					for( ENode destination : expNode.getDestination() ){
+						applyNet(expNode.getSource().getTokens(), destination, expNode);
+						if(destination.isExitNode() == false)	this.addToVisit(new WorldNode(destination.getWorldState()), destination.getTokens(), destination.getScore());
+					}
 				
-				if (expNode == null)	return;
-				
-				//Applies the net to ultimate the expansion						
-				for( ENode destination : expNode.getDestination() ){
-					applyNet(expNode.getSource().getTokens(), destination, expNode);
-					if(destination.isExitNode() == false)	this.toVisit.add(destination);
+					//Elaborates the Expansion score				
+					score(expNode);
+									
+					//Adds the Expansion to the List in order 
+					expandedList.add(expNode);
 				}
-			
-				//Elaborates the Expansion score				
-				score(expNode);
-								
-				//Adds the Expansion to the List in order 
-				expandedList.add(expNode);
 			}
 		}
 	}	
