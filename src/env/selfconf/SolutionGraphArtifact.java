@@ -3,9 +3,12 @@
 package selfconf;
 
 import cartago.*;
+import jason.asSyntax.Term;
 import layer.semantic.StateOfWorld;
 import pmr.SolutionGraph;
+import pmr.probexp.ENode;
 import pmr.probexp.ExpansionNode;
+import translator.JasonENode;
 import translator.JasonExpansionNode;
 import translator.JasonStateOfWorld;
 import translator.TranslateError;
@@ -36,7 +39,7 @@ public class SolutionGraphArtifact extends Artifact {
 
 	/* interface: EXPAND */
 	@LINK
-	void expand(String expansion_node) {
+	void expand(String expansion_node, String spec_id_string) {
 		ExpansionNode exp;
 		try{
 		exp = JasonExpansionNode.term_string_to_object(expansion_node);
@@ -70,6 +73,11 @@ public class SolutionGraphArtifact extends Artifact {
 	
 	@OPERATION
 	void pickConjointTransition_ToState_ByCapability() {
+	}
+	
+	@LINK
+	void printGraph(){
+		this.graph.printGraph();
 	}
 
 }

@@ -43,7 +43,7 @@ import pmr.probexp.ENode;
 //		    @OUTPORT(name = "local_cap_repo")
 //		  }
 //	) 
-public class ProblemExplorationArtifact extends Artifact {
+public class ProblemExplorationArtifact3 extends Artifact {
 	
 	private ProblemExploration pe;
 	
@@ -262,11 +262,12 @@ public class ProblemExplorationArtifact extends Artifact {
 
 	    return model;
 	}
+
 	private ArrayList<AbstractCapability> get_capabilities_for_test() {
 		ArrayList<AbstractCapability>list = new ArrayList<AbstractCapability>();
 		
 		Variable doc = new Variable("Doc");
-		Variable usr = new Variable("Usr");
+		Variable usr = new Variable("Usr");		
 		Constant a_user = new Constant("a_user");
 		Constant an_order = new Constant("an_order");
 		Constant the_user_data = new Constant("the_user_data");
@@ -278,160 +279,6 @@ public class ProblemExplorationArtifact extends Artifact {
 		Constant the_user_space = new Constant("the_user_space");
 		Constant the_system_space = new Constant("the_system_space");
 
-		/*check_user*/
-		FOLAtom CU_available = new FOLAtom( new Predicate("available",1));
-		CU_available.addArgument(doc);
-		FOLAtom CU_order = new FOLAtom( new Predicate("order",1));
-		CU_order.addArgument(doc);
-		FOLAtom CU_notLogged = new FOLAtom( new Predicate("logged",1));
-		CU_notLogged.addArgument(usr);
-		Negation CU_neg = new Negation(CU_notLogged);
-		FOLAtom CU_user = new FOLAtom( new Predicate("user",1));
-		CU_user.addArgument(usr);
-		
-		Set CU_Set = new HashSet<Variable>();
-		CU_Set.add(doc);
-		CU_Set.add(usr);
-		Condition CU_pre = new Condition(new ExistsQuantifiedFormula(new Conjunction( new Conjunction(CU_available, CU_order), new Conjunction(CU_neg, CU_user) ), CU_Set ));
-
-		Set<EvolutionScenario> CU_evo = new HashSet<>();
-		CapabilityEvolutionScenario CU_evo1 = new CapabilityEvolutionScenario("RegisteredUserWithCloud");
-		CU_evo1.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("registered", a_user)) ) );
-		CU_evo1.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("has_cloud_space", a_user)) ) );
-		CU_evo1.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("user", a_user)) ) );
-		CU_evo1.addOperator( new RemoveStatement( new ExtDLPHead(new DLPAtom("user_data", the_user_data)) ) );
-		CU_evo1.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("logged", a_user)) ) );
-		CU_evo.add(CU_evo1);
-		CapabilityEvolutionScenario CU_evo2 = new CapabilityEvolutionScenario("RegisteredUserWithoutCloud");
-		CU_evo2.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("registered", a_user)) ) );
-		CU_evo2.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("user", a_user)) ) );
-		CU_evo2.addOperator( new RemoveStatement( new ExtDLPHead(new DLPAtom("user_data", the_user_data)) ) );
-		CU_evo2.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("logged", a_user)) ) );
-		CU_evo.add(CU_evo2);
-		CapabilityEvolutionScenario CU_evo3 = new CapabilityEvolutionScenario("KnownUser");
-		CU_evo3.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("complete", the_user_data)) ) );
-		CU_evo3.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("user_data", the_user_data)) ) );
-		CU_evo3.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("unregistered", a_user)) ) );
-		CU_evo3.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("user", a_user)) ) );
-		CU_evo3.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("logged", a_user)) ) );
-		CU_evo.add(CU_evo3);
-		CapabilityEvolutionScenario CU_evo4 = new CapabilityEvolutionScenario("UnknownUser");
-		CU_evo4.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("uncomplete", the_user_data)) ) );
-		CU_evo4.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("user_data", the_user_data)) ) );
-		CU_evo4.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("unregistered", a_user)) ) );
-		CU_evo4.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("user", a_user)) ) );
-		CU_evo4.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("logged", a_user)) ) );
-		CU_evo.add(CU_evo4);
-		
-		AbstractCapability CU = new AbstractCapability("check_user", CU_evo, CU_pre, null);
-		
-		/*add_user*/
-		FOLAtom AU_complete = new FOLAtom( new Predicate("complete",1));
-		AU_complete.addArgument(doc);
-		FOLAtom AU_user_data = new FOLAtom( new Predicate("user_data",1));
-		AU_user_data.addArgument(doc);
-		FOLAtom AU_unregistered = new FOLAtom( new Predicate("unregistered",1));
-		AU_unregistered.addArgument(usr);
-		FOLAtom AU_user = new FOLAtom( new Predicate("user",1));
-		AU_user.addArgument(usr);
-		Set AU_Set = new HashSet<Variable>();
-		AU_Set.add(doc);
-		AU_Set.add(usr);
-		Condition AU_pre = new Condition(new ExistsQuantifiedFormula(new Conjunction(new Conjunction(AU_complete, AU_user_data), new Conjunction(AU_unregistered, AU_user)), AU_Set));
-
-		Set<EvolutionScenario> AU_evo = new HashSet<>();
-		CapabilityEvolutionScenario AU_evo1 = new CapabilityEvolutionScenario("RegisteredUser");
-		AU_evo1.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("registered", a_user)) ) );
-		AU_evo1.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("user", a_user)) ) );
-		AU_evo1.addOperator(new RemoveStatement(new ExtDLPHead(new DLPAtom("unregistered", a_user))));
-		AU_evo1.addOperator(new RemoveStatement(new ExtDLPHead(new DLPAtom("complete", the_user_data))));
-		AU_evo1.addOperator(new RemoveStatement(new ExtDLPHead(new DLPAtom("user_data", the_user_data))));
-		AU_evo.add(AU_evo1);
-		
-		AbstractCapability AU = new AbstractCapability("add_user", AU_evo, AU_pre, null);
-		
-		/*check_storehouse*/
-		FOLAtom CS_available = new FOLAtom( new Predicate("available",1));
-		CS_available.addArgument(doc);
-		FOLAtom CS_order = new FOLAtom( new Predicate("order",1));
-		CS_order.addArgument(doc);
-		FOLAtom CS_registered = new FOLAtom( new Predicate("registered",1));
-		CS_registered.addArgument(usr);
-		FOLAtom CS_user = new FOLAtom( new Predicate("user",1));
-		CS_user.addArgument(usr);
-		Set CS_Set = new HashSet<Variable>();
-		CS_Set.add(doc);
-		CS_Set.add(usr);
-		Condition CS_pre = new Condition(new ExistsQuantifiedFormula( new Conjunction(new Conjunction(CS_available, CS_order), new Conjunction(CS_registered, CS_user)), CS_Set ));
-
-		Set<EvolutionScenario> CS_evo = new HashSet<>();
-		CapabilityEvolutionScenario CS_evo1 = new CapabilityEvolutionScenario("AcceptableOrder");
-		CS_evo1.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("accepted", an_order)) ) );
-		CS_evo1.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("order", an_order)) ) );
-		CS_evo1.addOperator( new RemoveStatement( new ExtDLPHead(new DLPAtom("available", an_order)) ) );
-		CS_evo.add(CS_evo1);
-		CapabilityEvolutionScenario CS_evo2 = new CapabilityEvolutionScenario("UnacceptableOrder");
-		CS_evo2.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("refused", an_order)) ) );
-		CS_evo2.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("order", an_order)) ) );
-		CS_evo2.addOperator( new RemoveStatement( new ExtDLPHead(new DLPAtom("available", an_order)) ) );
-		CS_evo.add(CS_evo2);
-		
-		AbstractCapability CS = new AbstractCapability("check_storehouse", CS_evo, CS_pre, null);
-		
-		/*notify_storehouse_manager*/
-		FOLAtom NSM_notified = new FOLAtom( new Predicate("notified",2));
-		NSM_notified.addArgument(doc);
-		NSM_notified.addArgument(usr);
-		FOLAtom NSM_invoice = new FOLAtom( new Predicate("invoice",1));
-		NSM_invoice.addArgument(doc);
-		FOLAtom NSM_user = new FOLAtom( new Predicate("user",1));
-		NSM_user.addArgument(usr);
-		Set NSM_Set = new HashSet<Variable>();
-		NSM_Set.add(doc);
-		NSM_Set.add(usr);
-		FOLAtom NSM_sent = new FOLAtom ( new Predicate("sent",2));
-		NSM_sent.addArgument(doc);
-		NSM_sent.addArgument(usr);
-		Negation NSM_notSent = new Negation(NSM_sent);
-		Condition NSM_pre = new Condition(new ExistsQuantifiedFormula( new Conjunction(new Conjunction(NSM_notified, NSM_notSent), new Conjunction(NSM_invoice, NSM_user)), NSM_Set ));
-
-		Set<EvolutionScenario> NSM_evo = new HashSet<>();
-		CapabilityEvolutionScenario NSM_evo1 = new CapabilityEvolutionScenario("SentDeliveryOrderToStorehouseManager");
-		NSM_evo1.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("sent", the_delivery_order , a_storehouse_manager)) ) );
-		NSM_evo1.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("delivery_order", the_delivery_order)) ) );
-		NSM_evo1.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("storehouse_manager", a_storehouse_manager)) ) );
-		NSM_evo.add(NSM_evo1);
-		
-		AbstractCapability NSM = new AbstractCapability("notify_storehouse_manager", NSM_evo, NSM_pre, null);
-		
-		/*share_file_link*/
-		FOLAtom SFL_uploaded_on_cloud = new FOLAtom( new Predicate("uploaded_on_cloud",1));
-		SFL_uploaded_on_cloud.addArgument(doc);
-		FOLAtom SFL_invoice = new FOLAtom( new Predicate("invoice",1));
-		SFL_invoice.addArgument(doc);
-		FOLAtom SFL_not_has_cloud_space = new FOLAtom( new Predicate("has_cloud_space",1));
-		SFL_not_has_cloud_space.addArgument(usr);
-		Negation neg2 = new Negation(SFL_not_has_cloud_space);
-		FOLAtom SFL_user = new FOLAtom( new Predicate("user",1));
-		SFL_user.addArgument(usr);
-		FOLAtom SFL_mailed = new FOLAtom( new Predicate("mailed_perm_link",2));
-		SFL_mailed.addArgument(doc);
-		SFL_mailed.addArgument(usr);
-		Negation SFL_notMailed = new Negation(SFL_mailed);
-		Set SFL_Set = new HashSet<Variable>();
-		SFL_Set.add(doc);
-		SFL_Set.add(usr);
-		Condition SFL_pre = new Condition(new ExistsQuantifiedFormula(new Conjunction( new Conjunction(new Conjunction(SFL_uploaded_on_cloud, SFL_invoice), new Conjunction(neg2, SFL_user)), SFL_notMailed), SFL_Set ));
-
-		
-		Set<EvolutionScenario> SFL_evo = new HashSet<>();
-		CapabilityEvolutionScenario SFL_evo1 = new CapabilityEvolutionScenario("MailedPermLink");
-		SFL_evo1.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("mailed_perm_link", the_invoice, a_user)) ) );
-		SFL_evo1.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("user", a_user)) ) );
-		SFL_evo.add(SFL_evo1);
-		
-		AbstractCapability SFL = new AbstractCapability("share_file_link", SFL_evo, SFL_pre, null);
-		
 		/*generate_invoice*/
 		FOLAtom GI_accepted = new FOLAtom( new Predicate("accepted",1));
 		GI_accepted.addArgument(doc);
@@ -509,18 +356,66 @@ public class ProblemExplorationArtifact extends Artifact {
 		AbstractCapability UOPCS = new AbstractCapability("upload_on_private_cloud_storage", UOPCS_evo, UOPCS_pre, null);
 		
 		
+		/*share_file_link*/
+		FOLAtom SFL_uploaded_on_cloud = new FOLAtom( new Predicate("uploaded_on_cloud",1));
+		SFL_uploaded_on_cloud.addArgument(doc);
+		FOLAtom SFL_invoice = new FOLAtom( new Predicate("invoice",1));
+		SFL_invoice.addArgument(doc);
+		FOLAtom SFL_not_has_cloud_space = new FOLAtom( new Predicate("has_cloud_space",1));
+		SFL_not_has_cloud_space.addArgument(usr);
+		Negation neg2 = new Negation(SFL_not_has_cloud_space);
+		FOLAtom SFL_user = new FOLAtom( new Predicate("user",1));
+		SFL_user.addArgument(usr);
+		FOLAtom SFL_mailed = new FOLAtom( new Predicate("mailed_perm_link",2));
+		SFL_mailed.addArgument(doc);
+		SFL_mailed.addArgument(usr);
+		Negation SFL_notMailed = new Negation(SFL_mailed);
+		Set SFL_Set = new HashSet<Variable>();
+		SFL_Set.add(doc);
+		SFL_Set.add(usr);
+		Condition SFL_pre = new Condition(new ExistsQuantifiedFormula(new Conjunction( new Conjunction(new Conjunction(SFL_uploaded_on_cloud, SFL_invoice), new Conjunction(neg2, SFL_user)), SFL_notMailed), SFL_Set ));
+
 		
+		Set<EvolutionScenario> SFL_evo = new HashSet<>();
+		CapabilityEvolutionScenario SFL_evo1 = new CapabilityEvolutionScenario("MailedPermLink");
+		SFL_evo1.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("mailed_perm_link", the_invoice, a_user)) ) );
+		SFL_evo1.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("user", a_user)) ) );
+		SFL_evo.add(SFL_evo1);
 		
-		list.add(CU);
-		list.add(AU);
-		list.add(CS);
-		list.add(NSM);
+		AbstractCapability SFL = new AbstractCapability("share_file_link", SFL_evo, SFL_pre, null);
+		
+		/*notify_stock_failure*/
+		FOLAtom NSF_refused = new FOLAtom( new Predicate("refused",1));
+		NSF_refused.addArgument(doc);
+		FOLAtom NSF_order = new FOLAtom( new Predicate("order",1));
+		NSF_order.addArgument(doc);
+		FOLAtom NSF_registered = new FOLAtom( new Predicate("registered",1));
+		NSF_registered.addArgument(usr);
+		FOLAtom NSF_user = new FOLAtom( new Predicate("user",1));
+		NSF_user.addArgument(usr);
+		FOLAtom NSF_sent = new FOLAtom( new Predicate("sent",2));
+		NSF_sent.addArgument(doc);
+		NSF_sent.addArgument(usr);
+		Negation NSF_notSent = new Negation(NSF_sent);
+		Set<Variable> NSF_Set = new HashSet<Variable>();
+		NSF_Set.add(doc);
+		NSF_Set.add(usr);
+		Condition NSF_pre = new Condition(new ExistsQuantifiedFormula(new Conjunction( new Conjunction(new Conjunction(NSF_refused, NSF_order), new Conjunction(NSF_registered, NSF_user)), NSF_notSent), NSF_Set ));
+
+		Set<EvolutionScenario> NSF_evo = new HashSet<>();
+		CapabilityEvolutionScenario NSF_evo1 = new CapabilityEvolutionScenario("Failure");
+		NSF_evo1.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("sent", failure_order, a_user)) ) );
+		NSF_evo1.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("user", a_user)) ) );
+		NSF_evo.add(NSF_evo1);
+		
+		AbstractCapability NSF = new AbstractCapability("notify_stock_failure", NSF_evo, NSF_pre, null);
+		
 		
 		list.add(UOPCS);
-		list.add(UOUCS);
-		//list.add(GI);
-		
-		list.add(SFL);
+		//list.add(UOUCS);
+		//list.add(SFL);
+		list.add(GI);
+		list.add(NSF);
 		return list;
 	}
 	

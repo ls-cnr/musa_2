@@ -59,5 +59,8 @@
 	
 	?auction_loop_delay(SpecIdString,AuctionDelay);
 	.wait(AuctionDelay);
+	
+	//print_graph[artifact_id(AccessManagerId)];
+	
 	!!auction_loop(SpecId);
 .

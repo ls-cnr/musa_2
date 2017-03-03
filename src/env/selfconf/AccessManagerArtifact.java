@@ -10,7 +10,9 @@ import jason.asSyntax.Term;
 import layer.semantic.StateOfWorld;
 import pmr.graph.WorldNode;
 import pmr.probexp.ENode;
+import pmr.probexp.ExpansionNode;
 import translator.JasonENode;
+import translator.JasonExpansionNode;
 import translator.JasonStateOfWorld;
 import translator.TranslateError;
 import pmr.auction.Bid;
@@ -86,7 +88,6 @@ public class AccessManagerArtifact extends Artifact {
 	@OPERATION
 	void bid(int auction_id,String participant, double utility) {
 		if (auction_id == this.auction_id && bid_phase==true) {
-			System.out.println("SONO DENTRO BID");
 			bids.add(new Bid(participant,utility));
 		}
 	}
@@ -95,13 +96,28 @@ public class AccessManagerArtifact extends Artifact {
 	/* interface: GRANT ACCESS */
 	@OPERATION
 	void apply_changes(String expansion) {
+		ExpansionNode exp;
 		try {
-			execLinkedOp("mygraph","expand",expansion);
+			execLinkedOp("mygraph","expand",expansion, spec_id_string);
+			exp = JasonExpansionNode.term_string_to_object(expansion);
+			for(ENode temp : exp.getDestination()){
+				Term term=JasonENode.object_to_term(temp);
+				signal("announcement_new_node",spec_id_string,term);
+			}
+		} catch (OperationException e) {
+			e.printStackTrace();
+		} catch(TranslateError t){return;}
+	}
+	
+	
+	@OPERATION
+	void print_graph() {
+		try {
+			execLinkedOp("mygraph","printGraph");
 		} catch (OperationException e) {
 			e.printStackTrace();
 		}
 	}
-	
 	
 	
 //	private WorldNode get_initial_node_for_test() {

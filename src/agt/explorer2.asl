@@ -19,8 +19,8 @@
 +!start 
 <- 
 	focusWhenAvailable("agent_directory");
-	.my_name(MyName1);
-	register(MyName1);
+	.my_name(MyName2);
+	register(MyName2);
 	
 .
 
@@ -38,9 +38,8 @@
 	focusWhenAvailable(GraphAccessManager);
 	
 	.concat("pe_",SpecIdString,ArtifactNameTemp);
-	.concat(MyName1, ArtifactNameTemp, ArtifactName);
-	makeArtifact(ArtifactName,"selfconf.ProblemExplorationArtifact",[],PEId);
-	makeArtifact("copia","selfconf.ProblemExplorationArtifact",[],PEId2);
+	.concat(MyName2, ArtifactNameTemp, ArtifactName);
+	makeArtifact(ArtifactName,"selfconf.ProblemExplorationArtifact2",[],PEId);
 	.println("Created ", ArtifactName ," for ( ", SpecIdString," ) ArtifactName: ", PEId);
 	
 	+problem_exploration_info(SpecIdString,ArtifactName);	// this for storing essential info about the problem exploration
@@ -93,4 +92,3 @@
 	.wait(ExpandLoopDelay);
 	!expand_local_graph_loop(SpecIdString);
 .
-

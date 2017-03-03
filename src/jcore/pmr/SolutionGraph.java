@@ -161,4 +161,9 @@ public class SolutionGraph {
 	public ArrayList<ArrayList<WorldNode>> getSolutions(){
 		return this.wts.getSolutions(new WorldNode(null), this.exitNodeMap);
 	}
+	
+	
+	public void printGraph(){
+		this.wts.printGraph();
+	}
 }

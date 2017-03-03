@@ -91,11 +91,12 @@ public class ProblemExploration {
 		
 		visited.add(enode.getWorldState());
 		
-		for( AbstractCapability capability : capabilities ){
-			
+		for( int i = 0; i < capabilities.size(); i++ ){
+			AbstractCapability capability = capabilities.get(i);
 			if(DomainEntail.getInstance().entailsCondition(enode.getWorldState(), this.assumptions, capability.getPreCondition()) == true){
 				//Starts the expansion
 
+				System.out.println("sto usando la capability: "+capability.getId());
 				ExpansionNode expNode = applyExpand(enode, capability);
 				
 				if (expNode == null)	return;

@@ -21,6 +21,12 @@ mas musa_2_0 {
     agent explorer1 {
     		join: musa_wp
     }
+    agent explorer2 {
+    		join: musa_wp
+    }
+    agent explorer3 {
+    		join: musa_wp
+    }
 
 	workspace musa_wp {
 	    artifact agent_directory: directory.AgentDirectory()
