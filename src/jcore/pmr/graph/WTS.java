@@ -16,9 +16,12 @@ import pmr.probexp.NormalExpansionNode;
  * @author Alessandro Fontana
  */
 public class WTS {
+
 	
 	/** The graph. Use an HashMap as implementation to make the computational cost of the operations constant */
 	private HashMap<WorldNode, WorldNode> graph;
+	
+	private WorldNode start;
 
 	/**
 	 * Instantiates a new wts. The root is a WorldNode with a null StateOfWorld
@@ -34,7 +37,13 @@ public class WTS {
 	 *            the first StateOfWorld
 	 */
 	public void setInitialState(StateOfWorld state){
-		this.graph.put(new WorldNode(state), new WorldNode(state));
+		this.start = new WorldNode(state);
+		//this.graph.put(start, start);
+		addSafeNode(this.start);
+	}
+	
+	public WorldNode getInitialState(){
+		return this.start;
 	}
 	
 	
@@ -291,8 +300,17 @@ public class WTS {
 		System.out.println("\nNUOVA STAMPA\n\n");
 		while(i.hasNext()){
 			WorldNode temp = (WorldNode)i.next();
-			System.out.println(temp.getWorldState() + "\n");
+			//System.out.println("Node "+temp.getId());
+			//System.out.println(temp.getWorldState() + "\n");
+			for( NormalEdge e : temp.getOutcomingEdgeList()){
+				System.out.println("Node"+temp.getId()+" -> "+"Node"+e.getDestination().getId());
+			}
 			
+			for( OPNode opNode : temp.getOPNodeList()){
+				for( EvolutionEdge ee : opNode.getOutcomingEdge()){
+					System.out.println("Node"+temp.getId() + " -> " +"Node"+ ee.getDestination().getId());
+				}
+			}
 		}
 	}
 		

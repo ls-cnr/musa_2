@@ -12,6 +12,10 @@ import translator.ExtDLPHead;
  * The Class WorldNode. It's the standard node of the graph of the solutions. It implements the Node Interface
  */
 public class WorldNode implements Node {
+	
+	private static int counter = 0;
+	
+	private int id;
 
 	/** The world state. */
 	private StateOfWorld worldState;
@@ -40,6 +44,7 @@ public class WorldNode implements Node {
 	 */
 	public WorldNode(StateOfWorld worldState){
 		super();
+		this.id = counter++;
 		this.worldState = worldState;
 		if(worldState == null){
 			this.Nfacts = 0;
@@ -54,6 +59,10 @@ public class WorldNode implements Node {
 	}
 	
 	
+	public int getId() {
+		return id;
+	}
+
 	/**
 	 * Adds the incoming edge.
 	 *
