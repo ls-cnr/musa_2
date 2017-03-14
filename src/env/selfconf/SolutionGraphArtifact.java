@@ -37,6 +37,12 @@ public class SolutionGraphArtifact extends Artifact {
 		}
 	}
 
+	@LINK
+	void get_node_number(OpFeedbackParam<Integer> num) {
+		int n = graph.getWTS().size();
+		num.set(new Integer(n));
+	}
+	
 	/* interface: EXPAND */
 	@LINK
 	void expand(String expansion_node, String spec_id_string) {

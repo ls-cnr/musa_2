@@ -12,31 +12,24 @@
     <DATE>
 */
 
-mas musa_2_0 {
+mas spec_node_01 {
 
     agent specification_manager {
-    		join: musa_wp
+    		focus: common.agent_directory @ masternode
+    		join: my_spec_wp
     }
 
-    agent explorer1 {
-    		join: musa_wp
-    }
-    agent explorer2 {
-    		join: musa_wp
-    }
-    agent explorer3 {
-    		join: musa_wp
-    }
-
-	workspace musa_wp {
-	    artifact agent_directory: directory.AgentDirectory()
+ 	workspace my_spec_wp {
 	}
+
     
     class-path: lib, ext
         
     // agent source path
     asl-path: src/agt
               src/agt/inc
+
+    node masternode running @ 194.119.214.221
 
     platform: cartago("infrastructure")
     

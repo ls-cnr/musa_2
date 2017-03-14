@@ -11,29 +11,38 @@
  * goals e domain assumptions
  * sotto forma di beliefs
  */
-
+!start.
 
 /* Initial goals */
 
-!new_injection("spec01").
+
 
 /* Plans */
++!start
+<-
+	.println("HELLO");
+	!new_injection("spec01");
+.
 
 +!new_injection(SpecId) 
 : 
 	true 
 <- 
-	.wait(1000);
+	?joined(my_spec_wp,LocalWp);
+	//cartago.set_current_wsp(LocalWp);
 	
 	.concat("SG_", SpecId, SGArtifactName);
 	.concat("AM_", SpecId, AMArtifactName);
 
-	makeArtifact(AMArtifactName,"selfconf.AccessManagerArtifact",[SpecId],AccessManagerId);
-	makeArtifact(SGArtifactName,"selfconf.SolutionGraphArtifact",[],SolutionGraphId);	
+	makeArtifact(AMArtifactName,"selfconf.AccessManagerArtifact",[SpecId],AccessManagerId)[wsp(my_spec_wp)];//[artifact_id(ArtId)];//[wsp_id("node_local")];
+	makeArtifact(SGArtifactName,"selfconf.SolutionGraphArtifact",[],SolutionGraphId)[wsp(my_spec_wp)];//[artifact_id(ArtId)];//[wsp_id("node_local")];	
 	
-	broadcast_announce_WTS_creation(SpecId,AMArtifactName);
+	?joined(common,MainWp);
+	//cartago.set_current_wsp(MainWp);
+	broadcast_announce_WTS_creation(SpecId,LocalWp,AMArtifactName);
 	
-	linkArtifacts(AccessManagerId,"mygraph",SolutionGraphId);
+	//cartago.set_current_wsp(LocalWp);
+	linkArtifacts(AccessManagerId,"mygraph",SolutionGraphId)[wsp(my_spec_wp)];
 	.print("linking ", AccessManagerId, " to ", SolutionGraphId);	
 	
 	+solution_management_info(SpecId,AccessManagerId,SolutionGraphId);
@@ -49,18 +58,18 @@
 <-
 	?solution_management_info(SpecId,AccessManagerId,_);
 	
-	
-	.print("sto per far partire l'asta");	
+	get_number_of_nodes(N)[artifact_id(AccessManagerId)];
+	.print("num nodi ",N);	
 	
 	startAuction[artifact_id(AccessManagerId)];
 	.wait(100);
 	closeAuction[artifact_id(AccessManagerId)];
 	
-	
-	?auction_loop_delay(SpecIdString,AuctionDelay);
-	.wait(AuctionDelay);
-	
-	//print_graph[artifact_id(AccessManagerId)];
-	
-	!!auction_loop(SpecId);
+	if (N<19) {
+		?auction_loop_delay(SpecIdString,AuctionDelay);
+		.wait(AuctionDelay);
+		!!auction_loop(SpecId);
+	} else {
+		print_graph[artifact_id(AccessManagerId)];
+	}
 .

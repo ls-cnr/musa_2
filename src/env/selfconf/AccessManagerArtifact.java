@@ -55,7 +55,17 @@ public class AccessManagerArtifact extends Artifact {
 		} catch (OperationException | TranslateError e) {
 			e.printStackTrace();
 		}
-}
+	}
+	
+	@OPERATION
+	void get_number_of_nodes(OpFeedbackParam<Integer> num) {
+		try {
+			execLinkedOp("mygraph","get_node_number",num);
+		} catch (OperationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 
 	/* interface: MANAGE AUCTION */
 	@OPERATION

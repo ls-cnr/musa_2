@@ -18,9 +18,10 @@
 
 +!start 
 <- 
-	focusWhenAvailable("agent_directory");
 	.my_name(MyName1);
-	register(MyName1);
+
+	?focused(common,agent_directory, ArtId);
+	register(MyName1)[artifact_id(ArtId)];
 	
 .
 
@@ -33,9 +34,13 @@
  * 4) focuses on global WTS artifact for New Node Event
  * 5) start a Expand-Evaluation Loop
  */
-+announcement_WTS_creation(SpecIdString,GraphAccessManager)
++announcement_WTS_creation(SpecIdString,Workspace,GraphAccessManager)
 <-
+	.println("new WTS");
+	joinRemoteWorkspace(Workspace,"194.119.214.197",RemoteWS);
+	.println("joining ",RemoteWS);
 	focusWhenAvailable(GraphAccessManager);
+	.println("focused new WTS");
 	
 	.concat("pe_",SpecIdString,ArtifactNameTemp);
 	.concat(MyName1, ArtifactNameTemp, ArtifactName);

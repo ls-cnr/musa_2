@@ -15,12 +15,12 @@
 
 /* Plans */
 
-
 +!start 
 <- 
-	focusWhenAvailable("agent_directory");
-	.my_name(MyName3);
-	register(MyName3);
+	.my_name(MyName1);
+
+	?focused(common,agent_directory, ArtId);
+	register(MyName1)[artifact_id(ArtId)];
 	
 .
 
@@ -33,14 +33,13 @@
  * 4) focuses on global WTS artifact for New Node Event
  * 5) start a Expand-Evaluation Loop
  */
-+announcement_WTS_creation(SpecIdString,GraphAccessManager)
++announcement_WTS_creation(SpecIdString,Workspace,GraphAccessManager)
 <-
+	.println("new WTS");
+	joinRemoteWorkspace(Workspace,"194.119.214.197",RemoteWS);
+	.println("joining ",RemoteWS);
 	focusWhenAvailable(GraphAccessManager);
-	
-	.concat("pe_",SpecIdString,ArtifactNameTemp);
-	.concat(MyName3, ArtifactNameTemp, ArtifactName);
-	makeArtifact(ArtifactName,"selfconf.ProblemExplorationArtifact3",[],PEId);
-	.println("Created ", ArtifactName ," for ( ", SpecIdString," ) ArtifactName: ", PEId);
+	.println("focused new WTS");
 	
 	+problem_exploration_info(SpecIdString,ArtifactName);	// this for storing essential info about the problem exploration
 	+expand_loop_dalay(SpecIdString,200);				// this allows to change loop frequency during the execution
