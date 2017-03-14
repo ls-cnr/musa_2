@@ -39,7 +39,7 @@ public class SolutionGraphArtifact extends Artifact {
 
 	@LINK
 	void get_node_number(OpFeedbackParam<Integer> num) {
-		int n = graph.getWTS().size();
+		int n = graph.getWTSHashmap().size();
 		num.set(new Integer(n));
 	}
 	
