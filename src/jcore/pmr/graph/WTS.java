@@ -297,7 +297,7 @@ public class WTS {
 	
 	public void printGraph(){
 		Iterator<WorldNode> i = this.graph.keySet().iterator();
-		System.out.println("\nNUOVA STAMPA\n\n");
+		System.out.println("\n graphviz\n \n");
 		while(i.hasNext()){
 			WorldNode temp = (WorldNode)i.next();
 			//System.out.println("Node "+temp.getId());
