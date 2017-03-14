@@ -424,4 +424,6 @@ public class ProblemExploration {
 	public ArrayList<ENode> getToVisit(){
 		return this.toVisit;
 	}
+	
+	
 }

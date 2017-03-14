@@ -45,8 +45,12 @@ public class SolutionGraph {
 	 *
 	 * @return the graph
 	 */
-	public HashMap<WorldNode, WorldNode> getWTS(){
+	public HashMap<WorldNode, WorldNode> getWTSHashmap(){
 		return this.wts.getWTS();
+	}
+	
+	public WTS getWTS() {
+		return wts;
 	}
 	
 	/**
