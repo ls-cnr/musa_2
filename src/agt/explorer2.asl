@@ -41,6 +41,12 @@
 	focusWhenAvailable(GraphAccessManager);
 	.println("focused new WTS");
 	
+	.concat("pe_",SpecIdString,ArtifactNameTemp);
+	.concat(MyName1, ArtifactNameTemp, ArtifactName);
+	makeArtifact(ArtifactName,"selfconf.ProblemExplorationArtifact2",[],PEId);
+	//makeArtifact("copia","selfconf.ProblemExplorationArtifact",[],PEId2);
+	.println("Created ", ArtifactName ," for ( ", SpecIdString," ) ArtifactName: ", PEId);
+
 	+problem_exploration_info(SpecIdString,ArtifactName);	// this for storing essential info about the problem exploration
 	+expand_loop_dalay(SpecIdString,200);				// this allows to change loop frequency during the execution
 	
