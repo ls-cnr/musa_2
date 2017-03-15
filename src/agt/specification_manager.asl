@@ -39,7 +39,7 @@
 	
 	?joined(common,MainWp);
 	//cartago.set_current_wsp(MainWp);
-	broadcast_announce_WTS_creation(SpecId,LocalWp,AMArtifactName);
+	broadcast_announce_WTS_creation(SpecId,my_spec_wp,AMArtifactName);
 	
 	//cartago.set_current_wsp(LocalWp);
 	linkArtifacts(AccessManagerId,"mygraph",SolutionGraphId)[wsp(my_spec_wp)];
