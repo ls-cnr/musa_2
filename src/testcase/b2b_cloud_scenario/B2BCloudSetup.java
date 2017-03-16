@@ -927,7 +927,7 @@ public class B2BCloudSetup {
 		THO_processed.addArgument(doc);
 		Condition THO_fs = new Condition(new ExistsQuantifiedFormula(new Conjunction(THO_processed, THO_order), doc));
 
-		Goal THO = new Goal("to_handle_order", THO_tc, THO_fs);
+		THO = new Goal("to_handle_order", THO_tc, THO_fs);
 
 		/* to_wait_order */
 		FOLAtom TWO_received = new FOLAtom(new Predicate("received", 2));
@@ -947,7 +947,7 @@ public class B2BCloudSetup {
 		TWO_available.addArgument(doc);
 		Condition TWO_fs = new Condition(new ExistsQuantifiedFormula(new Conjunction(TWO_available, TWO_order), doc));
 
-		Goal TWO = new Goal("to_wait_order", TWO_tc, TWO_fs);
+		 TWO = new Goal("to_wait_order", TWO_tc, TWO_fs);
 
 		/* to_process_order */
 		FOLAtom TPO_available = new FOLAtom(new Predicate("available", 1));
@@ -969,7 +969,7 @@ public class B2BCloudSetup {
 		TPO_processed.addArgument(doc);
 		Condition TPO_fs = new Condition(new ExistsQuantifiedFormula(new Conjunction(TPO_processed, TPO_order), doc));
 
-		Goal TPO = new Goal("to_process_order", TPO_tc, TPO_fs);
+		 TPO = new Goal("to_process_order", TPO_tc, TPO_fs);
 
 		/* to_process_accepted_order */
 		FOLAtom TPAO_accepted = new FOLAtom(new Predicate("accepted", 1));
@@ -991,7 +991,7 @@ public class B2BCloudSetup {
 		Condition TPAO_fs = new Condition(new ExistsQuantifiedFormula(
 				new Conjunction(TPAO_send, new Conjunction(TPAO_delivery, TPAO_manager)), TPAO_var));
 
-		Goal TPAO = new Goal("to_process_accepted_order", TPAO_tc, TPAO_fs);
+		 TPAO = new Goal("to_process_accepted_order", TPAO_tc, TPAO_fs);
 
 		/* to_notify_invoce */
 		FOLAtom TNI_registered = new FOLAtom(new Predicate("registered", 1));
@@ -1018,7 +1018,7 @@ public class B2BCloudSetup {
 		Condition TNI_fs = new Condition(new ExistsQuantifiedFormula(
 				new Conjunction(TNI_send, new Conjunction(TNI_invoice, TNI_user)), TNI_var2));
 
-		Goal TNI = new Goal("to_notify_invoice", TNI_tc, TNI_fs);
+		 TNI = new Goal("to_notify_invoice", TNI_tc, TNI_fs);
 
 		/* to_deliver_order */
 		FOLAtom TDO_send = new FOLAtom(new Predicate("sent", 2));
@@ -1044,7 +1044,7 @@ public class B2BCloudSetup {
 		Condition TDO_fs = new Condition(new ExistsQuantifiedFormula(
 				new Conjunction(TDO_send, new Conjunction(TDO_delivery, TDO_manager)), TDO_var2));
 
-		Goal TDO = new Goal("to_delivery_order", TDO_tc, TDO_fs);
+		 TDO = new Goal("to_delivery_order", TDO_tc, TDO_fs);
 
 		/* to_notify_failure */
 		FOLAtom TNF_refused = new FOLAtom(new Predicate("refused", 1));
@@ -1067,7 +1067,7 @@ public class B2BCloudSetup {
 		TNF_send.addArgument(usr);
 		Condition TNF_fs = new Condition(new ExistsQuantifiedFormula(new Conjunction(TNF_send, TNF_user), usr));
 
-		Goal TNF = new Goal("to_notify_failure", TNF_tc, TNF_fs);
+		 TNF = new Goal("to_notify_failure", TNF_tc, TNF_fs);
 	}
 
 	/**
