@@ -7,7 +7,6 @@ import org.junit.Test;
 
 import b2b_cloud_scenario.B2BCloudSetup;
 import configuration.SolutionTree;
-import jason.asunit.print;
 import pmr.SolutionGraph;
 import pmr.graph.EvolutionEdge;
 import pmr.graph.NormalEdge;

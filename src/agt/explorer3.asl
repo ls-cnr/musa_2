@@ -36,11 +36,13 @@
 +announcement_WTS_creation(SpecIdString,Workspace,GraphAccessManager)
 <-
 	.println("new WTS");
-	joinRemoteWorkspace(Workspace,"194.119.214.197",RemoteWS);
+	.term2string(WP, Workspace)
+	 joinRemoteWorkspace(WP,"194.119.214.197",RemoteWS);
 	.println("joining ",RemoteWS);
 	focusWhenAvailable(GraphAccessManager);
 	.println("focused new WTS");
 	
+	.my_name(MyName1);
 	.concat("pe_",SpecIdString,ArtifactNameTemp);
 	.concat(MyName1, ArtifactNameTemp, ArtifactName);
 	makeArtifact(ArtifactName,"selfconf.ProblemExplorationArtifact3",[],PEId);
