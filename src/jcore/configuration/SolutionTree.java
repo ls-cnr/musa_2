@@ -16,7 +16,6 @@ import pmr.graph.WorldNode;
  * @author Mirko Avantaggiato
  *
  */
-@SuppressWarnings("unused")
 public class SolutionTree {
 
 	private TreeNode root;
@@ -26,54 +25,11 @@ public class SolutionTree {
 	private HashMap<WorldNode, WorldNode> success_nodes;
 
 	/* temp */
-	private HashMap<WorldNode, WorldNode> failure_nodes;
-	private HashMap<WorldNode, ArrayList<OPNode>> xor_nodes;
 
-	private ArrayList<ArrayList<TreeNode>> pathList;
-
-	/**
-	 * This method produces the lists of xor_nodes and failure_nodes
-	 * 
-	 * @param w0
-	 *            initial state
-	 * @param success_nodes
-	 *            success states
-	 * @param failure_nodes
-	 *            leaf node that aren't success nodes, found during the visit;
-	 * @param visited
-	 *            visited node in this DFS-like visit
-	 * @param xor_nodes
-	 *            xor_nodes found during the visit
-	 */
-	public void preliminaryVisit(WorldNode w0, HashMap<WorldNode, WorldNode> visited) {
-
-		/*
-		 * If w0 has no outgoing edge and it's not contained in success_nodes,
-		 * it means it is a failure node, so it is put in the appropriate map.
-		 */
-		if (w0.getOutcomingEdgeList().isEmpty()) {
-			if (!success_nodes.containsKey(w0))
-				this.failure_nodes.put(w0, w0);
-
-			return;
-		}
-		visited.put(w0, w0);
-		/* TODO controllo null */
-		this.xor_nodes.put(w0, w0.getOPNodeList());
-
-		for (NormalEdge normalEdge : w0.getOutcomingEdgeList())
-			if (!visited.containsKey(normalEdge.getDestination()))
-				preliminaryVisit(normalEdge.getDestination(), visited);
-
-		for (OPNode opNode : w0.getOPNodeList()) {
-			for (EvolutionEdge evolutionEdge : opNode.getOutcomingEdge()) {
-				if (!visited.containsKey(evolutionEdge.getDestination()))
-					preliminaryVisit(evolutionEdge.getDestination(), visited);
-			}
-		}
-
-		visited.remove(w0);
-	}
+	private HashMap<String, WorldNode> successNodesString;
+	private HashMap<String, WorldNode> failureNodesString;
+	private HashMap<String, ArrayList<OPNode>> xorNodesString;
+	private HashMap<String, WorldNode> wtsString;
 
 	/**
 	 * @param wts
@@ -84,8 +40,83 @@ public class SolutionTree {
 	public SolutionTree(WTS wts, HashMap<WorldNode, WorldNode> success_nodes) {
 		this.wts = wts;
 		this.success_nodes = success_nodes;
-		this.xor_nodes = new HashMap<>();
-		this.failure_nodes = new HashMap<>();
+
+		this.successNodesString = new HashMap<>();
+		this.xorNodesString = new HashMap<>();
+		this.failureNodesString = new HashMap<>();
+		this.wtsString = new HashMap<>();
+
+		/* Copio il WTS in una struttura <Stringa, WorldNode> */
+		for (WorldNode w : this.wts.getWTS().keySet())
+			this.wtsString.put(w.getWorldState().toString(), this.wts.getWTS().get(w));
+
+		/*
+		 * Copio il gli stati di successo in una struttura <Stringa, WorldNode>
+		 */
+		if (success_nodes.size() == 0)
+			System.out.println("WARNING: empty success_nodes in input. Nothing to add.");
+		for (WorldNode w : success_nodes.keySet())
+			this.successNodesString.put(w.getWorldState().toString(), this.wts.getWTS().get(w));
+
+		/*
+		 * TODO aggiungo manualmente 2 stati finali, dal momento che mi arriva
+		 * in input una struttura vuota (!?)
+		 */
+		System.out.println("Manually adding 2 success states");
+		this.successNodesString.put(
+				"order(an_order)\nuser(a_user)\nregistered(a_user)\nlogged(a_user)\nrefused(an_order)\n", this.wtsString
+						.get("order(an_order)\nuser(a_user)\nregistered(a_user)\nlogged(a_user)\nrefused(an_order)\n"));
+
+		this.successNodesString.put(
+				"invoice(the_invoice)\norder(an_order)\nuser(a_user)\nregistered(a_user)\nlogged(a_user)\naccepted(an_order)\navailable(the_invoice)\nuploaded_on_cloud(the_invoice)\nmailed_perm_link(the_invoice, a_user)\nstorehouse_manager(a_storehouse_manager)\ndelivery_order(the_delivery_order)\nsent(the_delivery_order, a_storehouse_manager)\n",
+				this.wtsString.get(
+						"invoice(the_invoice)\norder(an_order)\nuser(a_user)\nregistered(a_user)\nlogged(a_user)\naccepted(an_order)\navailable(the_invoice)\nuploaded_on_cloud(the_invoice)\nmailed_perm_link(the_invoice, a_user)\nstorehouse_manager(a_storehouse_manager)\ndelivery_order(the_delivery_order)\nsent(the_delivery_order, a_storehouse_manager)\n"));
+	}
+
+	/**
+	 * This method produces the lists of xor_nodes and failure_nodes
+	 * 
+	 * @param w0
+	 *            initial state
+	 * @param visited
+	 *            support variable
+	 */
+
+	public void preliminaryVisit(WorldNode w0, HashMap<String, WorldNode> visited) {
+
+		/*
+		 * If w0 has no outgoing edge and it's not contained in success_nodes,
+		 * it means it is a failure node, so it is put in the appropriate map.
+		 */
+
+		visited.put(w0.getWorldState().toString(), w0);
+		if (w0.getOutcomingEdgeList().size() == 0)
+			if (w0.getOPNodeList().size() == 0)
+				if (this.successNodesString.containsKey(w0.getWorldState().toString()) == false)
+					this.failureNodesString.put(w0.getWorldState().toString(), w0);
+
+		if (w0.getOPNodeList().isEmpty() == false)
+			this.xorNodesString.put(w0.getWorldState().toString(), w0.getOPNodeList());
+
+		for (NormalEdge nE : w0.getOutcomingEdgeList())
+			if (!visited.containsKey(nE.getDestination().getWorldState().toString())) {
+				visited.put(nE.getDestination().getWorldState().toString(), nE.getDestination());
+				WorldNode to_visit = wtsString.get(nE.getDestination().getWorldState().toString());
+				preliminaryVisit(to_visit, visited);
+				visited.remove(nE.getDestination().getWorldState().toString());
+			}
+
+		for (OPNode opNode : w0.getOPNodeList()) {
+			for (EvolutionEdge eE : opNode.getOutcomingEdge())
+				if (!visited.containsKey(eE.getDestination().getWorldState().toString())) {
+					visited.put(eE.getDestination().getWorldState().toString(), eE.getDestination());
+					WorldNode to_visit = wtsString.get(eE.getDestination().getWorldState().toString());
+					preliminaryVisit(to_visit, visited);
+					visited.remove(eE.getDestination());
+				}
+		}
+
+		visited.remove(w0.getWorldState().toString());
 	}
 
 	/**
@@ -112,12 +143,32 @@ public class SolutionTree {
 		/* TODO */
 	}
 
-	public HashMap<WorldNode, WorldNode> getFailure_nodes() {
-		return failure_nodes;
+	public TreeNode getRoot() {
+		return root;
 	}
 
-	public HashMap<WorldNode, ArrayList<OPNode>> getXor_nodes() {
-		return xor_nodes;
+	public WTS getWts() {
+		return wts;
+	}
+
+	public HashMap<WorldNode, WorldNode> getSuccess_nodes() {
+		return success_nodes;
+	}
+
+	public HashMap<String, WorldNode> getSuccessNodesString() {
+		return successNodesString;
+	}
+
+	public HashMap<String, WorldNode> getFailureNodesString() {
+		return failureNodesString;
+	}
+
+	public HashMap<String, ArrayList<OPNode>> getXorNodesString() {
+		return xorNodesString;
+	}
+
+	public HashMap<String, WorldNode> getWtsString() {
+		return wtsString;
 	}
 
 }
