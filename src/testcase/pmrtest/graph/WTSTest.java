@@ -171,26 +171,26 @@ public class WTSTest {
 	 * ex1 ha la stessa capability di ex4
 	 * ex1 contiene e5 che ha null come StateOfWorld
 	 * ex3 ha la stessa destNodeList di ex4
-	 * ex4 è di tipo MultipleExpansionNode
-	 * ex5 è di tipo MultipleExpansionNode ed ha null come source
+	 * ex4 ï¿½ di tipo MultipleExpansionNode
+	 * ex5 ï¿½ di tipo MultipleExpansionNode ed ha null come source
 	 */
 	
 	
 	@Test
 	public void testNormalExpansionNode_2DifferentNodesNullSource() {
-		wts.addNode(this.ex1);
+		wts.addExpansionNode(this.ex1);
 		assertEquals(true, wts.getWTS().containsKey(new WorldNode(ex1.getSource().getWorldState())));
 	}
 	
 	@Test
 	public void testNormalExpansionNode_2DifferentNodesSource() {
-		wts.addNode(this.ex2);
+		wts.addExpansionNode(this.ex2);
 		assertEquals(true, wts.getWTS().containsKey(new WorldNode(ex1.getSource().getWorldState())));
 	}
 	
 	@Test
 	public void testNormalExpansionNode_2DifferentNodesDest() {
-		wts.addNode(this.ex1);
+		wts.addExpansionNode(this.ex1);
 		assertEquals(true, wts.getWTS().containsKey(new WorldNode(ex1.getSource().getWorldState())));
 	}
 	
@@ -198,25 +198,25 @@ public class WTSTest {
 	public void testNormalExpansionNode_FalseNode() {
 		//ex2 = Source: w3, Dest: w1.
 		//ex1 = Source: null, Dest: w3.
-		wts.addNode(this.ex1);
+		wts.addExpansionNode(this.ex1);
 		assertEquals(false, wts.getWTS().containsKey(new WorldNode(ex2.getDestination().get(0).getWorldState())));
 	}
 	
 	@Test
 	public void testMultipleExpansionNode_2DifferentNodesNullSource() {
-		wts.addNode(this.ex5);
+		wts.addExpansionNode(this.ex5);
 		assertEquals(true, wts.getWTS().containsKey(new WorldNode(ex1.getSource().getWorldState())));
 	}
 	
 	@Test
 	public void testMultipleExpansionNode_2DifferentNodesSource() {
-		wts.addNode(this.ex4);
+		wts.addExpansionNode(this.ex4);
 		assertEquals(true, wts.getWTS().containsKey(new WorldNode(ex1.getSource().getWorldState())));
 	}
 	
 	@Test
 	public void testMultipleExpansionNode_2DifferentNodesDest() {
-		wts.addNode(this.ex4);
+		wts.addExpansionNode(this.ex4);
 		assertEquals(true, (wts.getWTS().containsKey(ex4.getDestination().get(0).getWorldState()) && 
 				wts.getWTS().containsKey(ex4.getDestination().get(1).getWorldState())) && 
 				wts.getWTS().containsKey(ex4.getDestination().get(2).getWorldState()));		
@@ -227,7 +227,7 @@ public class WTSTest {
 		//ex5 = Source: null, Dest: w4, w3, w1.
 		//ex4 = Source: w2, Dest: w4, w3, w1.
 		//DLPHead w1 = DLPHead w2
-		wts.addNode(this.ex5);
+		wts.addExpansionNode(this.ex5);
 		assertEquals(true, wts.getWTS().containsKey(new WorldNode(ex4.getSource().getWorldState())));
 	}
 	@Test
@@ -235,7 +235,7 @@ public class WTSTest {
 		//ex5 = Source: null, Dest: w4, w3, w1.
 		//ex4 = Source: w2, Dest: w4, w3, w1.
 		//DLPHead w1 = DLPHead w2
-		wts.addNode(this.ex5);
+		wts.addExpansionNode(this.ex5);
 		assertEquals(false, wts.getWTS().containsKey(new WorldNode(ex6.getSource().getWorldState())));
 	}
 	
@@ -244,7 +244,7 @@ public class WTSTest {
 		//ex4 = Source: w2, Dest: w4, w3, w1.
 		//DLPHead w1 = DLPHead w2
 		//Testo se si crea l'OPNode
-		wts.addNode(this.ex4);
+		wts.addExpansionNode(this.ex4);
 		assertEquals(1, wts.getWTS().get(new WorldNode(ex4.getSource().getWorldState()).getOPNodeList().size()));
 	}
 }

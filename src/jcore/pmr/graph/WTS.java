@@ -19,7 +19,8 @@ public class WTS {
 
 	
 	/** The graph. Use an HashMap as implementation to make the computational cost of the operations constant */
-	private HashMap<WorldNode, WorldNode> graph;
+	//private HashMap<WorldNode, WorldNode> graph;
+	private HashMap<String, WorldNode> graph;
 	
 	private WorldNode start;
 
@@ -27,7 +28,7 @@ public class WTS {
 	 * Instantiates a new wts. The root is a WorldNode with a null StateOfWorld
 	 */
 	public WTS(){ 
-		this.graph = new HashMap<WorldNode, WorldNode> ();
+		this.graph = new HashMap<String, WorldNode> ();
 	}
 	
 	/**
@@ -37,9 +38,9 @@ public class WTS {
 	 *            the first StateOfWorld
 	 */
 	public void setInitialState(StateOfWorld state){
-		this.start = new WorldNode(state);
-		//this.graph.put(start, start);
-		addSafeNode(this.start);
+		
+		start = this.createSafeNode(state);
+		
 	}
 	
 	public WorldNode getInitialState(){
@@ -55,15 +56,20 @@ public class WTS {
 	 * @param newnode
 	 *            the new node
 	 */
-	public void addNode(ExpansionNode newnode){	
-		
+	public void addExpansionNode(ExpansionNode newnode){	
+		if (graph.size()==0) {
+			start = createSafeNode(newnode.getSource().getWorldState());
+		}
 		if(newnode instanceof NormalExpansionNode){
 			/* it normally adds The WorldNodes in newnode. The destinationList of newnode has size = 1. */
 			NormalExpansionNode tempnode = (NormalExpansionNode) newnode;
-			this.addSafeNode(new WorldNode(tempnode.getSource().getWorldState()));
-			this.addSafeNode (new WorldNode(tempnode.getDestination().get(0).getWorldState()));
-			WorldNode destination2 = this.graph.get(new WorldNode(tempnode.getDestination().get(0).getWorldState()));
-			this.addEdge(this.graph.get(new WorldNode(tempnode.getSource().getWorldState())), destination2, tempnode.getCapability(), tempnode.getAgent());	
+			
+			WorldNode source_node = this.createSafeNode(tempnode.getSource().getWorldState());
+			WorldNode dest_node = this.createSafeNode(tempnode.getDestination().get(0).getWorldState());
+			System.out.println("adding normal "+source_node.getId()+" to "+dest_node.getId());
+			
+			//WorldNode destination2 = this.graph.get(tempnode.getDestination().get(0).getWorldState().toString());
+			this.addEdge(source_node, dest_node, tempnode.getCapability(), tempnode.getAgent());	
 			
 		}
 		else{
@@ -73,41 +79,53 @@ public class WTS {
 			 * if the source already contains that OPNode, it makes no actions and exit from the method.
 			 */
 			MultipleExpansionNode exptempnode = (MultipleExpansionNode) newnode;
-			this.addSafeNode(new WorldNode(exptempnode.getSource().getWorldState()));
-			WorldNode source2 = this.graph.get(new WorldNode(exptempnode.getSource().getWorldState()));
+			
+			WorldNode source_node = this.createSafeNode(exptempnode.getSource().getWorldState());
+						
 			OPNode faketempnode = new XORNode(exptempnode.getCapability(), exptempnode.getScore(), exptempnode.getAgent());
-			faketempnode.setIncomingEdge(new OPEdge(source2, faketempnode, exptempnode.getCapability(), exptempnode.getAgent()));
-			
-			if(source2.getOPNodeList().contains(faketempnode))	return;
-			
+			faketempnode.setIncomingEdge(new OPEdge(source_node, faketempnode, exptempnode.getCapability(), exptempnode.getAgent()));
 			for(ENode etemp : newnode.getDestination()){
-				WorldNode wnode = new WorldNode(etemp.getWorldState());
-				this.addSafeNode(wnode);
+				WorldNode wnode = this.createSafeNode(etemp.getWorldState());
+				System.out.println("adding xor "+source_node.getId()+" to "+wnode.getId());
 				faketempnode.addOutcomingEdge(new EvolutionEdge(faketempnode, wnode, exptempnode.getScenario(etemp)));
-				
 			}
-			source2.addOPNode(faketempnode);
+			
+			source_node.addOPNode(faketempnode);
 		}
 	}
-	
-	/**
-	 * Adds a simple WorldNode. it create a new object to avoid references problem.
-	 *
-	 * @param source
-	 *            the source
-	 * @return true, if successful
-	 */
-	public boolean addSafeNode(WorldNode source){
-		if(this.graph.containsKey(source) == false){
-			WorldNode temp = new WorldNode(source.getWorldState());
-			temp.setIncomingEdgeList(source.getIncomingEdgeList());
-			temp.setOutcomingEdgeList(source.getOutcomingEdgeList());
-			this.graph.put(temp, temp);
-			return true;
+
+	public WorldNode createSafeNode(StateOfWorld desc){
+		WorldNode new_node = null;
+		if (this.graph.containsKey(desc.toString())) {
+			return graph.get(desc.toString());
+		} else {
+			new_node = new WorldNode(desc);
+			this.graph.put(desc.toString(), new_node);
 		}
-		else
-			return false;
+		
+		return new_node;
 	}
+
+//	/**
+//	 * Adds a simple WorldNode. it create a new object to avoid references problem.
+//	 *
+//	 * @param source
+//	 *            the source
+//	 * @return true, if successful
+//	 */
+//	public boolean addSafeNode(WorldNode source){
+//		if(this.graph.containsKey(source) == false){
+//			
+////			WorldNode temp = new WorldNode(source.getWorldState());
+////			temp.setIncomingEdgeList(source.getIncomingEdgeList());
+////			temp.setOutcomingEdgeList(source.getOutcomingEdgeList());
+//			
+//			this.graph.put(source.getWorldState().toString(), source);
+//			return true;
+//		}
+//		else
+//			return false;
+//	}
 	
 	/**
 	 * Adds a Normaledge from a WorldNode to a WorldNode.
@@ -159,7 +177,7 @@ public class WTS {
 	 *
 	 * @return the graph of the solutions.
 	 */
-	public HashMap<WorldNode, WorldNode> getWTS(){
+	public HashMap<String, WorldNode> getWTS(){
 		return this.graph;
 	}
 	
@@ -186,7 +204,7 @@ public class WTS {
 				Eedge.getSource().removeOutcomingEdge(new EvolutionEdge(Eedge.getSource(), node, Eedge.getSource().getCapability()));
 			}
 		}
-		this.graph.remove(node);
+		this.graph.remove(node.getWorldState().toString());
 	}
 	
 	/**
@@ -198,11 +216,17 @@ public class WTS {
 	 *            the destnode
 	 */
 	public void removeEdge(WorldNode sourcenode, WorldNode destnode){
-		if(this.graph.containsKey(sourcenode) == true && this.graph.containsKey(destnode) == true){
-				WorldNode tempnode = (WorldNode) destnode;
-				this.graph.get(sourcenode).removeOutcomingEdge(new NormalEdge(sourcenode, tempnode, null));
-				this.graph.get(tempnode).removeIncomingEdge(new NormalEdge(sourcenode, tempnode, null));
+		
+		if (sourcenode != null && destnode != null) {
+			sourcenode.removeOutcomingEdge(new NormalEdge(sourcenode, destnode, null));
+			destnode.removeOutcomingEdge(new NormalEdge(sourcenode, destnode, null));
 		}
+//		
+//		if(this.graph.containsKey(sourcenode) == true && this.graph.containsKey(destnode) == true){
+//				WorldNode tempnode = (WorldNode) destnode;
+//				this.graph.get(sourcenode).removeOutcomingEdge(new NormalEdge(sourcenode, tempnode, null));
+//				this.graph.get(tempnode).removeIncomingEdge(new NormalEdge(sourcenode, tempnode, null));
+//		}
 	}
 	
 	/**
@@ -216,10 +240,14 @@ public class WTS {
 	 * @return true, if the edge was present and removed.
 	 */
 	public boolean removeEdge(WorldNode sourcenode, OPNode destnode){
-		if(this.graph.containsKey(sourcenode) == true && this.graph.containsKey(destnode) == true){
-				this.graph.get(sourcenode).removeOPNode(destnode);
-				return true;
+		if (sourcenode != null && destnode != null) {
+			sourcenode.removeOPNode(destnode);
+			return true;
 		}
+//			if(this.graph.containsKey(sourcenode) == true && this.graph.containsKey(destnode) == true){
+//				this.graph.get(sourcenode).removeOPNode(destnode);
+//				return true;
+//		}
 		return false;
 	}
 		
@@ -296,19 +324,20 @@ public class WTS {
 	}
 	
 	public void printGraph(){
-		Iterator<WorldNode> i = this.graph.keySet().iterator();
+		Iterator<String> i = this.graph.keySet().iterator();
 		System.out.println("\n graphviz\n \n");
 		while(i.hasNext()){
-			WorldNode temp = (WorldNode)i.next();
-			//System.out.println("Node "+temp.getId());
-			//System.out.println(temp.getWorldState() + "\n");
-			for( NormalEdge e : temp.getOutcomingEdgeList()){
-				System.out.println("Node"+temp.getId()+" -> "+"Node"+e.getDestination().getId());
+			String temp = (String) i.next();
+			
+			WorldNode w = this.graph.get(temp);
+
+			for( NormalEdge e : w.getOutcomingEdgeList()){
+				System.out.println("Node"+w.getId()+" -> "+"Node"+e.getDestination().getId()+"[label=\""+ e.getCapability()+ "\"]");
 			}
 			
-			for( OPNode opNode : temp.getOPNodeList()){
+			for( OPNode opNode : w.getOPNodeList()){
 				for( EvolutionEdge ee : opNode.getOutcomingEdge()){
-					System.out.println("Node"+temp.getId() + " -> " +"Node"+ ee.getDestination().getId());
+					System.out.println("Node"+w.getId() + " -> " +"Node"+ ee.getDestination().getId()+" [label=\""+ ee.getScenario()+ "\"][style=bold][color=red]");
 				}
 			}
 		}

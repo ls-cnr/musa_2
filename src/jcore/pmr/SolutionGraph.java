@@ -22,13 +22,13 @@ public class SolutionGraph {
 	private WTS wts;
 	
 	/** The token map. */
-	private HashMap<WorldNode, ArrayList<Token>> tokenMap;
+	private HashMap<String, ArrayList<Token>> tokenMap;
 	
 	/** The score map. */
-	private HashMap<WorldNode, Integer> scoreMapping;
+	private HashMap<String, Integer> scoreMapping;
 	
 	/** The exit node map. */
-	private HashMap<WorldNode, WorldNode> exitNodeMap;
+	private HashMap<String, WorldNode> exitNodeMap;
 	
 	/**
 	 * Instantiates a new solution graph.
@@ -45,7 +45,7 @@ public class SolutionGraph {
 	 *
 	 * @return the graph
 	 */
-	public HashMap<WorldNode, WorldNode> getWTSHashmap(){
+	public HashMap<String, WorldNode> getWTSHashmap(){
 		return this.wts.getWTS();
 	}
 	
@@ -58,7 +58,7 @@ public class SolutionGraph {
 	 *
 	 * @return the token map
 	 */
-	public HashMap<WorldNode, ArrayList<Token>> getTokenMap(){
+	public HashMap<String, ArrayList<Token>> getTokenMap(){
 		return this.tokenMap;
 	}
 	
@@ -67,7 +67,7 @@ public class SolutionGraph {
 	 *
 	 * @return the score mapping
 	 */
-	public HashMap<WorldNode, Integer> getScoreMapping(){
+	public HashMap<String, Integer> getScoreMapping(){
 		return this.scoreMapping;
 	}
 	
@@ -76,7 +76,7 @@ public class SolutionGraph {
 	 *
 	 * @return the exit node map
 	 */
-	public HashMap<WorldNode, WorldNode> getExitNodeMap(){
+	public HashMap<String, WorldNode> getExitNodeMap(){
 		return this.exitNodeMap;
 	}
 	
@@ -87,7 +87,7 @@ public class SolutionGraph {
 	 *            the node
 	 */
 	public void addNode(ExpansionNode node){
-		this.wts.addNode(node);
+		this.wts.addExpansionNode(node);
 		this.updateTokenMap(node);
 		this.updateExitNodeMap(node);
 	}
@@ -111,11 +111,11 @@ public class SolutionGraph {
 	 *            the node
 	 */
 	public void updateTokenMap(ExpansionNode node){
-		this.tokenMap.put(new WorldNode(node.getSource().getWorldState()), node.getSource().getTokens());
+		this.tokenMap.put(node.getSource().getWorldState().toString(),node.getSource().getTokens());
 		Iterator<ENode> i = node.getDestination().iterator();
 		while (i.hasNext()){
 			ENode temp = i.next();
-			this.tokenMap.put(new WorldNode(temp.getWorldState()), temp.getTokens());
+			this.tokenMap.put(temp.getWorldState().toString(),temp.getTokens());
 		}
 	}
 	
@@ -126,30 +126,34 @@ public class SolutionGraph {
 	 *            the node
 	 */
 	public void updateExitNodeMap(ExpansionNode node){
-		if(node.getSource().isExitNode() == true)	this.exitNodeMap.put(new WorldNode(node.getSource().getWorldState()), new WorldNode( node.getSource().getWorldState()));
+		if(node.getSource().isExitNode() == true)	
+			this.exitNodeMap.put(node.getSource().getWorldState().toString(), wts.getWTS().get(node.getSource().getWorldState().toString()));
 		Iterator<ENode> i = node.getDestination().iterator();
 		while (i.hasNext()){
 			ENode temp = i.next();
-			if(temp.isExitNode() == true)	this.exitNodeMap.put(new WorldNode(temp.getWorldState()), new WorldNode(temp.getWorldState()));
+			if(temp.isExitNode() == true)	this.exitNodeMap.put(temp.getWorldState().toString(), wts.getWTS().get(temp.getWorldState().toString()));
 		}
 	}
 	
 	public void updateScoreMapping(ExpansionNode node){
 		Iterator i = node.getDestination().iterator();
+		
+		this.scoreMapping.put(node.getSource().getWorldState().toString(), node.getSource().getScore());
+		
 		NormalExpansionNode nodeToAdd;
 		MultipleExpansionNode listToAdd;
 		while(i.hasNext()){
 			ExpansionNode temp =(ExpansionNode) i.next();
 			if(temp instanceof NormalExpansionNode){
 				nodeToAdd =(NormalExpansionNode) temp;
-				this.scoreMapping.put(new WorldNode(nodeToAdd.getDestination().get(0).getWorldState()), nodeToAdd.getDestination().get(0).getScore());
+				this.scoreMapping.put(nodeToAdd.getDestination().get(0).getWorldState().toString(), nodeToAdd.getDestination().get(0).getScore());
 			}
 			else{
 				listToAdd = (MultipleExpansionNode) temp;
 				Iterator<ENode> j = node.getDestination().iterator();
 				while (j.hasNext()){
 					ENode Etemp = j.next();
-					this.scoreMapping.put(new WorldNode(Etemp.getWorldState()), Etemp.getScore());
+					this.scoreMapping.put(Etemp.getWorldState().toString(), Etemp.getScore());
 				}
 			}
 		}
@@ -162,9 +166,9 @@ public class SolutionGraph {
 	 *
 	 * @return the solution paths.
 	 */
-	public ArrayList<ArrayList<WorldNode>> getSolutions(){
-		return this.wts.getSolutions(new WorldNode(null), this.exitNodeMap);
-	}
+//	public ArrayList<ArrayList<WorldNode>> getSolutions(){
+//		return this.wts.getSolutions(new WorldNode(null), this.exitNodeMap);
+//	}
 	
 	
 	public void printGraph(){
