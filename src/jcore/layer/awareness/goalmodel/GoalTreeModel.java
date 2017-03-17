@@ -23,6 +23,9 @@ public class GoalTreeModel implements GoalModel{
 		tree = new GoalTree(rootGoal);
 	}
 	
+	public void printModel() {
+		tree.print(getRoot(), "");
+	}
 	/**
 	 * Adds the AndArcs calling the function in GoalTree
 	 *

@@ -23,6 +23,17 @@ public class GoalTree {
 	/**  The root, the starting node. */
 	private Goal root;
 	
+	
+	public void print(Goal node,String rientro) {
+		System.out.println(rientro+"Node : "+node.getName());
+		if (tree.get(node) != null) {
+			ArrayList<RefinementArc> succ = tree.get(node);
+			for (RefinementArc ref : succ) {
+				print(ref.getNextNode(),rientro+"   ");
+			}
+		}
+	}
+	
 	/**
 	 * Instantiates a new goal tree.
 	 *
