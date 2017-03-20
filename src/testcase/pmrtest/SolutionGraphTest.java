@@ -286,30 +286,30 @@ public void setUp(){
 	//WNull -> n1 -> n2 ma n1=n2 quindi n1 -> n1, n2=n1 -> n3, n3 -> n4, n4 nodo uscita
 	//Percorso1: Wnull->n1->n1->n3->n4
 	//Percorso2: Wnull->n1 (n1 checked)
-	@Test
-	public void visitTest1(){
-		this.e4.setExit(true);
-		this.graph.addNode(ex0);
-		this.graph.addNode(ex1);
-		this.graph.addNode(ex2);
-		this.graph.addNode(ex3);
-		ArrayList<ArrayList<WorldNode>> solution = this.graph.getSolutions();
-		assertEquals(1, solution.size());
-		assertEquals(4, solution.get(0).size());
-	}
+//	@Test
+//	public void visitTest1(){
+//		this.e4.setExit(true);
+//		this.graph.addNode(ex0);
+//		this.graph.addNode(ex1);
+//		this.graph.addNode(ex2);
+//		this.graph.addNode(ex3);
+//		ArrayList<ArrayList<WorldNode>> solution = this.graph.getSolutions();
+//		assertEquals(1, solution.size());
+//		assertEquals(4, solution.get(0).size());
+//	}
 
 	//Wnull->n1 -> n3, n3 -> n4_n5_n6, n4 -> n7, n5 -> n6, n7 -> n4_n5
-	@Test
-	public void visitTest2(){
-		this.e5.setExit(true);
-		this.graph.addNode(ex0);
-		this.graph.addNode(ex1);
-		this.graph.addNode(ex4);
-		this.graph.addNode(ex3);
-		this.graph.addNode(ex6);
-		this.graph.addNode(ex7);
-		assertEquals(6, this.graph.getWTSHashmap().size());
-		ArrayList<ArrayList<WorldNode>> solution = this.graph.getSolutions();
-		assertEquals(3, solution.size());
-	}
+//	@Test
+//	public void visitTest2(){
+//		this.e5.setExit(true);
+//		this.graph.addNode(ex0);
+//		this.graph.addNode(ex1);
+//		this.graph.addNode(ex4);
+//		this.graph.addNode(ex3);
+//		this.graph.addNode(ex6);
+//		this.graph.addNode(ex7);
+//		assertEquals(6, this.graph.getWTSHashmap().size());
+//		ArrayList<ArrayList<WorldNode>> solution = this.graph.getSolutions();
+//		assertEquals(3, solution.size());
+//	}
 }

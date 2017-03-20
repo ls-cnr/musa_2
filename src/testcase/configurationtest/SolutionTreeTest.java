@@ -1,5 +1,6 @@
 package configurationtest;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 
@@ -13,7 +14,6 @@ import pmr.graph.NormalEdge;
 import pmr.graph.OPNode;
 import pmr.graph.WTS;
 import pmr.graph.WorldNode;
-import pmr.probexp.ENode;
 import pmr.probexp.ExpansionNode;
 import pmr.probexp.ProblemExploration;
 
@@ -26,18 +26,18 @@ public class SolutionTreeTest {
 		ProblemExploration pe = new ProblemExploration(b2bcs.getGoalModel(), b2bcs.getCapabilities(),
 				b2bcs.getDomain());
 
-		//b2bcs.getGoalModel().printModel();
-		
+		// b2bcs.getGoalModel().printModel();
+
 		sg.getWTS().setInitialState(b2bcs.getNodewStart().getWorldState());
 		pe.addToVisit(b2bcs.getNodewStart(), b2bcs.getStartTokens(), 9);
 
 		for (int i = 0; i < 40; i++) {
 			// System.out.println("ciclo: " + i);
 			pe.expandNode();
-//			for (ENode t : pe.getHighestExpansion().getDestination()) {
-//				System.out.println(t.getScore());
-//			}
-			ExpansionNode en = pe.getHighestExpansion();		
+			// for (ENode t : pe.getHighestExpansion().getDestination()) {
+			// System.out.println(t.getScore());
+			// }
+			ExpansionNode en = pe.getHighestExpansion();
 			if (en != null) {
 				sg.addNode(en);
 				pe.removeExpandedNode(en);
@@ -45,47 +45,63 @@ public class SolutionTreeTest {
 		}
 
 		WTS wts = sg.getWTS();
-		wts.printGraph();
-		//printGraph(wts.getInitialState(),sg);
-		
-		System.out.println("Size Exit nodes "+sg.getExitNodeMap().size());
-		
-//		HashMap<WorldNode, WorldNode> success_nodes = sg.getExitNodeMap();
-//		WorldNode w0 = b2bcs.getNodewStart();
-//
-//		SolutionTree st = new SolutionTree(wts, success_nodes);
-//		HashMap<WorldNode, WorldNode> visited = new HashMap<>();
-//		st.preliminaryVisit(w0, visited);
-//
-//		System.out.println("xor: " + st.getXor_nodes().keySet());
-//		System.out.println("failure nodes: " + st.getFailure_nodes());
+		// printGraph(wts);
+
+		HashMap<String, WorldNode> success_nodes = sg.getExitNodeMap();
+		WorldNode w0 = b2bcs.getNodewStart();
+
+		w0 = wts.getWTS().get(w0.getWorldState().toString());
+
+		SolutionTree st = new SolutionTree(wts, success_nodes);
+		HashMap<String, WorldNode> visited = new HashMap<>();
+		st.preliminaryVisit(w0, visited);
+
+		// System.out.println(st.getXorNodes().size() + " xor node(s) found
+		// during preliminary visit: ");
+		// for (String x : st.getXorNodes().keySet())
+		// System.out.println(x);
+		//
+		// System.out.println(st.getFailureNodes().size() + " failure node(s)
+		// found during preliminary visit: ");
+		// for (String x : st.getFailureNodes().keySet())
+		// System.out.println(x);
+
+		st.WTS_toPathList(w0);
+		int i = 1;
+		for (ArrayList<String> path : st.getAllPath()) {
+			System.out.println("Path " + i++);
+			System.out.println("digraph\n{");
+			StringBuilder sb = new StringBuilder();
+			for (String node : path)
+				sb.append("\"" + node + "\"" + "->");
+			String tmp = sb.toString().substring(0, sb.toString().length()-2);
+			sb = new StringBuilder(tmp);
+			sb.append("}");
+			System.out.println(sb.toString());
+		}
+
 	}
 
-	/* attenzione ai cicli nel grafo --> va in loop */
-	private void printGraph(WorldNode w, SolutionGraph sg) {
-		int score1 = 0;
-		if (sg.getScoreMapping().get(w) != null)
-		  score1= sg.getScoreMapping().get(w);
+	public void printGraph(WTS wts) {
+		Iterator<String> i = wts.getWTS().keySet().iterator();
+		System.out.println("\n\nGRAPHVIZ\n\n");
+		while (i.hasNext()) {
+			String temp = (String) i.next();
 
-			for( NormalEdge e : w.getOutcomingEdgeList()){
-				int score2 = 0;
-				if (sg.getScoreMapping().get(e.getDestination()) != null) {
-					score2 = sg.getScoreMapping().get(e.getDestination());
-				}
-				System.out.println("Node"+score1+" -> "+"Node"+score2+"[label=\""+ e.getCapability()+ "\"]");
-				printGraph(e.getDestination(),sg);
+			WorldNode w = wts.getWTS().get(temp);
+
+			for (NormalEdge e : w.getOutcomingEdgeList()) {
+				System.out.println("\"" + temp + "\"" + " -> " + "\"" + e.getDestination().getWorldState().toString()
+						+ "\"" + "[label=\"" + e.getCapability() + "\"][color=green]");
 			}
-			
-			for( OPNode opNode : w.getOPNodeList()){
-				for( EvolutionEdge ee : opNode.getOutcomingEdge()){
-					int score2 = 0;
-					if (	sg.getScoreMapping().get(ee.getDestination()) != null) {
-						score2 = 	sg.getScoreMapping().get(ee.getDestination());
-					}
-					System.out.println("Node"+score1 + " -> " +"Node"+ score2+" [label=\""+ ee.getScenario()+ "\"][style=bold][color=red]");
-					printGraph(ee.getDestination(),sg);
+
+			for (OPNode opNode : w.getOPNodeList()) {
+				for (EvolutionEdge ee : opNode.getOutcomingEdge()) {
+					System.out
+							.println("\"" + temp + "\"" + " -> " + "\"" + ee.getDestination().getWorldState().toString()
+									+ "\"" + "[label=\"" + ee.getScenario() + "\"][style=bold][color=red]");
 				}
+			}
 		}
 	}
-
 }

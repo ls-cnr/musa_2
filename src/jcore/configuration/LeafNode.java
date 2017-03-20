@@ -16,6 +16,14 @@ public class LeafNode extends TreeNode {
 	private boolean isLoopState;
 	private TreeNode toLoop;
 
+	private String facts;
+
+	public LeafNode(boolean isSuccess, boolean isFailure) {
+		this.isSuccessState = isSuccess;
+		this.isFailureState = isFailure;
+		
+	}
+
 	public boolean isLoop() {
 		return this.isLoopState;
 	}
@@ -30,6 +38,14 @@ public class LeafNode extends TreeNode {
 
 	public TreeNode getLoopDestination() {
 		return this.toLoop;
+	}
+
+	public String getFacts() {
+		return facts;
+	}
+
+	public void setFacts(String facts) {
+		this.facts = facts;
 	}
 
 }

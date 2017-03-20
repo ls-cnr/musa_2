@@ -1,6 +1,7 @@
 package configuration;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * This class describes an internal node in the solution tree. This node can be
@@ -12,17 +13,23 @@ import java.util.ArrayList;
 public class InternalNode extends TreeNode {
 	private boolean isXor;
 	private boolean isNormal;
-	private ArrayList<TreeNode> children;
+	private HashMap<String, TreeNode> children;
 
-	public void addChild(TreeNode n) {
-		this.children.add(n);
+	public InternalNode(boolean isXor, boolean isNormal) {
+		this.isXor = isXor;
+		this.isNormal = isNormal;
+		this.children = new HashMap<>();
 	}
 
-	public void removeChild(TreeNode n) {
+	public void addChild(TreeNode n) {
+		this.children.put(n.getFacts(), n);
+	}
+
+	public void removeChild(String n) {
 		this.children.remove(n);
 	}
 
-	public ArrayList<TreeNode> getChildren() {
+	public HashMap<String, TreeNode> getChildren() {
 		return this.children;
 	}
 

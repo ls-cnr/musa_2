@@ -8,6 +8,16 @@ package configuration;
 public abstract class TreeNode {
 	private int nodeType;
 	private String generatingCapability;
+	private String facts;
+
+	public String getFacts() {
+		return facts;
+	}
+
+	public void setFacts(String facts) {
+		this.facts = facts;
+		
+	}
 
 	public int getNodeType() {
 		return nodeType;
