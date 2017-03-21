@@ -2,8 +2,6 @@ package configuration;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
-
 import pmr.graph.EvolutionEdge;
 import pmr.graph.NormalEdge;
 import pmr.graph.OPNode;
@@ -19,7 +17,7 @@ import pmr.graph.WorldNode;
  */
 public class SolutionTree {
 
-	private InternalNode root;
+	private TreeNode root;
 
 	/* input */
 	private WTS wts;
@@ -30,7 +28,8 @@ public class SolutionTree {
 	private HashMap<String, WorldNode> failureNodes;
 	private HashMap<String, ArrayList<OPNode>> xorNodes;
 
-	private ArrayList<ArrayList<String>> allPath;
+	private ArrayList<ArrayList<String>> allPaths;
+	private ArrayList<ArrayList<String>> loopPaths;
 
 	/**
 	 * @param wts
@@ -62,7 +61,8 @@ public class SolutionTree {
 							"invoice(the_invoice)\norder(an_order)\nuser(a_user)\nregistered(a_user)\nlogged(a_user)\naccepted(an_order)\navailable(the_invoice)\nuploaded_on_cloud(the_invoice)\nmailed_perm_link(the_invoice, a_user)\nstorehouse_manager(a_storehouse_manager)\ndelivery_order(the_delivery_order)\nsent(the_delivery_order, a_storehouse_manager)\n"));
 		}
 
-		this.allPath = new ArrayList<>();
+		this.allPaths = new ArrayList<>();
+		this.loopPaths = new ArrayList<>();
 	}
 
 	/**
@@ -116,31 +116,35 @@ public class SolutionTree {
 
 	/**
 	 * This method produces the list of all paths from W0 to each possibile
-	 * success or failure state. This list will be used to extract the
-	 * solution(s).
+	 * success or failure state. This list will be used to build the tree and
+	 * extract the solution(s).
 	 */
 	public void WTS_toPathList(WorldNode w, HashMap<String, WorldNode> visited, ArrayList<String> path) {
 		String s = w.getWorldState().toString();
 		visited.put(s, w);
 		path.add(s);
 
-		if (this.successNodes.containsKey(s) || this.failureNodes.containsKey(s)) {
-			this.allPath.add(new ArrayList<String>(path));
-		} else {
+		if (this.successNodes.containsKey(s) || this.failureNodes.containsKey(s))
+			this.allPaths.add(new ArrayList<String>(path));
+		else {
 			for (NormalEdge x : w.getOutcomingEdgeList())
 				if (visited.containsKey(x.getDestination().getWorldState().toString()) == false)
 					WTS_toPathList(x.getDestination(), visited, path);
 				else {
-					path.add("LOOP(" + x.getDestination().getWorldState().toString() + ")");
-					this.allPath.add(new ArrayList<String>(path));
+					path.add(x.getDestination().getWorldState().toString());
+					this.allPaths.add(new ArrayList<String>(path));
+					this.loopPaths.add(new ArrayList<String>(path));
+					path.remove(x.getDestination().getWorldState().toString());
 				}
 			for (OPNode opNode : w.getOPNodeList())
 				for (EvolutionEdge eE : opNode.getOutcomingEdge())
 					if (visited.containsKey(eE.getDestination().getWorldState().toString()) == false)
 						WTS_toPathList(eE.getDestination(), visited, path);
 					else {
-						path.add("LOOP(" + eE.getDestination().getWorldState().toString() + "");
-						this.allPath.add(new ArrayList<String>(path));
+						path.add(eE.getDestination().getWorldState().toString());
+						this.allPaths.add(new ArrayList<String>(path));
+						this.loopPaths.add(new ArrayList<String>(path));
+						path.remove(eE.getDestination().getWorldState().toString());
 					}
 
 		}
@@ -149,8 +153,8 @@ public class SolutionTree {
 		visited.remove(s);
 	}
 
-	public ArrayList<ArrayList<String>> getAllPath() {
-		return allPath;
+	public ArrayList<ArrayList<String>> getAllPaths() {
+		return allPaths;
 	}
 
 	public void WTS_toPathList(WorldNode w0) {
@@ -166,7 +170,7 @@ public class SolutionTree {
 	 * exctract the actual solution(s).
 	 */
 	public void pathList_toTree(ArrayList<String> path) {
-		/* TO DO */
+		/* TODO */
 	}
 
 	/**
