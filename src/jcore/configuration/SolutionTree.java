@@ -169,7 +169,7 @@ public class SolutionTree {
 	 * This method produces the tree the real algorithm will work on and
 	 * exctract the actual solution(s).
 	 */
-	public void pathList_toTree(ArrayList<String> path) {
+	public void pathList_toTree() {
 		/* TODO */
 	}
 

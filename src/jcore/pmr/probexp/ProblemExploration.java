@@ -131,8 +131,9 @@ public class ProblemExploration {
 	
 	public void removeExpandedNode(ExpansionNode node){
 		if(node == null)	return;
-		if(this.expandedList.remove(node))
-			System.out.println("HO RIMOSSO IL NODO.");
+		this.expandedList.remove(node);
+//		if(this.expandedList.remove(node))
+//			System.out.println("HO RIMOSSO IL NODO.");
 	}
 	
 	//Funzione che crea gli stati del mondo successivi, applicando un'evoluzione agli scenari associati alla capability passata

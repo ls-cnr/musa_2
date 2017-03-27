@@ -66,7 +66,7 @@ public class WTS {
 			
 			WorldNode source_node = this.createSafeNode(tempnode.getSource().getWorldState());
 			WorldNode dest_node = this.createSafeNode(tempnode.getDestination().get(0).getWorldState());
-			System.out.println("adding normal "+source_node.getId()+" to "+dest_node.getId());
+			//System.out.println("adding normal "+source_node.getId()+" to "+dest_node.getId());
 			
 			//WorldNode destination2 = this.graph.get(tempnode.getDestination().get(0).getWorldState().toString());
 			this.addEdge(source_node, dest_node, tempnode.getCapability(), tempnode.getAgent());	
@@ -86,7 +86,7 @@ public class WTS {
 			faketempnode.setIncomingEdge(new OPEdge(source_node, faketempnode, exptempnode.getCapability(), exptempnode.getAgent()));
 			for(ENode etemp : newnode.getDestination()){
 				WorldNode wnode = this.createSafeNode(etemp.getWorldState());
-				System.out.println("adding xor "+source_node.getId()+" to "+wnode.getId());
+				//System.out.println("adding xor "+source_node.getId()+" to "+wnode.getId());
 				faketempnode.addOutcomingEdge(new EvolutionEdge(faketempnode, wnode, exptempnode.getScenario(etemp)));
 			}
 			

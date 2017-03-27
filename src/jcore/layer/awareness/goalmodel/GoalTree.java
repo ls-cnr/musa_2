@@ -25,7 +25,7 @@ public class GoalTree {
 	
 	
 	public void print(Goal node,String rientro) {
-		System.out.println(rientro+"Node : "+node.getName());
+		//System.out.println(rientro+"Node : "+node.getName());
 		if (tree.get(node) != null) {
 			ArrayList<RefinementArc> succ = tree.get(node);
 			for (RefinementArc ref : succ) {

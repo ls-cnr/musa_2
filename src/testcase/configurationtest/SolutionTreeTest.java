@@ -78,10 +78,8 @@ public class SolutionTreeTest {
 			for (String node : path)
 				sb.append("\"" + node.hashCode() + "\"" + "->");
 			// sb.append("\"" + node + "\"" + "->");
-			String tmp = sb.toString().substring(0, sb.toString().length() - 2);
-			sb = new StringBuilder(tmp);
-			sb.append("}");
-			System.out.println(sb.toString());
+			String tmp = sb.toString().substring(0, sb.toString().length() - 2) + "}";
+			System.out.println(tmp);
 		}
 
 	}
