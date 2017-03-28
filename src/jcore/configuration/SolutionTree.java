@@ -1,7 +1,10 @@
 package configuration;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
+
 import pmr.graph.EvolutionEdge;
 import pmr.graph.NormalEdge;
 import pmr.graph.OPNode;
@@ -17,7 +20,7 @@ import pmr.graph.WorldNode;
  */
 public class SolutionTree {
 
-	private TreeNode root;
+	private Tree<String> root;
 
 	/* input */
 	private WTS wts;
@@ -49,7 +52,7 @@ public class SolutionTree {
 		 * in input una struttura vuota (!?)
 		 */
 		if (success_nodes.size() == 0) {
-			System.out.println("Manually adding 2 success states");
+			// System.out.println("Manually adding 2 success states");
 			this.successNodes.put(
 					"order(an_order)\nuser(a_user)\nregistered(a_user)\nlogged(a_user)\nrefused(an_order)\n",
 					this.wts.getWTS().get(
@@ -127,17 +130,20 @@ public class SolutionTree {
 		if (this.successNodes.containsKey(s) || this.failureNodes.containsKey(s))
 			this.allPaths.add(new ArrayList<String>(path));
 		else {
-			for (NormalEdge x : w.getOutcomingEdgeList())
-				if (visited.containsKey(x.getDestination().getWorldState().toString()) == false)
-					WTS_toPathList(x.getDestination(), visited, path);
-				else {
-					path.add(x.getDestination().getWorldState().toString());
+			for (int i = 0; i < w.getOutcomingEdgeList().size(); i++) {
+				if (visited.containsKey(
+						w.getOutcomingEdgeList().get(i).getDestination().getWorldState().toString()) == false) {
+					WTS_toPathList(w.getOutcomingEdgeList().get(i).getDestination(), visited, path);
+				} else {
+					path.add(w.getOutcomingEdgeList().get(i).getDestination().getWorldState().toString());
 					this.allPaths.add(new ArrayList<String>(path));
 					this.loopPaths.add(new ArrayList<String>(path));
-					path.remove(x.getDestination().getWorldState().toString());
+					path.remove(w.getOutcomingEdgeList().get(i).getDestination().getWorldState().toString());
 				}
-			for (OPNode opNode : w.getOPNodeList())
-				for (EvolutionEdge eE : opNode.getOutcomingEdge())
+			}
+			for (int i = 0; i < w.getOPNodeList().size(); i++) {
+				path.add(i + "$" + w.getWorldState().toString().hashCode());
+				for (EvolutionEdge eE : w.getOPNodeList().get(i).getOutcomingEdge())
 					if (visited.containsKey(eE.getDestination().getWorldState().toString()) == false)
 						WTS_toPathList(eE.getDestination(), visited, path);
 					else {
@@ -146,7 +152,8 @@ public class SolutionTree {
 						this.loopPaths.add(new ArrayList<String>(path));
 						path.remove(eE.getDestination().getWorldState().toString());
 					}
-
+				path.remove(path.lastIndexOf(i + "$" + w.getWorldState().toString().hashCode()));
+			}
 		}
 
 		path.remove(path.size() - 1);
@@ -170,7 +177,127 @@ public class SolutionTree {
 	 * exctract the actual solution(s).
 	 */
 	public void pathList_toTree() {
-		/* TODO */
+		this.root = new Tree<String>(this.allPaths.get(0).get(0));
+		setNodeType(this.root);
+
+		for (ArrayList<String> path : this.allPaths) {
+			Tree<String> currentNode = this.root;
+			Iterator<String> i = path.iterator();
+			if (i.hasNext())
+				i.next();
+
+			while (i.hasNext()) {
+				Tree<String> newBorn = new Tree<String>((String) i.next());
+				setNodeType(newBorn);
+
+				if (!currentNode.getChildren().contains(newBorn))
+					currentNode.getChildren().add(newBorn);
+				currentNode = currentNode.getChild(newBorn);
+			}
+
+			if (this.loopPaths.contains(path)) {
+				currentNode.setNodeType("loop");
+			}
+
+		}
+	}
+
+	/**
+	 * This method decides to which category a TreeNode belongs to.
+	 * 
+	 * @param node
+	 */
+	private void setNodeType(Tree<String> node) {
+		if (this.successNodes.containsKey(node.getValue()) == true)
+			node.setNodeType("success");
+		else if (this.failureNodes.containsKey(node.getValue()) == true)
+			node.setNodeType("failure");
+		else if (this.xorNodes.containsKey(node.getValue()) == true)
+			node.setNodeType("xor");
+		else if (node.getValue().contains("$")) {
+			node.setNodeType("explicit_xor");
+		} else
+			node.setNodeType("normal");
+	}
+
+	/**
+	 * A more user-friendly translation
+	 * 
+	 * @param type
+	 * @return
+	 */
+	private static String typeToString(int type) {
+		switch (type) {
+		case 0:
+			return "normal";
+		case 1:
+			return "xor";
+		case 2:
+			return "success";
+		case 3:
+			return "failure";
+		case 4:
+			return "loop";
+		case 99:
+			return "explicit_xor";
+		default:
+			return "";
+
+		}
+	}
+
+	/**
+	 * This method prints the tre produced in pathList_toTree();
+	 */
+	public static void printTree(Tree<String> node, int depth) {
+		if (node != null) {
+			String tab = String.join("", Collections.nCopies(depth, "\t"));
+			System.out.println(tab + node.getValue().hashCode() + "(" + typeToString(node.getNodeType()) + ")" + "_"
+					+ node.getID());
+			for (Tree<String> x : node.getChildren())
+				printTree(x, depth + 1);
+		}
+
+	}
+
+	public void printTree() {
+		printTree(this.getRoot(), 0);
+	}
+
+	public static void printTreeGraphviz(Tree<String> node) {
+		if (node != null) {
+			String V = "\"";
+			String src = "", dest = "";
+			for (Tree<String> x : node.getChildren()) {
+				boolean flag = node.getValue().contains("$");
+				if (flag)
+					src = node.getValue() + "\n" + typeToString(node.getNodeType());
+				else {
+					src = node.getValue() + "\n" + node.getValue().hashCode() + "\n" + typeToString(node.getNodeType());
+							//+ "\n" + node.getID();
+				}
+				if (x.getValue().contains("$"))
+					dest = x.getValue() + "\n" + typeToString(x.getNodeType());
+				else {
+					dest = x.getValue() + "\n" + x.getValue().hashCode() + "\n" + typeToString(x.getNodeType());
+					//+ "\n" + x.getID();
+				}
+
+				if (flag)
+					System.out.println(V + src + V + "->" + V + dest + V + "[color=red]\n");
+				else
+					System.out.println(V + src + V + "->" + V + dest + V);
+
+				printTreeGraphviz(x);
+			}
+		}
+
+	}
+
+	public void printTreeGraphviz() {
+		System.out.println("digraph{");
+		printTreeGraphviz(this.root);
+		System.out.println("}");
 	}
 
 	/**
@@ -180,7 +307,7 @@ public class SolutionTree {
 		/* TODO */
 	}
 
-	public TreeNode getRoot() {
+	public Tree<String> getRoot() {
 		return root;
 	}
 

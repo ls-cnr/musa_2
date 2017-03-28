@@ -57,31 +57,66 @@ public class SolutionTreeTest {
 		HashMap<String, WorldNode> visited = new HashMap<>();
 		st.preliminaryVisit(w0, visited);
 
-		System.out.println(st.getXorNodes().size() + " xor node(s) found during preliminary visit: ");
-		for (String x : st.getXorNodes().keySet())
-			System.out.println(x.hashCode());
-
-		System.out.println(st.getFailureNodes().size() + " failure node(s) found during preliminary visit: ");
-		for (String x : st.getFailureNodes().keySet())
-			System.out.println(x.hashCode());
-
-		System.out.println(st.getSuccessNodes().size() + " success node(s) found during preliminary visit: ");
-		for (String x : st.getSuccessNodes().keySet())
-			System.out.println(x.hashCode());
+		// System.out.println(st.getXorNodes().size() + " xor node(s) found
+		// during preliminary visit: ");
+		// for (String x : st.getXorNodes().keySet())
+		// System.out.println(x.hashCode());
+		//
+		// System.out.println(st.getFailureNodes().size() + " failure node(s)
+		// found during preliminary visit: ");
+		// for (String x : st.getFailureNodes().keySet())
+		// System.out.println(x.hashCode());
+		//
+		// System.out.println(st.getSuccessNodes().size() + " success node(s)
+		// found during preliminary visit: ");
+		// for (String x : st.getSuccessNodes().keySet())
+		// System.out.println(x.hashCode());
 
 		st.WTS_toPathList(w0);
+		// printAllPathsGraphvizHashCode(st);
+		st.pathList_toTree();
+		// st.printTree();
+		st.printTreeGraphviz();
+
+	}
+
+	/**
+	 * This method prints all paths found.
+	 * 
+	 * @param st
+	 */
+	public void printAllPathsGraphviz(SolutionTree st) {
 		int i = 1;
 		for (ArrayList<String> path : st.getAllPaths()) {
 			System.out.println("Path " + i++);
 			System.out.println("digraph{");
 			StringBuilder sb = new StringBuilder();
 			for (String node : path)
-				sb.append("\"" + node.hashCode() + "\"" + "->");
-			// sb.append("\"" + node + "\"" + "->");
+				sb.append("\"" + node + "\"" + "->");
 			String tmp = sb.toString().substring(0, sb.toString().length() - 2) + "}";
 			System.out.println(tmp);
 		}
+	}
 
+	/**
+	 * This method prints all paths found + their hashcodes.
+	 * 
+	 * @param st
+	 */
+	public void printAllPathsGraphvizHashCode(SolutionTree st) {
+		int i = 1;
+		for (ArrayList<String> path : st.getAllPaths()) {
+			System.out.println("Path " + i++);
+			System.out.println("digraph{");
+			StringBuilder sb = new StringBuilder();
+			for (String node : path)
+				if (node.contains("$") == false)
+					sb.append("\"" + node + node.hashCode() + "\"" + "->");
+				else
+					sb.append("\"" + node + "\"" + "->");
+			String tmp = sb.toString().substring(0, sb.toString().length() - 2) + "}";
+			System.out.println(tmp);
+		}
 	}
 
 	/**
@@ -91,7 +126,7 @@ public class SolutionTreeTest {
 	 * @param wts
 	 *            wts to print
 	 */
-	public void printGraph(WTS wts) {
+	public void printWTS(WTS wts) {
 		Iterator<String> i = wts.getWTS().keySet().iterator();
 		while (i.hasNext()) {
 			String temp = (String) i.next();
@@ -118,7 +153,7 @@ public class SolutionTreeTest {
 	 * @param wts
 	 *            wts to print
 	 */
-	public void printGraphWithHashCode(WTS wts) {
+	public void printWTSHashCode(WTS wts) {
 		Iterator<String> i = wts.getWTS().keySet().iterator();
 		while (i.hasNext()) {
 			String temp = (String) i.next();
