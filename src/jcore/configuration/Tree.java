@@ -17,7 +17,7 @@ public class Tree<T> {
 		 * loop node. 99: explict xor node
 		 */
 		this.setNodeType(0);
-		this.ID = this.counter++;
+		this.ID = counter++;
 	}
 
 	public void addChild(Tree<T> child) {

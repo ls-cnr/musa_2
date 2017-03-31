@@ -81,7 +81,7 @@ public class SolutionTreeTest {
 	}
 
 	/**
-	 * This method prints all paths found.
+	 * This method prints (dot language) all paths found.
 	 * 
 	 * @param st
 	 */
@@ -99,7 +99,7 @@ public class SolutionTreeTest {
 	}
 
 	/**
-	 * This method prints all paths found + their hashcodes.
+	 * This method prints (dot language) all paths found + their hashcodes.
 	 * 
 	 * @param st
 	 */

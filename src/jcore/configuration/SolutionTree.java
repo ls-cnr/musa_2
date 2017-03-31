@@ -48,8 +48,7 @@ public class SolutionTree {
 		this.failureNodes = new HashMap<>();
 
 		/*
-		 * TODO aggiungo manualmente 2 stati finali, dal momento che mi arriva
-		 * in input una struttura vuota (!?)
+		 * TODO aggiungo manualmente 2 stati finali
 		 */
 		if (success_nodes.size() == 0) {
 			// System.out.println("Manually adding 2 success states");
@@ -273,14 +272,14 @@ public class SolutionTree {
 				if (flag)
 					src = node.getValue() + "\n" + typeToString(node.getNodeType());
 				else {
-					src = node.getValue() + "\n" + node.getValue().hashCode() + "\n" + typeToString(node.getNodeType());
-							//+ "\n" + node.getID();
+					src = node.getValue() + "\n" + node.getValue().hashCode() + "\n" + typeToString(node.getNodeType())
+							+ "\n" + node.getID();
 				}
 				if (x.getValue().contains("$"))
 					dest = x.getValue() + "\n" + typeToString(x.getNodeType());
 				else {
-					dest = x.getValue() + "\n" + x.getValue().hashCode() + "\n" + typeToString(x.getNodeType());
-					//+ "\n" + x.getID();
+					dest = x.getValue() + "\n" + x.getValue().hashCode() + "\n" + typeToString(x.getNodeType()) + "\n"
+							+ x.getID();
 				}
 
 				if (flag)
