@@ -3,6 +3,13 @@ package configuration;
 import java.util.ArrayList;
 
 public class Tree<T> {
+	private static final int NORMAL_CODE = 0;
+	private static final int XOR_CODE = 1;
+	private static final int SUCCESS_CODE = 2;
+	private static final int FAILURE_CODE = 3;
+	private static final int LOOP_CODE = 4;
+	private static final int EXPLICIT_XOR_CODE = 5;
+
 	private static int counter = 0;
 	private final int ID;
 	private T value;
@@ -12,11 +19,7 @@ public class Tree<T> {
 	public Tree(T value) {
 		this.value = value;
 		this.children = new ArrayList<>();
-		/*
-		 * 0: normal node. 1: xor node. 2: success node. 3: failure node. 4:
-		 * loop node. 99: explict xor node
-		 */
-		this.setNodeType(0);
+		this.setNodeType(NORMAL_CODE);
 		this.ID = counter++;
 	}
 
@@ -45,30 +48,6 @@ public class Tree<T> {
 
 	public int getNodeType() {
 		return nodeType;
-	}
-
-	public void setNodeType(String nodeType) {
-		switch (nodeType) {
-		case "normal":
-			this.nodeType = 0;
-			break;
-		case "xor":
-			this.nodeType = 1;
-			break;
-		case "success":
-			this.nodeType = 2;
-			break;
-		case "failure":
-			this.nodeType = 3;
-			break;
-		case "loop":
-			this.nodeType = 4;
-			break;
-		case "explicit_xor":
-			this.nodeType = 99;
-			break;
-
-		}
 	}
 
 	public void setNodeType(int nodeType) {
@@ -102,6 +81,48 @@ public class Tree<T> {
 
 	public int getID() {
 		return this.ID;
+	}
+
+	public boolean isLeaf() {
+		if (this.getNodeType() == SUCCESS_CODE || this.getNodeType() == LOOP_CODE || this.getNodeType() == FAILURE_CODE)
+			return true;
+		return false;
+	}
+
+	public boolean isInternal() {
+		return !this.isLeaf();
+	}
+
+	public static int getCounter() {
+		return counter;
+	}
+
+	public static void setCounter(int counter) {
+		Tree.counter = counter;
+	}
+
+	public static int getNormalCode() {
+		return NORMAL_CODE;
+	}
+
+	public static int getXorCode() {
+		return XOR_CODE;
+	}
+
+	public static int getSuccessCode() {
+		return SUCCESS_CODE;
+	}
+
+	public static int getFailureCode() {
+		return FAILURE_CODE;
+	}
+
+	public static int getLoopCode() {
+		return LOOP_CODE;
+	}
+
+	public static int getExplicitXorCode() {
+		return EXPLICIT_XOR_CODE;
 	}
 
 }
