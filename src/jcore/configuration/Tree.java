@@ -3,15 +3,15 @@ package configuration;
 import java.util.ArrayList;
 
 public class Tree<T> {
-	private static final int NORMAL_CODE = 0;
-	private static final int XOR_CODE = 1;
-	private static final int SUCCESS_CODE = 2;
-	private static final int FAILURE_CODE = 3;
-	private static final int LOOP_CODE = 4;
-	private static final int EXPLICIT_XOR_CODE = 5;
+	static final int NORMAL_CODE = 0;
+	static final int XOR_CODE = 1;
+	static final int SUCCESS_CODE = 2;
+	static final int FAILURE_CODE = 3;
+	static final int LOOP_CODE = 4;
+	static final int EXPLICIT_XOR_CODE = 5;
 
 	private static int counter = 0;
-	private final int ID;
+	private int ID;
 	private T value;
 	private int nodeType;
 	private ArrayList<Tree<T>> children;
@@ -21,6 +21,10 @@ public class Tree<T> {
 		this.children = new ArrayList<>();
 		this.setNodeType(NORMAL_CODE);
 		this.ID = counter++;
+	}
+
+	public void setID(int ID) {
+		this.ID = ID;
 	}
 
 	public void addChild(Tree<T> child) {
@@ -35,7 +39,10 @@ public class Tree<T> {
 
 	@Override
 	public String toString() {
-		return this.value.toString() + "(" + this.nodeType + ")";
+		return /*
+				 * this.value.toString() + "type:" + this.getNodeType() + "ID: "
+				 * +
+				 */new Integer(this.getID()).toString();
 	}
 
 	public T getValue() {
@@ -83,6 +90,10 @@ public class Tree<T> {
 		return this.ID;
 	}
 
+	public String getID_asString() {
+		return (new Integer(this.ID)).toString();
+	}
+
 	public boolean isLeaf() {
 		if (this.getNodeType() == SUCCESS_CODE || this.getNodeType() == LOOP_CODE || this.getNodeType() == FAILURE_CODE)
 			return true;
@@ -101,28 +112,17 @@ public class Tree<T> {
 		Tree.counter = counter;
 	}
 
-	public static int getNormalCode() {
-		return NORMAL_CODE;
-	}
-
-	public static int getXorCode() {
-		return XOR_CODE;
-	}
-
-	public static int getSuccessCode() {
-		return SUCCESS_CODE;
-	}
-
-	public static int getFailureCode() {
-		return FAILURE_CODE;
-	}
-
-	public static int getLoopCode() {
-		return LOOP_CODE;
-	}
-
-	public static int getExplicitXorCode() {
-		return EXPLICIT_XOR_CODE;
+	public static Tree<String> getSameTree_newID(Tree<String> t) {
+		Tree<String> n = new Tree<String>(t.getValue());
+		n.setNodeType(t.getNodeType());
+		if (t.isLeaf())
+			return n;
+		else {
+			for (Tree<String> child : t.getChildren()) {
+				n.addChild(getSameTree_newID(child));
+			}
+			return n;
+		}
 	}
 
 }

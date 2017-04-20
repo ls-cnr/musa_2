@@ -3,8 +3,8 @@ package configuration;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
-
 import pmr.graph.EvolutionEdge;
 import pmr.graph.NormalEdge;
 import pmr.graph.OPNode;
@@ -21,17 +21,16 @@ import pmr.graph.WorldNode;
 public class SolutionTree {
 	private Tree<String> root;
 
-	/* input */
 	private WTS wts;
 	private HashMap<String, WorldNode> successNodes;
-
-	/* temp */
 
 	private HashMap<String, WorldNode> failureNodes;
 	private HashMap<String, ArrayList<OPNode>> xorNodes;
 
 	private ArrayList<ArrayList<String>> allPaths;
 	private ArrayList<ArrayList<String>> loopPaths;
+
+	private HashSet<String> treeSafeNodes;
 
 	/**
 	 * @param wts
@@ -42,10 +41,6 @@ public class SolutionTree {
 	public SolutionTree(WTS wts, HashMap<String, WorldNode> success_nodes) {
 		this.wts = wts;
 		this.successNodes = success_nodes;
-
-		this.xorNodes = new HashMap<>();
-		this.failureNodes = new HashMap<>();
-
 		/*
 		 * TODO aggiungo manualmente 2 stati di successo.
 		 */
@@ -60,9 +55,20 @@ public class SolutionTree {
 					this.wts.getWTS().get(
 							"invoice(the_invoice)\norder(an_order)\nuser(a_user)\nregistered(a_user)\nlogged(a_user)\naccepted(an_order)\navailable(the_invoice)\nuploaded_on_cloud(the_invoice)\nmailed_perm_link(the_invoice, a_user)\nstorehouse_manager(a_storehouse_manager)\ndelivery_order(the_delivery_order)\nsent(the_delivery_order, a_storehouse_manager)\n"));
 		}
-
+		/*
+		 * ------------------------------
+		 */
+		this.xorNodes = new HashMap<>();
+		this.failureNodes = new HashMap<>();
+		/*
+		 * ------------------------------
+		 */
 		this.allPaths = new ArrayList<>();
 		this.loopPaths = new ArrayList<>();
+		/*
+		 * ------------------------------
+		 */
+		this.treeSafeNodes = new HashSet<>();
 	}
 
 	/**
@@ -105,7 +111,6 @@ public class SolutionTree {
 					preliminaryVisit(to_visit, visited);
 				}
 		}
-
 		visited.remove(w0.getWorldState().toString());
 	}
 
@@ -122,36 +127,45 @@ public class SolutionTree {
 	 * @param path
 	 *            path built
 	 */
-	public void WTS_toPathList(WorldNode w, HashMap<String, WorldNode> visited, ArrayList<String> path) {
+	private void WTS_toPathList(WorldNode w, HashSet<String> visited, ArrayList<String> path) {
 		String s = w.getWorldState().toString();
-		visited.put(s, w);
+
+		visited.add(s);
 		path.add(s);
 
 		if (this.successNodes.containsKey(s) || this.failureNodes.containsKey(s))
 			this.allPaths.add(new ArrayList<String>(path));
+
 		else {
 			for (int i = 0; i < w.getOutcomingEdgeList().size(); i++) {
-				if (visited.containsKey(
-						w.getOutcomingEdgeList().get(i).getDestination().getWorldState().toString()) == false)
+				String toVisit = w.getOutcomingEdgeList().get(i).getDestination().getWorldState().toString();
+				if (visited.contains(toVisit) == false)
 					WTS_toPathList(w.getOutcomingEdgeList().get(i).getDestination(), visited, path);
+
 				else {
-					path.add(w.getOutcomingEdgeList().get(i).getDestination().getWorldState().toString());
+					String loopNode = toVisit;
+					path.add(loopNode);
 					this.allPaths.add(new ArrayList<String>(path));
 					this.loopPaths.add(new ArrayList<String>(path));
-					path.remove(w.getOutcomingEdgeList().get(i).getDestination().getWorldState().toString());
+					path.remove(path.size() - 1);
 				}
 			}
+
 			for (int i = 0; i < w.getOPNodeList().size(); i++) {
 				path.add(i + "$" + w.getWorldState().toString().hashCode());
-				for (EvolutionEdge eE : w.getOPNodeList().get(i).getOutcomingEdge())
-					if (visited.containsKey(eE.getDestination().getWorldState().toString()) == false)
+				for (EvolutionEdge eE : w.getOPNodeList().get(i).getOutcomingEdge()) {
+					String toVisit = eE.getDestination().getWorldState().toString();
+					if (visited.contains(toVisit) == false)
 						WTS_toPathList(eE.getDestination(), visited, path);
+
 					else {
-						path.add(eE.getDestination().getWorldState().toString());
+						String loopNode = toVisit;
+						path.add(loopNode);
 						this.allPaths.add(new ArrayList<String>(path));
 						this.loopPaths.add(new ArrayList<String>(path));
-						path.remove(eE.getDestination().getWorldState().toString());
+						path.remove(path.size() - 1);
 					}
+				}
 				path.remove(path.lastIndexOf(i + "$" + w.getWorldState().toString().hashCode()));
 			}
 		}
@@ -160,14 +174,16 @@ public class SolutionTree {
 		visited.remove(s);
 	}
 
+	/**
+	 * Support method.
+	 * 
+	 * @param w0
+	 *            initial node
+	 */
 	public void WTS_toPathList(WorldNode w0) {
 		ArrayList<String> path = new ArrayList<>();
-		HashMap<String, WorldNode> visited = new HashMap<>();
+		HashSet<String> visited = new HashSet<>();
 		WTS_toPathList(w0, visited, path);
-	}
-
-	public ArrayList<ArrayList<String>> getAllPaths() {
-		return this.allPaths;
 	}
 
 	/**
@@ -193,9 +209,8 @@ public class SolutionTree {
 				currentNode = currentNode.getChild(newBorn);
 			}
 
-			if (this.loopPaths.contains(path)) {
-				currentNode.setNodeType(Tree.getLoopCode());
-			}
+			if (this.loopPaths.contains(path))
+				currentNode.setNodeType(Tree.LOOP_CODE);
 
 		}
 	}
@@ -207,15 +222,15 @@ public class SolutionTree {
 	 */
 	private void setNodeType(Tree<String> node) {
 		if (this.successNodes.containsKey(node.getValue()) == true)
-			node.setNodeType(Tree.getSuccessCode());
+			node.setNodeType(Tree.SUCCESS_CODE);
 		else if (this.failureNodes.containsKey(node.getValue()) == true)
-			node.setNodeType(Tree.getFailureCode());
+			node.setNodeType(Tree.FAILURE_CODE);
 		else if (this.xorNodes.containsKey(node.getValue()) == true)
-			node.setNodeType(Tree.getXorCode());
+			node.setNodeType(Tree.XOR_CODE);
 		else if (node.getValue().contains("$")) {
-			node.setNodeType(Tree.getExplicitXorCode());
+			node.setNodeType(Tree.EXPLICIT_XOR_CODE);
 		} else
-			node.setNodeType(Tree.getNormalCode());
+			node.setNodeType(Tree.NORMAL_CODE);
 	}
 
 	/**
@@ -225,19 +240,19 @@ public class SolutionTree {
 	 *            int type
 	 * @return string for that type
 	 */
-	private static String typeToString(int type) {
+	public static String typeToString(int type) {
 
-		if (type == Tree.getNormalCode())
+		if (type == Tree.NORMAL_CODE)
 			return "normal";
-		else if (type == Tree.getSuccessCode())
+		else if (type == Tree.SUCCESS_CODE)
 			return "success";
-		else if (type == Tree.getXorCode())
+		else if (type == Tree.XOR_CODE)
 			return "xor";
-		else if (type == Tree.getFailureCode())
+		else if (type == Tree.FAILURE_CODE)
 			return "failure";
-		else if (type == Tree.getLoopCode())
+		else if (type == Tree.LOOP_CODE)
 			return "loop";
-		else if (type == Tree.getExplicitXorCode())
+		else if (type == Tree.EXPLICIT_XOR_CODE)
 			return "explicit_xor";
 		else
 			return "";
@@ -262,71 +277,85 @@ public class SolutionTree {
 
 	}
 
+	/**
+	 * Support method.
+	 */
 	public void printTree() {
 		printTree(this.getRoot(), 0);
 	}
 
 	/**
 	 * This method prints the tree (dot language) adding at the end of each node
-	 * the hashcode corresponding to its facts and its ID.
-	 * 
-	 * explicit_xor nodes and their outgoing edges are red.
-	 * 
 	 * 
 	 * @param node
+	 *            tree node
+	 * @param treeSafeNodes
+	 *            used to decide if a node is safe
 	 */
-	public static void printTreeGraphviz(Tree<String> node) {
+	public static void printTreeGraphviz(Tree<String> node, HashSet<String> treeSafeNodes) {
 		if (node != null) {
 			String V = "\"";
 			String src = "", dest = "";
 			for (Tree<String> x : node.getChildren()) {
 				boolean flag = node.getValue().contains("$");
 				if (flag)
-					src = node.getValue() + "\n" + typeToString(node.getNodeType()) + "\n" + node.getID();
+					src = node.getValue() + "\n" + typeToString(node.getNodeType()) + "\n" + node.getID() + "\nsafe: "
+							+ treeSafeNodes.contains(node.getValue());
 				else
 					src = node.getValue() + "\n" + node.getValue().hashCode() + "\n" + typeToString(node.getNodeType())
-							+ "\n" + node.getID();
+							+ "\n" + node.getID() + "\nsafe: " + treeSafeNodes.contains(node.getValue());
 
 				if (x.getValue().contains("$"))
-					dest = x.getValue() + "\n" + typeToString(x.getNodeType()) + "\n" + x.getID();
+					dest = x.getValue() + "\n" + typeToString(x.getNodeType()) + "\n" + x.getID() + "\nsafe: "
+							+ treeSafeNodes.contains(x.getValue());
 				else
 					dest = x.getValue() + "\n" + x.getValue().hashCode() + "\n" + typeToString(x.getNodeType()) + "\n"
-							+ x.getID();
+							+ x.getID() + "\nsafe: " + treeSafeNodes.contains(x.getValue());
 
 				if (flag)
 					System.out.println(
 							V + src + V + "[color=red]\n" + V + src + V + "->" + V + dest + V + "[color=red]\n");
 				else
 					System.out.println(V + src + V + "->" + V + dest + V);
-				printTreeGraphviz(x);
+				printTreeGraphviz(x, treeSafeNodes);
 			}
 		}
 
 	}
 
+	/**
+	 * Support method.
+	 */
 	public void printTreeGraphviz() {
 		System.out.println("digraph{");
-		printTreeGraphviz(this.root);
-		System.out.println("labelloc=\"t\";\nlabel=\"TREE\"\n}");
-	}
-
-	public void printTreeGraphvizAsSubGraph() {
-		System.out.println("subgraph cluster_TREE{");
-		printTreeGraphviz(this.root);
+		printTreeGraphviz(this.root, this.treeSafeNodes);
 		System.out.println("labelloc=\"t\";\nlabel=\"TREE\"\n}");
 	}
 
 	/**
-	 * This method produces the output solution(s).
+	 * Support method. It uses graphviz graph clusters.
 	 */
-	public ArrayList<Tree<String>> tree_toSolutionSet(Tree<String> currentNode) {
+	public void printTreeGraphvizAsSubGraph() {
+		System.out.println("subgraph cluster_TREE{");
+		printTreeGraphviz(this.root, this.treeSafeNodes);
+		System.out.println("labelloc=\"t\";\nlabel=\"TREE\"\n}");
+	}
+
+	/**
+	 * This method produces the output solution(s), bottom-up approach.
+	 * 
+	 * 
+	 * @param currentNode
+	 * @return
+	 */
+	private ArrayList<Tree<String>> tree_toSolutionSet(Tree<String> currentNode) {
 		ArrayList<Tree<String>> solutions = new ArrayList<>();
 
 		if (currentNode.isLeaf()) {
 			Tree<String> lastNode = new Tree<String>(currentNode.getValue());
 			lastNode.setNodeType(currentNode.getNodeType());
 
-			if (currentNode.getNodeType() == Tree.getSuccessCode() || currentNode.getNodeType() == Tree.getLoopCode()) {
+			if (currentNode.getNodeType() == Tree.SUCCESS_CODE || currentNode.getNodeType() == Tree.LOOP_CODE) {
 				solutions.add(lastNode);
 				return solutions;
 			} else
@@ -334,7 +363,7 @@ public class SolutionTree {
 		}
 
 		else {
-			if (currentNode.getNodeType() == Tree.getXorCode() || currentNode.getNodeType() == Tree.getNormalCode()) {
+			if (currentNode.getNodeType() == Tree.XOR_CODE || currentNode.getNodeType() == Tree.NORMAL_CODE) {
 				for (Tree<String> child : currentNode.getChildren()) {
 					ArrayList<Tree<String>> subSolutions = tree_toSolutionSet(child);
 					if (subSolutions != null)
@@ -353,30 +382,117 @@ public class SolutionTree {
 				else
 					return solutions;
 
-			} else if (currentNode.getNodeType() == Tree.getExplicitXorCode()) {
-
-				Tree<String> subTree = new Tree<String>(currentNode.getValue());
-				subTree.setNodeType(currentNode.getNodeType());
-
+			} else if (currentNode.getNodeType() == Tree.EXPLICIT_XOR_CODE) {
+				HashSet<ArrayList<Tree<String>>> set = new HashSet<>();
 				for (Tree<String> child : currentNode.getChildren()) {
 					ArrayList<Tree<String>> subSolutions = tree_toSolutionSet(child);
-					if (subSolutions != null) {
-
-						for (Tree<String> solutionTree : subSolutions) {
-
-							subTree.setNodeType(currentNode.getNodeType());
-							subTree.getChildren().add(solutionTree);
-
-						}
-					} else
+					if (subSolutions != null)
+						set.add(subSolutions);
+					else
 						return null;
-
 				}
 
-				solutions.add(subTree);
+				HashSet<ArrayList<String>> set_copy = new HashSet<>();
+				for (ArrayList<Tree<String>> al : set) {
+					ArrayList<String> toAdd = new ArrayList<>();
+					for (Tree<String> ts : al)
+						toAdd.add(ts.getID_asString());
+					set_copy.add(toAdd);
+				}
+
+				Iterator<ArrayList<String>> set_copyIterator = set_copy.iterator();
+				if (set_copyIterator.hasNext()) {
+					ArrayList<String> first = (ArrayList<String>) set_copyIterator.next();
+					while (set_copyIterator.hasNext()) {
+						ArrayList<String> first_copy = new ArrayList<>(first);
+						ArrayList<String> second = (ArrayList<String>) set_copyIterator.next();
+						first = this.combineTwoArrayList(first_copy, second);
+					}
+					for (String examinedString : first) {
+
+						Tree<String> subTree = new Tree<String>(currentNode.getValue());
+						subTree.setNodeType(currentNode.getNodeType());
+
+						String[] S = examinedString.split("@");
+						ArrayList<String> stringsToParse = new ArrayList<>();
+						for (int i = 0; i < S.length; i++)
+							stringsToParse.add(S[i]);
+
+						for (String s : stringsToParse) {
+							Tree<String> toAddAsChild = new Tree<String>("");
+							for (ArrayList<Tree<String>> array : set)
+								for (Tree<String> tree : array)
+									if (tree.getID_asString().equals(s)) {
+										toAddAsChild.setValue(tree.getValue());
+										toAddAsChild.setNodeType(tree.getNodeType());
+										toAddAsChild.setChildren(tree.getChildren());
+										subTree.getChildren().add(Tree.getSameTree_newID(toAddAsChild));
+									}
+						}
+						solutions.add(subTree);
+					}
+				}
 				return solutions;
 			}
 			return solutions;
+		}
+	}
+
+	/**
+	 * This method combines 2 ArrayLists<String>. <br>
+	 * Example: A = [a, b, c] B = [d, e] <br>
+	 * 
+	 * <b>res = [ad, ae, bd, be, cd, ce]</b>
+	 * 
+	 */
+	public ArrayList<String> combineTwoArrayList(ArrayList<String> A, ArrayList<String> B) {
+		ArrayList<String> res = new ArrayList<>();
+		for (String a : A)
+			for (String b : B)
+				res.add(a + "@" + b);
+		return res;
+	}
+
+	public SolutionSet tree_toSolutionSet() {
+		ArrayList<Tree<String>> solutions = tree_toSolutionSet(this.getRoot());
+		SolutionSet solutionSet = new SolutionSet();
+		if (solutions != null) {
+			for (Tree<String> s : solutions)
+				solutionSet.addSolution(new Solution(s, this));
+			Iterator<Solution> i = solutionSet.iterator();
+			while (i.hasNext()) {
+				Solution s = i.next();
+				this.makeTreeSafe(s.getRoot());
+				/*
+				 * removing a solutions if it has got a loop which does not
+				 * arrive to a safe Tree node
+				 */
+				if (s.checkLoop() == false)
+					i.remove();
+			}
+		}
+		return solutionSet;
+	}
+
+	/**
+	 * A node is safe if it a success node or if at least one of its children is
+	 * safe. Bottom-up approach.
+	 * 
+	 * @param t
+	 */
+	private void makeTreeSafe(Tree<String> t) {
+		if (t != null) {
+			if (t.getNodeType() == Tree.SUCCESS_CODE)
+				this.treeSafeNodes.add(t.getValue());
+			else {
+				if (t.getNodeType() == Tree.XOR_CODE)
+					t.setNodeType(Tree.NORMAL_CODE);
+				for (Tree<String> child : t.getChildren()) {
+					this.makeTreeSafe(child);
+					if (this.treeSafeNodes.contains(child.getValue()))
+						this.treeSafeNodes.add(t.getValue());
+				}
+			}
 		}
 	}
 
@@ -399,4 +515,13 @@ public class SolutionTree {
 	public HashMap<String, ArrayList<OPNode>> getXorNodes() {
 		return xorNodes;
 	}
+
+	public HashSet<String> getTreeSafeNode() {
+		return treeSafeNodes;
+	}
+
+	public ArrayList<ArrayList<String>> getAllPaths() {
+		return this.allPaths;
+	}
+
 }
