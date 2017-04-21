@@ -56,7 +56,12 @@ public class SolutionTreeTest {
 
 		String tmp;
 		WorldNode wn1, wn2;
-
+		
+		/*
+		 * Preliminary visit to get some information
+		 */
+		st.preliminaryVisit(w0, new HashMap<String, WorldNode>());
+		
 		/* some tests */
 		// 1: every final state is a success state
 
@@ -126,11 +131,6 @@ public class SolutionTreeTest {
 		// wn1.addOutcomingEdge(new NormalEdge(wn1, wn2, "test8_edge"));
 
 		/* -------------------- */
-
-		/*
-		 * Preliminary visit to get some information
-		 */
-		st.preliminaryVisit(w0, new HashMap<String, WorldNode>());
 
 		/*
 		 * Path generation.
