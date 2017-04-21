@@ -145,7 +145,8 @@ public class SolutionTreeTest {
 		/*
 		 * Solution finding.
 		 */
-		SolutionSet solutions = st.tree_toSolutionSet();
+		st.tree_toSolutionSet();
+		SolutionSet solutions = st.getSolutionSet();
 
 		/* Printing */
 

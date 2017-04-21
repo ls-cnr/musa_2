@@ -1,25 +1,25 @@
 package configuration;
 
 public class Solution {
-	private Tree<String> root;
-	private final int ID;
 	private static int counter = 0;
+	private final int ID;
+	private Tree<String> root;
 
-	/* A quale SolutionTree si riferisce questa soluzione riferisco? */
-	private SolutionTree solutionTree;
+	/* Which solutionSet am I in? */
+	private SolutionSet solutionSet;
 
-	public Solution(Tree<String> s, SolutionTree solutionTree) {
-		this.root = s;
+	public Solution(Tree<String> s, SolutionSet solutionSet) {
 		this.ID = counter++;
-		this.solutionTree = solutionTree;
+		this.root = s;
+		this.solutionSet = solutionSet;
 	}
 
 	public Tree<String> getRoot() {
-		return root;
+		return this.root;
 	}
 
 	public int getID() {
-		return ID;
+		return this.ID;
 	}
 
 	public static int getCounter() {
@@ -28,10 +28,6 @@ public class Solution {
 
 	public void setRoot(Tree<String> root) {
 		this.root = root;
-	}
-
-	public void add(Tree<String> t) {
-		this.root.addChild(t);
 	}
 
 	public boolean containsLoop() {
@@ -56,13 +52,13 @@ public class Solution {
 	}
 
 	public boolean checkLoop() {
-		return this.checkLoop(this.root, this.solutionTree);
+		return this.checkLoop(this.root, this.solutionSet);
 	}
 
-	private boolean checkLoop(Tree<String> currentNode, SolutionTree st) {
+	private boolean checkLoop(Tree<String> currentNode, SolutionSet st) {
 		if (currentNode.isLeaf()) {
 			if (currentNode.getNodeType() == Tree.LOOP_CODE) {
-				if (this.solutionTree.getTreeSafeNode().contains(currentNode.getValue()))
+				if (this.solutionSet.getSolutionTree().getTreeSafeNode().contains(currentNode.getValue()))
 					return true;
 				else
 					return false;

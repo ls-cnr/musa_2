@@ -11,7 +11,7 @@ public class Tree<T> {
 	static final int EXPLICIT_XOR_CODE = 5;
 
 	private static int counter = 0;
-	private int ID;
+	private final int ID;
 	private T value;
 	private int nodeType;
 	private ArrayList<Tree<T>> children;
@@ -21,10 +21,6 @@ public class Tree<T> {
 		this.children = new ArrayList<>();
 		this.setNodeType(NORMAL_CODE);
 		this.ID = counter++;
-	}
-
-	public void setID(int ID) {
-		this.ID = ID;
 	}
 
 	public void addChild(Tree<T> child) {
@@ -106,10 +102,6 @@ public class Tree<T> {
 
 	public static int getCounter() {
 		return counter;
-	}
-
-	public static void setCounter(int counter) {
-		Tree.counter = counter;
 	}
 
 	public static Tree<String> getSameTree_newID(Tree<String> t) {

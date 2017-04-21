@@ -32,6 +32,8 @@ public class SolutionTree {
 
 	private HashSet<String> treeSafeNodes;
 
+	private SolutionSet solutionSet;
+
 	/**
 	 * @param wts
 	 *            the world transition system to work on
@@ -406,7 +408,7 @@ public class SolutionTree {
 					while (set_copyIterator.hasNext()) {
 						ArrayList<String> first_copy = new ArrayList<>(first);
 						ArrayList<String> second = (ArrayList<String>) set_copyIterator.next();
-						first = this.combineTwoArrayList(first_copy, second);
+						first = SolutionTree.combineTwoArrayList(first_copy, second);
 					}
 					for (String examinedString : first) {
 
@@ -445,7 +447,7 @@ public class SolutionTree {
 	 * <b>res = [ad, ae, bd, be, cd, ce]</b>
 	 * 
 	 */
-	public ArrayList<String> combineTwoArrayList(ArrayList<String> A, ArrayList<String> B) {
+	private static ArrayList<String> combineTwoArrayList(ArrayList<String> A, ArrayList<String> B) {
 		ArrayList<String> res = new ArrayList<>();
 		for (String a : A)
 			for (String b : B)
@@ -453,12 +455,12 @@ public class SolutionTree {
 		return res;
 	}
 
-	public SolutionSet tree_toSolutionSet() {
+	public void tree_toSolutionSet() {
 		ArrayList<Tree<String>> solutions = tree_toSolutionSet(this.getRoot());
-		SolutionSet solutionSet = new SolutionSet();
+		SolutionSet solutionSet = new SolutionSet(this);
 		if (solutions != null) {
 			for (Tree<String> s : solutions)
-				solutionSet.addSolution(new Solution(s, this));
+				solutionSet.addSolution(new Solution(s, solutionSet));
 			Iterator<Solution> i = solutionSet.iterator();
 			while (i.hasNext()) {
 				Solution s = i.next();
@@ -471,7 +473,7 @@ public class SolutionTree {
 					i.remove();
 			}
 		}
-		return solutionSet;
+		this.setSolutionSet(solutionSet);
 	}
 
 	/**
@@ -522,6 +524,14 @@ public class SolutionTree {
 
 	public ArrayList<ArrayList<String>> getAllPaths() {
 		return this.allPaths;
+	}
+
+	public SolutionSet getSolutionSet() {
+		return solutionSet;
+	}
+
+	public void setSolutionSet(SolutionSet solutionSet) {
+		this.solutionSet = solutionSet;
 	}
 
 }
