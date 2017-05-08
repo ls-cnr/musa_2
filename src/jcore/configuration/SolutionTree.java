@@ -467,18 +467,20 @@ public class SolutionTree {
 				this.makeTreeSafe(s.getRoot());
 				/*
 				 * removing a solutions if it has got a loop which does not
-				 * arrive to a safe Tree node
+				 * arrive to a safe Tree node or if it is a simple path ending
+				 * with a loop (like A->B->C->L(A))
 				 */
-				if (s.checkLoop() == false)
+				if (s.checkLoop() == false || (s.isSimplePath() == true && s.containsLoop() == true))
 					i.remove();
+
 			}
 		}
 		this.setSolutionSet(solutionSet);
 	}
 
 	/**
-	 * A node is safe if it a success node or if at least one of its children is
-	 * safe. Bottom-up approach.
+	 * A node is safe if it is a success node or if at least one of its children
+	 * is safe. Bottom-up approach.
 	 * 
 	 * @param t
 	 */

@@ -56,12 +56,12 @@ public class SolutionTreeTest {
 
 		String tmp;
 		WorldNode wn1, wn2;
-		
+
 		/*
 		 * Preliminary visit to get some information
 		 */
 		st.preliminaryVisit(w0, new HashMap<String, WorldNode>());
-		
+
 		/* some tests */
 		// 1: every final state is a success state
 
@@ -83,6 +83,7 @@ public class SolutionTreeTest {
 		st.getSuccessNodes().remove(tmp);
 
 		// 4: adding a loop edge
+
 		tmp = "order(an_order)\nuser(a_user)\nhas_cloud_space(a_user)\nlogged(a_user)\nregistered(a_user)\naccepted(an_order)\ninvoice(the_invoice)\navailable(the_invoice)\nuploaded_on_cloud(the_invoice)\n";
 		wn1 = st.getWts().getWTS().get(tmp);
 		tmp = "order(an_order)\nuser(a_user)\nhas_cloud_space(a_user)\nlogged(a_user)\nregistered(a_user)\naccepted(an_order)\n";
@@ -129,6 +130,21 @@ public class SolutionTreeTest {
 		// wn2 = st.getWts().getWTS().get(tmp);
 		//
 		// wn1.addOutcomingEdge(new NormalEdge(wn1, wn2, "test8_edge"));
+
+		/* -------------------- */
+
+		/**
+		 * order(an_order) available(an_order) user(a_user) logged(a_user)
+		 * registered(a_user)
+		 */
+		// 9: new loop
+
+		tmp = "order(an_order)\navailable(an_order)\nuser(a_user)\nuser_data(the_user_data)\nlogged(a_user)\nunregistered(a_user)\ncomplete(the_user_data)\n";;
+		wn1 = st.getWts().getWTS().get(tmp);
+		tmp = "order(an_order)\navailable(an_order)\nuser(a_user)\nuser_data(the_user_data)\n";
+		wn2 = st.getWts().getWTS().get(tmp);
+
+		wn1.addOutcomingEdge(new NormalEdge(wn1, wn2, "test9_edge"));
 
 		/* -------------------- */
 

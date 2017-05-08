@@ -1,5 +1,11 @@
 package configuration;
 
+/**
+ * This class describes one solution.
+ * 
+ * @author Mirko Avantaggiato
+ *
+ */
 public class Solution {
 	private static int counter = 0;
 	private final int ID;
@@ -91,6 +97,22 @@ public class Solution {
 				sum += Solution.howManyLoops(child);
 			return sum;
 		}
+	}
+
+	public boolean isSimplePath() {
+		return isSimplePath(this.getRoot());
+	}
+
+	private static boolean isSimplePath(Tree<String> node) {
+		if (node.getChildren() != null)
+			if (node.getChildren().size() == 1)
+				return isSimplePath(node.getChildren().get(0));
+			else if (node.getChildren().size() == 0)
+				return true;
+			else
+				return false;
+
+		return true;
 	}
 
 }
