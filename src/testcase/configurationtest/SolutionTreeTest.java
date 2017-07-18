@@ -5,9 +5,9 @@ import java.util.Iterator;
 import org.junit.Test;
 
 import b2b_cloud_scenario.B2BCloudSetup;
-import configuration.Solution;
-import configuration.SolutionSet;
-import configuration.SolutionTree;
+import configuration.centralized.Solution;
+import configuration.centralized.SolutionSet;
+import configuration.centralized.SolutionTree;
 import pmr.SolutionGraph;
 import pmr.graph.EvolutionEdge;
 import pmr.graph.NormalEdge;
@@ -70,35 +70,41 @@ public class SolutionTreeTest {
 		st.getFailureNodes().clear();
 
 		// 2: w0 has normalEdges instead of EEdges
-
-		for (OPNode opNode : w0.getOPNodeList())
-			for (EvolutionEdge ee : opNode.getOutcomingEdge())
-				w0.addOutcomingEdge(new NormalEdge(w0, ee.getDestination(), ee.getScenario()));
-		w0.getOPNodeList().clear();
+		//
+		// for (OPNode opNode : w0.getOPNodeList())
+		// for (EvolutionEdge ee : opNode.getOutcomingEdge())
+		// w0.addOutcomingEdge(new NormalEdge(w0, ee.getDestination(),
+		// ee.getScenario()));
+		// w0.getOPNodeList().clear();
 
 		// 3: failure states make xor fail too
 
-		tmp = "order(an_order)\nuser(a_user)\nregistered(a_user)\nlogged(a_user)\nrefused(an_order)\n";
-		st.getFailureNodes().put(tmp, st.getSuccessNodes().get(tmp));
-		st.getSuccessNodes().remove(tmp);
+		// tmp =
+		// "order(an_order)\nuser(a_user)\nregistered(a_user)\nlogged(a_user)\nrefused(an_order)\n";
+		// st.getFailureNodes().put(tmp, st.getSuccessNodes().get(tmp));
+		// st.getSuccessNodes().remove(tmp);
 
 		// 4: adding a loop edge
-
-		tmp = "order(an_order)\nuser(a_user)\nhas_cloud_space(a_user)\nlogged(a_user)\nregistered(a_user)\naccepted(an_order)\ninvoice(the_invoice)\navailable(the_invoice)\nuploaded_on_cloud(the_invoice)\n";
-		wn1 = st.getWts().getWTS().get(tmp);
-		tmp = "order(an_order)\nuser(a_user)\nhas_cloud_space(a_user)\nlogged(a_user)\nregistered(a_user)\naccepted(an_order)\n";
-		wn2 = st.getWts().getWTS().get(tmp);
-
-		wn1.addOutcomingEdge(new NormalEdge(wn1, wn2, "test4_edge"));
-
+		//
+		// tmp =
+		// "order(an_order)\nuser(a_user)\nhas_cloud_space(a_user)\nlogged(a_user)\nregistered(a_user)\naccepted(an_order)\ninvoice(the_invoice)\navailable(the_invoice)\nuploaded_on_cloud(the_invoice)\n";
+		// wn1 = st.getWts().getWTS().get(tmp);
+		// tmp =
+		// "order(an_order)\nuser(a_user)\nhas_cloud_space(a_user)\nlogged(a_user)\nregistered(a_user)\naccepted(an_order)\n";
+		// wn2 = st.getWts().getWTS().get(tmp);
+		//
+		// wn1.addOutcomingEdge(new NormalEdge(wn1, wn2, "test4_edge"));
+		//
 		// 5: adding a loop edge
-
-		tmp = "order(an_order)\nuser(a_user)\nhas_cloud_space(a_user)\nlogged(a_user)\nregistered(a_user)\naccepted(an_order)\ninvoice(the_invoice)\navailable(the_invoice)\n";
-		wn1 = st.getWts().getWTS().get(tmp);
-		tmp = "order(an_order)\navailable(an_order)\nuser(a_user)\nuser_data(the_user_data)\n";
-		wn2 = st.getWts().getWTS().get(tmp);
-
-		wn1.addOutcomingEdge(new NormalEdge(wn1, wn2, "test5_edge"));
+		//
+		// tmp =
+		// "order(an_order)\nuser(a_user)\nhas_cloud_space(a_user)\nlogged(a_user)\nregistered(a_user)\naccepted(an_order)\ninvoice(the_invoice)\navailable(the_invoice)\n";
+		// wn1 = st.getWts().getWTS().get(tmp);
+		// tmp =
+		// "order(an_order)\navailable(an_order)\nuser(a_user)\nuser_data(the_user_data)\n";
+		// wn2 = st.getWts().getWTS().get(tmp);
+		//
+		// wn1.addOutcomingEdge(new NormalEdge(wn1, wn2, "test5_edge"));
 
 		// 6: making a xor node normal
 		// tmp =
@@ -139,7 +145,8 @@ public class SolutionTreeTest {
 		 */
 		// 9: new loop
 
-		tmp = "order(an_order)\navailable(an_order)\nuser(a_user)\nuser_data(the_user_data)\nlogged(a_user)\nunregistered(a_user)\ncomplete(the_user_data)\n";;
+		tmp = "order(an_order)\navailable(an_order)\nuser(a_user)\nuser_data(the_user_data)\nlogged(a_user)\nunregistered(a_user)\ncomplete(the_user_data)\n";
+		;
 		wn1 = st.getWts().getWTS().get(tmp);
 		tmp = "order(an_order)\navailable(an_order)\nuser(a_user)\nuser_data(the_user_data)\n";
 		wn2 = st.getWts().getWTS().get(tmp);

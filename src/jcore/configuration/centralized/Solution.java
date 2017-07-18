@@ -1,4 +1,4 @@
-package configuration;
+package configuration.centralized;
 
 /**
  * This class describes one solution.

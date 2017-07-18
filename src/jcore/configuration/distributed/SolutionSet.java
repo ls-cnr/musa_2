@@ -1,17 +1,15 @@
-package configuration;
+package configuration.distributed;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 
 public class SolutionSet implements Iterable<Solution> {
 	private ArrayList<Solution> solutions;
+	private Sequences seq;
 
-	/* Which SolutionTree do I belong to? */
-	private SolutionTree solutionTree;
-
-	public SolutionSet(SolutionTree st) {
+	public SolutionSet(Sequences seq) {
 		this.solutions = new ArrayList<>();
-		this.setSolutionTree(st);
+		this.seq = seq;
 	}
 
 	@Override
@@ -40,12 +38,16 @@ public class SolutionSet implements Iterable<Solution> {
 		this.solutions.remove(s);
 	}
 
-	public SolutionTree getSolutionTree() {
-		return solutionTree;
+	public Sequences getSeq() {
+		return seq;
 	}
 
-	public void setSolutionTree(SolutionTree solutionTree) {
-		this.solutionTree = solutionTree;
+	public void setSeq(Sequences seq) {
+		this.seq = seq;
+	}
+
+	public boolean containsSolution(Solution s) {
+		return this.solutions.contains(s);
 	}
 
 }

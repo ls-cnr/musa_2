@@ -1,4 +1,4 @@
-package configuration;
+package configuration.centralized;
 
 import java.util.ArrayList;
 import java.util.Collections;

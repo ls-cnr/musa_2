@@ -1,4 +1,4 @@
-package configuration;
+package configuration.distributed;
 
 import java.util.ArrayList;
 
@@ -35,10 +35,7 @@ public class Tree<T> {
 
 	@Override
 	public String toString() {
-		return /*
-				 * this.value.toString() + "type:" + this.getNodeType() + "ID: "
-				 * +
-				 */new Integer(this.getID()).toString();
+		return this.value.toString();
 	}
 
 	public T getValue() {
@@ -91,7 +88,7 @@ public class Tree<T> {
 	}
 
 	public boolean isLeaf() {
-		if (this.getNodeType() == SUCCESS_CODE || this.getNodeType() == LOOP_CODE || this.getNodeType() == FAILURE_CODE)
+		if (this.getChildren().size() == 0)
 			return true;
 		return false;
 	}
@@ -115,6 +112,31 @@ public class Tree<T> {
 			}
 			return n;
 		}
+	}
+
+	/**
+	 * A more user-friendly translation.
+	 * 
+	 * @param type
+	 *            int type
+	 * @return string for that type
+	 */
+	public static String typeToString(int type) {
+
+		if (type == Tree.NORMAL_CODE)
+			return "normal";
+		else if (type == Tree.SUCCESS_CODE)
+			return "success";
+		else if (type == Tree.XOR_CODE)
+			return "xor";
+		else if (type == Tree.FAILURE_CODE)
+			return "failure";
+		else if (type == Tree.LOOP_CODE)
+			return "loop";
+		else if (type == Tree.EXPLICIT_XOR_CODE)
+			return "explicit_xor";
+		else
+			return "";
 	}
 
 }
