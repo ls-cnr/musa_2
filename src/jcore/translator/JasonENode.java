@@ -59,7 +59,7 @@ public class JasonENode {
 			Structure s = (Structure) term;
 			
 			try{
-			w = JasonStateOfWorld.term_to_object(s.getTerm(0));
+				w = JasonStateOfWorld.term_to_object(s.getTerm(0));
 			}catch(TranslateError e1){ throw new TranslateError();}
 			
 			ListTermImpl tokenIterator = (ListTermImpl) s.getTerm(1);

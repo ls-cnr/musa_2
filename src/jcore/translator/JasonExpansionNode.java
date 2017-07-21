@@ -90,7 +90,7 @@ public class JasonExpansionNode {
 			Structure s = (Structure) exp;
 			
 			try{
-			source = JasonENode.term_to_object(s.getTerm(0));
+				source = JasonENode.term_to_object(s.getTerm(0));
 			}catch(TranslateError e1){throw new TranslateError();}
 			
 			

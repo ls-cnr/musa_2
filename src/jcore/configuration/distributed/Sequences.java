@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Scanner;
 
 /**
  * 
@@ -12,6 +11,7 @@ import java.util.Scanner;
  *
  */
 public class Sequences {
+	private String firstStateName;
 	private ArrayList<ArrayList<String>> seqs;
 	private HashSet<String> nodes;
 	private HashSet<String> leafNodes;
@@ -22,7 +22,38 @@ public class Sequences {
 	private HashSet<String> treeSafeNodes;
 	private SolutionSet solutionsSoFar;
 
-	Sequences() {
+	public class Triple {
+		private String a;
+		private String b;
+		private String c;
+
+		Triple(String a, String b, String c) {
+			this.a = a;
+			this.b = b;
+			this.c = c;
+		}
+
+		@Override
+		public boolean equals(Object obj) {
+			Triple that = (Triple) obj;
+			if (this.a.equals(that.a))
+				if (this.b.equals(that.b))
+					if (this.c.equals(that.c))
+						return true;
+			return false;
+		}
+
+		@Override
+		public String toString() {
+			// TODO Auto-generated method stub
+			return "[" + this.a + ", " + this.b + ", " + this.c + "]";
+		}
+
+	}
+
+	private ArrayList<Triple> capabilities;
+
+	public Sequences() {
 		this.seqs = new ArrayList<>();
 		this.nodes = new HashSet<>();
 		this.leafNodes = new HashSet<>();
@@ -30,49 +61,16 @@ public class Sequences {
 		this.successNodes = new HashSet<>();
 		this.treeSafeNodes = new HashSet<>();
 		this.solutionsSoFar = new SolutionSet(this);
+		this.capabilities = new ArrayList<>();
 	}
 
-	public static void main(String[] args) {
-		@SuppressWarnings("resource")
-		Scanner s = new Scanner(System.in);
-		Sequences sc = new Sequences();
-		System.out.println("");
-		while (true) {
-			String input = s.nextLine();
-			String[] tmp = input.split(" ");
-			if (tmp[0].equals("sol"))
-				/*
-				 * Set a node as a solution node.
-				 */
-				sc.processSolution(tmp[1]);
-			else if (tmp[0].equals("get")) {
-				/*
-				 * Print known solutions
-				 */
-				int i = 0;
-				for (Solution sol : sc.solutionsSoFar) {
-					System.out.println("Solution " + i++);
-					printTree(sol.getRoot(), 0);
-				}
-			} else {
-				/*
-				 * Add an edge. NAME MUST BE UNIQUE. All nodes with an "X" in
-				 * their name are considered XOR
-				 */
-				String src = tmp[0];
-				String dest = tmp[1];
-				if (src != dest) {
-					sc.processEdge(src, dest);
-					for (ArrayList<String> seqs : sc.getSeqs()) {
-						System.out.print(seqs + ", ");
-						System.out.println("");
-					}
-				}
-			}
-		}
-	}
-
-	public void processEdge(String src, String dest) {
+	public void processEdge(String src, String dest, String capability) {
+		if (!this.capabilities.contains(new Triple(src, dest, capability)))
+			this.capabilities.add(new Triple(src, dest, capability));
+		/* temporaneo */
+		src = src.replace("\n", "");
+		dest = dest.replace("\n", "");
+		/* ----- */
 		ArrayList<String> edgeToConsider = new ArrayList<>();
 		edgeToConsider.add(src);
 		edgeToConsider.add(dest);
@@ -88,6 +86,7 @@ public class Sequences {
 			this.nodes.add(src);
 			this.nodes.add(dest);
 			this.leafNodes.add(dest);
+			this.firstStateName = src;
 		}
 		/*
 		 * Se src è nei nodi ma dest no, allora è un arco verso un nuovo nodo.
@@ -175,7 +174,7 @@ public class Sequences {
 					HashSet<String> srcSet = new HashSet<>(1);
 					srcSet.add(src);
 					this.allPaths.clear();
-					findAllPaths("w0", srcSet, involvedSeqs, new ArrayList<>(), edgeToConsider);
+					findAllPaths(this.firstStateName, srcSet, involvedSeqs, new ArrayList<>(), edgeToConsider);
 					ArrayList<ArrayList<String>> leftSide = new ArrayList<>(this.allPaths);
 					for (int i = 0; i < leftSide.size(); i++)
 						this.allPaths.set(i, arrayTruncateFromTo(leftSide.get(i), 0, leftSide.get(i).size() - 1));
@@ -204,11 +203,10 @@ public class Sequences {
 	}
 
 	public void processSolution(String solutionNode) {
+		/* temporaneo */
+		solutionNode = solutionNode.replace("\n", "");
+		/* ----- */
 		this.successNodes.add(solutionNode);
-		// if (this.leafNodes.contains(solutionNode) == false) {
-		// System.out.println("Not a leaf node!");
-		// return;
-		// }
 
 		Tree<String> root = new Tree<String>(this.seqs.get(0).get(0));
 		root.setNodeType(Tree.NORMAL_CODE);
@@ -497,11 +495,24 @@ public class Sequences {
 					this.makeTreeSafe(child);
 					if (this.treeSafeNodes.contains(child.getValue())
 							|| this.treeSafeNodes.contains(child.getValue() + "*")) {
-						// System.out.println("Adding " + t.getValue() + " to "
+						// System.out.println("Adding " + t.getValue() + "
+						// to "
 						// + this.treeSafeNodes);
 						this.treeSafeNodes.add(t.getValue());
 					}
 				}
 		}
+	}
+
+	public SolutionSet getSolutionsSoFar() {
+		return solutionsSoFar;
+	}
+
+	public void setSolutionsSoFar(SolutionSet solutionsSoFar) {
+		this.solutionsSoFar = solutionsSoFar;
+	}
+
+	public ArrayList<Triple> getCapabilities() {
+		return capabilities;
 	}
 }
