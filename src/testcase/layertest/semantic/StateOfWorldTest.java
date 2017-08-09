@@ -14,7 +14,7 @@ public class StateOfWorldTest {
 	StateOfWorld w1;
 	StateOfWorld w2;
 	StateOfWorld w3;
-	
+
 	@Before
 	public void init(){
 		w = new StateOfWorld();
@@ -26,7 +26,7 @@ public class StateOfWorldTest {
 		} catch (layer.semantic.exception.NotAllowedInAStateOfWorld e) {
 			e.printStackTrace();
 		}
-	
+
 	w1 = new StateOfWorld();
 	try {
 		w1.addFact_asString("penguin(tweety).");
@@ -36,7 +36,7 @@ public class StateOfWorldTest {
 	} catch (layer.semantic.exception.NotAllowedInAStateOfWorld e) {
 		e.printStackTrace();
 	}
-	
+
 	w2 = new StateOfWorld();
 	try {
 		w2.addFact_asString("bird(tweety).");
@@ -46,7 +46,7 @@ public class StateOfWorldTest {
 	} catch (layer.semantic.exception.NotAllowedInAStateOfWorld e) {
 		e.printStackTrace();
 	}
-	
+
 	w3 = new StateOfWorld();
 	try {
 		w2.addFact_asString("ciao(francesco).");
@@ -56,22 +56,22 @@ public class StateOfWorldTest {
 		e.printStackTrace();
 	}
 }
-	
+
 	@Test
 	public void equals1(){
 		assertEquals(true, w.equals(w1));
 	}
-	
+
 	@Test
 	public void equals2(){
 		assertEquals(false, w1.equals(w2));
 	}
-	
+
 	@Test
 	public void equals3(){
 		assertEquals(false, w.equals(w2));
 	}
-	
+
 	@Test
 	public void equals4(){
 		assertEquals(false, w.equals(w3));

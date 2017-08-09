@@ -5,39 +5,43 @@ package selfconf;
 import java.util.LinkedList;
 import java.util.List;
 
-import cartago.*;
+import cartago.ARTIFACT_INFO;
+import cartago.Artifact;
+import cartago.OPERATION;
+import cartago.OUTPORT;
+import cartago.OpFeedbackParam;
+import cartago.OperationException;
 import jason.asSyntax.Term;
 import layer.semantic.StateOfWorld;
-import pmr.graph.WorldNode;
+import pmr.auction.Bid;
 import pmr.probexp.ENode;
 import pmr.probexp.ExpansionNode;
 import translator.JasonENode;
 import translator.JasonExpansionNode;
 import translator.JasonStateOfWorld;
 import translator.TranslateError;
-import pmr.auction.Bid;
 
 @ARTIFACT_INFO(
 		  outports = {
 		    @OUTPORT(name = "mygraph")
 		  }
-	) 
+	)
 public class AccessManagerArtifact extends Artifact {
-	
+
 	private String spec_id_string;
 	private int auction_id;
 	private boolean bid_phase;
-	
-	private List<Bid> bids; 
+
+	private List<Bid> bids;
 
 	void init(String spec_id_string) {
 		this.spec_id_string = spec_id_string;
 		auction_id=0;
-		
+
 		bids = new LinkedList<Bid>();
 		bid_phase=false;
 	}
-	
+
 	/* interface: CONFIGURE */
 	@OPERATION
 	void set_initial_node(String node_string) {
@@ -46,17 +50,17 @@ public class AccessManagerArtifact extends Artifact {
 		try {
 			execLinkedOp("mygraph","set_initial_state",node_string);
 			StateOfWorld w = JasonStateOfWorld.term_string_to_object(node_string);
-			
+
 			ENode enode = new ENode(w);
 			enode.setExit(false);
 			Term term=JasonENode.object_to_term(enode);
 			signal("announcement_new_node",spec_id_string,term);
-			
+
 		} catch (OperationException | TranslateError e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	@OPERATION
 	void get_number_of_nodes(OpFeedbackParam<Integer> num) {
 		try {
@@ -81,14 +85,14 @@ public class AccessManagerArtifact extends Artifact {
 
 		Bid winner = null;
 		double max_utilty = -1;
-		
+
 		for (Bid b : bids) {
 			if (b.getValue() > max_utilty) {
 				winner = b;
 				max_utilty = b.getValue();
 			}
 		}
-		
+
 		if (winner != null) {
 			signal("announcement_winner_auction",spec_id_string,auction_id,winner.getAgent());
 		}
@@ -102,7 +106,7 @@ public class AccessManagerArtifact extends Artifact {
 		}
 	}
 
-	
+
 	/* interface: GRANT ACCESS */
 	@OPERATION
 	void apply_changes(String expansion) {
@@ -118,8 +122,8 @@ public class AccessManagerArtifact extends Artifact {
 			e.printStackTrace();
 		} catch(TranslateError t){return;}
 	}
-	
-	
+
+
 	@OPERATION
 	void print_graph() {
 		try {
@@ -128,11 +132,11 @@ public class AccessManagerArtifact extends Artifact {
 			e.printStackTrace();
 		}
 	}
-	
-	
+
+
 //	private WorldNode get_initial_node_for_test() {
 //		StateOfWorld wStart = new StateOfWorld();
-//		
+//
 //		try {
 //			wStart.addFact_asString("order(an_order).");
 //			wStart.addFact_asString("available(an_order).");
@@ -143,7 +147,7 @@ public class AccessManagerArtifact extends Artifact {
 //		} catch (layer.semantic.exception.NotAllowedInAStateOfWorld e) {
 //			e.printStackTrace();
 //		}
-//		
+//
 //		return new WorldNode(wStart);
 //	}
 }

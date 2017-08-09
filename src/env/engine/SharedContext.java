@@ -8,7 +8,7 @@ public class SharedContext extends Artifact {
 	void init(int initialValue) {
 		defineObsProperty("count", initialValue);
 	}
-	
+
 	@OPERATION
 	void inc() {
 		ObsProperty prop = getObsProperty("count");

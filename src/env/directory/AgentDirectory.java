@@ -5,8 +5,8 @@ package directory;
 import java.util.ArrayList;
 import java.util.List;
 
-import cartago.*;
-import jason.asSyntax.Term;
+import cartago.Artifact;
+import cartago.OPERATION;
 
 public class AgentDirectory extends Artifact {
 	private List<String> agentsName;
@@ -17,7 +17,7 @@ public class AgentDirectory extends Artifact {
 
 		System.out.println("artefatto Directory Service creato");
 	}
-	
+
 	@OPERATION
 	void register(String agentName) {
 		String name= new String(agentName);
@@ -33,6 +33,6 @@ public class AgentDirectory extends Artifact {
 	void broadcast_announce_WTS_creation(String spec_id, String workspace, String artifactName) {
 		signal("announcement_WTS_creation",spec_id,workspace,artifactName);
 	}
-	
+
 }
 

@@ -7,7 +7,7 @@ import cartago.*;
 public class ServiceUDDIProxy extends Artifact {
 	void init() {
 	}
-	
+
 	@OPERATION
 	void register() {
 	}

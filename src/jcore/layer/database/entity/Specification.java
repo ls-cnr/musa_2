@@ -1,14 +1,16 @@
 package layer.database.entity;
 
+import static javax.persistence.GenerationType.IDENTITY;
+
 // Generated 22-nov-2016 14.40.56 by Hibernate Tools 3.4.0.CR1
 
 import java.util.HashSet;
 import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
-import static javax.persistence.GenerationType.IDENTITY;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -23,27 +25,28 @@ import javax.persistence.Table;
 @Table(name = "specification", catalog = "musa_db")
 public class Specification implements java.io.Serializable {
 
+	private static final long serialVersionUID = 1L;
+
 	/** The id specification. */
 	private Integer idSpecification;
-	
+
 	/** The domain. */
 	private Domain domain;
-	
+
 	/** The descriptions. */
 	private String descriptions;
-	
+
 	/** The state. */
 	private String state;
-	
+
 	/** The user. */
 	private String user;
-	
+
 	/** The functional reqs. */
 	private Set<FunctionalReq> functionalReqs = new HashSet<FunctionalReq>(0);
-	
+
 	/** The non functional reqs. */
-	private Set<NonFunctionalReq> nonFunctionalReqs = new HashSet<NonFunctionalReq>(
-			0);
+	private Set<NonFunctionalReq> nonFunctionalReqs = new HashSet<NonFunctionalReq>(0);
 
 	/**
 	 * Instantiates a new specification.
@@ -54,16 +57,21 @@ public class Specification implements java.io.Serializable {
 	/**
 	 * Instantiates a new specification.
 	 *
-	 * @param domain the domain
-	 * @param descriptions the descriptions
-	 * @param state the state
-	 * @param user the user
-	 * @param functionalReqs the functional reqs
-	 * @param nonFunctionalReqs the non functional reqs
+	 * @param domain
+	 *            the domain
+	 * @param descriptions
+	 *            the descriptions
+	 * @param state
+	 *            the state
+	 * @param user
+	 *            the user
+	 * @param functionalReqs
+	 *            the functional reqs
+	 * @param nonFunctionalReqs
+	 *            the non functional reqs
 	 */
-	public Specification(Domain domain, String descriptions, String state,
-			String user, Set<FunctionalReq> functionalReqs,
-			Set<NonFunctionalReq> nonFunctionalReqs) {
+	public Specification(Domain domain, String descriptions, String state, String user,
+			Set<FunctionalReq> functionalReqs, Set<NonFunctionalReq> nonFunctionalReqs) {
 		this.domain = domain;
 		this.descriptions = descriptions;
 		this.state = state;
@@ -87,7 +95,8 @@ public class Specification implements java.io.Serializable {
 	/**
 	 * Sets the id specification.
 	 *
-	 * @param idSpecification the new id specification
+	 * @param idSpecification
+	 *            the new id specification
 	 */
 	public void setIdSpecification(Integer idSpecification) {
 		this.idSpecification = idSpecification;
@@ -107,7 +116,8 @@ public class Specification implements java.io.Serializable {
 	/**
 	 * Sets the domain.
 	 *
-	 * @param domain the new domain
+	 * @param domain
+	 *            the new domain
 	 */
 	public void setDomain(Domain domain) {
 		this.domain = domain;
@@ -126,7 +136,8 @@ public class Specification implements java.io.Serializable {
 	/**
 	 * Sets the descriptions.
 	 *
-	 * @param descriptions the new descriptions
+	 * @param descriptions
+	 *            the new descriptions
 	 */
 	public void setDescriptions(String descriptions) {
 		this.descriptions = descriptions;
@@ -145,7 +156,8 @@ public class Specification implements java.io.Serializable {
 	/**
 	 * Sets the state.
 	 *
-	 * @param state the new state
+	 * @param state
+	 *            the new state
 	 */
 	public void setState(String state) {
 		this.state = state;
@@ -164,7 +176,8 @@ public class Specification implements java.io.Serializable {
 	/**
 	 * Sets the user.
 	 *
-	 * @param user the new user
+	 * @param user
+	 *            the new user
 	 */
 	public void setUser(String user) {
 		this.user = user;
@@ -183,7 +196,8 @@ public class Specification implements java.io.Serializable {
 	/**
 	 * Sets the functional reqs.
 	 *
-	 * @param functionalReqs the new functional reqs
+	 * @param functionalReqs
+	 *            the new functional reqs
 	 */
 	public void setFunctionalReqs(Set<FunctionalReq> functionalReqs) {
 		this.functionalReqs = functionalReqs;
@@ -202,7 +216,8 @@ public class Specification implements java.io.Serializable {
 	/**
 	 * Sets the non functional reqs.
 	 *
-	 * @param nonFunctionalReqs the new non functional reqs
+	 * @param nonFunctionalReqs
+	 *            the new non functional reqs
 	 */
 	public void setNonFunctionalReqs(Set<NonFunctionalReq> nonFunctionalReqs) {
 		this.nonFunctionalReqs = nonFunctionalReqs;

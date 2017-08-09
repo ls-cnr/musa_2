@@ -54,7 +54,7 @@ public class ConfigSelector extends Artifact {
 				 * Nodo XOR. "Estraggo" il nodo XOR dal nodo vero e proprio e lo
 				 * chiamo "X" + hashCode() dei fatti del mondo dello stato del
 				 * mondo di provenienza (devono avere nomi univoci).
-				 * 
+				 *
 				 * Aggiungo ogni destinazione. X -> 1, X -> 2, ecc. . Nel caso
 				 * in cui qualcuna di queste destinazioni sia un nodo di
 				 * successo, viene processato successivamente.

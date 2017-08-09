@@ -1,21 +1,19 @@
 package pmr.graph;
 
-import layer.awareness.AbstractCapability;
-
 /**
  * The Class NormalEdge. it connects a WorldNode to another.
  */
 public class NormalEdge implements Edge {
-	
+
 	/** The source. */
 	private WorldNode source;
-	
+
 	/** The destination. */
 	private WorldNode destination;
-	
+
 	/** The capability. */
 	private String capability;
-	
+
 
 	private String agent;
 
@@ -35,8 +33,8 @@ public class NormalEdge implements Edge {
 		this.destination = destination;
 		this.capability = capability;
 	}
-	
-	
+
+
 	public NormalEdge(WorldNode source, WorldNode destination, String capability, String agent){
 		super();
 		this.source = source;
@@ -44,7 +42,7 @@ public class NormalEdge implements Edge {
 		this.capability = capability;
 		this.agent = agent;
 	}
-	
+
 	/**
 	 * Gets the source.
 	 *
@@ -62,7 +60,7 @@ public class NormalEdge implements Edge {
 	public WorldNode getDestination() {
 		return this.destination;
 	}
-	
+
 	/**
 	 * Gets the capability.
 	 *
@@ -71,7 +69,7 @@ public class NormalEdge implements Edge {
 	public String getCapability() {
 		return this.capability;
 	}
-	
+
 	/**
 	 * Sets the source.
 	 *
@@ -91,17 +89,17 @@ public class NormalEdge implements Edge {
 	public void setDestination(WorldNode destination) {
 		this.destination = destination;
 	}
-	
-	
+
+
 	public void setAgent(String agent){
 		this.agent = agent;
 	}
-	
-	
+
+
 	public String getAgent(){
 		return this.agent;
 	}
-	
+
 	/**
 	 * Sets the capability.
 	 *
@@ -119,26 +117,26 @@ public class NormalEdge implements Edge {
 	public boolean equals(Object obj){
 		if(obj instanceof NormalEdge){
 			NormalEdge temp = (NormalEdge)obj;
-			
+
 			if(temp.getSource() == null && this.source != null)					return false;
 			else if(temp.getSource() != null && this.source == null)			return false;
-	
+
 			if(temp.getDestination() == null && this.destination != null)		return false;
 			else if(temp.getDestination() != null && this.destination == null)	return false;
-			
+
 			if(this.source == null && temp.getSource() == null)
 				if(this.destination == null && temp.getDestination() == null )	return true;
-			
-			if(this.source.equals(temp.getSource()) == true)					
+
+			if(this.source.equals(temp.getSource()) == true)
 				if(this.destination.equals(temp.getDestination()) == true)
 					if(this.getCapability().equals(temp.getCapability()) == true)	return true;
-			
+
 			return false;
-			
+
 		}
 		else return false;
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see java.lang.Object#hashCode()
 	 */

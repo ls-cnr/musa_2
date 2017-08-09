@@ -20,21 +20,23 @@ import javax.persistence.Table;
 @Table(name = "non_functional_req", catalog = "musa_db")
 public class NonFunctionalReq implements java.io.Serializable {
 
+	private static final long serialVersionUID = 1L;
+
 	/** The id non functional req. */
 	private Integer idNonFunctionalReq;
-	
+
 	/** The specification. */
 	private Specification specification;
-	
+
 	/** The name. */
 	private String name;
-	
+
 	/** The value. */
 	private String value;
-	
+
 	/** The description. */
 	private String description;
-	
+
 	/** The current state. */
 	private String currentState;
 

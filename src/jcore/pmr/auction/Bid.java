@@ -3,7 +3,7 @@ package pmr.auction;
 public class Bid {
 	private String agent;
 	private double value;
-	
+
 	public Bid(String agent, double value) {
 		super();
 		this.agent = agent;

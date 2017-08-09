@@ -15,15 +15,17 @@ import javax.persistence.Table;
 @Table(name = "predicate", catalog = "musa_db")
 public class Predicate implements java.io.Serializable {
 
+	private static final long serialVersionUID = 1L;
+
 	/** The id predicate. */
 	private int idPredicate;
-	
+
 	/** The name. */
 	private String name;
-	
+
 	/** The description. */
 	private String description;
-	
+
 	/** The id case. */
 	private Integer idCase;
 

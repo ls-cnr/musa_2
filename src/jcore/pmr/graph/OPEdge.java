@@ -1,25 +1,22 @@
 package pmr.graph;
 
-import layer.awareness.AbstractCapability;
-import layer.semantic.evolution.EvolutionScenario;
-
 /**
- * The Class OPEdge. it Connects a WorldNode to an OPNode. Is stored inside the OPNode
+ * The Class OPEdge. it Connects a WorldNode to an OPNode. Is stored inside the
+ * OPNode
  */
 public class OPEdge implements Edge {
-		
+
 	/** The source. */
 	private WorldNode source;
-	
+
 	/** The destination. */
 	private OPNode destination;
-	
+
 	/** The capability. */
-	private String capability; 
-	
+	private String capability;
 
 	private String agent;
-	
+
 	/**
 	 * Instantiates a new OP edge.
 	 *
@@ -30,47 +27,44 @@ public class OPEdge implements Edge {
 	 * @param capability
 	 *            the capability
 	 */
-	public OPEdge(WorldNode source, OPNode destination, String capability){
+	public OPEdge(WorldNode source, OPNode destination, String capability) {
 		super();
 		this.source = source;
 		this.destination = destination;
 		this.capability = capability;
 	}
-	
-	
-	public OPEdge(WorldNode source, OPNode destination, String capability, String agent){
+
+	public OPEdge(WorldNode source, OPNode destination, String capability, String agent) {
 		super();
 		this.source = source;
 		this.destination = destination;
 		this.capability = capability;
 		this.agent = agent;
 	}
-	
+
 	/**
 	 * Gets the capability.
 	 *
 	 * @return the capability, stored in the edge
 	 */
-	public String getCapability(){
+	public String getCapability() {
 		return this.capability;
 	}
-	
+
 	/**
 	 * Gets the source.
 	 *
 	 * @return the source of this edge.
 	 */
-	public WorldNode getSource(){
+	public WorldNode getSource() {
 		return this.source;
 	}
-	
-	
-	public void setAgent(String agent){
+
+	public void setAgent(String agent) {
 		this.agent = agent;
 	}
-	
-	
-	public String getAgent(){
+
+	public String getAgent() {
 		return this.agent;
 	}
 
@@ -82,14 +76,14 @@ public class OPEdge implements Edge {
 	public OPNode getDestination() {
 		return this.destination;
 	}
-	
+
 	/**
 	 * Sets the source.
 	 *
 	 * @param source
 	 *            the new source
 	 */
-	public void setSource(WorldNode source){
+	public void setSource(WorldNode source) {
 		this.source = source;
 	}
 
@@ -102,7 +96,7 @@ public class OPEdge implements Edge {
 	public void setDestination(OPNode destination) {
 		this.destination = destination;
 	}
-	
+
 	/**
 	 * Sets the scenario.
 	 *
@@ -112,36 +106,49 @@ public class OPEdge implements Edge {
 	public void setScenario(String capability) {
 		this.capability = capability;
 	}
-	
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 *
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override
-	public boolean equals(Object obj){
-		if(obj instanceof NormalEdge){
-			NormalEdge temp = (NormalEdge)obj;
-			
-			if(temp.getSource() == null && this.source != null)	return false;
-			else if(temp.getSource() != null && this.source == null)	return false;
-	
-			if(temp.getDestination() == null && this.destination != null)	return false;
-			else if(temp.getDestination() != null && this.destination == null)	return false;
-			
-			if(this.source == null && temp.getSource() == null)
-				if(this.destination == null && temp.getDestination() == null )	return true;
-			
-			if(this.source.equals(temp.getSource()) == false)				return false;
-			if(this.destination.equals(temp.getDestination()) == false)		return false;
+	public boolean equals(Object obj) {
+		if (obj instanceof NormalEdge) {
+			NormalEdge temp = (NormalEdge) obj;
+
+			if (temp.getSource() == null && this.source != null)
+				return false;
+			else if (temp.getSource() != null && this.source == null)
+				return false;
+
+			if (temp.getDestination() == null && this.destination != null)
+				return false;
+			else if (temp.getDestination() != null && this.destination == null)
+				return false;
+
+			if (this.source == null && temp.getSource() == null)
+				if (this.destination == null && temp.getDestination() == null)
+					return true;
+
+			if (this.source.equals(temp.getSource()) == false)
+				return false;
+
+			if (!this.destination.equals(temp.getDestination()))
+				return false;
+
 			return true;
-		}
-		else return false;
+		} else
+			return false;
 	}
-	
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 *
 	 * @see java.lang.Object#hashCode()
 	 */
 	@Override
-	public int hashCode(){
+	public int hashCode() {
 		return this.source.hashCode() + this.destination.hashCode() + this.capability.hashCode();
 	}
 }

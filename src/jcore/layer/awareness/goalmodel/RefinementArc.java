@@ -7,10 +7,10 @@ import layer.awareness.Goal;
  * @author Mirko Zichichi
  */
 public abstract class RefinementArc {
-	
+
 	/** The node where the arc points */
 	public Goal nextNode;
-	
+
 	/**
 	 * Instantiates a new Arc.
 	 *
@@ -19,7 +19,7 @@ public abstract class RefinementArc {
 	protected RefinementArc( Goal node ) {
 		nextNode = node;
 	}
-	
+
 	/**
 	 * Gets the next node.
 	 *

@@ -1,17 +1,17 @@
 /**********************************************************/
-/* THE MANAGER ROLE                                                                              
- * This file contains:                                                                                      
+/* THE MANAGER ROLE
+ * This file contains:
  * + protocols for handling the injection, change and retreat new specifications
- * + protocols for coordinating distribute search in the problem space 
+ * + protocols for coordinating distribute search in the problem space
  * + protocols for service negotiation
  * + protocols for coordinating the formation of an organization
  * + protocols for managing the orchestration
- */                                
+ */
 /**********************************************************/
 
 
 
- 
+
 /************events****************************************/
 
 

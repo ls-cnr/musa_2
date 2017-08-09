@@ -11,16 +11,16 @@ import layer.semantic.Condition;
  */
 
 public class Goal implements RunTimeEntity {
-	
+
 	/** The goal name. It identifies the Goal, so a Goal is equal if the name is equal */
 	private String name;
-	
+
 	/** The trigger condition. A goal can be pursued only if this condition is true */
 	private Condition trigger_condition;
-	
+
 	/** The final state describes how the state of the world should be after that the goal was achieved. */
 	private Condition final_state;
-	
+
 	/**
 	 * Instantiates a new goal.
 	 *
@@ -64,7 +64,7 @@ public class Goal implements RunTimeEntity {
 	public Condition getFinal_state() {
 		return final_state;
 	}
-	
+
 	/**
 	 * Export as goal SPEC.
 	 *
@@ -74,11 +74,11 @@ public class Goal implements RunTimeEntity {
 		/* TODO */
 		return "";
 	}
-	
+
 	public String getName() {
 		return name;
 	}
-	
+
 	@Override
 	public boolean equals( Object o ) {
 		if( !(o instanceof Goal) )
@@ -86,17 +86,17 @@ public class Goal implements RunTimeEntity {
 		Goal g = (Goal) o;
 		if( this.name.equals(g.getName()) )
 			return true;
-		else 
+		else
 			return false;
 	}
-	
+
 	@Override
 	public int hashCode() {
 		int h = 0;
 		for( int i = 0; i < name.length(); i++ ){
-			h = ( 127 * h + name.charAt(i) ) % 101; 
+			h = ( 127 * h + name.charAt(i) ) % 101;
 		}
 		return h;
 	}
-	
+
 }

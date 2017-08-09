@@ -3,10 +3,10 @@ package petrinet.logic;
 /**
  * Eine Kante geht von einer Stelle zu einer Transition oder umgekehrt.
  * Das wird Ÿber die Konstruktoren abgebildet.
- * 
+ *
  * Un arco va da un Posto ad una Transizione, o viceversa.
  * Questo (la direzione) viene indicato tramite i costruttori.
- * 
+ *
  * @author rmetzler
  */
 public class Arc
@@ -16,15 +16,15 @@ extends PetrinetObject {
     Transition transition;
     Direction direction;
     int weight = 1;
-    
+
     enum Direction {
-        
+
         /**
          * Die 2 Richtungen, die so eine Kante haben darf
-         * 
+         *
          * Le 2 Direzioni che può avere un arco
          */
-        
+
         PLACE_TO_TRANSITION {
             @Override
             public boolean canFire(Place p, int weight) {
@@ -37,7 +37,7 @@ extends PetrinetObject {
             }
 
         },
-        
+
         TRANSITION_TO_PLACE {
             @Override
             public boolean canFire(Place p, int weight) {
@@ -55,7 +55,7 @@ extends PetrinetObject {
 
         public abstract void fire(Place p, int weight);
     }
-    
+
     private Arc(String name, Direction d, Place p, Transition t) {
         super(name);
         this.direction = d;
@@ -78,7 +78,7 @@ extends PetrinetObject {
     public boolean canFire() {
         return direction.canFire(place, weight);
     }
-    
+
     public void fire() {
         this.direction.fire(place, this.weight);
     }
@@ -86,19 +86,19 @@ extends PetrinetObject {
     public void setWeight(int weight) {
         this.weight = weight;
     }
-    
+
     public int getWeight() {
         return weight;
     }
-    
+
     public Place getPlace() {
     	return place;
     }
-    
+
     public Transition getTransition() {
     	return transition;
     }
-    
+
     /** Added */
     public int getDirection() {
     	if( direction == Direction.PLACE_TO_TRANSITION )

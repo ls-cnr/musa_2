@@ -6,7 +6,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 
 /**
- * 
+ *
  * @author Mirko Avantaggiato
  *
  */
@@ -352,9 +352,9 @@ public class Sequences {
 	/**
 	 * This method combines 2 ArrayLists<String>. <br>
 	 * Example: A = [a, b, c] B = [d, e] <br>
-	 * 
+	 *
 	 * <b>res = [ad, ae, bd, be, cd, ce]</b>
-	 * 
+	 *
 	 */
 	private static ArrayList<String> combineTwoArrayList(ArrayList<String> A, ArrayList<String> B) {
 		ArrayList<String> res = new ArrayList<>();
@@ -379,7 +379,7 @@ public class Sequences {
 
 	/**
 	 * from incluso, to escluso.
-	 * 
+	 *
 	 * @param l
 	 * @param from
 	 * @param to
@@ -402,7 +402,7 @@ public class Sequences {
 
 	/**
 	 * This method joins two arrays.
-	 * 
+	 *
 	 * @param a1
 	 * @param a2
 	 * @return
@@ -480,7 +480,7 @@ public class Sequences {
 	/**
 	 * A node is safe if it is a success node or if at least one of its children
 	 * is safe. Bottom-up approach.
-	 * 
+	 *
 	 * @param t
 	 */
 	private void makeTreeSafe(Tree<String> t) {

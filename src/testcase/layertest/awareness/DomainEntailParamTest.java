@@ -20,19 +20,19 @@ import net.sf.tweety.lp.asp.syntax.DLPAtom;
 
 @RunWith(Parameterized.class)
 public class DomainEntailParamTest {
-	
+
 	DomainEntail env;
 	StateOfWorld w;
 	AssumptionSet domain;
 	Condition cond;
-	
+
 	@Parameters
     public static Collection<String[]> data() {
-        return Arrays.asList(new String[][] {     
-                 { "tweety", "can_fly"}, { "polly", "can_fly" }, {"sid", "can_fly"}, {"olga", "cannot_fly"}  
+        return Arrays.asList(new String[][] {
+                 { "tweety", "can_fly"}, { "polly", "can_fly" }, {"sid", "can_fly"}, {"olga", "cannot_fly"}
            });
     }
-	
+
 	public DomainEntailParamTest( String one, String two ) {
 		this.w = new StateOfWorld();
 		try {
@@ -46,8 +46,8 @@ public class DomainEntailParamTest {
 		} catch (layer.semantic.exception.NotAllowedInAStateOfWorld e) {
 			e.printStackTrace();
 		}
-		
-		this.domain = new AssumptionSet();	 
+
+		this.domain = new AssumptionSet();
 		try {
 			domain.addAssumption_asString("bird(X) :- penguin(X).");
 			domain.addAssumption_asString("bird(X) :- parrot(X).");
@@ -57,20 +57,20 @@ public class DomainEntailParamTest {
 			domain.addAssumption_asString("cannot_fly(X) :- ostrich(X).");
 			domain.addAssumption_asString("cannot_fly(X) :- broken_wing(X).");
 			domain.addAssumption_asString("can_fly(X) :- bird(X), not cannot_fly(X).");
-		
+
 		} catch (ParseException e) {
 			e.printStackTrace();
 		} catch (layer.semantic.exception.NotAllowedInAnAssumptionSet e) {
 			e.printStackTrace();
 		}
-		
+
 		env = DomainEntail.getInstance();
-		
+
 		Constant cons = new Constant(one);
 		DLPAtom q = new DLPAtom(two, cons);
 		cond = new Condition(q);
 	}
-	
+
 	@Test
 	public void test(){
 		assertTrue( env.entailsCondition(w, domain, cond));

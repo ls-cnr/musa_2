@@ -7,23 +7,23 @@ import java.util.HashMap;
 import layer.awareness.Goal;
 
 /**
- * The Class GoalTree is used to create a Tree containing goals and arcs. Construction, starting from the root, 
+ * The Class GoalTree is used to create a Tree containing goals and arcs. Construction, starting from the root,
  * consists in two parts: adding And or Or arcs to a node contained in the main structure and then putting the new nodes in.
  * A second structure is used to maintain access to goals.
  * @author Mirko Zichichi
  */
 public class GoalTree {
-	
+
 	/**  The structure that contains the three. */
 	private HashMap<Goal, ArrayList<RefinementArc>> tree;
-	
+
 	/**  This structure contains goals allowing to visit each one (tree's map doesn't allow to get the key, so this one is needed). */
 	private HashMap<Goal, Goal> goals;
-	
+
 	/**  The root, the starting node. */
 	private Goal root;
-	
-	
+
+
 	public void print(Goal node,String rientro) {
 		//System.out.println(rientro+"Node : "+node.getName());
 		if (tree.get(node) != null) {
@@ -33,7 +33,7 @@ public class GoalTree {
 			}
 		}
 	}
-	
+
 	/**
 	 * Instantiates a new goal tree.
 	 *
@@ -45,7 +45,7 @@ public class GoalTree {
 		goals = new HashMap<>();
 		putNode(root);
 	}
-	
+
 	/**
 	 * Put the node in the model and in the goals' map.
 	 *
@@ -55,10 +55,10 @@ public class GoalTree {
 		tree.put(node, null);
 		goals.put(node, node);
 	}
-	
+
 	/**
 	 * Adds arcs to the node. Used only from addAndArcs and addOrArcs because they control if the node is already contained.
-	 * If the node already has some arcs, the Method won't replace them. (Another method?)  
+	 * If the node already has some arcs, the Method won't replace them. (Another method?)
 	 *
 	 * @param node the node
 	 * @param arcs to add
@@ -67,7 +67,7 @@ public class GoalTree {
 		if(tree.get(node) == null)
 			tree.put(node, arcs);
 	}
-	
+
 	/**
 	 * Method called to add AndArcs or OrArcs to a certain node (based on a boolean).
 	 *
@@ -78,19 +78,19 @@ public class GoalTree {
 	void addRefinementArcs( Goal node, ArrayList<Goal> outputs, boolean and ) throws NodeNotFoundException {
 		if( tree.containsKey(node) ){
 			ArrayList<RefinementArc> arcs = new ArrayList<>();
-			
+
 			if(and)										//AndCase
 				for( Goal goal : outputs ){
 					if( !tree.containsKey(goal) ){
 						arcs.add(new AndArc(goal));
-						putNode(goal);	
+						putNode(goal);
 					}
 				}
 			else										//OrCase
 				for( Goal goal : outputs ){
 					if( !tree.containsKey(goal) ){
 						arcs.add(new OrArc(goal));
-						putNode(goal);	
+						putNode(goal);
 					}
 				}
 			if( !arcs.isEmpty() )
@@ -100,7 +100,7 @@ public class GoalTree {
 			throw new NodeNotFoundException();
 		}
 	}
-	
+
 	/**
 	 * Gets the root.
 	 *
@@ -109,7 +109,7 @@ public class GoalTree {
 	Goal getRoot() {
 		return root;
 	}
-	
+
 	/**
 	 * Gets arcs from goal.
 	 *
@@ -119,7 +119,7 @@ public class GoalTree {
 	ArrayList<RefinementArc> getArcs( Goal goal ) {
 		return tree.get(goal);
 	}
-	
+
 	/**
 	 * Gets the tree.
 	 *
@@ -128,7 +128,7 @@ public class GoalTree {
 	HashMap<Goal, ArrayList<RefinementArc>> getTree(){
 		return tree;
 	}
-	
+
 	/**
 	 * Gets the goals.
 	 *
@@ -137,5 +137,5 @@ public class GoalTree {
 	HashMap<Goal, Goal> getGoals(){
 		return goals;
 	}
-	
+
 }

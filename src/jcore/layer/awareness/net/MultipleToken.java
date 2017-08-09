@@ -7,7 +7,7 @@ import java.util.ArrayList;
  * @author Mirko Zichichi
  */
 public class MultipleToken extends Token{
-	
+
 	/** The list of tokens that depend from this MultipleToken. */
 	private ArrayList<Token> tokensDependent;
 
@@ -20,7 +20,7 @@ public class MultipleToken extends Token{
 	public MultipleToken(String placeName) {
 		super(placeName);
 	}
-	
+
 	/**
 	 * Instantiates a new multiple token with a depending token and his branch.
 	 *
@@ -46,7 +46,7 @@ public class MultipleToken extends Token{
 		else
 			return true;
 	}
-	
+
 	/**
 	 * Gets the tokens that depend from this Multiple token.
 	 *
@@ -55,7 +55,7 @@ public class MultipleToken extends Token{
 	public ArrayList<Token> getTokensDependent() {
 		return tokensDependent;
 	}
-	
+
 	/**
 	 * Adds a new token to the dependent list.
 	 *
@@ -66,7 +66,7 @@ public class MultipleToken extends Token{
 		checkTokensDependent();
 		tokensDependent.add(token);
 	}
-	
+
 	/**
 	 * Check if tokensDependent has been initialized.
 	 */
@@ -74,7 +74,7 @@ public class MultipleToken extends Token{
 		if( tokensDependent == null )
 			tokensDependent = new ArrayList<>();
 	}
-	
+
 	/**
 	 * Gets the number of branch.
 	 *

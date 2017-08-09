@@ -8,10 +8,10 @@ import translator.ExtDLPHead;
  */
 
 public class RemoveStatement implements EvolutionOperator {
-	
+
 	/** The new statement. */
 	private ExtDLPHead new_statement;
-	
+
 	/**
 	 * Instantiates a new removes the statement.
 	 *
@@ -20,7 +20,7 @@ public class RemoveStatement implements EvolutionOperator {
 	public RemoveStatement(ExtDLPHead statement) {
 		this.new_statement = statement;
 	}
-	
+
 	/**
 	 * Instantiates a new removes the statement.
 	 *
@@ -29,7 +29,7 @@ public class RemoveStatement implements EvolutionOperator {
 	public RemoveStatement(String statement) {
 		/* TODO */;
 	}
-	
+
 
 	/* (non-Javadoc)
 	 * @see layer.semantic.evolution.EvolutionOperator#apply_transformation(layer.semantic.StateOfWorld)

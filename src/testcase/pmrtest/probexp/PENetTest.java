@@ -1,8 +1,8 @@
 package pmrtest.probexp;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
@@ -28,7 +28,6 @@ import net.sf.tweety.logics.commons.syntax.Variable;
 import net.sf.tweety.logics.fol.syntax.Conjunction;
 import net.sf.tweety.logics.fol.syntax.ExistsQuantifiedFormula;
 import net.sf.tweety.logics.fol.syntax.FOLAtom;
-import net.sf.tweety.logics.fol.syntax.FolFormula;
 import net.sf.tweety.logics.fol.syntax.Negation;
 import net.sf.tweety.lp.asp.parser.ParseException;
 import net.sf.tweety.lp.asp.syntax.DLPAtom;
@@ -43,14 +42,14 @@ public class PENetTest {
 
 	private AssumptionSet domain;
 	private GoalTreeModel model;
-	private ProblemExploration problem; 
-	
+	private ProblemExploration problem;
+
 
 	Variable doc = new Variable("Doc");
 	Variable usr = new Variable("Usr");
 	Variable mng = new Variable("Mng");
 	Variable fail = new Variable("Fail");
-	
+
 	Constant a_user = new Constant("a_user");
 	Constant an_order = new Constant("an_order");
 	Constant the_user_data = new Constant("the_user_data");
@@ -61,7 +60,7 @@ public class PENetTest {
 	Constant a_storehouse_manager = new Constant("a_storehouse_manager");
 	Constant the_user_space = new Constant("the_user_space");
 	Constant the_system_space = new Constant("the_system_space");
-	
+
 	AbstractCapability CU;
 	AbstractCapability AU;
 	AbstractCapability SRF;
@@ -73,12 +72,12 @@ public class PENetTest {
 	AbstractCapability UOPCS;
 	AbstractCapability SFL;
 	AbstractCapability NSM;
-	
+
 	@Before
 	public void init() {
-		domain = new AssumptionSet();	 
+		domain = new AssumptionSet();
 		try {
-	
+
 			domain.addAssumption_asString("role(X) :- user(X).");
 			domain.addAssumption_asString("role(X) :- storehouse_manager(X).");
 			domain.addAssumption_asString("document(X) :- order(X).");
@@ -90,15 +89,15 @@ public class PENetTest {
 			domain.addAssumption_asString("processed(X) :- refused(X), order(X), sent(failure_order,Y), user(Y).");
 			domain.addAssumption_asString("notified(X,Y) :- uploaded_on_cloud(X), document(X), has_cloud_space(Y), user(Y).");
 			domain.addAssumption_asString("notified(X,Y) :- mailed_perm_link(X,Y), document(X), user(Y).");
-		
+
 		} catch (ParseException e) {
 			e.printStackTrace();
 		} catch (layer.semantic.exception.NotAllowedInAnAssumptionSet e) {
 			e.printStackTrace();
 		}
-		
-		
-		
+
+
+
 		/*************/
 		/*to_handle_order*/
 		FOLAtom THO_received = new FOLAtom( new Predicate("received",2));
@@ -112,13 +111,13 @@ public class PENetTest {
 		THO_var.add(doc);
 		THO_var.add(usr);
 		Condition THO_tc = new Condition( new ExistsQuantifiedFormula(new Conjunction(THO_received, new Conjunction(THO_order,THO_user)), THO_var ) );
-		
+
 		FOLAtom THO_processed = new FOLAtom( new Predicate("processed", 1) );
 		THO_processed.addArgument(doc);
 		Condition THO_fs = new Condition( new ExistsQuantifiedFormula(new Conjunction(THO_processed, THO_order), doc));
-		
+
 		Goal THO = new Goal("to_handle_order", THO_tc, THO_fs);
-		
+
 		/*to_wait_order*/
 		FOLAtom TWO_received = new FOLAtom( new Predicate("received",2));
 		TWO_received.addArgument(doc);
@@ -131,13 +130,13 @@ public class PENetTest {
 		TWO_var.add(doc);
 		TWO_var.add(usr);
 		Condition TWO_tc = new Condition( new ExistsQuantifiedFormula(new Conjunction(TWO_received, new Conjunction(TWO_order,TWO_user)), TWO_var ) );
-		
+
 		FOLAtom TWO_available = new FOLAtom( new Predicate("available",1));
 		TWO_available.addArgument(doc);
 		Condition TWO_fs = new Condition( new ExistsQuantifiedFormula(new Conjunction(TWO_available, TWO_order), doc ) );
-		
+
 		Goal TWO = new Goal("to_wait_order", TWO_tc, TWO_fs);
-		
+
 		/*to_process_order*/
 		FOLAtom TPO_available = new FOLAtom( new Predicate("available",1));
 		TPO_available.addArgument(doc);
@@ -151,20 +150,20 @@ public class PENetTest {
 		TPO_var.add(doc);
 		TPO_var.add(usr);
 		Condition TPO_tc = new Condition( new ExistsQuantifiedFormula(new Conjunction(new Conjunction(TPO_available,TPO_order), new Conjunction(TPO_registered,TPO_user)), TPO_var ) );
-		
+
 		FOLAtom TPO_processed = new FOLAtom( new Predicate("processed", 1) );
 		TPO_processed.addArgument(doc);
 		Condition TPO_fs = new Condition( new ExistsQuantifiedFormula(new Conjunction(TPO_processed, TPO_order), doc ) );
-		
+
 		Goal TPO = new Goal("to_process_order", TPO_tc, TPO_fs);
-		
+
 		/*to_process_accepted_order*/
 		FOLAtom TPAO_accepted = new FOLAtom( new Predicate("accepted",1));
 		TPAO_accepted.addArgument(doc);
 		FOLAtom TPAO_order = new FOLAtom( new Predicate("order",1));
 		TPAO_order.addArgument(doc);
 		Condition TPAO_tc = new Condition( new ExistsQuantifiedFormula(new Conjunction(TPAO_accepted, TPAO_order), doc) );
-		
+
 		FOLAtom TPAO_send = new FOLAtom( new Predicate("sent",2));
 		TPAO_send.addArgument(doc);
 		TPAO_send.addArgument(mng);
@@ -176,9 +175,9 @@ public class PENetTest {
 		TPAO_var.add(doc);
 		TPAO_var.add(mng);
 		Condition TPAO_fs = new Condition( new ExistsQuantifiedFormula(new Conjunction(TPAO_send, new Conjunction(TPAO_delivery, TPAO_manager)), TPAO_var) );
-		
+
 		Goal TPAO = new Goal("to_process_accepted_order", TPAO_tc, TPAO_fs);
-		
+
 		/*to_notify_invoce*/
 		FOLAtom TNI_registered = new FOLAtom( new Predicate("registered",1));
 		TNI_registered.addArgument(usr);
@@ -192,30 +191,30 @@ public class PENetTest {
 		TNI_var1.add(usr);
 		TNI_var1.add(doc);
 		Condition TNI_tc = new Condition( new ExistsQuantifiedFormula(new Conjunction(new Conjunction(TNI_registered, TNI_user), new Conjunction(TNI_available, TNI_invoice)), TNI_var1) );
-		
+
 		FOLAtom TNI_send = new FOLAtom( new Predicate("sent",2));
 		TNI_send.addArgument(doc);
 		TNI_send.addArgument(usr);
 		Set<Variable> TNI_var2 = new HashSet<Variable>();
 		TNI_var2.add(doc);
-		TNI_var2.add(usr);		
+		TNI_var2.add(usr);
 		Condition TNI_fs = new Condition( new ExistsQuantifiedFormula(new Conjunction(TNI_send, new Conjunction(TNI_invoice, TNI_user)), TNI_var2) );
-		
+
 		Goal TNI = new Goal("to_notify_invoice", TNI_tc, TNI_fs);
-		
+
 		/*to_deliver_order*/
 		FOLAtom TDO_send = new FOLAtom( new Predicate("sent",2));
 		TDO_send.addArgument(doc);
 		TDO_send.addArgument(usr);
 		FOLAtom TDO_invoice = new FOLAtom( new Predicate("invoice",1));
-		TDO_invoice.addArgument(doc);		
+		TDO_invoice.addArgument(doc);
 		FOLAtom TDO_user = new FOLAtom( new Predicate("user",1));
 		TDO_user.addArgument(usr);
 		Set<Variable> TDO_var1 = new HashSet<Variable>();
 		TDO_var1.add(doc);
 		TDO_var1.add(usr);
 		Condition TDO_tc = new Condition( new ExistsQuantifiedFormula(new Conjunction(TDO_send, new Conjunction(TDO_invoice, TDO_user)), TDO_var1) );
-		
+
 		FOLAtom TDO_delivery = new FOLAtom( new Predicate("delivery_order", 1));
 		TDO_delivery.addArgument(doc);
 		FOLAtom TDO_manager = new FOLAtom(new Predicate("storehouse_manager", 1));
@@ -224,9 +223,9 @@ public class PENetTest {
 		TDO_var2.add(doc);
 		TDO_var2.add(mng);
 		Condition TDO_fs = new Condition( new ExistsQuantifiedFormula(new Conjunction(TDO_send, new Conjunction(TDO_delivery, TDO_manager)), TDO_var2) );
-		
+
 		Goal TDO = new Goal("to_delivery_order", TDO_tc, TDO_fs);
-		
+
 		/*to_notify_failure*/
 		FOLAtom TNF_refused = new FOLAtom( new Predicate("refused",1));
 		TNF_refused.addArgument(doc);
@@ -240,15 +239,15 @@ public class PENetTest {
 		TNF_var1.add(doc);
 		TNF_var1.add(usr);
 		Condition TNF_tc = new Condition( new ExistsQuantifiedFormula(new Conjunction(new Conjunction(TNF_refused, TNF_order), new Conjunction(TNF_registered, TNF_user)), TNF_var1) );
-		
+
 		FOLAtom TNF_send = new FOLAtom( new Predicate("sent",2));
 		TNF_send.addArgument(new Constant("failure_order"));
-		TNF_send.addArgument(usr);	
+		TNF_send.addArgument(usr);
 		Condition TNF_fs = new Condition( new ExistsQuantifiedFormula(new Conjunction(TNF_send, TNF_user), usr) );
-		
+
 		Goal TNF = new Goal("to_notify_failure", TNF_tc, TNF_fs);
-		
-		
+
+
 		/**************************************************/
 		/*check_user*/
 		FOLAtom CU_available = new FOLAtom( new Predicate("available",1));
@@ -260,8 +259,8 @@ public class PENetTest {
 		Negation CU_neg = new Negation(CU_notLogged);
 		FOLAtom CU_user = new FOLAtom( new Predicate("user",1));
 		CU_user.addArgument(usr);
-		
-		Set CU_Set = new HashSet<Variable>();
+
+		Set<Variable> CU_Set = new HashSet<Variable>();
 		CU_Set.add(doc);
 		CU_Set.add(usr);
 		Condition CU_pre = new Condition(new ExistsQuantifiedFormula(new Conjunction( new Conjunction(CU_available, CU_order), new Conjunction(CU_neg, CU_user) ), CU_Set ));
@@ -294,9 +293,9 @@ public class PENetTest {
 		CU_evo4.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("user", a_user)) ) );
 		CU_evo4.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("logged", a_user)) ) );
 		CU_evo.add(CU_evo4);
-		
+
 		this.CU = new AbstractCapability("check_user", CU_evo, CU_pre, null);
-		
+
 		/*add_user*/
 		FOLAtom AU_complete = new FOLAtom( new Predicate("complete",1));
 		AU_complete.addArgument(doc);
@@ -306,7 +305,7 @@ public class PENetTest {
 		AU_unregistered.addArgument(usr);
 		FOLAtom AU_user = new FOLAtom( new Predicate("user",1));
 		AU_user.addArgument(usr);
-		Set AU_Set = new HashSet<Variable>();
+		Set<Variable> AU_Set = new HashSet<Variable>();
 		AU_Set.add(doc);
 		AU_Set.add(usr);
 		Condition AU_pre = new Condition(new ExistsQuantifiedFormula(new Conjunction(new Conjunction(AU_complete, AU_user_data), new Conjunction(AU_unregistered, AU_user)), AU_Set));
@@ -319,9 +318,9 @@ public class PENetTest {
 		AU_evo1.addOperator(new RemoveStatement(new ExtDLPHead(new DLPAtom("complete", the_user_data))));
 		AU_evo1.addOperator(new RemoveStatement(new ExtDLPHead(new DLPAtom("user_data", the_user_data))));
 		AU_evo.add(AU_evo1);
-		
+
 		this.AU = new AbstractCapability("add_user", AU_evo, AU_pre, null);
-		
+
 		/*send_registration_form*/
 		FOLAtom SRF_uncomplete = new FOLAtom( new Predicate("uncomplete",1));
 		SRF_uncomplete.addArgument(doc);
@@ -331,7 +330,7 @@ public class PENetTest {
 		SRF_unregistered.addArgument(usr);
 		FOLAtom SRF_user = new FOLAtom( new Predicate("user",1));
 		SRF_user.addArgument(usr);
-		Set SRF_Set = new HashSet<Variable>();
+		Set<Variable> SRF_Set = new HashSet<Variable>();
 		SRF_Set.add(doc);
 		SRF_Set.add(usr);
 		Condition SRF_pre = new Condition(new ExistsQuantifiedFormula( new Conjunction(new Conjunction(SRF_uncomplete, SRF_user_data), new Conjunction(SRF_unregistered, SRF_user)), SRF_Set ));
@@ -341,9 +340,9 @@ public class PENetTest {
 		SRF_evo1.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("uncomplete", the_registration_form)) ) );
 		SRF_evo1.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("registration_form", the_registration_form)) ) );
 		SRF_evo.add(SRF_evo1);
-		
+
 		this.SRF = new AbstractCapability("send_registration_form", SRF_evo, SRF_pre, null);
-		
+
 		/*wait_user_data*/
 		FOLAtom WUD_uncomplete = new FOLAtom( new Predicate("uncomplete",1));
 		WUD_uncomplete.addArgument(doc);
@@ -362,9 +361,9 @@ public class PENetTest {
 		WUD_evo2.addOperator( new RemoveStatement( new ExtDLPHead(new DLPAtom("uncomplete", the_registration_form)) ) );
 		WUD_evo2.addOperator( new RemoveStatement( new ExtDLPHead(new DLPAtom("registration_form", the_registration_form)) ) );
 		WUD_evo.add(WUD_evo2);
-		
+
 		this.WUD = new AbstractCapability("wait_user_data", WUD_evo, WUD_pre, null);
-		
+
 		/*check_storehouse*/
 		FOLAtom CS_available = new FOLAtom( new Predicate("available",1));
 		CS_available.addArgument(doc);
@@ -374,7 +373,7 @@ public class PENetTest {
 		CS_registered.addArgument(usr);
 		FOLAtom CS_user = new FOLAtom( new Predicate("user",1));
 		CS_user.addArgument(usr);
-		Set CS_Set = new HashSet<Variable>();
+		Set<Variable> CS_Set = new HashSet<Variable>();
 		CS_Set.add(doc);
 		CS_Set.add(usr);
 		Condition CS_pre = new Condition(new ExistsQuantifiedFormula( new Conjunction(new Conjunction(CS_available, CS_order), new Conjunction(CS_registered, CS_user)), CS_Set ));
@@ -390,9 +389,9 @@ public class PENetTest {
 		CS_evo2.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("order", an_order)) ) );
 		CS_evo2.addOperator( new RemoveStatement( new ExtDLPHead(new DLPAtom("available", an_order)) ) );
 		CS_evo.add(CS_evo2);
-		
+
 		this.CS = new AbstractCapability("check_storehouse", CS_evo, CS_pre, null);
-		
+
 		/*notify_stock_failure*/
 		FOLAtom NSF_refused = new FOLAtom( new Predicate("refused",1));
 		NSF_refused.addArgument(doc);
@@ -404,7 +403,7 @@ public class PENetTest {
 		NSF_user.addArgument(usr);
 		FOLAtom NSF_ord_fail = new FOLAtom( new Predicate("order_failure",1));
 		NSF_ord_fail.addArgument(doc);
-		Set NSF_Set = new HashSet<Variable>();
+		Set<Variable> NSF_Set = new HashSet<Variable>();
 		NSF_Set.add(doc);
 		NSF_Set.add(usr);
 		Condition NSF_pre = new Condition(new ExistsQuantifiedFormula( new Conjunction( new Conjunction(new Conjunction(NSF_refused, NSF_order), new Conjunction(NSF_registered, NSF_user)), new Conjunction(NSF_ord_fail, NSF_order)), NSF_Set ));
@@ -415,9 +414,9 @@ public class PENetTest {
 		NSF_evo1.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("user", a_user)) ) );
 		NSF_evo1.addOperator( new RemoveStatement( new ExtDLPHead(new DLPAtom("order_failure", an_order)) ) );
 		NSF_evo.add(NSF_evo1);
-		
+
 		this.NSF = new AbstractCapability("notify_stock_failure", NSF_evo, NSF_pre, null);
-		
+
 		/*generate_invoice*/
 		FOLAtom GI_accepted = new FOLAtom( new Predicate("accepted",1));
 		GI_accepted.addArgument(doc);
@@ -430,7 +429,7 @@ public class PENetTest {
 		FOLAtom GI_invoice = new FOLAtom( new Predicate("available", 1));
 		GI_invoice.addArgument(doc);
 		Negation GI_notAvailable = new Negation(GI_invoice);
-		Set GT_Set = new HashSet<Variable>();
+		Set<Variable> GT_Set = new HashSet<Variable>();
 		GT_Set.add(doc);
 		GT_Set.add(usr);
 		Condition GI_pre = new Condition(new ExistsQuantifiedFormula(new Conjunction( new Conjunction(new Conjunction(GI_accepted, GI_order), new Conjunction(GI_registered, GI_user)), GI_notAvailable), GT_Set) );
@@ -440,9 +439,9 @@ public class PENetTest {
 		GI_evo1.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("available", the_invoice)) ) );
 		GI_evo1.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("invoice", the_invoice)) ) );
 		GI_evo.add(GI_evo1);
-		
+
 		this.GI = new AbstractCapability("generate_invoice", GI_evo, GI_pre, null);
-		
+
 		/*upload_on_user_cloud_storage*/
 		FOLAtom UOUCS_available = new FOLAtom( new Predicate("available",1));
 		UOUCS_available.addArgument(doc);
@@ -455,7 +454,7 @@ public class PENetTest {
 		FOLAtom UOUCS_uploaded = new FOLAtom(new Predicate("uploaded_on_cloud",1));
 		UOUCS_uploaded.addArgument(doc);
 		Negation UOUCS_notUploaded = new Negation(UOUCS_uploaded);
-		Set UOUCS_Set = new HashSet<Variable>();
+		Set<Variable> UOUCS_Set = new HashSet<Variable>();
 		UOUCS_Set.add(doc);
 		UOUCS_Set.add(usr);
 		Condition UOUCS_pre = new Condition(new ExistsQuantifiedFormula(new Conjunction( new Conjunction(new Conjunction(UOUCS_available, UOUCS_invoice), new Conjunction(UOUCS_has_cloud_space, UOUCS_user)), UOUCS_notUploaded), UOUCS_Set ));
@@ -465,9 +464,9 @@ public class PENetTest {
 		UOUCS_evo1.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("uploaded_on_cloud", the_invoice)) ) );
 		UOUCS_evo1.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("invoice", the_invoice)) ) );
 		UOUCS_evo.add(UOUCS_evo1);
-		
+
 		this.UOUCS = new AbstractCapability("upload_on_user_cloud_storage", UOUCS_evo, UOUCS_pre, null);
-		
+
 		/*upload_on_private_cloud_storage*/
 		FOLAtom UOPCS_available = new FOLAtom( new Predicate("available",1));
 		UOPCS_available.addArgument(doc);
@@ -481,7 +480,7 @@ public class PENetTest {
 		FOLAtom UOPCS_uploaded = new FOLAtom(new Predicate("uploaded_on_cloud",1));
 		UOPCS_uploaded.addArgument(doc);
 		Negation UOPCS_notUploaded = new Negation(UOUCS_uploaded);
-		Set UOPCS_Set = new HashSet<Variable>();
+		Set<Variable> UOPCS_Set = new HashSet<Variable>();
 		UOPCS_Set.add(doc);
 		UOPCS_Set.add(usr);
 		Condition UOPCS_pre = new Condition(new ExistsQuantifiedFormula(new Conjunction( new Conjunction(new Conjunction(UOPCS_available, UOPCS_invoice), new Conjunction(neg1, UOPCS_user)), UOPCS_notUploaded), UOPCS_Set ));
@@ -491,9 +490,9 @@ public class PENetTest {
 		UOPCS_evo1.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("uploaded_on_cloud", the_invoice)) ) );
 		UOPCS_evo1.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("invoice", the_invoice)) ) );
 		UOPCS_evo.add(UOPCS_evo1);
-		
+
 		this.UOPCS = new AbstractCapability("upload_on_private_cloud_storage", UOPCS_evo, UOPCS_pre, null);
-		
+
 		/*share_file_link*/
 		FOLAtom SFL_uploaded_on_cloud = new FOLAtom( new Predicate("uploaded_on_cloud",1));
 		SFL_uploaded_on_cloud.addArgument(doc);
@@ -508,21 +507,21 @@ public class PENetTest {
 		SFL_mailed.addArgument(doc);
 		SFL_mailed.addArgument(usr);
 		Negation SFL_notMailed = new Negation(SFL_mailed);
-		Set SFL_Set = new HashSet<Variable>();
+		Set<Variable> SFL_Set = new HashSet<Variable>();
 		SFL_Set.add(doc);
 		SFL_Set.add(usr);
 		Condition SFL_pre = new Condition(new ExistsQuantifiedFormula(new Conjunction( new Conjunction(new Conjunction(SFL_uploaded_on_cloud, SFL_invoice), new Conjunction(neg2, SFL_user)), SFL_notMailed), SFL_Set ));
 
-		
+
 		Set<EvolutionScenario> SFL_evo = new HashSet<>();
 		CapabilityEvolutionScenario SFL_evo1 = new CapabilityEvolutionScenario("MailedPermLink");
 		SFL_evo1.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("mailed_perm_link", the_invoice, a_user)) ) );
 		SFL_evo1.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("invoice", the_invoice)) ) );
 		SFL_evo1.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("user", a_user)) ) );
 		SFL_evo.add(SFL_evo1);
-		
+
 		this.SFL = new AbstractCapability("share_file_link", SFL_evo, SFL_pre, null);
-		
+
 		/*notify_storehouse_manager*/
 		FOLAtom NSM_notified = new FOLAtom( new Predicate("notified",2));
 		NSM_notified.addArgument(doc);
@@ -531,7 +530,7 @@ public class PENetTest {
 		NSM_invoice.addArgument(doc);
 		FOLAtom NSM_user = new FOLAtom( new Predicate("user",1));
 		NSM_user.addArgument(usr);
-		Set NSM_Set = new HashSet<Variable>();
+		Set<Variable> NSM_Set = new HashSet<Variable>();
 		NSM_Set.add(doc);
 		NSM_Set.add(usr);
 		FOLAtom NSM_sent = new FOLAtom ( new Predicate("sent",2));
@@ -546,11 +545,11 @@ public class PENetTest {
 		NSM_evo1.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("delivery_order", the_delivery_order)) ) );
 		NSM_evo1.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("storehouse_manager", a_storehouse_manager)) ) );
 		NSM_evo.add(NSM_evo1);
-		
+
 		this.NSM = new AbstractCapability("notify_storehouse_manager", NSM_evo, NSM_pre, null);
-		
+
 		/**************************************************/
-		
+
 		/*Model construction*/
 		model = new GoalTreeModel(THO);
 		ArrayList<Goal> firstLevel = new ArrayList<>();
@@ -562,14 +561,14 @@ public class PENetTest {
 		ArrayList<Goal> thirdLevel = new ArrayList<>();
 		thirdLevel.add(TNI);
 		thirdLevel.add(TDO);
-		
+
 		model.addAndArcs(THO, firstLevel);
 		model.addOrArcs(TPO, secondLevel);
 		model.addAndArcs(TPAO, thirdLevel);
-		
+
 		problem = new ProblemExploration(model, new ArrayList<AbstractCapability>(), domain);
-		
-		StateOfWorld wStart = new StateOfWorld(); 
+
+		StateOfWorld wStart = new StateOfWorld();
 		try {
 		  wStart.addFact_asString("order(an_order).");
 		  wStart.addFact_asString("available(an_order).");
@@ -580,23 +579,23 @@ public class PENetTest {
 		} catch (layer.semantic.exception.NotAllowedInAStateOfWorld e) {
 		  e.printStackTrace();
 		}
-		
+
 		ArrayList<Token> tokens = new ArrayList<>();
 		tokens.add(new Token("p3"));
 		tokens.add(new Token("p4"));
-		
+
 		problem.addToVisit(new WorldNode(wStart), tokens, 9);
 	}
-	
+
 	@Ignore
 	@Test
 	public void test1() {
-				
+
 		problem.addCapability(CU);
-		
+
 		problem.expandNode();
-		
-		StateOfWorld secondStart = new StateOfWorld(); 
+
+		StateOfWorld secondStart = new StateOfWorld();
 		try {
 			secondStart.addFact_asString("order(an_order).");
 			secondStart.addFact_asString("available(an_order).");
@@ -609,27 +608,27 @@ public class PENetTest {
 		} catch (layer.semantic.exception.NotAllowedInAStateOfWorld e) {
 			e.printStackTrace();
 		}
-		
+
 		ENode e = new ENode(secondStart);
 		MultipleExpansionNode nk = (MultipleExpansionNode) problem.getExpandedList().get(0);
-		
+
 		for( ENode ex : problem.getExpandedList().get(0).getDestination() ){
 			System.out.println(nk.getScenario(ex) + " " + ex.getWorldState().getFactsNumber());
 		}
-		
+
 		assertEquals( problem.getExpandedList().size(), 1);
 		assertTrue( problem.getExpandedList().get(0).getDestination().contains(e) );
-		
+
 	}
-	
+
 	@Ignore
 	@Test
 	public void testNet1() {
 		problem.addCapability(CU);
 		problem.expandNode();
-		
+
 		MultipleExpansionNode nk = (MultipleExpansionNode) problem.getExpandedList().get(0);
-		
+
 		for( ENode e : nk.getDestination() ){
 			String scenarioName = nk.getScenario(e);
 			System.out.print(scenarioName + " ");
@@ -660,10 +659,10 @@ public class PENetTest {
 		problem.addCapability(CS);
 		while( !problem.toVisitIsEmpty())
 			problem.expandNode();
-		
+
 		MultipleExpansionNode nk = (MultipleExpansionNode) problem.getExpandedList().get(1);
 		//ExpansionNode nk = problem.getHighestExpansion();
-			
+
 		for( ENode e : nk.getDestination() ){
 			String scenarioName = nk.getScenario(e);
 			System.out.print(scenarioName + " ");
@@ -673,11 +672,11 @@ public class PENetTest {
 		}
 		System.out.println(nk.getDestination().get(0).getWorldState().getFactsList());
 	}
-	
+
 	@Test
 	public void testNet3() {
 		problem.addCapability(NSF);
-		
+
 		StateOfWorld refusedOrderNoCloud = new StateOfWorld();
 		try{
 			refusedOrderNoCloud.addFact_asString("order(an_order).");
@@ -691,20 +690,20 @@ public class PENetTest {
 		} catch (layer.semantic.exception.NotAllowedInAStateOfWorld e) {
 			e.printStackTrace();
 		}
-		
+
 		WorldNode en = new WorldNode(refusedOrderNoCloud);
 		ArrayList<Token> tokns = new ArrayList<>();
 		tokns.add(new Token("p3"));
 		tokns.add(new Token("p5"));
-		
+
 		problem.addToVisit(en, tokns, 5);
-		
+
 		while( !problem.toVisitIsEmpty()){
 			problem.expandNode();
-		
+
 		//MultipleExpansionNode nk = (MultipleExpansionNode) problem.getExpandedList().get(0);
 		ExpansionNode nk = problem.getHighestExpansion();
-			
+
 		for( ENode e : nk.getDestination() ){
 			//String scenarioName = nk.getScenario(e).getName();
 			//System.out.print(scenarioName + " ");

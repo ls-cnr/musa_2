@@ -6,26 +6,25 @@ import java.util.Comparator;
 import layer.awareness.net.Token;
 import layer.semantic.StateOfWorld;
 import pmr.graph.Node;
-import pmr.graph.WorldNode;
 /**
  * The Class ENode.
  * @author Alessandro Fontana
  * @author Mirko Zichichi
  */
 public class ENode implements Node{
-	
+
 	/** The WorldNode coming from the WTS */
 	private StateOfWorld node;
-	
+
 	/** The Tokens to put on the Net associated to the node */
 	private ArrayList<Token> tokens;
-	
+
 	/** The Score associated to the node */
 	private int score;
-	
+
 	/** Indicates if the node is an ExitNode */
 	private boolean exit;
-	
+
 	/**
 	 * Instantiates a new empty ENode with only the WorldState.
 	 *
@@ -36,7 +35,7 @@ public class ENode implements Node{
 		this.node = node;
 		this.exit = false;
 	}
-	
+
 	/**
 	 * Instantiates a new full ENode with all the attributes.
 	 *
@@ -55,7 +54,7 @@ public class ENode implements Node{
 		this.score = score;
 		this.exit = exit;
 	}
-	
+
 	/**
 	 * Gets the world node.
 	 *
@@ -64,7 +63,7 @@ public class ENode implements Node{
 	public StateOfWorld getWorldState() {
 		return node;
 	}
-	
+
 	/**
 	 * Sets the Tokens List.
 	 *
@@ -74,7 +73,7 @@ public class ENode implements Node{
 	public void setTokens(ArrayList<Token> tokens){
 		this.tokens = tokens;
 	}
-	
+
 	/**
 	 * Sets the Exit condition.
 	 *
@@ -84,7 +83,7 @@ public class ENode implements Node{
 	public void setExit(boolean exit){
 		this.exit = exit;
 	}
-	
+
 	/**
 	 * Adds a new Token.
 	 *
@@ -94,7 +93,7 @@ public class ENode implements Node{
 	public void addToken(Token token){
 		this.tokens.add(token);
 	}
-	
+
 	/**
 	 * Gets the Tokens List
 	 *
@@ -103,7 +102,7 @@ public class ENode implements Node{
 	public ArrayList<Token> getTokens() {
 		return tokens;
 	}
-	
+
 	/**
 	 * Gets the score.
 	 *
@@ -112,7 +111,7 @@ public class ENode implements Node{
 	public int getScore(){
 		return this.score;
 	}
-	
+
 	/**
 	 * Sets the score.
 	 *
@@ -122,7 +121,7 @@ public class ENode implements Node{
 	public void setScore(int score){
 		this.score = score;
 	}
-	
+
 	/**
 	 * Checks if is exit node.
 	 *
@@ -131,7 +130,7 @@ public class ENode implements Node{
 	public boolean isExitNode(){
 		return this.exit;
 	}
-	
+
 	@Override
 	  public boolean equals(Object obj){
 	      if (obj == null) {
@@ -141,7 +140,7 @@ public class ENode implements Node{
 	          return false;
 	      }
 	      ENode other = (ENode) obj;
-	      
+
 	      if(this.getWorldState() == null && other.getWorldState() == null){
 	        return true;
 	      }
@@ -152,25 +151,25 @@ public class ENode implements Node{
 	          return false;
 	      }
 	  }
-	  
-	
+
+
 	  /* (non-Javadoc)
 	   * @see java.lang.Object#hashCode()
 	   */
 	  @Override
 	  public String toString(){
 	      return this.getWorldState().toString();
-	  }  
-	
-	  
+	  }
+
+
 	  /* (non-Javadoc)
 	   * @see java.lang.Object#hashCode()
 	   */
 	  @Override
 	  public int hashCode(){
 	      return this.getWorldState().hashCode();
-	  }  
-	  
+	  }
+
 	  /**
 	   * Gets the score comparator, used to keep lists updated using the score
 	   *
@@ -185,5 +184,5 @@ public class ENode implements Node{
 		};
 		return comp;
 	}
-	
+
 }

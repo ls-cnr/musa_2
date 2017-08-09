@@ -7,7 +7,7 @@ import cartago.*;
 public class AbstractCapabilityRepository extends Artifact {
 	void init() {
 	}
-	
+
 	@LINK
 	void getCapabilityList() {
 	}
@@ -19,7 +19,7 @@ public class AbstractCapabilityRepository extends Artifact {
 	@LINK
 	void getEvolutionList_ByCapability() {
 	}
-	
-	
+
+
 }
 

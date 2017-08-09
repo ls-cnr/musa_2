@@ -4,29 +4,27 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Iterator;
 
-import layer.awareness.AbstractCapability;
 import pmr.graph.Node;
-import pmr.graph.WorldNode;
 
 /**
  * The Class ExpansionNode.
  */
 public abstract class ExpansionNode implements Node{
-	
+
 	/** The capability. */
 	protected String capability;
-	
+
 	/** The destination. */
 	protected ArrayList<ENode> destination;
-	
+
 	/** The source. */
 	protected ENode source;
-	
+
 	/** The score. */
 	protected int score;
-	
+
 	protected String agent;
-	
+
 	/**
 	 * Instantiates a new expansion node.
 	 *
@@ -42,22 +40,21 @@ public abstract class ExpansionNode implements Node{
 		this.source = source;
 		this.destination = destination;
 	}
-	
+
 	public ExpansionNode(ENode source, ArrayList<ENode> destination, String capability, int score){
 		this.capability = capability;
 		this.source = source;
 		this.destination = destination;
 		this.score = score;
 	}
-	
+
 	public ExpansionNode(ENode source, ArrayList<ENode> destination, String capability, String agent){
 		this.capability = capability;
 		this.source = source;
 		this.destination = destination;
-		this.score = score;
 		this.agent = agent;
 	}
-	
+
 	public ExpansionNode(ENode source, ArrayList<ENode> destination, String capability, int score, String agent){
 		this.capability = capability;
 		this.source = source;
@@ -73,7 +70,7 @@ public abstract class ExpansionNode implements Node{
 	public String getCapability() {
 		return capability;
 	}
-	
+
 	/**
 	 * Gets the source.
 	 *
@@ -81,8 +78,8 @@ public abstract class ExpansionNode implements Node{
 	 */
 	public ENode getSource() {
 		return source;
-	}	
-	
+	}
+
 	/**
 	 * Gets the destination.
 	 *
@@ -91,7 +88,7 @@ public abstract class ExpansionNode implements Node{
 	public ArrayList<ENode> getDestination(){
 		return this.destination;
 	}
-	
+
 	/**
 	 * Sets the destination.
 	 *
@@ -101,7 +98,7 @@ public abstract class ExpansionNode implements Node{
 	public void setDestination(ArrayList<ENode> destination){
 		this.destination = destination;
 	}
-	
+
 	/**
 	 * Adds the destination.
 	 *
@@ -111,7 +108,7 @@ public abstract class ExpansionNode implements Node{
 	public void addDestination(ENode destination){
 		this.destination.add(destination);
 	}
-	
+
 	/**
 	 * Sets the capability.
 	 *
@@ -121,7 +118,7 @@ public abstract class ExpansionNode implements Node{
 	public void setCapability(String capability) {
 		this.capability = capability;
 	}
-	
+
 	/**
 	 * Sets the source.
 	 *
@@ -131,7 +128,7 @@ public abstract class ExpansionNode implements Node{
 	public void setSource(ENode source) {
 		this.source = source;
 	}
-	
+
 	/**
 	 * Gets the score.
 	 *
@@ -140,7 +137,7 @@ public abstract class ExpansionNode implements Node{
 	public int getScore(){
 		return this.score;
 	}
-	
+
 	/**
 	 * Sets the score.
 	 *
@@ -150,12 +147,12 @@ public abstract class ExpansionNode implements Node{
 	public void setScore(int score) {
 		this.score = score;
 	}
-	
-	
+
+
 	public String getAgent(){
 		return this.agent;
 	}
-	
+
 	public void setAgent(String agent){
 		this.agent = agent;
 	}
@@ -175,8 +172,8 @@ public abstract class ExpansionNode implements Node{
 		};
 		return comp;
 	}
-	
-	
+
+
 	@Override
 	  public boolean equals(Object obj){
 	      if (obj == null) {
@@ -186,13 +183,13 @@ public abstract class ExpansionNode implements Node{
 	          return false;
 	      }
 	      ExpansionNode other = (ExpansionNode) obj;
-	      
+
 	      if(this.getSource().getWorldState() == null && other.getSource().getWorldState() == null){
 	        return true;
 	      }
 	      else if (this.getSource().getWorldState() != null && this.getSource().getWorldState().equals(other.getSource().getWorldState())) {
 	          Iterator<ENode> i = this.getDestination().iterator();
-	          
+
 	          while(i.hasNext()){
 	        	  ENode temp = (ENode) i.next();
 	        	  if (this.destination.contains(temp) == false)	return false;
@@ -202,9 +199,9 @@ public abstract class ExpansionNode implements Node{
 	      else {
 	          return false;
 	      }
-	  }  
-	
-	  
+	  }
+
+
 	  /* (non-Javadoc)
 	   * @see java.lang.Object#hashCode()
 	   */
@@ -214,8 +211,8 @@ public abstract class ExpansionNode implements Node{
 	      for(int i = 0; i<this.destination.size(); i++){
 	    	  hash += this.destination.get(i).hashCode();
 	      }
-		  
+
 		  return this.getSource().getWorldState().hashCode() + hash;
-	  }  
+	  }
 
 }

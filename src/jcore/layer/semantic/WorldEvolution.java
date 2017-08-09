@@ -14,22 +14,22 @@ import layer.semantic.evolution.EvolutionOperator;
  */
 
 public class WorldEvolution {
-	
+
 	/** The assumptions. */
 	private AssumptionSet assumptions;
-	
+
 	/** The evo. */
 	private LinkedList<StateOfWorld> evo;
-	
+
 	/** The checker. */
 	private DomainEntail checker;
 
-	
+
 	public LinkedList<StateOfWorld> getEvolution(){
 		return this.evo;
 	}
-	
-	
+
+
 	/**
 	 * Instantiates a new world evolution.
 	 *
@@ -42,7 +42,7 @@ public class WorldEvolution {
 		assumptions = K;
 		checker = DomainEntail.getInstance();
 	}
-	
+
 	/**
 	 * Adds the evolution.
 	 *
@@ -51,17 +51,17 @@ public class WorldEvolution {
 	public void addEvolution(Collection<EvolutionOperator> TX) {
 		int last_index = evo.size()-1;
 		StateOfWorld W_last = evo.get(last_index);
-		
+
 		StateOfWorld W = W_last.clone();
 		Iterator<EvolutionOperator> it = TX.iterator();
 		while (it.hasNext()) {
 			EvolutionOperator op = it.next();
 			W = op.apply_transformation(W);
 		}
-		
+
 		evo.add(W);
 	}
-	
+
 	/**
 	 * Test T C FS.
 	 *
@@ -71,31 +71,31 @@ public class WorldEvolution {
 	 */
 	public boolean test_TC_FS(Condition tc, Condition fs) {
 		int state = 0;		// 0 = test TC, 1 = test FS, 2 = satisfied
-		
+
 		Iterator<StateOfWorld> it = evo.iterator();
 		while (it.hasNext()) {
 			StateOfWorld W_test = it.next();
-			
+
 			if (state==0) {
-			
+
 				boolean test = checker.entailsCondition(W_test, assumptions, tc);
 				if (test==true)
 					state++;
-			
+
 			} else if (state == 1) {
-			
+
 				boolean test = checker.entailsCondition(W_test, assumptions, fs);
 				if (test==true)
-					state++;		
-			
+					state++;
+
 			}
-			
+
 		}
-		
+
 		if (state==2)
 			return true;
-		
+
 		return false;
 	}
-	
+
 }

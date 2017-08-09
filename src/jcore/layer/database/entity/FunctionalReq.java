@@ -20,30 +20,32 @@ import javax.persistence.Table;
 @Table(name = "functional_req", catalog = "musa_db")
 public class FunctionalReq implements java.io.Serializable {
 
+	private static final long serialVersionUID = 1L;
+
 	/** The id functional req. */
 	private Integer idFunctionalReq;
-	
+
 	/** The process. */
 	private Process process;
-	
+
 	/** The specification. */
 	private Specification specification;
-	
+
 	/** The name. */
 	private String name;
-	
+
 	/** The type. */
 	private String type;
-	
+
 	/** The description. */
 	private String description;
-	
+
 	/** The current state. */
 	private String currentState;
-	
+
 	/** The trigger condition. */
 	private String triggerCondition;
-	
+
 	/** The final state. */
 	private String finalState;
 

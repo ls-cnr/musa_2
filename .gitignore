@@ -1,25 +1,17 @@
-*.class
-
-# Mobile Tools for Java (J2ME)
-.mtj.tmp/
-
-# Package Files #
-*.ear
-
-# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
+octave-workspace*
 
-#.project
-.factorypath
-.classpath
+.apt_generated/
+.gradle/
 .settings/
-
-*.launch
-
 bin/
+log/
 tmp/
+*.ear
+*.launch
 *.tmp
 *.bak
 *.swp
+*~
 
-/.DS_Store
+*.DS_Store

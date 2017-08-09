@@ -8,7 +8,7 @@ import translator.ExtDLPHead;
  */
 
 public class AddStatement implements  EvolutionOperator {
-	
+
 	/** The new statement. */
 	private ExtDLPHead new_statement;
 
@@ -20,7 +20,7 @@ public class AddStatement implements  EvolutionOperator {
 	public AddStatement(ExtDLPHead statement) {
 		this.new_statement = statement;
 	}
-	
+
 	/**
 	 * Instantiates a new adds the statement.
 	 *

@@ -5,16 +5,16 @@ package layer.awareness.net;
  * @author Mirko Zichichi
  */
 public class Token {
-	
+
 	/** The place name. */
 	private String placeName;
-	
+
 	/** The dependent token. */
 	private MultipleToken dependingToken;
-	
+
 	/** The branch in which the token is in. */
 	private int branch;
-		
+
 	/**
 	 * Instantiates a new token without depending.
 	 *
@@ -25,7 +25,7 @@ public class Token {
 		this.placeName = placeName;
 		this.dependingToken = null;
 	}
-	
+
 	/**
 	 * Instantiates a new token with a depending token and his branch.
 	 *
@@ -41,7 +41,7 @@ public class Token {
 		this.dependingToken = dependingToken;
 		this.branch = branch;
 	}
-	
+
 	/**
 	 * Gets the place name.
 	 *
@@ -50,7 +50,7 @@ public class Token {
 	public String getPlaceName() {
 		return placeName;
 	}
-	
+
 	/**
 	 * Gets the token branch.
 	 *
@@ -59,7 +59,7 @@ public class Token {
 	public int getBranch() {
 		return branch;
 	}
-	
+
 	/**
 	 * Checks if is dependent from a MultipleToken.
 	 *
@@ -71,7 +71,7 @@ public class Token {
 		else
 			return true;
 	}
-	
+
 	/**
 	 * Gets the depending token.
 	 *
@@ -80,12 +80,12 @@ public class Token {
 	public MultipleToken getDependingToken() {
 		return dependingToken;
 	}
-	
+
 	@Override
 	public String toString() {
 		if( this instanceof MultipleToken )
 			return "Mul " + placeName;
-		else 
+		else
 			return placeName;
 	}
 }

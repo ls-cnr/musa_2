@@ -17,15 +17,17 @@ import javax.persistence.Table;
 @Table(name = "general_configuration", catalog = "musa_db")
 public class GeneralConfiguration implements java.io.Serializable {
 
+	private static final long serialVersionUID = 1L;
+
 	/** The id general configuration. */
 	private Integer idGeneralConfiguration;
-	
+
 	/** The name. */
 	private String name;
-	
+
 	/** The value. */
 	private String value;
-	
+
 	/** The description. */
 	private String description;
 

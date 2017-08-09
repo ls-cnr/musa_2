@@ -6,4 +6,3 @@ delay(search_configuration,1000).
 
 /* delta between two configuration lookup */
 delay(wait_configuration,500).
-

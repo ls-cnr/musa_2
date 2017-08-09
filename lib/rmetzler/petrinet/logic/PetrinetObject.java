@@ -3,12 +3,12 @@ package petrinet.logic;
 public class PetrinetObject {
 
     private String name;
-    
+
     public PetrinetObject(String name) {
         super();
         this.name = name;
     }
-    
+
     public String getName() {
         return name;
     }

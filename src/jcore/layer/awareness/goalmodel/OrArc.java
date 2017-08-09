@@ -7,7 +7,7 @@ import layer.awareness.Goal;
  * @author Mirko Zichichi
  */
 public class OrArc extends RefinementArc {
-	
+
 	/**
 	 * Instantiates a new OrArc.
 	 *
@@ -16,5 +16,5 @@ public class OrArc extends RefinementArc {
 	public OrArc( Goal node ) {
 		super(node);
 	}
-	
+
 }

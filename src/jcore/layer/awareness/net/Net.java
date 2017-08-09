@@ -16,25 +16,25 @@ public class Net {
 
 	/** The main structure */
 	private Petrinet pn;
-	
+
 	/** A structure used to associate all the transition with a trigger condition or final state */
 	private HashMap<Transition, Condition> labels;
-	
+
 	/** A map used to store the remaining hop in a transition ( used to follow the path to the final place once ) */
 	private HashMap<Transition, Integer> hopMap;
-	
+
 	/** A structure used to relate an initialOrPlace with a finalOrPlace */
 	private HashMap<Place, Place> initialOrPlaces;
-	
+
 	/** A structure used to relate a finalOrPlace with an initialOrPlace */
 	private HashMap<Place, Place> finalOrPlaces;
-	
+
 	/** Simple value to keep the number of transitions */
 	private int numTransitions;
-	
+
 	/**
-	 * Instantiates a new net. 
-	 * This constructor create a new Petrinet through the class PetriNetConstruction, then it stores all the 
+	 * Instantiates a new net.
+	 * This constructor create a new Petrinet through the class PetriNetConstruction, then it stores all the
 	 * attributes coming from the construction.
 	 *
 	 * @param model
@@ -46,14 +46,14 @@ public class Net {
 		pn = construction.getPetrinet();
 		labels = construction.getLabels();
 		initialOrPlaces = construction.getInitialOrPlaces();
-		finalOrPlaces = construction.getFinalOrPlaces(); 
-		
+		finalOrPlaces = construction.getFinalOrPlaces();
+
 		numTransitions = pn.getTransitions().size();
 	}
-	
+
 	/**
 	 * The starting method to calculate the hop value.
-	 * Going through the list of all tokens, it collects all the Multiple token and their dependents, 
+	 * Going through the list of all tokens, it collects all the Multiple token and their dependents,
 	 * calculates the hop for normal tokens and then for the construct under all the Multiple tokens.
 	 *
 	 * @param tokens
@@ -64,22 +64,22 @@ public class Net {
 		ArrayList<MultipleToken> temp = new ArrayList<>();
 		hopMap = new HashMap<>();
 		int hopValue = 0;
-		
+
 		for( Token token : tokens )
 			if( token.isDependent() )
 				token.getDependingToken().addToken(token); //Stores token in his Dependent token
 			else
 				if( token instanceof MultipleToken )
-					temp.add((MultipleToken) token); //Collects all multiple tokens non Dependent 
+					temp.add((MultipleToken) token); //Collects all multiple tokens non Dependent
 				else
 					hopValue += hopToken(getPlace(token.getPlaceName()));
-		
+
 		for( MultipleToken mToken : temp) //Starts calculating hop value for all the MultipleToken
 			hopValue += multipleHop(mToken);
-		
+
 		return hopValue;
 	}
-	
+
 	/**
 	 * This method calculates the hop for all the token depending from the Multiple token mToken.
 	 *
@@ -102,15 +102,15 @@ public class Net {
 		else
 			return hopToken(getPlace(mToken.getPlaceName()));
 	}
-	
+
 	/**
-	 * This is the main method to select a value from the array that stores values for all branches 
-	 * under the Multiple token. 
-	 * 
+	 * This is the main method to select a value from the array that stores values for all branches
+	 * under the Multiple token.
+	 *
 	 * In this case it's used to select the maximum value.
 	 *
 	 * @param mHop
-	 *            the array that stores all the hop values from all the branches 
+	 *            the array that stores all the hop values from all the branches
 	 * @return the hop value selected
 	 */
 	private int getHopValueFromArray( ArrayList<Integer> mHop ) {
@@ -118,15 +118,15 @@ public class Net {
 		for( int i = 1; i < mHop.size(); i++ )
 			if( mHop.get(i) > max )
 				max = mHop.get(i);
-			
+
 		return max;
-	} 
-	
+	}
+
 	/**
 	 * Them main method to calculate the Hop for a token.
 	 * It starts from a place and calculates all the Transition until it reaches the final place.
-	 * If a Transition encountered through the path has already been visited, the method stops 
-	 * and adds the remaining path if it's necessary ( for calculating an hop from a Conditional case). 
+	 * If a Transition encountered through the path has already been visited, the method stops
+	 * and adds the remaining path if it's necessary ( for calculating an hop from a Conditional case).
 	 *
 	 * @param place
 	 *            the place where to start
@@ -137,7 +137,7 @@ public class Net {
 			return 0;
 		else{
 			int general = 0;
-			
+
 			for( Arc arcP : place.getOutgoing() ){
 				Transition transition = arcP.getTransition();
 				int count = 0;
@@ -155,11 +155,11 @@ public class Net {
 				}
 				general = max(count, general);
 			}
-			
+
 			return general;
 		}
 	}
-	
+
 	/**
 	 * Gets the transitions able to fire.
 	 *
@@ -168,7 +168,7 @@ public class Net {
 	public ArrayList<Transition> getTransitionsAbleToFire() {
 		return (ArrayList<Transition>) pn.getTransitionsAbleToFire();
 	}
-	
+
 	/**
 	 * Gets the transition condition, Trigger condition or Final State.
 	 *
@@ -179,7 +179,7 @@ public class Net {
 	public Condition getTransitionLabel( Transition t ) {
 		return labels.get(t);
 	}
-	
+
 	/**
 	 * Gets the number of transitions.
 	 *
@@ -188,7 +188,7 @@ public class Net {
 	public int getNumTransitions() {
 		return numTransitions;
 	}
-	
+
 	/**
 	 * Put all the tokens into the PetriNet.
 	 *
@@ -200,10 +200,10 @@ public class Net {
 			pn.getPlace(token.getPlaceName()).addTokens(1);
 		}
 	}
-	
+
 	/**
 	 * Checks if an initialOrPlace is already Multiple token.
-	 * If so it adds a token to let the following transition to fire. 
+	 * If so it adds a token to let the following transition to fire.
 	 *
 	 * @param place
 	 *            the place to check
@@ -216,9 +216,9 @@ public class Net {
 		}
 		return false;
 	}
-	
+
 	/**
-	 * Method used to remove all the tokens in the parallel OR case when a token gets to 
+	 * Method used to remove all the tokens in the parallel OR case when a token gets to
 	 * the finalOrPlace.
 	 *
 	 * @param finalOrPlace
@@ -230,12 +230,12 @@ public class Net {
 		Place initialOrPlace = finalOrPlaces.get(finalOrPlace);
 		remove(initialOrPlace, finalOrPlace, tokens);
 	}
-	
+
 	/**
 	 * Removes, from a Petrinet, all the tokens backward from a place to an initial place.
 	 *
 	 * @param initial
-	 *            the initial place 
+	 *            the initial place
 	 * @param place
 	 *            the place to start with
 	 * @param tokens
@@ -243,7 +243,7 @@ public class Net {
 	 */
 	private void remove( Place initial, Place place, ArrayList<Token> tokens ) {
 		if( place.getName().equals( initial.getName() ) ){
-			if( place.hasAtLeastTokens(1) ){ 
+			if( place.hasAtLeastTokens(1) ){
 				place.removeTokens(1);
 			}
 			for( int i = 0; i < tokens.size(); i++ )
@@ -251,25 +251,25 @@ public class Net {
 					tokens.remove(i);
 		}
 		else{
-			if( place.hasAtLeastTokens(1) ){ 
+			if( place.hasAtLeastTokens(1) ){
 				place.removeTokens(1);
 				for( int j = 0; j < tokens.size(); j++ )
 					if( tokens.get(j).getPlaceName().equals(place.getName()) )
 						tokens.remove(j);
 			}
-			
+
 			for( Arc incomingArcP : place.getIncoming() ){
 				Transition t = incomingArcP.getTransition();
 				for( Arc incomingArcT : t.getIncoming() ){
 					remove(initial, incomingArcT.getPlace(), tokens);
 				}
 			}
-			
+
 		}
 	}
-	
-	
-	
+
+
+
 	/**
 	 * Removes the tokens in the list from the Petrinet.
 	 *
@@ -281,7 +281,7 @@ public class Net {
 			pn.getPlace(token.getPlaceName()).removeTokens(1);
 		}
 	}
-	
+
 	/**
 	 * Gets a place from his name.
 	 *
@@ -292,7 +292,7 @@ public class Net {
 	public Place getPlace( String name ) {
 		return pn.getPlace(name);
 	}
-	
+
 	/**
 	 * Gets the first place in the PetriNet.
 	 *
@@ -301,7 +301,7 @@ public class Net {
 	public Place getFirst() {
 		return pn.getPlaces().get(0);
 	}
-	
+
 	/**
 	 * Gets the last place in the PetriNet.
 	 *
@@ -310,7 +310,7 @@ public class Net {
 	public Place getLast() {
 		return pn.getPlaces().get(pn.getPlaces().size() - 1);
 	}
-	
+
 	/**
 	 * Gets the first incoming place from a transition.
 	 *
@@ -321,7 +321,7 @@ public class Net {
 	public Place getFirstInPlaceFromTransition( Transition transition ) {
 		return transition.getIncoming().get(0).getPlace();
 	}
-	
+
 	/**
 	 * Max.
 	 *
@@ -335,7 +335,7 @@ public class Net {
 		if( a >= b ) return a;
 		else return b;
 	}
-	
+
 	/**
 	 * Checks if is final or place.
 	 *
@@ -346,7 +346,7 @@ public class Net {
 	public boolean isFinalOrPlace( Place place ) {
 		return finalOrPlaces.containsKey(place);
 	}
-	
+
 	/**
 	 * Checks if is initial or place.
 	 *

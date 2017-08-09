@@ -5,11 +5,14 @@ package runtime;
 import java.util.LinkedList;
 import java.util.List;
 
-import cartago.*;
-import layer.awareness.*;
-import layer.awareness.goalmodel.*;
+import cartago.Artifact;
+import cartago.LINK;
+import cartago.OPERATION;
+import layer.awareness.Goal;
+import layer.awareness.goalmodel.GoalModel;
 import layer.semantic.AssumptionSet;;
 
+@SuppressWarnings("unused")
 public class Specification extends Artifact {
 
 	private String spec_id;
@@ -19,7 +22,7 @@ public class Specification extends Artifact {
 	private List<Goal> goalset;
 	private GoalModel goal_model;
 	private AssumptionSet assumptions;
-	
+
 	/* data ready for messages */
 	private String goalset_term;
 	private String goal_model_term;
@@ -32,7 +35,7 @@ public class Specification extends Artifact {
 		goal_model=null;
 		assumptions = new AssumptionSet();
 	}
-	
+
 	@OPERATION
 	void load_from_DB() {
 		//TODO

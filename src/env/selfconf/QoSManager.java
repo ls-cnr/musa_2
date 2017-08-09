@@ -8,12 +8,12 @@ import cartago.*;
 		  outports = {
 		    @OUTPORT(name = "service_dir")
 		  }
-	) 
+	)
 public class QoSManager extends Artifact {
-	
+
 	void init() {
 	}
-	
+
 	@OPERATION
 	void instantiateSolution() {
 	}

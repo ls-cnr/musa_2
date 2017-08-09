@@ -3,20 +3,20 @@ package petrinet.logic;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Place 
+public class Place
 extends PetrinetObject {
 
     // it's a magic number....
     public static final int UNLIMITED = -1;
-    
+
     private int tokens = 0;
-    private int maxTokens = 1;    
+    private int maxTokens = 1;
 
     /** Added */
-	private List<Arc> incoming = new ArrayList<Arc>(); 	
+	private List<Arc> incoming = new ArrayList<Arc>();
 	/** Added */
-	private List<Arc> outgoing = new ArrayList<Arc>();	
-    
+	private List<Arc> outgoing = new ArrayList<Arc>();
+
 
     protected Place(String name) {
         super(name);
@@ -29,9 +29,9 @@ extends PetrinetObject {
 
     /**
      * besitzt die Stelle mindestens so viele tokens?
-     * 
+     *
      * il posto possiede almeno tanti token quanti sono passati come param?
-     * 
+     *
      * @param threshold
      * @return
      */
@@ -41,7 +41,7 @@ extends PetrinetObject {
 
     /**
      * wŸrde die Stelle noch so viele Tokens aufnehmen kšnnen?
-     * 
+     *
      * il posto è ancora in grado di prendere token?
      * @param newTokens
      * @return
@@ -50,7 +50,7 @@ extends PetrinetObject {
         if (hasUnlimitedMaxTokens()) {
             return false;
         }
-        
+
         return (tokens+newTokens > maxTokens);
     }
 
@@ -58,7 +58,7 @@ extends PetrinetObject {
         return maxTokens == UNLIMITED;
     }
 
-    
+
     public int getTokens() {
         return tokens;
     }
@@ -78,7 +78,7 @@ extends PetrinetObject {
     public void removeTokens(int weight) {
         this.tokens -= weight;
     }
-    
+
 	 /**
 	  * Added
      * Aggiunge un Arco in entrata
@@ -87,26 +87,26 @@ extends PetrinetObject {
     public void addIncoming(Arc arc) {
         this.incoming.add(arc);
     }
-    
+
     /** Added */
   	public void setIncoming(List<Arc> incoming) {
   		this.incoming = incoming;
   	}
-    
+
   	/** Added */
     public List<Arc> getIncoming() {
   		return incoming;
   	}
-    
+
     /**
      * Added
      * Aggiunge un Arco in uscita
-     * @param arc 
+     * @param arc
      */
     public void addOutgoing(Arc arc) {
         this.outgoing.add(arc);
     }
-    
+
     /** Added */
   	public void setOutgoing(List<Arc> outgoing) {
   		this.outgoing = outgoing;
@@ -116,18 +116,18 @@ extends PetrinetObject {
   	public List<Arc> getOutgoing() {
   		return outgoing;
   	}
-  	
+
   	/** Added */
   	public boolean equals( Place place ) {
   		if( this.getName().equals(place.getName()) )
   			return true;
-  		else 
+  		else
   			return false;
   	}
-         
+
     @Override
     public String toString() {
-        return super.toString() + 
+        return super.toString() +
                " Tokens=" + this.tokens +
                " max=" + (hasUnlimitedMaxTokens()? "unlimited" : this.maxTokens);
     }

@@ -14,7 +14,7 @@ import pmr.graph.WorldNode;
 /**
  * This class describe a Solution Tree. It takes as input the WTS and extracts
  * all solutions, factoring in all xor nodes and loop nodes related problems.
- * 
+ *
  * @author Mirko Avantaggiato
  *
  */
@@ -75,7 +75,7 @@ public class SolutionTree {
 
 	/**
 	 * This method produces the lists of xor nodes and failure nodes
-	 * 
+	 *
 	 * @param w0
 	 *            initial state
 	 * @param visited
@@ -117,7 +117,7 @@ public class SolutionTree {
 	}
 
 	/**
-	 * 
+	 *
 	 * This method produces the list of all paths from W0 to each possibile
 	 * success or failure state. This list will be used to build the tree and
 	 * extract the solution(s).
@@ -178,7 +178,7 @@ public class SolutionTree {
 
 	/**
 	 * Support method.
-	 * 
+	 *
 	 * @param w0
 	 *            initial node
 	 */
@@ -219,7 +219,7 @@ public class SolutionTree {
 
 	/**
 	 * This method decides which category a TreeNode belongs to.
-	 * 
+	 *
 	 * @param node
 	 */
 	private void setNodeType(Tree<String> node) {
@@ -237,7 +237,7 @@ public class SolutionTree {
 
 	/**
 	 * A more user-friendly translation.
-	 * 
+	 *
 	 * @param type
 	 *            int type
 	 * @return string for that type
@@ -262,7 +262,7 @@ public class SolutionTree {
 
 	/**
 	 * This method prints the tre produced in pathList_toTree();
-	 * 
+	 *
 	 * @param node
 	 *            current node
 	 * @param depth
@@ -288,7 +288,7 @@ public class SolutionTree {
 
 	/**
 	 * This method prints the tree (dot language) adding at the end of each node
-	 * 
+	 *
 	 * @param node
 	 *            tree node
 	 * @param treeSafeNodes
@@ -345,8 +345,8 @@ public class SolutionTree {
 
 	/**
 	 * This method produces the output solution(s), bottom-up approach.
-	 * 
-	 * 
+	 *
+	 *
 	 * @param currentNode
 	 * @return
 	 */
@@ -443,9 +443,9 @@ public class SolutionTree {
 	/**
 	 * This method combines 2 ArrayLists<String>. <br>
 	 * Example: A = [a, b, c] B = [d, e] <br>
-	 * 
+	 *
 	 * <b>res = [ad, ae, bd, be, cd, ce]</b>
-	 * 
+	 *
 	 */
 	private static ArrayList<String> combineTwoArrayList(ArrayList<String> A, ArrayList<String> B) {
 		ArrayList<String> res = new ArrayList<>();
@@ -481,7 +481,7 @@ public class SolutionTree {
 	/**
 	 * A node is safe if it is a success node or if at least one of its children
 	 * is safe. Bottom-up approach.
-	 * 
+	 *
 	 * @param t
 	 */
 	private void makeTreeSafe(Tree<String> t) {

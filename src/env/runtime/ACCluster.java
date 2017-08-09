@@ -6,10 +6,10 @@ import cartago.*;
 
 public class ACCluster extends Artifact {
 
-	
+
 	void init(int initialValue) {
 	}
-	
+
 	@OPERATION
 	void inc() {
 		ObsProperty prop = getObsProperty("count");

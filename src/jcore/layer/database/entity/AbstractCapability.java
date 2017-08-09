@@ -22,34 +22,36 @@ import javax.persistence.Table;
 @Table(name = "abstract_capability", catalog = "musa_db")
 public class AbstractCapability implements java.io.Serializable {
 
+	private static final long serialVersionUID = 1L;
+
 	/** The id abstrat capability. */
 	private int idAbstratCapability;
-	
+
 	/** The domain. */
 	private Domain domain;
-	
+
 	/** The name. */
 	private String name;
-	
+
 	/** The input. */
 	private String input;
-	
+
 	/** The output. */
 	private String output;
-	
+
 	/** The params. */
 	private String params;
-	
+
 	/** The pre condition. */
 	private String preCondition;
-	
+
 	/** The post condition. */
 	private String postCondition;
-	
+
 	/** The concrete capabilities. */
 	private Set<ConcreteCapability> concreteCapabilities = new HashSet<ConcreteCapability>(
 			0);
-	
+
 	/** The scenario evos. */
 	private Set<ScenarioEvo> scenarioEvos = new HashSet<ScenarioEvo>(0);
 

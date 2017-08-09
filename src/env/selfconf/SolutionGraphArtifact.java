@@ -2,36 +2,36 @@
 
 package selfconf;
 
-import cartago.*;
-import jason.asSyntax.Term;
+import cartago.Artifact;
+import cartago.LINK;
+import cartago.OPERATION;
+import cartago.OpFeedbackParam;
 import layer.semantic.StateOfWorld;
 import pmr.SolutionGraph;
-import pmr.probexp.ENode;
 import pmr.probexp.ExpansionNode;
-import translator.JasonENode;
 import translator.JasonExpansionNode;
 import translator.JasonStateOfWorld;
 import translator.TranslateError;
 
 public class SolutionGraphArtifact extends Artifact {
-	
+
 	private SolutionGraph graph;
-	
+
 	void init() {
 		// initialize graph
 		graph = new SolutionGraph();
-		
+
 		System.out.println("creato artefatto solution graph");
 	}
-	
 
+	@SuppressWarnings("unused")
 	@LINK
 	void set_initial_state(String node_string) {
-		System.out.println("Stato Iniziale: "+node_string);
-		
+		System.out.println("Stato Iniziale: " + node_string);
+
 		try {
+			// TODO add the initial state to the graph
 			StateOfWorld w = JasonStateOfWorld.term_string_to_object(node_string);
-			//TODO add the initial state to the graph
 		} catch (TranslateError e1) {
 			e1.printStackTrace();
 		}
@@ -42,16 +42,19 @@ public class SolutionGraphArtifact extends Artifact {
 		int n = graph.getWTSHashmap().size();
 		num.set(new Integer(n));
 	}
-	
+
 	/* interface: EXPAND */
 	@LINK
 	void expand(String expansion_node, String spec_id_string) {
 		ExpansionNode exp;
-		try{
-		exp = JasonExpansionNode.term_string_to_object(expansion_node);
-		}catch(TranslateError t){return;}
+		try {
+			exp = JasonExpansionNode.term_string_to_object(expansion_node);
+		} catch (TranslateError t) {
+			return;
+		}
 		graph.addNode(exp);
-		System.out.println("Ho aggiunto un nodo al grafo. Il grafo coniente ora " + this.graph.getWTSHashmap().size() + "nodi.");
+		System.out.println(
+				"Ho aggiunto un nodo al grafo. Il grafo coniente ora " + this.graph.getWTSHashmap().size() + "nodi.");
 	}
 
 	/* interface: VISIT */
@@ -64,27 +67,26 @@ public class SolutionGraphArtifact extends Artifact {
 	void getState_ById() {
 		//
 	}
-	
+
 	@OPERATION
 	void getAllTransitions_FromState() {
 	}
-	
+
 	@OPERATION
 	void getAllTransitions_ToState() {
 	}
-	
+
 	@OPERATION
 	void pickConjointTransition_FromState_ByCapability() {
 	}
-	
+
 	@OPERATION
 	void pickConjointTransition_ToState_ByCapability() {
 	}
-	
+
 	@LINK
-	void printGraph(){
+	void printGraph() {
 		this.graph.printGraph();
 	}
 
 }
-

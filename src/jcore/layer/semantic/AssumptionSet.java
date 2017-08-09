@@ -1,35 +1,31 @@
 package layer.semantic;
 
-import java.util.HashSet;
-import java.util.Iterator;
-
-import layer.semantic.exception.*;
+import layer.semantic.exception.NotAllowedInAnAssumptionSet;
 import net.sf.tweety.lp.asp.parser.ASPParser;
 import net.sf.tweety.lp.asp.parser.ParseException;
-import net.sf.tweety.lp.asp.syntax.DLPHead;
 import net.sf.tweety.lp.asp.syntax.Program;
 import net.sf.tweety.lp.asp.syntax.Rule;
 
-/**                                                                            
+/**
  * The Class AssumptionSet
  * @author icar-aose
  * @version 1.0.0
  */
 
 public class AssumptionSet {
-	
+
 	/** The base. */
 	//private HashSet<Rule> assumptions;
 	private Program base;
-	
+
 	/**
 	 * Instantiates a new assumption set.
 	 */
 	public AssumptionSet() {
 		//assumptions = new HashSet<Rule>();
-		base = new Program();		
+		base = new Program();
 	}
-	
+
 	/**
 	 * Adds the assumption as string.
 	 *
@@ -45,7 +41,7 @@ public class AssumptionSet {
 	/*public HashSet<Rule> getRules() {
 		return assumptions;
 	}*/
-	
+
 	/**
 	 * Gets the ASP clone.
 	 *

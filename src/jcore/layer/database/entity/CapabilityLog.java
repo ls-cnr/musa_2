@@ -20,15 +20,17 @@ import javax.persistence.Table;
 @Table(name = "capability_log", catalog = "musa_db")
 public class CapabilityLog implements java.io.Serializable {
 
+	private static final long serialVersionUID = 1L;
+
 	/** The id capability operation. */
 	private Integer idCapabilityOperation;
-	
+
 	/** The capability instance. */
 	private CapabilityInstance capabilityInstance;
-	
+
 	/** The time operation. */
 	private String timeOperation;
-	
+
 	/** The action. */
 	private String action;
 
