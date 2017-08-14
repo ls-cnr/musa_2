@@ -188,8 +188,8 @@ public void setUp(){
  * ex1 ha la stessa capability di ex4
  * ex1 contiene e5 che ha null come StateOfWorld
  * ex3 ha la stessa destNodeList di ex4
- * ex4 � di tipo MultipleExpansionNode
- * ex5 � di tipo MultipleExpansionNode ed ha e5 come source che ha null come StateOfWorld
+ * ex4   di tipo MultipleExpansionNode
+ * ex5   di tipo MultipleExpansionNode ed ha e5 come source che ha null come StateOfWorld
  */
 
 //Il nodo iniziale viene sempre riconosciuto tramite un new WorldNode(null)

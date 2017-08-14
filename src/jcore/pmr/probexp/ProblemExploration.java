@@ -159,16 +159,16 @@ public class ProblemExploration {
 	 *            the capability
 	 * @return the expansion node
 	 */
-	// Se la capability contiene un solo elemento sar� un evoluzione semplice
+	// Se la capability contiene un solo elemento sar  un evoluzione semplice
 	// gestita da un NormalExpansionNode.
 	private ExpansionNode applyExpand(ENode enode, AbstractCapability capability) {
 		if (capability.getScenarioSet().size() == 1) {
 			// Creo un oggetto di tipo WorldEvolution che dato un AssumptionSet ed un
 			// StateOfWorld ci da le evoluzioni.
 			WorldEvolution evo = new WorldEvolution(this.assumptions, enode.getWorldState());
-			// Uso un iteratore perch� il set non mi fa accedere ai singoli elementi. In
-			// questo caso l'elemento � uno solo
-			// Ed � l'ultimo della lista delle evoluzioni, dato che in ogni caso
+			// Uso un iteratore perch  il set non mi fa accedere ai singoli elementi. In
+			// questo caso l'elemento   uno solo
+			// Ed   l'ultimo della lista delle evoluzioni, dato che in ogni caso
 			// WorldEvolution salva lo StateOfWorld source.
 
 			for (EvolutionScenario temp : capability.getScenarioSet())
@@ -185,9 +185,9 @@ public class ProblemExploration {
 			} else
 				return null;
 		} else {
-			// Se la capability ha pi� scenari, devo creare una WorldEvolution per scenario.
-			// Ogni WorldEvolution produrr�
-			// Uno StateOfWorld, che verr� inglobato in un nodo che a sua volta finir� nella
+			// Se la capability ha pi  scenari, devo creare una WorldEvolution per scenario.
+			// Ogni WorldEvolution produrr 
+			// Uno StateOfWorld, che verr  inglobato in un nodo che a sua volta finir  nella
 			// lista delle destinazioni
 			// Del MultipleExpansioNode. Inoltre si aggiunge alla mappa dei nodi-scenari
 			// associati, la coppia nodo-scenario.

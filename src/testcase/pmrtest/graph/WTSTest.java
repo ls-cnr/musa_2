@@ -172,8 +172,8 @@ public class WTSTest {
 	 * ex1 ha la stessa capability di ex4
 	 * ex1 contiene e5 che ha null come StateOfWorld
 	 * ex3 ha la stessa destNodeList di ex4
-	 * ex4 � di tipo MultipleExpansionNode
-	 * ex5 � di tipo MultipleExpansionNode ed ha null come source
+	 * ex4   di tipo MultipleExpansionNode
+	 * ex5   di tipo MultipleExpansionNode ed ha null come source
 	 */
 
 

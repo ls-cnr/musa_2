@@ -30,15 +30,17 @@ public class ConfigSelector extends Artifact {
 		System.out.println("SOLUTION");
 		for (Solution x : this.sc.getSolutionsSoFar())
 			Sequences.printTree(x.getRoot(), 0);
-		// System.out.println("SUCCESS STATES");
-		// for (String x : this.sc.getSuccessNodes())
-		// System.out.println(x);
-		// System.out.println("SEQUENCES");
-		// for (ArrayList<String> s : this.sc.getSeqs())
-		// System.out.println(s);
-		// System.out.println("CAPABILITIES USED");
-		// for (Sequences.Triple t : this.sc.getCapabilities())
-		// System.out.println(t.toString().replaceAll("\n", ""));
+		/*
+		System.out.println("SUCCESS STATES");
+		for (String x : this.sc.getSuccessNodes())
+			System.out.println(x);
+		System.out.println("SEQUENCES");
+		for (ArrayList<String> s : this.sc.getSeqs())
+			System.out.println(s);
+		System.out.println("CAPABILITIES USED");
+		for (Sequences.Triple t : this.sc.getCapabilities())
+			System.out.println(t.toString().replaceAll("\n", ""));
+		*/
 	}
 
 	@OPERATION
@@ -74,10 +76,8 @@ public class ConfigSelector extends Artifact {
 				}
 				tmp.clear();
 			} else if (expNode.getDestination().size() == 1) {
-				/*
-				 * ExpansionNode semplice. Aggiungo dest e se è soluzione ne
-				 * tengo conto.
-				 */
+				/* ExpansionNode semplice. Aggiungo dest e se e' soluzione ne
+				 * tengo conto. */
 				String dest = expNode.getDestination().get(0).getWorldState().toString();
 				if (dest.equals(""))
 					dest = "w0";

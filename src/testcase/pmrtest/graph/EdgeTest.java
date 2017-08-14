@@ -83,7 +83,7 @@ public class EdgeTest {
 
 		// Radice(n1) due rami figli: (n2) (n3), figlio(n2) : un ramo figlio(n4)
 		// n4 contiene uno stato del mondo uguale a n3, quindi l'ipotetico figlio di n2
-		// � in realt� n3, quindi
+		//   in realt  n3, quindi
 		// dovrebbe nascere un nuovo arco da (n2) a (n3)
 		this.n1 = new WorldNode(w4);
 		this.n2 = new WorldNode(w3);

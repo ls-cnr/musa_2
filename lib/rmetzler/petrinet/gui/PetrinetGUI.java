@@ -115,7 +115,7 @@ public class PetrinetGUI extends JFrame {
 			}
 		};
 
-		// F�hre den obigen Quellcode im Event-Dispatch-Thread aus
+		// F hre den obigen Quellcode im Event-Dispatch-Thread aus
 		SwingUtilities.invokeLater(guiCreator);
 	}
 }

@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * Ein Petrinetz kennt alle Elemente.
  *
- * Deshalb sollten nach M�glichkeit auch besser diese Factory-Methoden zum
+ * Deshalb sollten nach M glichkeit auch besser diese Factory-Methoden zum
  * Erstellen von Objekten benutzt werden, anstatt die Konstruktoren direkt
  * aufzurufen.
  *
