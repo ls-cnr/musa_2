@@ -1,5 +1,3 @@
-// CArtAgO artifact code for project musa_2_0
-
 package selfconf;
 
 import cartago.Artifact;
@@ -15,23 +13,14 @@ import translator.TranslateError;
 
 public class SolutionGraphArtifact extends Artifact {
 
-	private SolutionGraph graph;
+	private SolutionGraph graph = new SolutionGraph();
 
-	void init() {
-		// initialize graph
-		graph = new SolutionGraph();
-
-		System.out.println("creato artefatto solution graph");
-	}
-
-	@SuppressWarnings("unused")
 	@LINK
 	void set_initial_state(String node_string) {
-		System.out.println("Stato Iniziale: " + node_string);
-
 		try {
-			// TODO add the initial state to the graph
+			@SuppressWarnings("unused")
 			StateOfWorld w = JasonStateOfWorld.term_string_to_object(node_string);
+			// TODO add the initial state to the graph
 		} catch (TranslateError e1) {
 			e1.printStackTrace();
 		}
@@ -53,35 +42,38 @@ public class SolutionGraphArtifact extends Artifact {
 			return;
 		}
 		graph.addNode(exp);
-		System.out.println(
-				"Ho aggiunto un nodo al grafo. Il grafo coniente ora " + this.graph.getWTSHashmap().size() + "nodi.");
+		System.out.println("Added a node. The graph now contains " + this.graph.getWTSHashmap().size() + "nodes");
 	}
 
 	/* interface: VISIT */
 	@OPERATION
 	void getStartState() {
-		//
+		// TODO
 	}
 
 	@OPERATION
 	void getState_ById() {
-		//
+		// TODO
 	}
 
 	@OPERATION
 	void getAllTransitions_FromState() {
+		// TODO
 	}
 
 	@OPERATION
 	void getAllTransitions_ToState() {
+		// TODO
 	}
 
 	@OPERATION
 	void pickConjointTransition_FromState_ByCapability() {
+		// TODO
 	}
 
 	@OPERATION
 	void pickConjointTransition_ToState_ByCapability() {
+		// TODO
 	}
 
 	@LINK

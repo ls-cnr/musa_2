@@ -91,15 +91,9 @@ public class AbstractService extends Artifact implements AbstractServiceInterfac
 	}
 
 	@OPERATION
-	public void providerInitialised() {
-		ObsProperty p = this.getObsProperty("initialisedSP");
-		p.updateValue(p.intValue() + 1);
-	}
-
-	@OPERATION
 	public void createProviders(String SCname) {
 		/* we'll create a random number of stub SPs, each with a random Cobb-Douglas
-		* indifference plane curve */
+		 * indifference plane curve */
 	  if (!this.getObsProperty("state").stringValue().equals("new")) {
 			log("SP set already created!");
 			return;
@@ -161,11 +155,6 @@ public class AbstractService extends Artifact implements AbstractServiceInterfac
 	}
 
 	@OPERATION
-	public void sendOffer(String sp, String offer) {
-		offers.put(sp, offer);
-	}
-
-	@OPERATION
 	public void getStandingOffers(OpFeedbackParam<Literal[]> offersList) {
 		Literal[] aux = new Literal[offers.size()];
 		int i = 0;
@@ -182,6 +171,17 @@ public class AbstractService extends Artifact implements AbstractServiceInterfac
 
 		offersList.set(aux);
 		offers.clear();
+	}
+
+	@OPERATION
+	public void providerInitialised() {
+		ObsProperty p = this.getObsProperty("initialisedSP");
+		p.updateValue(p.intValue() + 1);
+	}
+
+	@OPERATION
+	public void sendOffer(String sp, String offer) {
+		offers.put(sp, offer);
 	}
 
 	@OPERATION

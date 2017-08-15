@@ -1,5 +1,3 @@
-// CArtAgO artifact code for project musa_2_0
-
 package runtime;
 
 import java.util.LinkedList;
@@ -28,33 +26,32 @@ public class Specification extends Artifact {
 	private String goal_model_term;
 	private String assumptions_term;
 
-	void init(String spec_id,String domain_name) {
+	void init(String spec_id, String domain_name) {
 		this.spec_id = spec_id;
 		this.domain_name = domain_name;
 		goalset = new LinkedList<Goal>();
-		goal_model=null;
+		goal_model = null;
 		assumptions = new AssumptionSet();
 	}
 
 	@OPERATION
 	void load_from_DB() {
-		//TODO
+		// TODO
 	}
 
 	@LINK
 	void get_goal_list_term() {
-		//TODO
+		// TODO
 	}
 
 	@LINK
 	void get_goalmodel_term() {
-		//TODO
+		// TODO
 	}
 
 	@LINK
 	void get_domain_assumption_term() {
-		//TODO
+		// TODO
 	}
 
 }
-

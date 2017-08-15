@@ -1,10 +1,6 @@
 /* OBS+ Service Compositor agent */
 
-{ include("$jacamoJar/templates/common-cartago.asl") }
-{ include("$jacamoJar/templates/common-moise.asl") }
-{ include("$jacamoJar/templates/org-obedient.asl") }
-
-{ include("inc/common_negotiation_beliefs.asl") }
+{ include("inc/common_negotiation.asl") }
 
 { begin namespace(priv, local) }
 
@@ -149,23 +145,26 @@
     priv::round(T) & priv::services(L)
 <-
     .print("*** round ", T);
-    for (.member(AS, L) & ::paretoOptimalAgreement(Ag) & Ag = 0) {
-        // reset round status first
-        -priv::statusChecked;
-        .abolish(default::standingOffers(_)[source(_)]);
-        resetGoal(check_status);
-        .wait(::goalState(statusscheme, check_status, _, _, E) & E = enabled, 5 * 1000);
+    for (.member(AS, L)) {
+    	?::paretoOptimalAgreement(Ag);
+    	if (Ag = 0) {
+			// reset round status first
+			-priv::statusChecked;
+			.abolish(default::standingOffers(_)[source(_)]);
+			resetGoal(check_status);
+			.wait(::goalState(statusscheme, check_status, _, _, E) & E = enabled, 5 * 1000);
 
-        .print("elaborating ", AS); -+priv::currentAS(AS);
+			.print("elaborating ", AS); -+priv::currentAS(AS);
 
-        /* 1. get all offers from AS-SP
-         * 2. define best offers package
-         * 3. check negotiation results
-         * 4. eventually make AS recheck_status its offers
-         */
-        commitMission(mServiceCompositor);
+			/* 1. get all offers from AS-SP
+			 * 2. define best offers package
+			 * 3. check negotiation results
+			 * 4. eventually make AS recheck_status its offers
+			 */
+			commitMission(mServiceCompositor);
 
-        .wait(priv::statusChecked, 5 * 1000);
+			.wait(priv::statusChecked, 5 * 1000);
+        };
     };
 
     -+priv::round(T+1);
@@ -177,7 +176,7 @@
     priv::init & ::paretoOptimalAgreement(P) & P = 1
 <-
     +::done;
-    .print("*** negotiation succeded").
+    .print("*** negotiation succeeded").
 
 @p2Stopped
 +!negotiate[source(self)]
@@ -198,3 +197,8 @@
     } else {
         .print("*** negotiation failed: no (near) Pareto-optimal agreement reached");
     }.
+
+
+{ include("$jacamoJar/templates/common-cartago.asl") }
+{ include("$jacamoJar/templates/common-moise.asl") }
+{ include("$jacamoJar/templates/org-obedient.asl") }

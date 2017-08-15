@@ -1,6 +1,3 @@
-/************plans  ****************************************/
-
-
 /* case-manager plans */
 +!solve_request_loop(SpecId,RequestId)
 <-

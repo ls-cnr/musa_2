@@ -98,7 +98,6 @@ public class AnswerSetExample {
 			r8 = ASPParser.parseRule("can_fly(X) :- bird(X), not cannot_fly(X).");
 			penguin.add(r8);
 		} catch (ParseException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 
@@ -110,7 +109,6 @@ public class AnswerSetExample {
 		try {
 			response = solver.computeModels(penguin, 10);
 		} catch (SolverException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -232,7 +230,6 @@ public class AnswerSetExample {
 		try {
 			response = solver.computeModels(penguin, 10);
 		} catch (SolverException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 

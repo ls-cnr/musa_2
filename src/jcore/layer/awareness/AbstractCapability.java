@@ -99,24 +99,21 @@ public class AbstractCapability implements RunTimeEntity {
 	 */
 	@Override
 	public int hashCode() {
-		int i = 0;
-		int sum = 0;
 		String temp = this.getId();
-		int len = temp.length();
-		for (i = 0; i < len; i++) {
+		int sum = 0;
+		for (int i = 0; i < temp.length(); i++)
 			sum += (temp.charAt(i) * temp.length());
-		}
 		return sum;
 	}
 
-	// public void test_evo() {
-	// EvolutionScenario s = new EvolutionScenario.Builder()
-	// .setName("uno")
-	// .addOperators(new AddStatement(null))
-	// .build();
-	// }
+	/*
+	 * public void test_evo() { EvolutionScenario s = new
+	 * EvolutionScenario.Builder() .setName("uno") .addOperators(new
+	 * AddStatement(null)) .build(); }
+	 */
 
 	// public String getName();
+
 	public Condition getPreCondition() {
 		return this.pre;
 	}
@@ -124,7 +121,7 @@ public class AbstractCapability implements RunTimeEntity {
 	public Condition getPostCondition() {
 		return this.post;
 	}
-	//
+
 	// class Builder extends AbstractCapability_Builder {}
 
 }

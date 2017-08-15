@@ -47,6 +47,7 @@ public class ServiceCompositor extends Artifact implements ServiceCompositorInte
 	private double[] C;
 	private int turn;
 	private ArrayList<String> AS;
+	private int lastCondition = 0;
 	private OctaveEngine octave;
 
 	private static class OctaveException extends Exception {
@@ -188,27 +189,33 @@ public class ServiceCompositor extends Artifact implements ServiceCompositorInte
 			switch ((int) results[0]) {
 			case -1:
 				resultsStr += "no agreement";
+				lastCondition = 0;
 				agreement.set(0);
 				paretoOptimalAgreement.set(0);
 				break;
 			case 0:
-				resultsStr += "no agreement due to Pareto-dominance violation";
-				agreement.set(0);
-				paretoOptimalAgreement.set(0);
-				break;
+				if (lastCondition == 0) {
+					resultsStr += "no agreement due to Pareto-dominance violation";
+					agreement.set(0);
+					paretoOptimalAgreement.set(0);
+					break;
+				}
 			case 1:
 				resultsStr += "agreement";
+				lastCondition = 1;
 				agreement.set(1);
 				paretoOptimalAgreement.set(0);
 				break;
 			case 2:
 				resultsStr += "near Pareto-optimal agreement";
+				lastCondition = 2;
 				agreement.set(1);
 				paretoOptimalAgreement.set(1);
 				// assumption: near-PO is preferable, because faster than PO
 				break;
 			case 3:
 				resultsStr += "Pareto-optimal agreement";
+				lastCondition = 2;
 				agreement.set(1);
 				paretoOptimalAgreement.set(1);
 				break;

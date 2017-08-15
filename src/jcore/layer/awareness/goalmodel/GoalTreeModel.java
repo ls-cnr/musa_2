@@ -40,8 +40,8 @@ public class GoalTreeModel implements GoalModel {
 		try {
 			tree.addRefinementArcs(node, outputs, true);
 		} catch (NodeNotFoundException ex) {
+			// TODO Handle error
 		}
-		;// TODO Handle error
 	}
 
 	/**
@@ -56,8 +56,8 @@ public class GoalTreeModel implements GoalModel {
 		try {
 			tree.addRefinementArcs(node, outputs, false);
 		} catch (NodeNotFoundException ex) {
+			// TODO Handle error
 		}
-		;// TODO Handle error
 	}
 
 	/**

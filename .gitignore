@@ -13,5 +13,7 @@ tmp/
 *.bak
 *.swp
 *~
+*.bin
+*.exe
 
 *.DS_Store

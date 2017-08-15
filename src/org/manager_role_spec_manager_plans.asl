@@ -1,6 +1,3 @@
-/************plans  ****************************************/
-
-
 /* spec-manager plans */
 +!check_main_monitor(SpecId,/*-->*/ MonitorId)
 <-
@@ -87,4 +84,3 @@
 		!dismiss_organization(SpecId,RequestId,ConfId);
 	}
 . // FINAL, not tested
-

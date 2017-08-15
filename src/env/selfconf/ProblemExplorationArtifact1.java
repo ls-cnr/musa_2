@@ -1,5 +1,3 @@
-// CArtAgO artifact code for project musa_2_0
-
 package selfconf;
 
 import java.util.ArrayList;
@@ -39,19 +37,16 @@ import translator.JasonENode;
 import translator.JasonExpansionNode;
 import translator.TranslateError;
 
-//@ARTIFACT_INFO(
-//		  outports = {
-//		    @OUTPORT(name = "local_cap_repo")
-//		  }
-//	)
-public class ProblemExplorationArtifact extends Artifact {
+//@ARTIFACT_INFO(outports = { @OUTPORT(name = "local_cap_repo") })
+@SuppressWarnings("unused")
+public class ProblemExplorationArtifact1 extends Artifact {
 
 	private ProblemExploration pe;
 
 	void init() {
 		ArrayList<AbstractCapability> capabilities = get_capabilities_for_test();
 
-		// a regime vanno presi dal artefatto Specification
+		// a regime vanno presi dall'artefatto Specification
 		GoalTreeModel model = get_goal_model_for_test();
 		AssumptionSet assumptions = get_domain_assumption_for_test();
 
@@ -68,9 +63,8 @@ public class ProblemExplorationArtifact extends Artifact {
 		} catch (TranslateError t) {
 			return;
 		}
-		if (!node.isExitNode()) {
+		if (!node.isExitNode())
 			pe.addToVisit(new WorldNode(node.getWorldState()), node.getTokens(), node.getScore());
-		}
 	}
 
 	@OPERATION
@@ -90,6 +84,7 @@ public class ProblemExplorationArtifact extends Artifact {
 		try {
 			exp = JasonExpansionNode.term_string_to_object(node);
 		} catch (TranslateError t) {
+			return;
 		}
 		this.pe.removeExpandedNode(exp);
 	}
@@ -98,7 +93,6 @@ public class ProblemExplorationArtifact extends Artifact {
 		Variable doc = new Variable("Doc");
 		Variable usr = new Variable("Usr");
 		Variable mng = new Variable("Mng");
-		@SuppressWarnings("unused")
 		Variable fail = new Variable("Fail");
 
 		/* to_handle_order */
@@ -280,7 +274,6 @@ public class ProblemExplorationArtifact extends Artifact {
 		return model;
 	}
 
-	@SuppressWarnings("unused")
 	private ArrayList<AbstractCapability> get_capabilities_for_test() {
 		ArrayList<AbstractCapability> list = new ArrayList<AbstractCapability>();
 
@@ -548,19 +541,17 @@ public class ProblemExplorationArtifact extends Artifact {
 		list.add(AU);
 		list.add(CS);
 		list.add(NSM);
-
 		list.add(UOPCS);
 		list.add(UOUCS);
 		// list.add(GI);
-
 		list.add(SFL);
+
 		return list;
 	}
 
 	private AssumptionSet get_domain_assumption_for_test() {
 		AssumptionSet domain = new AssumptionSet();
 		try {
-
 			domain.addAssumption_asString("role(X) :- user(X).");
 			domain.addAssumption_asString("role(X) :- storehouse_manager(X).");
 			domain.addAssumption_asString("document(X) :- order(X).");
@@ -583,7 +574,6 @@ public class ProblemExplorationArtifact extends Artifact {
 		return domain;
 	}
 
-	@SuppressWarnings("unused")
 	private void debugSetInitialNode() {
 		StateOfWorld regNoCloud = new StateOfWorld();
 		try {
@@ -602,4 +592,5 @@ public class ProblemExplorationArtifact extends Artifact {
 		tokens.add(new Token("p4"));
 		this.pe.addToVisit(new WorldNode(regNoCloud), tokens, 9);
 	}
+
 }

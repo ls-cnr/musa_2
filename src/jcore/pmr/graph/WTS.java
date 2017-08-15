@@ -72,12 +72,15 @@ public class WTS {
 			NormalExpansionNode tempnode = (NormalExpansionNode) newnode;
 
 			WorldNode source_node = this.createSafeNode(tempnode.getSource().getWorldState());
-			WorldNode dest_node = this.createSafeNode(tempnode.getDestination().get(0).getWorldState());
-			// System.out.println("adding normal "+source_node.getId()+" to
-			// "+dest_node.getId());
+			WorldNode dest_node = null;
 
-			// WorldNode destination2 =
-			// this.graph.get(tempnode.getDestination().get(0).getWorldState().toString());
+			if (tempnode.getDestination().size() > 0)
+				dest_node = this.createSafeNode(tempnode.getDestination().get(0).getWorldState());
+			else {
+				System.out.println("Warning: source and destination nodes are the same");
+				dest_node = source_node;
+			}
+
 			this.addEdge(source_node, dest_node, tempnode.getCapability(), tempnode.getAgent());
 
 		} else {
@@ -108,11 +111,17 @@ public class WTS {
 
 	public WorldNode createSafeNode(StateOfWorld desc) {
 		WorldNode new_node = null;
-		if (this.graph.containsKey(desc.toString())) {
-			return graph.get(desc.toString());
+
+		if (desc == null) {
+			new_node = new WorldNode(new StateOfWorld());
+			this.graph.put("init_node", new_node);
 		} else {
-			new_node = new WorldNode(desc);
-			this.graph.put(desc.toString(), new_node);
+			if (this.graph.containsKey(desc.toString())) {
+				return graph.get(desc.toString());
+			} else {
+				new_node = new WorldNode(desc);
+				this.graph.put(desc.toString(), new_node);
+			}
 		}
 
 		return new_node;

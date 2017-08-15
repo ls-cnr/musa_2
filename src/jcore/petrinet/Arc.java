@@ -2,7 +2,7 @@ package petrinet;
 
 /**
  * Eine Kante geht von einer Stelle zu einer Transition oder umgekehrt.
- * Das wird Ÿber die Konstruktoren abgebildet.
+ * Das wird ber die Konstruktoren abgebildet.
  *
  * @author rmetzler
  */

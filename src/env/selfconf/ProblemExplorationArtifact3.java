@@ -1,5 +1,3 @@
-// CArtAgO artifact code for project musa_2_0
-
 package selfconf;
 
 import java.util.ArrayList;
@@ -38,12 +36,8 @@ import translator.JasonENode;
 import translator.JasonExpansionNode;
 import translator.TranslateError;
 
-
-//@ARTIFACT_INFO(
-//		  outports = {
-//		    @OUTPORT(name = "local_cap_repo")
-//		  }
-//	)
+//@ARTIFACT_INFO(outports = { @OUTPORT(name = "local_cap_repo") })
+@SuppressWarnings("unused")
 public class ProblemExplorationArtifact3 extends Artifact {
 
 	private ProblemExploration pe;
@@ -53,22 +47,23 @@ public class ProblemExplorationArtifact3 extends Artifact {
 
 		// a regime vanno presi dal artefatto Specification
 		GoalTreeModel model = get_goal_model_for_test();
-		AssumptionSet assumptions=get_domain_assumption_for_test();
+		AssumptionSet assumptions = get_domain_assumption_for_test();
 
-		pe = new ProblemExploration( model, capabilities, assumptions);
-		//this.debugSetInitialNode();
+		pe = new ProblemExploration(model, capabilities, assumptions);
+		// this.debugSetInitialNode();
 
 	}
 
 	@OPERATION
-	public void addToVisit( String term_string ) {
+	public void addToVisit(String term_string) {
 		ENode node;
-		try{
+		try {
 			node = JasonENode.term_string_to_object(term_string);
-		}catch(TranslateError t){return;}
-		if (!node.isExitNode()) {
-			pe.addToVisit(new WorldNode(node.getWorldState()), node.getTokens(), node.getScore() );
+		} catch (TranslateError t) {
+			return;
 		}
+		if (!node.isExitNode())
+			pe.addToVisit(new WorldNode(node.getWorldState()), node.getTokens(), node.getScore());
 	}
 
 	@OPERATION
@@ -79,195 +74,207 @@ public class ProblemExplorationArtifact3 extends Artifact {
 	@OPERATION
 	void getMostPromisingExpansion(OpFeedbackParam<Term> expansion) {
 		ExpansionNode exp = pe.getHighestExpansion();
-		expansion.set( JasonExpansionNode.object_to_term(exp) );
+		expansion.set(JasonExpansionNode.object_to_term(exp));
 	}
 
 	@OPERATION
-	void removeWinnerNode(String node){
+	void removeWinnerNode(String node) {
 		ExpansionNode exp = null;
-		try{
+		try {
 			exp = JasonExpansionNode.term_string_to_object(node);
-		}catch(TranslateError t){}
+		} catch (TranslateError t) {
+			return;
+		}
 		this.pe.removeExpandedNode(exp);
 	}
 
-	@SuppressWarnings("unused")
 	private GoalTreeModel get_goal_model_for_test() {
 		Variable doc = new Variable("Doc");
 		Variable usr = new Variable("Usr");
 		Variable mng = new Variable("Mng");
 		Variable fail = new Variable("Fail");
 
-		/*to_handle_order*/
-		FOLAtom THO_received = new FOLAtom( new Predicate("received",2));
+		/* to_handle_order */
+		FOLAtom THO_received = new FOLAtom(new Predicate("received", 2));
 		THO_received.addArgument(doc);
 		THO_received.addArgument(usr);
-		FOLAtom THO_order = new FOLAtom( new Predicate("order",1));
+		FOLAtom THO_order = new FOLAtom(new Predicate("order", 1));
 		THO_order.addArgument(doc);
-		FOLAtom THO_user = new FOLAtom( new Predicate("user",1));
+		FOLAtom THO_user = new FOLAtom(new Predicate("user", 1));
 		THO_user.addArgument(usr);
 		Set<Variable> THO_var = new HashSet<Variable>();
 		THO_var.add(doc);
 		THO_var.add(usr);
-		Condition THO_tc = new Condition( new ExistsQuantifiedFormula(new Conjunction(THO_received, new Conjunction(THO_order,THO_user)), THO_var ) );
+		Condition THO_tc = new Condition(new ExistsQuantifiedFormula(
+				new Conjunction(THO_received, new Conjunction(THO_order, THO_user)), THO_var));
 
-		FOLAtom THO_processed = new FOLAtom( new Predicate("processed", 1) );
+		FOLAtom THO_processed = new FOLAtom(new Predicate("processed", 1));
 		THO_processed.addArgument(doc);
-		Condition THO_fs = new Condition( new ExistsQuantifiedFormula(new Conjunction(THO_processed, THO_order), doc));
+		Condition THO_fs = new Condition(new ExistsQuantifiedFormula(new Conjunction(THO_processed, THO_order), doc));
 
 		Goal THO = new Goal("to_handle_order", THO_tc, THO_fs);
 
-		/*to_wait_order*/
-		FOLAtom TWO_received = new FOLAtom( new Predicate("received",2));
+		/* to_wait_order */
+		FOLAtom TWO_received = new FOLAtom(new Predicate("received", 2));
 		TWO_received.addArgument(doc);
 		TWO_received.addArgument(usr);
-		FOLAtom TWO_order = new FOLAtom( new Predicate("order",1));
+		FOLAtom TWO_order = new FOLAtom(new Predicate("order", 1));
 		TWO_order.addArgument(doc);
-		FOLAtom TWO_user = new FOLAtom( new Predicate("user",1));
+		FOLAtom TWO_user = new FOLAtom(new Predicate("user", 1));
 		TWO_user.addArgument(usr);
 		Set<Variable> TWO_var = new HashSet<Variable>();
 		TWO_var.add(doc);
 		TWO_var.add(usr);
-		Condition TWO_tc = new Condition( new ExistsQuantifiedFormula(new Conjunction(TWO_received, new Conjunction(TWO_order,TWO_user)), TWO_var ) );
+		Condition TWO_tc = new Condition(new ExistsQuantifiedFormula(
+				new Conjunction(TWO_received, new Conjunction(TWO_order, TWO_user)), TWO_var));
 
-		FOLAtom TWO_available = new FOLAtom( new Predicate("available",1));
+		FOLAtom TWO_available = new FOLAtom(new Predicate("available", 1));
 		TWO_available.addArgument(doc);
-		Condition TWO_fs = new Condition( new ExistsQuantifiedFormula(new Conjunction(TWO_available, TWO_order), doc ) );
+		Condition TWO_fs = new Condition(new ExistsQuantifiedFormula(new Conjunction(TWO_available, TWO_order), doc));
 
 		Goal TWO = new Goal("to_wait_order", TWO_tc, TWO_fs);
 
-		/*to_process_order*/
-		FOLAtom TPO_available = new FOLAtom( new Predicate("available",1));
+		/* to_process_order */
+		FOLAtom TPO_available = new FOLAtom(new Predicate("available", 1));
 		TPO_available.addArgument(doc);
-		FOLAtom TPO_order = new FOLAtom( new Predicate("order",1));
+		FOLAtom TPO_order = new FOLAtom(new Predicate("order", 1));
 		TPO_order.addArgument(doc);
-		FOLAtom TPO_registered = new FOLAtom( new Predicate("registered",1));
+		FOLAtom TPO_registered = new FOLAtom(new Predicate("registered", 1));
 		TPO_registered.addArgument(usr);
-		FOLAtom TPO_user = new FOLAtom( new Predicate("user",1));
+		FOLAtom TPO_user = new FOLAtom(new Predicate("user", 1));
 		TPO_user.addArgument(usr);
 		Set<Variable> TPO_var = new HashSet<Variable>();
 		TPO_var.add(doc);
 		TPO_var.add(usr);
-		Condition TPO_tc = new Condition( new ExistsQuantifiedFormula(new Conjunction(new Conjunction(TPO_available,TPO_order), new Conjunction(TPO_registered,TPO_user)), TPO_var ) );
+		Condition TPO_tc = new Condition(new ExistsQuantifiedFormula(
+				new Conjunction(new Conjunction(TPO_available, TPO_order), new Conjunction(TPO_registered, TPO_user)),
+				TPO_var));
 
-		FOLAtom TPO_processed = new FOLAtom( new Predicate("processed", 1) );
+		FOLAtom TPO_processed = new FOLAtom(new Predicate("processed", 1));
 		TPO_processed.addArgument(doc);
-		Condition TPO_fs = new Condition( new ExistsQuantifiedFormula(new Conjunction(TPO_processed, TPO_order), doc ) );
+		Condition TPO_fs = new Condition(new ExistsQuantifiedFormula(new Conjunction(TPO_processed, TPO_order), doc));
 
 		Goal TPO = new Goal("to_process_order", TPO_tc, TPO_fs);
 
-		/*to_process_accepted_order*/
-		FOLAtom TPAO_accepted = new FOLAtom( new Predicate("accepted",1));
+		/* to_process_accepted_order */
+		FOLAtom TPAO_accepted = new FOLAtom(new Predicate("accepted", 1));
 		TPAO_accepted.addArgument(doc);
-		FOLAtom TPAO_order = new FOLAtom( new Predicate("order",1));
+		FOLAtom TPAO_order = new FOLAtom(new Predicate("order", 1));
 		TPAO_order.addArgument(doc);
-		Condition TPAO_tc = new Condition( new ExistsQuantifiedFormula(new Conjunction(TPAO_accepted, TPAO_order), doc) );
+		Condition TPAO_tc = new Condition(new ExistsQuantifiedFormula(new Conjunction(TPAO_accepted, TPAO_order), doc));
 
-		FOLAtom TPAO_send = new FOLAtom( new Predicate("send",2));
+		FOLAtom TPAO_send = new FOLAtom(new Predicate("send", 2));
 		TPAO_send.addArgument(doc);
 		TPAO_send.addArgument(mng);
-		FOLAtom TPAO_delivery = new FOLAtom( new Predicate("delivery_order", 1));
+		FOLAtom TPAO_delivery = new FOLAtom(new Predicate("delivery_order", 1));
 		TPAO_delivery.addArgument(doc);
 		FOLAtom TPAO_manager = new FOLAtom(new Predicate("storehouse_manager", 1));
 		TPAO_manager.addArgument(mng);
 		Set<Variable> TPAO_var = new HashSet<Variable>();
 		TPAO_var.add(doc);
 		TPAO_var.add(mng);
-		Condition TPAO_fs = new Condition( new ExistsQuantifiedFormula(new Conjunction(TPAO_send, new Conjunction(TPAO_delivery, TPAO_manager)), TPAO_var) );
+		Condition TPAO_fs = new Condition(new ExistsQuantifiedFormula(
+				new Conjunction(TPAO_send, new Conjunction(TPAO_delivery, TPAO_manager)), TPAO_var));
 
 		Goal TPAO = new Goal("to_process_accepted_order", TPAO_tc, TPAO_fs);
 
-		/*to_notify_invoce*/
-		FOLAtom TNI_registered = new FOLAtom( new Predicate("registered",1));
+		/* to_notify_invoce */
+		FOLAtom TNI_registered = new FOLAtom(new Predicate("registered", 1));
 		TNI_registered.addArgument(usr);
-		FOLAtom TNI_user = new FOLAtom( new Predicate("user",1));
+		FOLAtom TNI_user = new FOLAtom(new Predicate("user", 1));
 		TNI_user.addArgument(usr);
-		FOLAtom TNI_available = new FOLAtom( new Predicate("available",1));
+		FOLAtom TNI_available = new FOLAtom(new Predicate("available", 1));
 		TNI_available.addArgument(doc);
-		FOLAtom TNI_invoice = new FOLAtom( new Predicate("invoice",1));
+		FOLAtom TNI_invoice = new FOLAtom(new Predicate("invoice", 1));
 		TNI_invoice.addArgument(doc);
 		Set<Variable> TNI_var1 = new HashSet<Variable>();
 		TNI_var1.add(usr);
 		TNI_var1.add(doc);
-		Condition TNI_tc = new Condition( new ExistsQuantifiedFormula(new Conjunction(new Conjunction(TNI_registered, TNI_user), new Conjunction(TNI_available, TNI_invoice)), TNI_var1) );
+		Condition TNI_tc = new Condition(new ExistsQuantifiedFormula(
+				new Conjunction(new Conjunction(TNI_registered, TNI_user), new Conjunction(TNI_available, TNI_invoice)),
+				TNI_var1));
 
-		FOLAtom TNI_send = new FOLAtom( new Predicate("send",2));
+		FOLAtom TNI_send = new FOLAtom(new Predicate("send", 2));
 		TNI_send.addArgument(doc);
 		TNI_send.addArgument(usr);
 		Set<Variable> TNI_var2 = new HashSet<Variable>();
 		TNI_var2.add(doc);
 		TNI_var2.add(usr);
-		Condition TNI_fs = new Condition( new ExistsQuantifiedFormula(new Conjunction(TNI_send, new Conjunction(TNI_invoice, TNI_user)), TNI_var2) );
+		Condition TNI_fs = new Condition(new ExistsQuantifiedFormula(
+				new Conjunction(TNI_send, new Conjunction(TNI_invoice, TNI_user)), TNI_var2));
 
 		Goal TNI = new Goal("to_notify_invoice", TNI_tc, TNI_fs);
 
-		/*to_deliver_order*/
-		FOLAtom TDO_send = new FOLAtom( new Predicate("send",2));
+		/* to_deliver_order */
+		FOLAtom TDO_send = new FOLAtom(new Predicate("send", 2));
 		TDO_send.addArgument(doc);
 		TDO_send.addArgument(usr);
-		FOLAtom TDO_invoice = new FOLAtom( new Predicate("invoice",1));
+		FOLAtom TDO_invoice = new FOLAtom(new Predicate("invoice", 1));
 		TDO_invoice.addArgument(doc);
-		FOLAtom TDO_user = new FOLAtom( new Predicate("user",1));
+		FOLAtom TDO_user = new FOLAtom(new Predicate("user", 1));
 		TDO_user.addArgument(usr);
 		Set<Variable> TDO_var1 = new HashSet<Variable>();
 		TDO_var1.add(doc);
 		TDO_var1.add(usr);
-		Condition TDO_tc = new Condition( new ExistsQuantifiedFormula(new Conjunction(TDO_send, new Conjunction(TDO_invoice, TDO_user)), TDO_var1) );
+		Condition TDO_tc = new Condition(new ExistsQuantifiedFormula(
+				new Conjunction(TDO_send, new Conjunction(TDO_invoice, TDO_user)), TDO_var1));
 
-		FOLAtom TDO_delivery = new FOLAtom( new Predicate("delivery_order", 1));
+		FOLAtom TDO_delivery = new FOLAtom(new Predicate("delivery_order", 1));
 		TDO_delivery.addArgument(doc);
 		FOLAtom TDO_manager = new FOLAtom(new Predicate("storehouse_manager", 1));
 		TDO_manager.addArgument(mng);
 		Set<Variable> TDO_var2 = new HashSet<Variable>();
 		TDO_var2.add(doc);
 		TDO_var2.add(mng);
-		Condition TDO_fs = new Condition( new ExistsQuantifiedFormula(new Conjunction(TDO_send, new Conjunction(TDO_delivery, TDO_manager)), TDO_var2) );
+		Condition TDO_fs = new Condition(new ExistsQuantifiedFormula(
+				new Conjunction(TDO_send, new Conjunction(TDO_delivery, TDO_manager)), TDO_var2));
 
 		Goal TDO = new Goal("to_delivery_order", TDO_tc, TDO_fs);
 
-		/*to_notify_failure*/
-		FOLAtom TNF_refused = new FOLAtom( new Predicate("refused",1));
+		/* to_notify_failure */
+		FOLAtom TNF_refused = new FOLAtom(new Predicate("refused", 1));
 		TNF_refused.addArgument(doc);
-		FOLAtom TNF_order = new FOLAtom( new Predicate("order",1));
+		FOLAtom TNF_order = new FOLAtom(new Predicate("order", 1));
 		TNF_order.addArgument(doc);
-		FOLAtom TNF_registered = new FOLAtom( new Predicate("registered",1));
+		FOLAtom TNF_registered = new FOLAtom(new Predicate("registered", 1));
 		TNF_registered.addArgument(usr);
-		FOLAtom TNF_user = new FOLAtom( new Predicate("user",1));
+		FOLAtom TNF_user = new FOLAtom(new Predicate("user", 1));
 		TNF_user.addArgument(usr);
 		Set<Variable> TNF_var1 = new HashSet<Variable>();
 		TNF_var1.add(doc);
 		TNF_var1.add(usr);
-		Condition TNF_tc = new Condition( new ExistsQuantifiedFormula(new Conjunction(new Conjunction(TNF_refused, TNF_order), new Conjunction(TNF_registered, TNF_user)), TNF_var1) );
+		Condition TNF_tc = new Condition(new ExistsQuantifiedFormula(
+				new Conjunction(new Conjunction(TNF_refused, TNF_order), new Conjunction(TNF_registered, TNF_user)),
+				TNF_var1));
 
-		FOLAtom TNF_send = new FOLAtom( new Predicate("send",2));
+		FOLAtom TNF_send = new FOLAtom(new Predicate("send", 2));
 		TNF_send.addArgument(new Constant("failure_order"));
 		TNF_send.addArgument(usr);
-		Condition TNF_fs = new Condition( new ExistsQuantifiedFormula(new Conjunction(TNF_send, TNF_user), usr) );
+		Condition TNF_fs = new Condition(new ExistsQuantifiedFormula(new Conjunction(TNF_send, TNF_user), usr));
 
 		Goal TNF = new Goal("to_notify_failure", TNF_tc, TNF_fs);
 
-		/*Model construction*/
+		/* Model construction */
 		GoalTreeModel model = new GoalTreeModel(THO);
-	    ArrayList<Goal> firstLevel = new ArrayList<>();
-	    firstLevel.add(TWO);
-	    firstLevel.add(TPO);
-	    ArrayList<Goal> secondLevel = new ArrayList<>();
-	    secondLevel.add(TPAO);
-	    secondLevel.add(TNF);
-	    ArrayList<Goal> thirdLevel = new ArrayList<>();
-	    thirdLevel.add(TNI);
-	    thirdLevel.add(TDO);
+		ArrayList<Goal> firstLevel = new ArrayList<>();
+		firstLevel.add(TWO);
+		firstLevel.add(TPO);
+		ArrayList<Goal> secondLevel = new ArrayList<>();
+		secondLevel.add(TPAO);
+		secondLevel.add(TNF);
+		ArrayList<Goal> thirdLevel = new ArrayList<>();
+		thirdLevel.add(TNI);
+		thirdLevel.add(TDO);
 
-	    model.addAndArcs(THO, firstLevel);
-	    model.addOrArcs(TPO, secondLevel);
-	    model.addAndArcs(TPAO, thirdLevel);
+		model.addAndArcs(THO, firstLevel);
+		model.addOrArcs(TPO, secondLevel);
+		model.addAndArcs(TPAO, thirdLevel);
 
-	    return model;
+		return model;
 	}
 
-	@SuppressWarnings("unused")
 	private ArrayList<AbstractCapability> get_capabilities_for_test() {
-		ArrayList<AbstractCapability>list = new ArrayList<AbstractCapability>();
+		ArrayList<AbstractCapability> list = new ArrayList<AbstractCapability>();
 
 		Variable doc = new Variable("Doc");
 		Variable usr = new Variable("Usr");
@@ -282,150 +289,159 @@ public class ProblemExplorationArtifact3 extends Artifact {
 		Constant the_user_space = new Constant("the_user_space");
 		Constant the_system_space = new Constant("the_system_space");
 
-		/*generate_invoice*/
-		FOLAtom GI_accepted = new FOLAtom( new Predicate("accepted",1));
+		/* generate_invoice */
+		FOLAtom GI_accepted = new FOLAtom(new Predicate("accepted", 1));
 		GI_accepted.addArgument(doc);
-		FOLAtom GI_order = new FOLAtom( new Predicate("order",1));
+		FOLAtom GI_order = new FOLAtom(new Predicate("order", 1));
 		GI_order.addArgument(doc);
-		FOLAtom GI_registered = new FOLAtom( new Predicate("registered",1));
+		FOLAtom GI_registered = new FOLAtom(new Predicate("registered", 1));
 		GI_registered.addArgument(usr);
-		FOLAtom GI_user = new FOLAtom( new Predicate("user",1));
+		FOLAtom GI_user = new FOLAtom(new Predicate("user", 1));
 		GI_user.addArgument(usr);
-		FOLAtom GI_invoice = new FOLAtom( new Predicate("available", 1));
+		FOLAtom GI_invoice = new FOLAtom(new Predicate("available", 1));
 		GI_invoice.addArgument(doc);
 		Negation GI_notAvailable = new Negation(GI_invoice);
 		Set<Variable> GT_Set = new HashSet<Variable>();
 		GT_Set.add(doc);
 		GT_Set.add(usr);
-		Condition GI_pre = new Condition(new ExistsQuantifiedFormula(new Conjunction( new Conjunction(new Conjunction(GI_accepted, GI_order), new Conjunction(GI_registered, GI_user)), GI_notAvailable), GT_Set) );
+		Condition GI_pre = new Condition(new ExistsQuantifiedFormula(new Conjunction(
+				new Conjunction(new Conjunction(GI_accepted, GI_order), new Conjunction(GI_registered, GI_user)),
+				GI_notAvailable), GT_Set));
 
 		Set<EvolutionScenario> GI_evo = new HashSet<>();
 		CapabilityEvolutionScenario GI_evo1 = new CapabilityEvolutionScenario("AvailableInvoice");
-		GI_evo1.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("available", the_invoice)) ) );
-		GI_evo1.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("invoice", the_invoice)) ) );
+		GI_evo1.addOperator(new AddStatement(new ExtDLPHead(new DLPAtom("available", the_invoice))));
+		GI_evo1.addOperator(new AddStatement(new ExtDLPHead(new DLPAtom("invoice", the_invoice))));
 		GI_evo.add(GI_evo1);
 
 		AbstractCapability GI = new AbstractCapability("generate_invoice", GI_evo, GI_pre, null);
 
-		/*upload_on_user_cloud_storage*/
-		FOLAtom UOUCS_available = new FOLAtom( new Predicate("available",1));
+		/* upload_on_user_cloud_storage */
+		FOLAtom UOUCS_available = new FOLAtom(new Predicate("available", 1));
 		UOUCS_available.addArgument(doc);
-		FOLAtom UOUCS_invoice = new FOLAtom( new Predicate("invoice",1));
+		FOLAtom UOUCS_invoice = new FOLAtom(new Predicate("invoice", 1));
 		UOUCS_invoice.addArgument(doc);
-		FOLAtom UOUCS_has_cloud_space = new FOLAtom( new Predicate("has_cloud_space",1));
+		FOLAtom UOUCS_has_cloud_space = new FOLAtom(new Predicate("has_cloud_space", 1));
 		UOUCS_has_cloud_space.addArgument(usr);
-		FOLAtom UOUCS_user = new FOLAtom( new Predicate("user",1));
+		FOLAtom UOUCS_user = new FOLAtom(new Predicate("user", 1));
 		UOUCS_user.addArgument(usr);
-		FOLAtom UOUCS_uploaded = new FOLAtom(new Predicate("uploaded_on_cloud",1));
+		FOLAtom UOUCS_uploaded = new FOLAtom(new Predicate("uploaded_on_cloud", 1));
 		UOUCS_uploaded.addArgument(doc);
 		Negation UOUCS_notUploaded = new Negation(UOUCS_uploaded);
 		Set<Variable> UOUCS_Set = new HashSet<Variable>();
 		UOUCS_Set.add(doc);
 		UOUCS_Set.add(usr);
-		Condition UOUCS_pre = new Condition(new ExistsQuantifiedFormula(new Conjunction( new Conjunction(new Conjunction(UOUCS_available, UOUCS_invoice), new Conjunction(UOUCS_has_cloud_space, UOUCS_user)), UOUCS_notUploaded), UOUCS_Set ));
+		Condition UOUCS_pre = new Condition(new ExistsQuantifiedFormula(
+				new Conjunction(new Conjunction(new Conjunction(UOUCS_available, UOUCS_invoice),
+						new Conjunction(UOUCS_has_cloud_space, UOUCS_user)), UOUCS_notUploaded),
+				UOUCS_Set));
 
 		Set<EvolutionScenario> UOUCS_evo = new HashSet<>();
 		CapabilityEvolutionScenario UOUCS_evo1 = new CapabilityEvolutionScenario("UploadedOnCloud");
-		UOUCS_evo1.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("uploaded_on_cloud", the_invoice)) ) );
-		UOUCS_evo1.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("invoice", the_invoice)) ) );
+		UOUCS_evo1.addOperator(new AddStatement(new ExtDLPHead(new DLPAtom("uploaded_on_cloud", the_invoice))));
+		UOUCS_evo1.addOperator(new AddStatement(new ExtDLPHead(new DLPAtom("invoice", the_invoice))));
 		UOUCS_evo.add(UOUCS_evo1);
 
 		AbstractCapability UOUCS = new AbstractCapability("upload_on_user_cloud_storage", UOUCS_evo, UOUCS_pre, null);
 
-		/*upload_on_private_cloud_storage*/
-		FOLAtom UOPCS_available = new FOLAtom( new Predicate("available",1));
+		/* upload_on_private_cloud_storage */
+		FOLAtom UOPCS_available = new FOLAtom(new Predicate("available", 1));
 		UOPCS_available.addArgument(doc);
-		FOLAtom UOPCS_invoice = new FOLAtom( new Predicate("invoice",1));
+		FOLAtom UOPCS_invoice = new FOLAtom(new Predicate("invoice", 1));
 		UOPCS_invoice.addArgument(doc);
-		FOLAtom UOPCS_not_has_cloud_space = new FOLAtom( new Predicate("has_cloud_space",1));
+		FOLAtom UOPCS_not_has_cloud_space = new FOLAtom(new Predicate("has_cloud_space", 1));
 		UOPCS_not_has_cloud_space.addArgument(usr);
 		Negation neg1 = new Negation(UOPCS_not_has_cloud_space);
-		FOLAtom UOPCS_user = new FOLAtom( new Predicate("user",1));
+		FOLAtom UOPCS_user = new FOLAtom(new Predicate("user", 1));
 		UOPCS_user.addArgument(usr);
-		FOLAtom UOPCS_uploaded = new FOLAtom(new Predicate("uploaded_on_cloud",1));
+		FOLAtom UOPCS_uploaded = new FOLAtom(new Predicate("uploaded_on_cloud", 1));
 		UOPCS_uploaded.addArgument(doc);
 		Negation UOPCS_notUploaded = new Negation(UOUCS_uploaded);
 		Set<Variable> UOPCS_Set = new HashSet<Variable>();
 		UOPCS_Set.add(doc);
 		UOPCS_Set.add(usr);
-		Condition UOPCS_pre = new Condition(new ExistsQuantifiedFormula(new Conjunction( new Conjunction(new Conjunction(UOPCS_available, UOPCS_invoice), new Conjunction(neg1, UOPCS_user)), UOPCS_notUploaded), UOPCS_Set ));
+		Condition UOPCS_pre = new Condition(new ExistsQuantifiedFormula(new Conjunction(
+				new Conjunction(new Conjunction(UOPCS_available, UOPCS_invoice), new Conjunction(neg1, UOPCS_user)),
+				UOPCS_notUploaded), UOPCS_Set));
 
 		Set<EvolutionScenario> UOPCS_evo = new HashSet<>();
 		CapabilityEvolutionScenario UOPCS_evo1 = new CapabilityEvolutionScenario("UploadedOnCloud");
-		UOPCS_evo1.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("uploaded_on_cloud", the_invoice)) ) );
-		UOPCS_evo1.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("invoice", the_invoice)) ) );
+		UOPCS_evo1.addOperator(new AddStatement(new ExtDLPHead(new DLPAtom("uploaded_on_cloud", the_invoice))));
+		UOPCS_evo1.addOperator(new AddStatement(new ExtDLPHead(new DLPAtom("invoice", the_invoice))));
 		UOPCS_evo.add(UOPCS_evo1);
 
-		AbstractCapability UOPCS = new AbstractCapability("upload_on_private_cloud_storage", UOPCS_evo, UOPCS_pre, null);
+		AbstractCapability UOPCS = new AbstractCapability("upload_on_private_cloud_storage", UOPCS_evo, UOPCS_pre,
+				null);
 
-
-		/*share_file_link*/
-		FOLAtom SFL_uploaded_on_cloud = new FOLAtom( new Predicate("uploaded_on_cloud",1));
+		/* share_file_link */
+		FOLAtom SFL_uploaded_on_cloud = new FOLAtom(new Predicate("uploaded_on_cloud", 1));
 		SFL_uploaded_on_cloud.addArgument(doc);
-		FOLAtom SFL_invoice = new FOLAtom( new Predicate("invoice",1));
+		FOLAtom SFL_invoice = new FOLAtom(new Predicate("invoice", 1));
 		SFL_invoice.addArgument(doc);
-		FOLAtom SFL_not_has_cloud_space = new FOLAtom( new Predicate("has_cloud_space",1));
+		FOLAtom SFL_not_has_cloud_space = new FOLAtom(new Predicate("has_cloud_space", 1));
 		SFL_not_has_cloud_space.addArgument(usr);
 		Negation neg2 = new Negation(SFL_not_has_cloud_space);
-		FOLAtom SFL_user = new FOLAtom( new Predicate("user",1));
+		FOLAtom SFL_user = new FOLAtom(new Predicate("user", 1));
 		SFL_user.addArgument(usr);
-		FOLAtom SFL_mailed = new FOLAtom( new Predicate("mailed_perm_link",2));
+		FOLAtom SFL_mailed = new FOLAtom(new Predicate("mailed_perm_link", 2));
 		SFL_mailed.addArgument(doc);
 		SFL_mailed.addArgument(usr);
 		Negation SFL_notMailed = new Negation(SFL_mailed);
 		Set<Variable> SFL_Set = new HashSet<Variable>();
 		SFL_Set.add(doc);
 		SFL_Set.add(usr);
-		Condition SFL_pre = new Condition(new ExistsQuantifiedFormula(new Conjunction( new Conjunction(new Conjunction(SFL_uploaded_on_cloud, SFL_invoice), new Conjunction(neg2, SFL_user)), SFL_notMailed), SFL_Set ));
-
+		Condition SFL_pre = new Condition(new ExistsQuantifiedFormula(new Conjunction(
+				new Conjunction(new Conjunction(SFL_uploaded_on_cloud, SFL_invoice), new Conjunction(neg2, SFL_user)),
+				SFL_notMailed), SFL_Set));
 
 		Set<EvolutionScenario> SFL_evo = new HashSet<>();
 		CapabilityEvolutionScenario SFL_evo1 = new CapabilityEvolutionScenario("MailedPermLink");
-		SFL_evo1.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("mailed_perm_link", the_invoice, a_user)) ) );
-		SFL_evo1.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("user", a_user)) ) );
+		SFL_evo1.addOperator(new AddStatement(new ExtDLPHead(new DLPAtom("mailed_perm_link", the_invoice, a_user))));
+		SFL_evo1.addOperator(new AddStatement(new ExtDLPHead(new DLPAtom("user", a_user))));
 		SFL_evo.add(SFL_evo1);
 
 		AbstractCapability SFL = new AbstractCapability("share_file_link", SFL_evo, SFL_pre, null);
 
-		/*notify_stock_failure*/
-		FOLAtom NSF_refused = new FOLAtom( new Predicate("refused",1));
+		/* notify_stock_failure */
+		FOLAtom NSF_refused = new FOLAtom(new Predicate("refused", 1));
 		NSF_refused.addArgument(doc);
-		FOLAtom NSF_order = new FOLAtom( new Predicate("order",1));
+		FOLAtom NSF_order = new FOLAtom(new Predicate("order", 1));
 		NSF_order.addArgument(doc);
-		FOLAtom NSF_registered = new FOLAtom( new Predicate("registered",1));
+		FOLAtom NSF_registered = new FOLAtom(new Predicate("registered", 1));
 		NSF_registered.addArgument(usr);
-		FOLAtom NSF_user = new FOLAtom( new Predicate("user",1));
+		FOLAtom NSF_user = new FOLAtom(new Predicate("user", 1));
 		NSF_user.addArgument(usr);
-		FOLAtom NSF_sent = new FOLAtom( new Predicate("sent",2));
+		FOLAtom NSF_sent = new FOLAtom(new Predicate("sent", 2));
 		NSF_sent.addArgument(doc);
 		NSF_sent.addArgument(usr);
 		Negation NSF_notSent = new Negation(NSF_sent);
 		Set<Variable> NSF_Set = new HashSet<Variable>();
 		NSF_Set.add(doc);
 		NSF_Set.add(usr);
-		Condition NSF_pre = new Condition(new ExistsQuantifiedFormula(new Conjunction( new Conjunction(new Conjunction(NSF_refused, NSF_order), new Conjunction(NSF_registered, NSF_user)), NSF_notSent), NSF_Set ));
+		Condition NSF_pre = new Condition(new ExistsQuantifiedFormula(new Conjunction(
+				new Conjunction(new Conjunction(NSF_refused, NSF_order), new Conjunction(NSF_registered, NSF_user)),
+				NSF_notSent), NSF_Set));
 
 		Set<EvolutionScenario> NSF_evo = new HashSet<>();
 		CapabilityEvolutionScenario NSF_evo1 = new CapabilityEvolutionScenario("Failure");
-		NSF_evo1.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("sent", failure_order, a_user)) ) );
-		NSF_evo1.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("user", a_user)) ) );
+		NSF_evo1.addOperator(new AddStatement(new ExtDLPHead(new DLPAtom("sent", failure_order, a_user))));
+		NSF_evo1.addOperator(new AddStatement(new ExtDLPHead(new DLPAtom("user", a_user))));
 		NSF_evo.add(NSF_evo1);
 
 		AbstractCapability NSF = new AbstractCapability("notify_stock_failure", NSF_evo, NSF_pre, null);
 
-
 		list.add(UOPCS);
-		//list.add(UOUCS);
-		//list.add(SFL);
+		// list.add(UOUCS);
+		// list.add(SFL);
 		list.add(GI);
 		list.add(NSF);
+
 		return list;
 	}
 
 	private AssumptionSet get_domain_assumption_for_test() {
 		AssumptionSet domain = new AssumptionSet();
 		try {
-
 			domain.addAssumption_asString("role(X) :- user(X).");
 			domain.addAssumption_asString("role(X) :- storehouse_manager(X).");
 			domain.addAssumption_asString("document(X) :- order(X).");
@@ -433,9 +449,11 @@ public class ProblemExplorationArtifact3 extends Artifact {
 			domain.addAssumption_asString("document(X) :- user_data(X).");
 			domain.addAssumption_asString("document(X) :- registration_form(X).");
 			domain.addAssumption_asString("order(X) :- delivery_order(X).");
-			domain.addAssumption_asString("processed(X) :- accepted(X), order(X), sent(Y,Z), delivery_order(Y), storehouse_manager(Z).");
+			domain.addAssumption_asString(
+					"processed(X) :- accepted(X), order(X), sent(Y,Z), delivery_order(Y), storehouse_manager(Z).");
 			domain.addAssumption_asString("processed(X) :- refused(X), order(X), sent(failure_order,Y), user(Y).");
-			domain.addAssumption_asString("notified(X,Y) :- uploaded_on_cloud(X), document(X), has_cloud_space(Y), user(Y).");
+			domain.addAssumption_asString(
+					"notified(X,Y) :- uploaded_on_cloud(X), document(X), has_cloud_space(Y), user(Y).");
 			domain.addAssumption_asString("notified(X,Y) :- mailed_perm_link(X,Y), document(X), user(Y).");
 
 		} catch (ParseException e) {
@@ -446,8 +464,7 @@ public class ProblemExplorationArtifact3 extends Artifact {
 		return domain;
 	}
 
-	@SuppressWarnings("unused")
-	private void debugSetInitialNode(){
+	private void debugSetInitialNode() {
 		StateOfWorld regNoCloud = new StateOfWorld();
 		try {
 			regNoCloud.addFact_asString("order(an_order).");
@@ -465,5 +482,5 @@ public class ProblemExplorationArtifact3 extends Artifact {
 		tokens.add(new Token("p4"));
 		this.pe.addToVisit(new WorldNode(regNoCloud), tokens, 9);
 	}
-}
 
+}

@@ -23,7 +23,7 @@
     .wait("+SC::done", 60 * 1000); // wait until completion or some timeout
     ?SC::bestOffersPackage(B);
     if (SC::pareto_optimal_agreement(A) & A = 1) {
-        .print("Pareto-optimal contract: ", B);
+        .print("Optimal contract: ", B);
         +paretoOptimalContract(AS, QoS, C, T, B);
     } else {
     	if (SC::agreement(A) & A = 1) {

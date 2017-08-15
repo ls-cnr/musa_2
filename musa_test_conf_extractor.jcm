@@ -1,21 +1,7 @@
-/*
-    musa_2_0
-    --------
-
-    JaCaMo 0.7-SNAPSHOT
-    August 2017
-*/
-
-mas musa_2_0 {
+mas musa_test_conf_extractor {
 
     agent conf_manager
 
-    class-path: lib, ext
-
-    // agent source path
     asl-path: src/agt, src/agt/inc
 
-    platform: cartago("infrastructure")
-
 }
-

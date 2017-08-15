@@ -4,7 +4,7 @@
 { include("$jacamoJar/templates/common-moise.asl") }
 { include("$jacamoJar/templates/org-obedient.asl") }
 
-{ include("inc/common_negotiation_beliefs.asl") }
+{ include("inc/common_negotiation.asl") }
 
 { begin namespace(priv, local) }
 

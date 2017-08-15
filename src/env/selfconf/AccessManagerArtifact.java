@@ -1,5 +1,3 @@
-// CArtAgO artifact code for project musa_2_0
-
 package selfconf;
 
 import java.util.LinkedList;
@@ -66,7 +64,6 @@ public class AccessManagerArtifact extends Artifact {
 		try {
 			execLinkedOp("mygraph","get_node_number",num);
 		} catch (OperationException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -106,7 +103,6 @@ public class AccessManagerArtifact extends Artifact {
 		}
 	}
 
-
 	/* interface: GRANT ACCESS */
 	@OPERATION
 	void apply_changes(String expansion) {
@@ -123,7 +119,6 @@ public class AccessManagerArtifact extends Artifact {
 		} catch(TranslateError t){return;}
 	}
 
-
 	@OPERATION
 	void print_graph() {
 		try {
@@ -133,22 +128,22 @@ public class AccessManagerArtifact extends Artifact {
 		}
 	}
 
+	/*
+	private WorldNode get_initial_node_for_test() {
+		StateOfWorld wStart = new StateOfWorld();
 
-//	private WorldNode get_initial_node_for_test() {
-//		StateOfWorld wStart = new StateOfWorld();
-//
-//		try {
-//			wStart.addFact_asString("order(an_order).");
-//			wStart.addFact_asString("available(an_order).");
-//			wStart.addFact_asString("user(a_user).");
-//			wStart.addFact_asString("user_data(the_user_data).");
-//		} catch (ParseException e) {
-//			e.printStackTrace();
-//		} catch (layer.semantic.exception.NotAllowedInAStateOfWorld e) {
-//			e.printStackTrace();
-//		}
-//
-//		return new WorldNode(wStart);
-//	}
+		try {
+			wStart.addFact_asString("order(an_order).");
+			wStart.addFact_asString("available(an_order).");
+			wStart.addFact_asString("user(a_user).");
+			wStart.addFact_asString("user_data(the_user_data).");
+		} catch (ParseException e) {
+			e.printStackTrace();
+		} catch (layer.semantic.exception.NotAllowedInAStateOfWorld e) {
+			e.printStackTrace();
+		}
+
+		return new WorldNode(wStart);
+	}
+	*/
 }
-
