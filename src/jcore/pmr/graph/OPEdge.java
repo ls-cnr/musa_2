@@ -127,17 +127,17 @@ public class OPEdge implements Edge {
 			else if (temp.getDestination() != null && this.destination == null)
 				return false;
 
-			if (this.source == null && temp.getSource() == null)
-				if (this.destination == null && temp.getDestination() == null)
+			if (this.source == null && temp.getSource() == null &&
+				this.destination == null && temp.getDestination() == null)
 					return true;
 
-			if (this.source.equals(temp.getSource()) == false)
+			if (!this.source.equals(temp.getSource()))
 				return false;
 
-			if (!this.destination.equals(temp.getDestination()))
-				return false;
+			if (temp.getDestination().getOPNodeList().contains(this.destination))
+				return true;
 
-			return true;
+			return false;
 		} else
 			return false;
 	}

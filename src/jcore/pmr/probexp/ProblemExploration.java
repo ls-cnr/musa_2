@@ -14,9 +14,9 @@ import layer.semantic.AssumptionSet;
 import layer.semantic.StateOfWorld;
 import layer.semantic.WorldEvolution;
 import layer.semantic.evolution.EvolutionScenario;
-import petrinet.logic.Arc;
-import petrinet.logic.Place;
-import petrinet.logic.Transition;
+import petrinet.Arc;
+import petrinet.Place;
+import petrinet.Transition;
 import pmr.graph.WorldNode;
 
 /**
@@ -186,7 +186,7 @@ public class ProblemExploration {
 				return null;
 		} else {
 			// Se la capability ha pi  scenari, devo creare una WorldEvolution per scenario.
-			// Ogni WorldEvolution produrr 
+			// Ogni WorldEvolution produrr
 			// Uno StateOfWorld, che verr  inglobato in un nodo che a sua volta finir  nella
 			// lista delle destinazioni
 			// Del MultipleExpansioNode. Inoltre si aggiunge alla mappa dei nodi-scenari

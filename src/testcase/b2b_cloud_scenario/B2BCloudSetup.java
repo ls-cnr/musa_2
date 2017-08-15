@@ -757,7 +757,6 @@ public class B2BCloudSetup {
 
 	}
 
-	@SuppressWarnings("unused")
 	private void setup_goals() {
 		Variable doc = new Variable("Doc");
 		Variable usr = new Variable("Usr");

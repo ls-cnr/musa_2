@@ -20,6 +20,4 @@ public class AbstractCapabilityRepository extends Artifact {
 	void getEvolutionList_ByCapability() {
 	}
 
-
 }
-

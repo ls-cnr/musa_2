@@ -9,7 +9,6 @@ import pmr.graph.WTS;
 import pmr.graph.WorldNode;
 import pmr.probexp.ENode;
 import pmr.probexp.ExpansionNode;
-import pmr.probexp.MultipleExpansionNode;
 import pmr.probexp.NormalExpansionNode;
 
 /**
@@ -101,8 +100,8 @@ public class SolutionGraph {
 	 */
 	public void removeNode(WorldNode node) {
 		this.wts.removeNode(node);
-		this.scoreMapping.remove(node);
-		this.exitNodeMap.remove(node);
+		this.scoreMapping.remove((Object)node);
+		this.exitNodeMap.remove((Object)node);
 	}
 
 	/**
@@ -140,21 +139,27 @@ public class SolutionGraph {
 	}
 
 	public void updateScoreMapping(ExpansionNode node) {
-		Iterator i = node.getDestination().iterator();
-
 		this.scoreMapping.put(node.getSource().getWorldState().toString(), node.getSource().getScore());
 
-		NormalExpansionNode nodeToAdd;
-		@SuppressWarnings("unused")
-		MultipleExpansionNode listToAdd;
+		/* TODO the following code seems broken: iterator parameter is ENode
+		 * and loop does illegal casts from ENode to <? implements Node>
+		 *
+		 * Maybe this is just what you need?
+
+			for (ENode temp : node.getDestination())
+				this.scoreMapping.put(temp.getWorldState().toString(), temp.getScore());
+
+		 */
+
+		Iterator i = node.getDestination().iterator();
 		while (i.hasNext()) {
 			ExpansionNode temp = (ExpansionNode) i.next();
 			if (temp instanceof NormalExpansionNode) {
-				nodeToAdd = (NormalExpansionNode) temp;
+				NormalExpansionNode nodeToAdd = (NormalExpansionNode) temp;
 				this.scoreMapping.put(nodeToAdd.getDestination().get(0).getWorldState().toString(),
 						nodeToAdd.getDestination().get(0).getScore());
 			} else {
-				listToAdd = (MultipleExpansionNode) temp;
+				//MultipleExpansionNode listToAdd = (MultipleExpansionNode) temp;
 				Iterator<ENode> j = node.getDestination().iterator();
 				while (j.hasNext()) {
 					ENode Etemp = j.next();

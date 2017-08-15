@@ -1,11 +1,11 @@
 package pmrtest.graph;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
 
-import org.junit.Test;
 import org.junit.Before;
+import org.junit.Test;
 
 import layer.awareness.AbstractCapability;
 import layer.semantic.StateOfWorld;
@@ -180,19 +180,19 @@ public class WTSTest {
 	@Test
 	public void testNormalExpansionNode_2DifferentNodesNullSource() {
 		wts.addExpansionNode(this.ex1);
-		assertEquals(true, wts.getWTS().containsKey(new WorldNode(ex1.getSource().getWorldState())));
+		assertEquals(true, wts.getWTS().containsKey((Object) new WorldNode(ex1.getSource().getWorldState())));
 	}
 
 	@Test
 	public void testNormalExpansionNode_2DifferentNodesSource() {
 		wts.addExpansionNode(this.ex2);
-		assertEquals(true, wts.getWTS().containsKey(new WorldNode(ex1.getSource().getWorldState())));
+		assertEquals(true, wts.getWTS().containsKey((Object) new WorldNode(ex1.getSource().getWorldState())));
 	}
 
 	@Test
 	public void testNormalExpansionNode_2DifferentNodesDest() {
 		wts.addExpansionNode(this.ex1);
-		assertEquals(true, wts.getWTS().containsKey(new WorldNode(ex1.getSource().getWorldState())));
+		assertEquals(true, wts.getWTS().containsKey((Object) new WorldNode(ex1.getSource().getWorldState())));
 	}
 
 	@Test
@@ -200,27 +200,27 @@ public class WTSTest {
 		//ex2 = Source: w3, Dest: w1.
 		//ex1 = Source: null, Dest: w3.
 		wts.addExpansionNode(this.ex1);
-		assertEquals(false, wts.getWTS().containsKey(new WorldNode(ex2.getDestination().get(0).getWorldState())));
+		assertEquals(false, wts.getWTS().containsKey((Object) new WorldNode(ex2.getDestination().get(0).getWorldState())));
 	}
 
 	@Test
 	public void testMultipleExpansionNode_2DifferentNodesNullSource() {
 		wts.addExpansionNode(this.ex5);
-		assertEquals(true, wts.getWTS().containsKey(new WorldNode(ex1.getSource().getWorldState())));
+		assertEquals(true, wts.getWTS().containsKey((Object) new WorldNode(ex1.getSource().getWorldState())));
 	}
 
 	@Test
 	public void testMultipleExpansionNode_2DifferentNodesSource() {
 		wts.addExpansionNode(this.ex4);
-		assertEquals(true, wts.getWTS().containsKey(new WorldNode(ex1.getSource().getWorldState())));
+		assertEquals(true, wts.getWTS().containsKey((Object) new WorldNode(ex1.getSource().getWorldState())));
 	}
 
 	@Test
 	public void testMultipleExpansionNode_2DifferentNodesDest() {
 		wts.addExpansionNode(this.ex4);
-		assertEquals(true, (wts.getWTS().containsKey(ex4.getDestination().get(0).getWorldState()) &&
-				wts.getWTS().containsKey(ex4.getDestination().get(1).getWorldState())) &&
-				wts.getWTS().containsKey(ex4.getDestination().get(2).getWorldState()));
+		assertEquals(true, (wts.getWTS().containsKey((Object)ex4.getDestination().get(0).getWorldState()) &&
+				wts.getWTS().containsKey((Object)ex4.getDestination().get(1).getWorldState())) &&
+				wts.getWTS().containsKey((Object)ex4.getDestination().get(2).getWorldState()));
 	}
 
 	@Test
@@ -229,7 +229,7 @@ public class WTSTest {
 		//ex4 = Source: w2, Dest: w4, w3, w1.
 		//DLPHead w1 = DLPHead w2
 		wts.addExpansionNode(this.ex5);
-		assertEquals(true, wts.getWTS().containsKey(new WorldNode(ex4.getSource().getWorldState())));
+		assertEquals(true, wts.getWTS().containsKey((Object) new WorldNode(ex4.getSource().getWorldState())));
 	}
 	@Test
 	public void testMultipleExpansionNode_FalseNode() {
@@ -237,7 +237,7 @@ public class WTSTest {
 		//ex4 = Source: w2, Dest: w4, w3, w1.
 		//DLPHead w1 = DLPHead w2
 		wts.addExpansionNode(this.ex5);
-		assertEquals(false, wts.getWTS().containsKey(new WorldNode(ex6.getSource().getWorldState())));
+		assertEquals(false, wts.getWTS().containsKey((Object) new WorldNode(ex6.getSource().getWorldState())));
 	}
 
 	@Test
@@ -246,6 +246,6 @@ public class WTSTest {
 		//DLPHead w1 = DLPHead w2
 		//Testo se si crea l'OPNode
 		wts.addExpansionNode(this.ex4);
-		assertEquals(1, wts.getWTS().get(new WorldNode(ex4.getSource().getWorldState()).getOPNodeList().size()));
+		assertEquals(1, wts.getWTS().get((Object) new WorldNode(ex4.getSource().getWorldState()).getOPNodeList().size()));
 	}
 }

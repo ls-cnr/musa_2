@@ -6,7 +6,7 @@ import java.util.HashMap;
 
 import layer.awareness.goalmodel.GoalTreeModel;
 import layer.semantic.Condition;
-import petrinet.logic.*;
+import petrinet.*;
 
 /**
  * The Class Net. Used as facade for the interaction with PetriNet.

@@ -192,24 +192,24 @@ public void setUp(){
  * ex5   di tipo MultipleExpansionNode ed ha e5 come source che ha null come StateOfWorld
  */
 
-//Il nodo iniziale viene sempre riconosciuto tramite un new WorldNode(null)
+//Il nodo iniziale viene sempre riconosciuto tramite un (Object) new WorldNode(null)
 	@Test
 	public void addNodeTest(){
-		assertEquals(true, this.graph.getWTSHashmap().containsKey(new WorldNode(ex0.getSource().getWorldState())));
-		assertEquals(null, this.graph.getWTSHashmap().get(new WorldNode(null)).getWorldState());
-		assertEquals(true, this.graph.getWTSHashmap().get(new WorldNode(null)).equals(new WorldNode(null)));
+		assertEquals(true, this.graph.getWTSHashmap().containsKey((Object) new WorldNode(ex0.getSource().getWorldState())));
+		assertEquals(null, this.graph.getWTSHashmap().get((Object) new WorldNode(null)).getWorldState());
+		assertEquals(true, this.graph.getWTSHashmap().get((Object) new WorldNode(null)).equals((Object) new WorldNode(null)));
 
 		this.graph.addNode(ex0);
 
 		assertEquals(2,this.graph.getWTSHashmap().size());
-		assertEquals(1, this.graph.getWTSHashmap().get(new WorldNode(null)).getOutcomingEdgeList().size());
+		assertEquals(1, this.graph.getWTSHashmap().get((Object) new WorldNode(null)).getOutcomingEdgeList().size());
 	}
 
 	@Test
 	public void addNodeTest2(){
 		this.graph.addNode(ex1);
 		this.graph.addNode(ex2);
-		assertEquals(true, this.graph.getWTSHashmap().containsKey(new WorldNode(ex2.getDestination().get(0).getWorldState())));
+		assertEquals(true, this.graph.getWTSHashmap().containsKey((Object) new WorldNode(ex2.getDestination().get(0).getWorldState())));
 	}
 
 	//Dovrei aver aggiunto tutti gli stateOfWorld diversi: w1,w3,w4,w5,wnull = 5
@@ -242,7 +242,8 @@ public void setUp(){
 		this.graph.addNode(ex5);
 		this.graph.addNode(ex6);
 		int a = 0;
-		a = this.graph.getWTSHashmap().get(n4).getOPNodeList().size() + this.graph.getWTSHashmap().get(n5).getOPNodeList().size();
+		a = this.graph.getWTSHashmap().get((Object)n4).getOPNodeList().size() +
+		    this.graph.getWTSHashmap().get((Object)n5).getOPNodeList().size();
 		assertEquals(0, a);
 	}
 
@@ -250,21 +251,21 @@ public void setUp(){
 	public void exitNodeTest(){
 		this.e2.setExit(true);
 		this.graph.addNode(ex2);
-		assertEquals(true, this.graph.getExitNodeMap().containsKey(new WorldNode(e2.getWorldState())));
+		assertEquals(true, this.graph.getExitNodeMap().containsKey((Object)(Object) new WorldNode(e2.getWorldState())));
 	}
 
 	@Test
 	public void exitNodeTest2(){
 		this.e2.setExit(true);
 		this.graph.addNode(ex2);
-		assertEquals(false, this.graph.getExitNodeMap().containsKey(new WorldNode(e3.getWorldState())));
+		assertEquals(false, this.graph.getExitNodeMap().containsKey((Object)(Object) new WorldNode(e3.getWorldState())));
 	}
 
 	@Test
 	public void exitNodeTest3(){
 		this.e3.setExit(true);
 		this.graph.addNode(ex3);
-		assertEquals(true, this.graph.getExitNodeMap().containsKey(new WorldNode(e3.getWorldState())));
+		assertEquals(true, this.graph.getExitNodeMap().containsKey((Object)(Object) new WorldNode(e3.getWorldState())));
 	}
 
 
@@ -276,9 +277,9 @@ public void setUp(){
 		this.graph.addNode(ex0);
 		this.graph.addNode(ex1);
 		this.graph.addNode(ex2);
-		assertEquals(1, this.graph.getWTSHashmap().get(new WorldNode(null)).getOutcomingEdgeList().size());
-		assertEquals(2, this.graph.getWTSHashmap().get(n1).getOutcomingEdgeList().size());
-		assertEquals(2, this.graph.getWTSHashmap().get(n1).getIncomingEdgeList().size());
+		assertEquals(1, this.graph.getWTSHashmap().get(new Object()).getOutcomingEdgeList().size());
+		assertEquals(2, this.graph.getWTSHashmap().get((Object)n1).getOutcomingEdgeList().size());
+		assertEquals(2, this.graph.getWTSHashmap().get((Object)n1).getIncomingEdgeList().size());
 
 	}
 

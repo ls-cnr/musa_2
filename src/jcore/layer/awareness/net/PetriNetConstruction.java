@@ -6,7 +6,7 @@ import java.util.HashMap;
 import layer.awareness.Goal;
 import layer.awareness.goalmodel.*;
 import layer.semantic.Condition;
-import petrinet.logic.*;
+import petrinet.*;
 
 /**
  * Used to construct a PetriNet from a GoalModel.

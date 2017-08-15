@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.query.Query;
 
 import layer.database.entity.GeneralConfiguration;
 
@@ -53,12 +52,12 @@ public class GeneralConfigurationDAO {
 		SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
 		Session session = sessionFactory.openSession();
 		session.beginTransaction();
-		Query query = session.createQuery("from GeneralConfiguration");
-		List<GeneralConfiguration> generalConfigurations = query.list();
+		List<GeneralConfiguration> gc = session.getEntityManagerFactory().createEntityManager()
+				.createQuery("from GeneralConfiguration", GeneralConfiguration.class).getResultList();
 		session.getTransaction().commit();
 		sessionFactory.close();
 
-		return generalConfigurations;
+		return gc;
 	}
 
 	public GeneralConfiguration getGeneralConfigurationByID(Integer idGeneralConfiguration) {

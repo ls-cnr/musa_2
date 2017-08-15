@@ -171,18 +171,14 @@ public class WTS {
 	 *         WorldNode.
 	 */
 	public Edge editEdge(WorldNode node, AbstractCapability capability) {
-		Iterator<NormalEdge> i = this.graph.get(node).getOutcomingEdgeList().iterator();
-		while (i.hasNext() == true) {
-			NormalEdge tempedge = i.next();
-			if (tempedge.getCapability().equals(capability) == true)
+		for (NormalEdge tempedge : this.graph.get((Object) node).getOutcomingEdgeList())
+			if (tempedge.getCapability().equals(capability.toString()))
 				return tempedge;
-		}
-		Iterator<OPNode> j = this.graph.get(node).getOPNodeList().iterator();
-		while (j.hasNext() == true) {
-			OPNode tempnode = j.next();
-			if (tempnode.getCapability().equals(capability) == true)
+
+		for (OPNode tempnode : this.graph.get((Object) node).getOPNodeList())
+			if (tempnode.getCapability().equals(capability.toString()))
 				return tempnode.getIncomingEdge();
-		}
+
 		return null;
 	}
 
@@ -323,7 +319,7 @@ public class WTS {
 		 * the first cycle. It check every single NormalEdge of every single not
 		 * solution WorldNodes present in the graph.
 		 */
-		for (NormalEdge edge : this.graph.get(start).getOutcomingEdgeList()) {
+		for (NormalEdge edge : this.graph.get((Object)start).getOutcomingEdgeList()) {
 			if (checkedNode.containsKey(start) == false) {
 				pathNode.add(start);
 				checkedNode.put(start, 1);
@@ -332,11 +328,9 @@ public class WTS {
 			}
 		}
 
-		/*
-		 * if no more NormalEdges are present, it starts to analyze the OPNodelist and
-		 * every OPEdge of each OPNode inside the list
-		 */
-		for (OPNode node : this.graph.get(start).getOPNodeList()) {
+		/* if no more NormalEdges are present, it starts to analyze the OPNodelist and
+		 * every OPEdge of each OPNode inside the list */
+		for (OPNode node : this.graph.get((Object)start).getOPNodeList()) {
 			for (int j = 0; j < node.getOutcomingEdge().size(); j++) {
 				if (checkedNode.containsKey(node.getOutcomingEdge().get(j).getDestination()) == false) {
 					pathNode.add(node.getOutcomingEdge().get(j).getDestination());
