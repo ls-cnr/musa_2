@@ -1,4 +1,4 @@
-package layer.awareness.goalmodel;
+package layer.awareness.old.goalmodel;
 
 /**
  * The Class NodeNotFoundException.

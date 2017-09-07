@@ -1,4 +1,4 @@
-package layer.awareness.goalmodel;
+package layer.awareness.old.goalmodel;
 
 import java.util.ArrayList;
 

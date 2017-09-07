@@ -1,4 +1,4 @@
-package layer.awareness.net;
+package layer.awareness.old.net;
 
 /**
  * The Class Token, used to manipulate tokens in the Petrinet.

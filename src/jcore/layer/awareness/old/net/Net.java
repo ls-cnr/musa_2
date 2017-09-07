@@ -1,10 +1,10 @@
-package layer.awareness.net;
+package layer.awareness.old.net;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 
-import layer.awareness.goalmodel.GoalTreeModel;
+import layer.awareness.old.goalmodel.GoalTreeModel;
 import layer.semantic.Condition;
 import petrinet.logic.*;
 
