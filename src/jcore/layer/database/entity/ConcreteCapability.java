@@ -23,21 +23,23 @@ import javax.persistence.Table;
 @Table(name = "concrete_capability", catalog = "musa_db")
 public class ConcreteCapability implements java.io.Serializable {
 
+	private static final long serialVersionUID = 1L;
+
 	/** The id concrete capability. */
 	private Integer idConcreteCapability;
-	
+
 	/** The abstract capability. */
 	private AbstractCapability abstractCapability;
-	
+
 	/** The file upload. */
 	private byte[] fileUpload;
-	
+
 	/** The provider. */
 	private String provider;
-	
+
 	/** The id. */
 	private String id;
-	
+
 	/** The capability instances. */
 	private Set<CapabilityInstance> capabilityInstances = new HashSet<CapabilityInstance>(
 			0);

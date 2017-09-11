@@ -21,27 +21,29 @@ import javax.persistence.Table;
 @Table(name = "domain", catalog = "musa_db")
 public class Domain implements java.io.Serializable {
 
+	private static final long serialVersionUID = 1L;
+
 	/** The id domain. */
 	private Integer idDomain;
-	
+
 	/** The name. */
 	private String name;
-	
+
 	/** The description. */
 	private String description;
-	
+
 	/** The domain assumptions. */
 	private Set<DomainAssumption> domainAssumptions = new HashSet<DomainAssumption>(
 			0);
-	
+
 	/** The domain configurations. */
 	private Set<DomainConfiguration> domainConfigurations = new HashSet<DomainConfiguration>(
 			0);
-	
+
 	/** The abstract capabilities. */
 	private Set<AbstractCapability> abstractCapabilities = new HashSet<AbstractCapability>(
 			0);
-	
+
 	/** The specifications. */
 	private Set<Specification> specifications = new HashSet<Specification>(0);
 

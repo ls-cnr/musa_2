@@ -1,44 +1,21 @@
-/* 
-    musa_2_0
-    ---------------------------
-
-    JaCaMo Project File
-    
-    This file defines the initial state of the MAS (initial agents, environment, organisation, ....)
-    
-    (see jacamo/doc/jcm.html for more information about what can be defined in this file)
-    
-    JaCaMo <VERSION>
-    <DATE>
-*/
-
 mas musa_2_0 {
 
-    agent specification_manager {
-    		join: musa_wp
-    }
+	agent specification_manager
 
-    agent explorer1 {
-    		join: musa_wp
-    }
-    agent explorer2 {
-    		join: musa_wp
-    }
-    agent explorer3 {
-    		join: musa_wp
-    }
+	agent explorer1
+	agent explorer2
+	agent explorer3
 
-	workspace musa_wp {
-	    artifact agent_directory: directory.AgentDirectory()
+	workspace common {
+		agents: specification_manager,
+				explorer1, explorer2, explorer3
+		artifact agent_directory: directory.AgentDirectory() {
+			focused-by: explorer1, explorer2, explorer3
+		}
 	}
-    
-    class-path: lib, ext
-        
-    // agent source path
-    asl-path: src/agt
-              src/agt/inc
 
-    platform: cartago("infrastructure")
-    
+	asl-path: src/agt, src/agt/inc
+
+	platform: cartago("infrastructure")
+
 }
-

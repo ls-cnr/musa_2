@@ -1,28 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry excluding="**/*.asl" kind="src" path="src/agt"/>
-	<classpathentry kind="src" path="lib/rmetzler"/>
-	<classpathentry kind="src" path="src/testcase"/>
-	<classpathentry excluding="*.ptl" kind="src" path="src/int"/>
-	<classpathentry excluding="*.xml" kind="src" path="src/org"/>
-	<classpathentry kind="src" path="src/env"/>
-	<classpathentry kind="src" path="src/jcore"/>
-	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.USER_LIBRARY/JaCaMo"/>
-	<classpathentry exported="true" kind="lib" path="lib/jgrapht-core-1.0.0.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/net.sf.tweety.tweety-full-1.7-with-dependencies.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/freebuilder-1.10.5.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/hibernate-commons-annotations-5.0.1.Final.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/hibernate-core-5.1.2.Final.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/javax.persistence.jar"/>
-	<classpathentry kind="src" path=".apt_generated">
-		<attributes>
-			<attribute name="optional" value="true"/>
-		</attributes>
-	</classpathentry>
 	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
-	<classpathentry exported="true" kind="lib" path="lib/jacamo-0.5/lib/c4jason.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/jacamo-0.5/lib/cartago.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/jacamo-0.5/lib/jason.jar"/>
+	<classpathentry kind="src" path="src/jcore"/>
+	<classpathentry kind="src" path="src/agt"/>
+	<classpathentry kind="src" path="src/int"/>
+	<classpathentry kind="src" path="src/org"/>
+	<classpathentry kind="src" path="src/env"/>
+	<classpathentry kind="src" path="src/testcase"/>
+	<classpathentry exported="true" kind="lib" path="lib/hamcrest-core-1.3.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/hibernate-core-5.2.10.Final.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/javax.persistence_2.0.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/jgrapht-core-1.0.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/junit-4.12.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/jacamo/cartago-2.3-SNAPSHOT.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/jacamo/intmas-1.0.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/jacamo/jaca-2.3-SNAPSHOT.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/jacamo/jacamo-0.7-SNAPSHOT.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/jacamo/jason-2.2-SNAPSHOT.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/jacamo/moise-0.11-SNAPSHOT.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/jacamo/npl-0.3-SNAPSHOT.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/jacamo/ant-1.10.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/jacamo/ant-launcher-1.10.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/jacamo/jade-4.5.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/hibernate-commons-annotations-5.0.1.Final.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/freebuilder-1.5.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/net.sf.tweety.tweety-full-1.7-with-dependencies.jar"/>
+	<classpathentry kind="lib" path="lib/commons-logging-1.2.jar"/>
+	<classpathentry kind="lib" path="lib/javaoctave-0.6.4.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>

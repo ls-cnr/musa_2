@@ -116,7 +116,7 @@ public class Tree<T> {
 
 	/**
 	 * A more user-friendly translation.
-	 * 
+	 *
 	 * @param type
 	 *            int type
 	 * @return string for that type

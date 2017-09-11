@@ -1,7 +1,3 @@
-/************plans  ****************************************/
-
-
-/* org-manager plans */
 +!lead_organization_formation(SpecId,RequestId,ConfId)
 <-
 	.println("enacted the configuration for ",SpecId," and ",RequestId);
@@ -16,8 +12,6 @@
 <-
 	.println("dismiss the configuration for ",SpecId," and ",RequestId);
 . // DUMMY, todo
-
-
 
 +!run_orchestration(SpecId,RequestId,ConfId)
 <-
@@ -34,13 +28,6 @@
 	.println("orchestration re-starts for ",SpecId," and ",RequestId);
 . // DUMMY, todo
 
-
-
-
-
-
-
-
 +!solve_failure(SpecId,RequestId,ConfId,CapabilityId)
 <-
 	!find_alternative_service(SpecId,RequestId,ConfId,CapabilityId,AltId);
@@ -55,8 +42,9 @@
 +!find_alternative_service(SpecId,RequestId,ConfId,CapabilityId,AltId)
 <-
 	true
-.
+. // DUMMY, todo
+
 +!switch_service(SpecId,RequestId,ConfId,CapabilityId,AltId)
 <-
 	true
-.
+. // DUMMY, todo

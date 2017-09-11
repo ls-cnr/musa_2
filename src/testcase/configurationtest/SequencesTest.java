@@ -9,7 +9,7 @@ import configuration.distributed.Sequences;
 import configuration.distributed.Solution;
 
 /**
- * 
+ *
  * @author Mirko Avantaggiato
  *
  */

@@ -1,6 +1,6 @@
 package pmrtest.translate;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
 
@@ -12,8 +12,6 @@ import layer.awareness.AbstractCapability;
 import layer.semantic.StateOfWorld;
 import net.sf.tweety.lp.asp.parser.ParseException;
 import net.sf.tweety.lp.asp.syntax.DLPHead;
-import net.sf.tweety.lp.asp.syntax.DLPLiteral;
-import pmr.SolutionGraph;
 import pmr.graph.WorldNode;
 import pmr.probexp.ENode;
 import pmr.probexp.ExpansionNode;
@@ -24,8 +22,9 @@ import translator.JasonExpansionNode;
 import translator.JasonStateOfWorld;
 import translator.TranslateError;
 
+@SuppressWarnings("unused")
 public class ExpansionTranslatorTest {
-		
+
 		private StateOfWorld w1;
 		private StateOfWorld w2;
 		private StateOfWorld w3;
@@ -33,21 +32,21 @@ public class ExpansionTranslatorTest {
 		private StateOfWorld w5;
 		private StateOfWorld w6;
 		private StateOfWorld w7;
-		
+
 		private WorldNode n1;
 		private WorldNode n2;
 		private WorldNode n3;
 		private WorldNode n4;
 		private WorldNode n5;
 		private WorldNode n6;
-		
+
 		private ENode e1;
 		private ENode e2;
 		private ENode e3;
 		private ENode e4;
 		private ENode e5;
 		private ENode e6;
-		
+
 		private ExpansionNode ex0;
 		private ExpansionNode ex1;
 		private ExpansionNode ex2;
@@ -56,19 +55,19 @@ public class ExpansionTranslatorTest {
 		private ExpansionNode ex5;
 		private ExpansionNode ex6;
 		private ExpansionNode ex7;
-		
+
 		private ExpansionNode ex1Repeat;
-		
+
 		private AbstractCapability cap1;
 		private AbstractCapability cap2;
 		private AbstractCapability cap3;
-		
+
 	@Before
 	public void setUp(){
 		this.cap1 = new AbstractCapability("uno",null,null,null);
 		this.cap2 = new AbstractCapability("due",null,null,null);
 		this.cap3 = new AbstractCapability("tre",null,null,null);
-		
+
 		this.w1 = new StateOfWorld();
 		try {
 			w1.addFact_asString("penguin(tweety).");
@@ -132,7 +131,7 @@ public class ExpansionTranslatorTest {
 		} catch (layer.semantic.exception.NotAllowedInAStateOfWorld e) {
 			e.printStackTrace();
 		}
-		
+
 
 		this.n1 = new WorldNode(w1);
 		this.n2 = new WorldNode(w2);
@@ -140,34 +139,34 @@ public class ExpansionTranslatorTest {
 		this.n4 = new WorldNode(w4);
 		this.n5 = new WorldNode(w5);
 		this.n6 = new WorldNode(w6);
-		
+
 		this.e1 = new ENode(w1);
 		this.e2 = new ENode(w2);
 		this.e3 = new ENode(w3);
 		this.e4 = new ENode(w4);
 		this.e5 = new ENode(w5);
 		this.e6 = new ENode(w6);
-		
+
 		ArrayList<ENode> ENodeList345 = new ArrayList<ENode>();
 		ENodeList345.add(e3);
 		ENodeList345.add(e4);
 		ENodeList345.add(e5);
-		
+
 		ArrayList<ENode> ENodeList1 = new ArrayList<ENode>();
 		ENodeList1.add(e1);
-		
+
 		ArrayList<ENode> ENodeList2 = new ArrayList<ENode>();
 		ENodeList2.add(e2);
-		
+
 		ArrayList<ENode> ENodeList3 = new ArrayList<ENode>();
 		ENodeList3.add(e3);
-		
+
 		ArrayList<ENode> ENodeList4 = new ArrayList<ENode>();
 		ENodeList4.add(e4);
-		
+
 		ArrayList<ENode> ENodeList5 = new ArrayList<ENode>();
 		ENodeList5.add(e5);
-		
+
 		ArrayList<ENode> ENodeList6 = new ArrayList<ENode>();
 		ENodeList6.add(e6);
 
@@ -179,10 +178,10 @@ public class ExpansionTranslatorTest {
 		this.ex5 = new MultipleExpansionNode(e5, ENodeList345, cap1.getId(), "ag6");
 		this.ex6 = new NormalExpansionNode(e6, ENodeList3, cap1.getId(), "ag7");
 		this.ex7 = new NormalExpansionNode(e6, ENodeList4, cap2.getId(), "ag8");
-		
+
 	}
-	
-	
+
+
 	@Test
 	public void test() throws TranslateError{
 		Term term = JasonExpansionNode.object_to_term(this.ex1);
@@ -193,7 +192,7 @@ public class ExpansionTranslatorTest {
 		assertEquals(temp.getDestination().size(), this.ex1.getDestination().size());
 		assertEquals(temp.getSource().getWorldState().toString(), this.ex1.getSource().getWorldState().toString());
 	}
-	
+
 	@Test
 	public void testSOW() throws TranslateError{
 		Term term = JasonStateOfWorld.object_to_term(w1);
@@ -203,8 +202,8 @@ public class ExpansionTranslatorTest {
 		boolean flag = temp.equals(w1);
 		assertEquals(true, flag);
 		}
-	
-	
+
+
 	@Test
 	public void testDLP() throws TranslateError{
 		DLPHead t1 = this.w1.getFactsList().get(0);
@@ -216,6 +215,6 @@ public class ExpansionTranslatorTest {
 		assertEquals(t1, tfinal1);
 		assertEquals(t2, tfinal2);
 		}
-	
+
 
 }

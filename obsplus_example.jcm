@@ -1,0 +1,21 @@
+/*
+    Orthogonal Bidding Strategy Extended (OBS+)
+    -------------------------------------------
+
+    A modularized open MAS implementation of OBS+ negotiation method.
+
+    This is an example usage.
+
+    Dependency: GNU Octave (for Demo environments)
+
+    JaCaMo 0.7-SNAPSHOT
+    August 2017
+*/
+
+mas obsplus_example {
+
+    agent negotiator
+
+    asl-path: src/agt, src/agt/inc
+
+}

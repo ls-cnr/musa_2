@@ -1,6 +1,6 @@
 package pmrtest;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
 
@@ -11,18 +11,17 @@ import layer.awareness.AbstractCapability;
 import layer.semantic.StateOfWorld;
 import net.sf.tweety.lp.asp.parser.ParseException;
 import pmr.SolutionGraph;
-import pmr.graph.WTS;
 import pmr.graph.WorldNode;
-import pmr.graph.XORNode;
 import pmr.probexp.ENode;
 import pmr.probexp.ExpansionNode;
 import pmr.probexp.MultipleExpansionNode;
 import pmr.probexp.NormalExpansionNode;
 
+@SuppressWarnings("unused")
 public class SolutionGraphTest {
 
 	private SolutionGraph graph;
-	
+
 	private StateOfWorld w1;
 	private StateOfWorld w2;
 	private StateOfWorld w3;
@@ -30,21 +29,21 @@ public class SolutionGraphTest {
 	private StateOfWorld w5;
 	private StateOfWorld w6;
 	private StateOfWorld w7;
-	
+
 	private WorldNode n1;
 	private WorldNode n2;
 	private WorldNode n3;
 	private WorldNode n4;
 	private WorldNode n5;
 	private WorldNode n6;
-	
+
 	private ENode e1;
 	private ENode e2;
 	private ENode e3;
 	private ENode e4;
 	private ENode e5;
 	private ENode e6;
-	
+
 	private ExpansionNode ex0;
 	private ExpansionNode ex1;
 	private ExpansionNode ex2;
@@ -53,19 +52,19 @@ public class SolutionGraphTest {
 	private ExpansionNode ex5;
 	private ExpansionNode ex6;
 	private ExpansionNode ex7;
-	
+
 	private ExpansionNode ex1Repeat;
-	
+
 	private AbstractCapability cap1;
 	private AbstractCapability cap2;
 	private AbstractCapability cap3;
-	
+
 @Before
 public void setUp(){
 	this.cap1 = new AbstractCapability("uno",null,null,null);
 	this.cap2 = new AbstractCapability("due",null,null,null);
 	this.cap3 = new AbstractCapability("tre",null,null,null);
-	
+
 	this.w1 = new StateOfWorld();
 	try {
 		w1.addFact_asString("penguin(tweety).");
@@ -129,7 +128,7 @@ public void setUp(){
 	} catch (layer.semantic.exception.NotAllowedInAStateOfWorld e) {
 		e.printStackTrace();
 	}
-	
+
 
 	this.n1 = new WorldNode(w1);
 	this.n2 = new WorldNode(w2);
@@ -137,34 +136,34 @@ public void setUp(){
 	this.n4 = new WorldNode(w4);
 	this.n5 = new WorldNode(w5);
 	this.n6 = new WorldNode(w6);
-	
+
 	this.e1 = new ENode(w1);
 	this.e2 = new ENode(w2);
 	this.e3 = new ENode(w3);
 	this.e4 = new ENode(w4);
 	this.e5 = new ENode(w5);
 	this.e6 = new ENode(w6);
-	
+
 	ArrayList<ENode> ENodeList345 = new ArrayList<ENode>();
 	ENodeList345.add(e3);
 	ENodeList345.add(e4);
 	ENodeList345.add(e5);
-	
+
 	ArrayList<ENode> ENodeList1 = new ArrayList<ENode>();
 	ENodeList1.add(e1);
-	
+
 	ArrayList<ENode> ENodeList2 = new ArrayList<ENode>();
 	ENodeList2.add(e2);
-	
+
 	ArrayList<ENode> ENodeList3 = new ArrayList<ENode>();
 	ENodeList3.add(e3);
-	
+
 	ArrayList<ENode> ENodeList4 = new ArrayList<ENode>();
 	ENodeList4.add(e4);
-	
+
 	ArrayList<ENode> ENodeList5 = new ArrayList<ENode>();
 	ENodeList5.add(e5);
-	
+
 	ArrayList<ENode> ENodeList6 = new ArrayList<ENode>();
 	ENodeList6.add(e6);
 
@@ -176,7 +175,7 @@ public void setUp(){
 	this.ex5 = new MultipleExpansionNode(e5, ENodeList345, cap1.getId());
 	this.ex6 = new NormalExpansionNode(e6, ENodeList3, cap1.getId());
 	this.ex7 = new NormalExpansionNode(e6, ENodeList4, cap2.getId());
-	
+
 	this.graph = new SolutionGraph();
 }
 
@@ -189,30 +188,30 @@ public void setUp(){
  * ex1 ha la stessa capability di ex4
  * ex1 contiene e5 che ha null come StateOfWorld
  * ex3 ha la stessa destNodeList di ex4
- * ex4 è di tipo MultipleExpansionNode
- * ex5 è di tipo MultipleExpansionNode ed ha e5 come source che ha null come StateOfWorld
+ * ex4   di tipo MultipleExpansionNode
+ * ex5   di tipo MultipleExpansionNode ed ha e5 come source che ha null come StateOfWorld
  */
 
-//Il nodo iniziale viene sempre riconosciuto tramite un new WorldNode(null)
+//Il nodo iniziale viene sempre riconosciuto tramite un (Object) new WorldNode(null)
 	@Test
 	public void addNodeTest(){
-		assertEquals(true, this.graph.getWTSHashmap().containsKey(new WorldNode(ex0.getSource().getWorldState())));
-		assertEquals(null, this.graph.getWTSHashmap().get(new WorldNode(null)).getWorldState());
-		assertEquals(true, this.graph.getWTSHashmap().get(new WorldNode(null)).equals(new WorldNode(null)));
+		assertEquals(true, this.graph.getWTSHashmap().containsKey((Object) new WorldNode(ex0.getSource().getWorldState())));
+		assertEquals(null, this.graph.getWTSHashmap().get((Object) new WorldNode(null)).getWorldState());
+		assertEquals(true, this.graph.getWTSHashmap().get((Object) new WorldNode(null)).equals((Object) new WorldNode(null)));
 
 		this.graph.addNode(ex0);
-		
+
 		assertEquals(2,this.graph.getWTSHashmap().size());
-		assertEquals(1, this.graph.getWTSHashmap().get(new WorldNode(null)).getOutcomingEdgeList().size());
+		assertEquals(1, this.graph.getWTSHashmap().get((Object) new WorldNode(null)).getOutcomingEdgeList().size());
 	}
-	
+
 	@Test
 	public void addNodeTest2(){
 		this.graph.addNode(ex1);
 		this.graph.addNode(ex2);
-		assertEquals(true, this.graph.getWTSHashmap().containsKey(new WorldNode(ex2.getDestination().get(0).getWorldState())));
-	}	
-	
+		assertEquals(true, this.graph.getWTSHashmap().containsKey((Object) new WorldNode(ex2.getDestination().get(0).getWorldState())));
+	}
+
 	//Dovrei aver aggiunto tutti gli stateOfWorld diversi: w1,w3,w4,w5,wnull = 5
 	@Test
 	public void addNodeTest3(){
@@ -231,7 +230,7 @@ public void setUp(){
 		this.graph.addNode(ex6);
 		assertEquals(5, this.graph.getWTSHashmap().size());
 	}
-	
+
 	//WorldNode con OPNode all'interno : n4,n5,null
 	@Test
 	public void addNodeTest4(){
@@ -243,32 +242,33 @@ public void setUp(){
 		this.graph.addNode(ex5);
 		this.graph.addNode(ex6);
 		int a = 0;
-		a = this.graph.getWTSHashmap().get(n4).getOPNodeList().size() + this.graph.getWTSHashmap().get(n5).getOPNodeList().size();
+		a = this.graph.getWTSHashmap().get((Object)n4).getOPNodeList().size() +
+		    this.graph.getWTSHashmap().get((Object)n5).getOPNodeList().size();
 		assertEquals(0, a);
 	}
-	
+
 	@Test
 	public void exitNodeTest(){
 		this.e2.setExit(true);
 		this.graph.addNode(ex2);
-		assertEquals(true, this.graph.getExitNodeMap().containsKey(new WorldNode(e2.getWorldState())));
+		assertEquals(true, this.graph.getExitNodeMap().containsKey((Object)(Object) new WorldNode(e2.getWorldState())));
 	}
-	
+
 	@Test
 	public void exitNodeTest2(){
 		this.e2.setExit(true);
 		this.graph.addNode(ex2);
-		assertEquals(false, this.graph.getExitNodeMap().containsKey(new WorldNode(e3.getWorldState())));
+		assertEquals(false, this.graph.getExitNodeMap().containsKey((Object)(Object) new WorldNode(e3.getWorldState())));
 	}
-	
+
 	@Test
 	public void exitNodeTest3(){
 		this.e3.setExit(true);
 		this.graph.addNode(ex3);
-		assertEquals(true, this.graph.getExitNodeMap().containsKey(new WorldNode(e3.getWorldState())));
+		assertEquals(true, this.graph.getExitNodeMap().containsKey((Object)(Object) new WorldNode(e3.getWorldState())));
 	}
-	
-	
+
+
 	//WNull -> n1, n1 -> n2 ma n1 = n2 quindi n1 -> n1, n2=n1 -> n3
 	// n1 outlist = 2 archi, n1 inlist = 2 archi.
 	//n1 = n2
@@ -277,12 +277,12 @@ public void setUp(){
 		this.graph.addNode(ex0);
 		this.graph.addNode(ex1);
 		this.graph.addNode(ex2);
-		assertEquals(1, this.graph.getWTSHashmap().get(new WorldNode(null)).getOutcomingEdgeList().size());
-		assertEquals(2, this.graph.getWTSHashmap().get(n1).getOutcomingEdgeList().size());
-		assertEquals(2, this.graph.getWTSHashmap().get(n1).getIncomingEdgeList().size());
-		
+		assertEquals(1, this.graph.getWTSHashmap().get(new Object()).getOutcomingEdgeList().size());
+		assertEquals(2, this.graph.getWTSHashmap().get((Object)n1).getOutcomingEdgeList().size());
+		assertEquals(2, this.graph.getWTSHashmap().get((Object)n1).getIncomingEdgeList().size());
+
 	}
-	
+
 	//WNull -> n1 -> n2 ma n1=n2 quindi n1 -> n1, n2=n1 -> n3, n3 -> n4, n4 nodo uscita
 	//Percorso1: Wnull->n1->n1->n3->n4
 	//Percorso2: Wnull->n1 (n1 checked)

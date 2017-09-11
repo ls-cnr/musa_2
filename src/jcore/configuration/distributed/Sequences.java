@@ -6,7 +6,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 
 /**
- * 
+ *
  * @author Mirko Avantaggiato
  *
  */
@@ -45,7 +45,6 @@ public class Sequences {
 
 		@Override
 		public String toString() {
-			// TODO Auto-generated method stub
 			return "[" + this.a + ", " + this.b + ", " + this.c + "]";
 		}
 
@@ -89,7 +88,7 @@ public class Sequences {
 			this.firstStateName = src;
 		}
 		/*
-		 * Se src è nei nodi ma dest no, allora è un arco verso un nuovo nodo.
+		 * Se src ï¿½ nei nodi ma dest no, allora ï¿½ un arco verso un nuovo nodo.
 		 */
 		else if (this.nodes.contains(src) && !this.nodes.contains(dest)) {
 			this.nodes.add(dest);
@@ -109,7 +108,7 @@ public class Sequences {
 					seq.add(dest);
 		}
 		/*
-		 * Se entrambi nodi sono già noti, bisogna fare attenzione.
+		 * Se entrambi nodi sono giï¿½ noti, bisogna fare attenzione.
 		 */
 		else if (this.nodes.contains(src) && this.nodes.contains(dest)) {
 			this.leafNodes.remove(src);
@@ -130,7 +129,7 @@ public class Sequences {
 				 */
 				if (s.contains(src) && s.contains(dest)) {
 					/*
-					 * a -> b e la seq. è del tipo 1 2 3 a 4 5 b
+					 * a -> b e la seq. ï¿½ del tipo 1 2 3 a 4 5 b
 					 */
 					if (s.indexOf(src) < s.indexOf(dest)) {
 						// System.out.println("Caso index(src) <
@@ -151,7 +150,7 @@ public class Sequences {
 								this.seqs.add(arrayJoin(leftSide, rs));
 					}
 					/*
-					 * b -> a e la seq. è del tipo 1 2 3 a 4 5 b
+					 * b -> a e la seq. ï¿½ del tipo 1 2 3 a 4 5 b
 					 */
 					else if (s.indexOf(src) > s.indexOf(dest)) {
 						// System.out.println("Caso index(src) >
@@ -352,9 +351,9 @@ public class Sequences {
 	/**
 	 * This method combines 2 ArrayLists<String>. <br>
 	 * Example: A = [a, b, c] B = [d, e] <br>
-	 * 
+	 *
 	 * <b>res = [ad, ae, bd, be, cd, ce]</b>
-	 * 
+	 *
 	 */
 	private static ArrayList<String> combineTwoArrayList(ArrayList<String> A, ArrayList<String> B) {
 		ArrayList<String> res = new ArrayList<>();
@@ -379,7 +378,7 @@ public class Sequences {
 
 	/**
 	 * from incluso, to escluso.
-	 * 
+	 *
 	 * @param l
 	 * @param from
 	 * @param to
@@ -402,7 +401,7 @@ public class Sequences {
 
 	/**
 	 * This method joins two arrays.
-	 * 
+	 *
 	 * @param a1
 	 * @param a2
 	 * @return
@@ -480,7 +479,7 @@ public class Sequences {
 	/**
 	 * A node is safe if it is a success node or if at least one of its children
 	 * is safe. Bottom-up approach.
-	 * 
+	 *
 	 * @param t
 	 */
 	private void makeTreeSafe(Tree<String> t) {

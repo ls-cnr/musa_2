@@ -23,21 +23,23 @@ import javax.persistence.Table;
 @Table(name = "capability_instance", catalog = "musa_db")
 public class CapabilityInstance implements java.io.Serializable {
 
+	private static final long serialVersionUID = 1L;
+
 	/** The id capability instance. */
 	private Integer idCapabilityInstance;
-	
+
 	/** The concrete capability. */
 	private ConcreteCapability concreteCapability;
-	
+
 	/** The state. */
 	private String state;
-	
+
 	/** The agent. */
 	private String agent;
-	
+
 	/** The id case. */
 	private Integer idCase;
-	
+
 	/** The capability logs. */
 	private Set<CapabilityLog> capabilityLogs = new HashSet<CapabilityLog>(0);
 

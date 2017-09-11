@@ -1,38 +1,35 @@
-// CArtAgO artifact code for project musa_2_0
-
 package directory;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import cartago.*;
-import jason.asSyntax.Term;
+import cartago.Artifact;
+import cartago.OPERATION;
 
 public class AgentDirectory extends Artifact {
+
 	private List<String> agentsName;
 
 	void init() {
 		this.defineObsProperty("artifact_name", "null");
 		agentsName = new ArrayList<String>();
-
-		System.out.println("artefatto Directory Service creato");
 	}
-	
+
 	@OPERATION
 	void register(String agentName) {
-		String name= new String(agentName);
+		String name = new String(agentName);
 		agentsName.add(name);
-		System.out.println("ho registrato "+agentName);
+		//System.out.println("I registered "+agentName);
 	}
 
 	@OPERATION
 	void unregister() {
+		// TODO
 	}
 
 	@OPERATION
 	void broadcast_announce_WTS_creation(String spec_id, String workspace, String artifactName) {
-		signal("announcement_WTS_creation",spec_id,workspace,artifactName);
+		signal("announcement_WTS_creation", spec_id, workspace, artifactName);
 	}
-	
-}
 
+}

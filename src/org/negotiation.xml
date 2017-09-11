@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?xml-stylesheet href="http://moise.sourceforge.net/xml/os.xsl" type="text/xsl"?>
+
+<organisational-specification
+  id="negotiation"
+  os-version="0.8"
+  xmlns='http://moise.sourceforge.net/os'
+  xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+  xsi:schemaLocation='http://moise.sourceforge.net/os
+                      http://moise.sourceforge.net/xml/os.xsd'>
+
+  <structural-specification>
+    <role-definitions>
+      <role id="service_compositor"/>
+      <role id="abstract_service"/>
+      <role id="service_provider"/>
+    </role-definitions>
+
+    <group-specification id="negotiationGroup">
+      <roles>
+        <role id="service_compositor" min="1" max="1"/>
+        <role id="abstract_service"/>
+      </roles>
+      <subgroups>
+        <group-specification id="serviceGroup">
+          <roles>
+            <role id="service_provider"/>
+          </roles>
+        </group-specification>
+      </subgroups>
+    </group-specification>
+  </structural-specification>
+
+  <functional-specification>
+    <scheme id="doSequenceStep">
+      <goal id="check_status">
+        <plan operator="parallel">
+          <goal id="send_standing_offers">
+            <plan operator="parallel">
+              <goal id="send_offer"/>
+            </plan>
+          </goal>
+        </plan>
+      </goal>
+      <mission id="mServiceCompositor">
+        <goal id="check_status"/>
+      </mission>
+      <mission id="mAbstractService">
+        <goal id="send_standing_offers"/>
+      </mission>
+      <mission id="mServiceProvider">
+        <goal id="send_offer"/>
+      </mission>
+    </scheme>
+  </functional-specification>
+
+  <normative-specification>
+    <norm type="permission" role="service_compositor" mission="mServiceCompositor" id="n1"/>
+    <norm type="obligation" role="abstract_service"   mission="mAbstractService"   id="n2"/>
+    <norm type="obligation" role="service_provider"   mission="mServiceProvider"   id="n3"/>
+  </normative-specification>
+
+</organisational-specification>

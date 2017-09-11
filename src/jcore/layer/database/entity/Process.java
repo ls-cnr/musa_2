@@ -21,15 +21,17 @@ import javax.persistence.Table;
 @Table(name = "process", catalog = "musa_db")
 public class Process implements java.io.Serializable {
 
+	private static final long serialVersionUID = 1L;
+
 	/** The id workflow. */
 	private Integer idWorkflow;
-	
+
 	/** The description. */
 	private String description;
-	
+
 	/** The file wf. */
 	private byte[] fileWf;
-	
+
 	/** The functional reqs. */
 	private Set<FunctionalReq> functionalReqs = new HashSet<FunctionalReq>(0);
 

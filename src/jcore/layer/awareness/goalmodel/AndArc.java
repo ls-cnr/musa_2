@@ -7,7 +7,7 @@ import layer.awareness.Goal;
  * @author Mirko Zichichi
  */
 public class AndArc extends RefinementArc {
-	
+
 	/**
 	 * Instantiates a new AndArc.
 	 *
@@ -16,5 +16,5 @@ public class AndArc extends RefinementArc {
 	public AndArc( Goal node ) {
 		super(node);
 	}
-	
+
 }

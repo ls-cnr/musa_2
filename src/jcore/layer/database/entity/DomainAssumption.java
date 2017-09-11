@@ -20,18 +20,20 @@ import javax.persistence.Table;
 @Table(name = "domain_assumption", catalog = "musa_db")
 public class DomainAssumption implements java.io.Serializable {
 
+	private static final long serialVersionUID = 1L;
+
 	/** The id assumption. */
 	private Integer idAssumption;
-	
+
 	/** The domain. */
 	private Domain domain;
-	
+
 	/** The name. */
 	private String name;
-	
+
 	/** The type. */
 	private String type;
-	
+
 	/** The description. */
 	private String description;
 

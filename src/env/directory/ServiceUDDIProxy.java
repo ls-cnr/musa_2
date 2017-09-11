@@ -1,13 +1,14 @@
-// CArtAgO artifact code for project musa_2_0
-
 package directory;
 
 import cartago.*;
 
 public class ServiceUDDIProxy extends Artifact {
+
+	// TODO
+
 	void init() {
 	}
-	
+
 	@OPERATION
 	void register() {
 	}
@@ -19,5 +20,5 @@ public class ServiceUDDIProxy extends Artifact {
 	@OPERATION
 	void lookupServiceProvider() {
 	}
-}
 
+}

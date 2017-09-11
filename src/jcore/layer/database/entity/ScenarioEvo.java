@@ -1,12 +1,13 @@
 package layer.database.entity;
 
+import static javax.persistence.GenerationType.IDENTITY;
+
 // Generated 22-nov-2016 14.40.56 by Hibernate Tools 3.4.0.CR1
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
-import static javax.persistence.GenerationType.IDENTITY;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -20,15 +21,17 @@ import javax.persistence.Table;
 @Table(name = "scenario_evo", catalog = "musa_db")
 public class ScenarioEvo implements java.io.Serializable {
 
+	private static final long serialVersionUID = 1L;
+
 	/** The id scenario evo. */
 	private Integer idScenarioEvo;
-	
+
 	/** The abstract capability. */
 	private AbstractCapability abstractCapability;
-	
+
 	/** The type. */
 	private String type;
-	
+
 	/** The description. */
 	private String description;
 
@@ -41,12 +44,14 @@ public class ScenarioEvo implements java.io.Serializable {
 	/**
 	 * Instantiates a new scenario evo.
 	 *
-	 * @param abstractCapability the abstract capability
-	 * @param type the type
-	 * @param description the description
+	 * @param abstractCapability
+	 *            the abstract capability
+	 * @param type
+	 *            the type
+	 * @param description
+	 *            the description
 	 */
-	public ScenarioEvo(AbstractCapability abstractCapability, String type,
-			String description) {
+	public ScenarioEvo(AbstractCapability abstractCapability, String type, String description) {
 		this.abstractCapability = abstractCapability;
 		this.type = type;
 		this.description = description;
@@ -67,7 +72,8 @@ public class ScenarioEvo implements java.io.Serializable {
 	/**
 	 * Sets the id scenario evo.
 	 *
-	 * @param idScenarioEvo the new id scenario evo
+	 * @param idScenarioEvo
+	 *            the new id scenario evo
 	 */
 	public void setIdScenarioEvo(Integer idScenarioEvo) {
 		this.idScenarioEvo = idScenarioEvo;
@@ -87,7 +93,8 @@ public class ScenarioEvo implements java.io.Serializable {
 	/**
 	 * Sets the abstract capability.
 	 *
-	 * @param abstractCapability the new abstract capability
+	 * @param abstractCapability
+	 *            the new abstract capability
 	 */
 	public void setAbstractCapability(AbstractCapability abstractCapability) {
 		this.abstractCapability = abstractCapability;
@@ -106,7 +113,8 @@ public class ScenarioEvo implements java.io.Serializable {
 	/**
 	 * Sets the type.
 	 *
-	 * @param type the new type
+	 * @param type
+	 *            the new type
 	 */
 	public void setType(String type) {
 		this.type = type;
@@ -125,7 +133,8 @@ public class ScenarioEvo implements java.io.Serializable {
 	/**
 	 * Sets the description.
 	 *
-	 * @param description the new description
+	 * @param description
+	 *            the new description
 	 */
 	public void setDescription(String description) {
 		this.description = description;

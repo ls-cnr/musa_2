@@ -3,24 +3,34 @@ package layer.awareness;
 import layer.semantic.Condition;
 
 /**
- * The Class Goal encapsulate the Goals. A goal is a desired change in the state of the world an actor wants to achieve.
- * A goal must have a trigger_condition that describe when the goal should be pursued and a final_state that describe the desired
- * state of the world.
+ * The Class Goal encapsulate the Goals. A goal is a desired change in the state
+ * of the world an actor wants to achieve. A goal must have a trigger_condition
+ * that describe when the goal should be pursued and a final_state that describe
+ * the desired state of the world.
+ *
  * @author icar-aose
  * @version 1.0.0
  */
 
 public class Goal implements RunTimeEntity {
-	
-	/** The goal name. It identifies the Goal, so a Goal is equal if the name is equal */
+
+	/**
+	 * The goal name. It identifies the Goal, so a Goal is equal if the name is
+	 * equal
+	 */
 	private String name;
-	
-	/** The trigger condition. A goal can be pursued only if this condition is true */
+
+	/**
+	 * The trigger condition. A goal can be pursued only if this condition is true
+	 */
 	private Condition trigger_condition;
-	
-	/** The final state describes how the state of the world should be after that the goal was achieved. */
+
+	/**
+	 * The final state describes how the state of the world should be after that the
+	 * goal was achieved.
+	 */
 	private Condition final_state;
-	
+
 	/**
 	 * Instantiates a new goal.
 	 *
@@ -64,7 +74,7 @@ public class Goal implements RunTimeEntity {
 	public Condition getFinal_state() {
 		return final_state;
 	}
-	
+
 	/**
 	 * Export as goal SPEC.
 	 *
@@ -74,29 +84,28 @@ public class Goal implements RunTimeEntity {
 		/* TODO */
 		return "";
 	}
-	
+
 	public String getName() {
 		return name;
 	}
-	
+
 	@Override
-	public boolean equals( Object o ) {
-		if( !(o instanceof Goal) )
+	public boolean equals(Object o) {
+		if (!(o instanceof Goal))
 			return false;
 		Goal g = (Goal) o;
-		if( this.name.equals(g.getName()) )
+		if (this.name.equals(g.getName()))
 			return true;
-		else 
+		else
 			return false;
 	}
-	
+
 	@Override
 	public int hashCode() {
 		int h = 0;
-		for( int i = 0; i < name.length(); i++ ){
-			h = ( 127 * h + name.charAt(i) ) % 101; 
-		}
+		for (int i = 0; i < name.length(); i++)
+			h = (127 * h + name.charAt(i)) % 101;
 		return h;
 	}
-	
+
 }

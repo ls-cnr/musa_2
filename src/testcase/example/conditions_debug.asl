@@ -5,7 +5,7 @@
 	!testcase_build_disagreement_pair_list;
 	!testcase_get_var_term_substitution;
 	!testcase_unification;
-	
+
 	!testcase_boolean_formula;
 	!testcase_boolean_formula_2;
 
@@ -20,9 +20,9 @@
 	!testcase_xor;
 
 	!testcase_convert_bool_formula_to_CNF_2;
-	
+
 	!testcase_replace_free_predicate_with_dummy_var;
-		
+
 	!testcase_test_condition;
 	!testcase_test_condition_2;
 	!testcase_test_condition_3;
@@ -97,7 +97,7 @@
 .
 
 +!testcase_implies
-<-	
+<-
 	Formula = and([ var(1),var(22), or([ var(11) ,neg([var(3)])]) ]);
 	!implies_to_CNF(var(1),and([var(3),var(5)]), CNFClauses);
 	!assert_plan_output("A implies B",[
@@ -105,7 +105,7 @@
 	]);
 .
 +!testcase_if_only_if
-<-	
+<-
 	!if_only_if_to_CNF(var(1),and([var(3),var(5)]), CNFClauses);
 	!assert_plan_output("A iff B",[
 		assert(CNFClauses,[[-1,-3,5],[-1,3,-5],[-1,3,5],[-3,-5,1]] )
@@ -113,7 +113,7 @@
 .
 
 +!testcase_xor
-<-	
+<-
 	!xor_to_CNF([var(4),var(5),var(6)], CNFClauses);
 	!assert_plan_output("A XOR B",[
 		assert(CNFClauses,[[-4,-5,-6],[-4,-5,6],[-4,5,-6],[4,-5,-6],[4,5,6]] )
@@ -132,7 +132,7 @@
 
 	World=world(WorldContent);
 	!replace_free_predicate_with_dummy_var(NormalLogicFormula,WorldContent,PredicateVarMap,BooleanFormula);
-	
+
 	!assert_plan_output("replace_free_predicate_with_dummy_var",[
 		assert(BooleanFormula,and([var(1),or([var(2),neg([var(3)])])]) )
 	]);
@@ -236,7 +236,7 @@
 		assert(DisagreementPairList,[d(var(x),atom(a))])
 	]);
 
-/* 
+/*
 	!build_disagreement_pair_list(structure(f,[var(x),atom(a)]),structure(f,[atom(b),atom(a)]),DisagreementPairList2);
 	!assert_plan_output("build_disagreement_pair_list2",[
 		assert(DisagreementPairList2,[d(var(x),atom(b))])
@@ -357,12 +357,12 @@
 			u([s(var(x),atom(r)),s(var(y),atom(c)),s(var(y),atom(t)),s(var(z),atom(c))])
 		])
 	]);
-	
+
 .
 
 +!testcase_test_logic_formula_3
 <-
-	!test_logic_formula( 
+	!test_logic_formula(
 		structure(f,[var(x)]),
 		world([f(a),f(b),g(c)]),
 		UnifierList,
@@ -379,7 +379,7 @@
 
 +!testcase_test_logic_formula_4
 <-
-	!test_logic_formula( 
+	!test_logic_formula(
 		and([structure(f,[var(x)]),structure(g,[var(y)])]),
 		world([f(a),f(b),g(c)]),
 		UnifierList,
@@ -396,7 +396,7 @@
 
 +!testcase_test_logic_formula_5
 <-
-	!test_logic_formula( 
+	!test_logic_formula(
 		or([structure(f,[var(x)]),structure(g,[var(y)])]),
 		world([f(a),f(b),g(c)]),
 		UnifierList,
@@ -415,7 +415,7 @@
 +!testcase_test_logic_formula_6
 <-
 	jia.normalize_literal([x],and(f(x),or(g(x),h(x))),Formula);
-	!test_logic_formula( 
+	!test_logic_formula(
 		Formula,
 		world([f(a),g(a),f(b),h(b)]),
 		UnifierList,
@@ -429,12 +429,12 @@
 			u([s(var(x),atom(b))])
 		])
 	]);
-	
+
 .
 +!testcase_test_logic_formula_7
 <-
 	jia.normalize_literal([x,y],or(and(f(x),g(x)),and(h(x,y),g(y))),Formula);
-	!test_logic_formula( 
+	!test_logic_formula(
 		Formula,
 		world([f(a),g(m),g(c),h(a,c)]),
 		UnifierList,
@@ -453,7 +453,7 @@
 +!testcase_test_logic_formula_8
 <-
 	jia.normalize_literal([x,y],or(and(f(x),g(x)),and(h(x,y),g(y))),Formula);
-	!test_logic_formula( 
+	!test_logic_formula(
 		Formula,
 		world([f(a),g(m),g(n),h(a,c)]),
 		UnifierList,
@@ -470,7 +470,7 @@
 +!testcase_test_logic_formula_9
 <-
 	jia.normalize_literal([],or(and(f(a),g(m)),and(h(a,k),g(n))),Formula);
-	!test_logic_formula( 
+	!test_logic_formula(
 		Formula,
 		world([f(a),g(m),g(n),h(a,c)]),
 		UnifierList,
@@ -490,4 +490,3 @@
 
 
 
-	

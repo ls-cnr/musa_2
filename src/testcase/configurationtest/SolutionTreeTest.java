@@ -19,7 +19,7 @@ import pmr.probexp.ProblemExploration;
 
 /**
  * SolutionTree test class.
- * 
+ *
  * @author Mirko Avantaggiato
  *
  */
@@ -192,7 +192,7 @@ public class SolutionTreeTest {
 	/**
 	 * This method prints the wts (dot language). green edges = normal edges.
 	 * red, bold edges = evolution edges
-	 * 
+	 *
 	 * @param wts
 	 *            wts to print
 	 */
@@ -219,7 +219,7 @@ public class SolutionTreeTest {
 	 * This method prints the wts (dot language) adding at the end of WorldNode
 	 * the hashcode corresponding to its facts. green edges = normal edges. red,
 	 * bold edges = evolution edges
-	 * 
+	 *
 	 * @param wts
 	 *            wts to print
 	 */

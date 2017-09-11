@@ -1,15 +1,16 @@
-// CArtAgO artifact code for project musa_2_0
-
 package runtime;
 
 import java.util.LinkedList;
 import java.util.List;
 
-import cartago.*;
-import layer.awareness.*;
-import layer.awareness.goalmodel.*;
+import cartago.Artifact;
+import cartago.LINK;
+import cartago.OPERATION;
+import layer.awareness.Goal;
+import layer.awareness.goalmodel.GoalModel;
 import layer.semantic.AssumptionSet;;
 
+@SuppressWarnings("unused")
 public class Specification extends Artifact {
 
 	private String spec_id;
@@ -19,39 +20,38 @@ public class Specification extends Artifact {
 	private List<Goal> goalset;
 	private GoalModel goal_model;
 	private AssumptionSet assumptions;
-	
+
 	/* data ready for messages */
 	private String goalset_term;
 	private String goal_model_term;
 	private String assumptions_term;
 
-	void init(String spec_id,String domain_name) {
+	void init(String spec_id, String domain_name) {
 		this.spec_id = spec_id;
 		this.domain_name = domain_name;
 		goalset = new LinkedList<Goal>();
-		goal_model=null;
+		goal_model = null;
 		assumptions = new AssumptionSet();
 	}
-	
+
 	@OPERATION
 	void load_from_DB() {
-		//TODO
+		// TODO
 	}
 
 	@LINK
 	void get_goal_list_term() {
-		//TODO
+		// TODO
 	}
 
 	@LINK
 	void get_goalmodel_term() {
-		//TODO
+		// TODO
 	}
 
 	@LINK
 	void get_domain_assumption_term() {
-		//TODO
+		// TODO
 	}
 
 }
-

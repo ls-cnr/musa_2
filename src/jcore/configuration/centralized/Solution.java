@@ -2,7 +2,7 @@ package configuration.centralized;
 
 /**
  * This class describes one solution.
- * 
+ *
  * @author Mirko Avantaggiato
  *
  */

@@ -3,7 +3,7 @@ package configuration.distributed;
 
 /**
  * This class describes one solution.
- * 
+ *
  * @author Mirko Avantaggiato
  *
  */

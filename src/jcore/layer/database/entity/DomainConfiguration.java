@@ -18,18 +18,20 @@ import javax.persistence.Table;
 @Table(name = "domain_configuration", catalog = "musa_db")
 public class DomainConfiguration implements java.io.Serializable {
 
+	private static final long serialVersionUID = 1L;
+
 	/** The id domain configuration. */
 	private int idDomainConfiguration;
-	
+
 	/** The domain. */
 	private Domain domain;
-	
+
 	/** The name. */
 	private String name;
-	
+
 	/** The value. */
 	private String value;
-	
+
 	/** The description. */
 	private String description;
 
