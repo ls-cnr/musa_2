@@ -1,9 +1,5 @@
 /* OBS+ Abstract Service agent */
 
-{ include("$jacamoJar/templates/common-cartago.asl") }
-{ include("$jacamoJar/templates/common-moise.asl") }
-{ include("$jacamoJar/templates/org-obedient.asl") }
-
 { include("inc/common_negotiation.asl") }
 
 { begin namespace(priv, local) }
@@ -113,9 +109,14 @@
         .fail;
     }.
 
-+commitTo(scheme, SchName)[source(A)]
++commitTo(SchName)[source(A)]
 :
     priv::sc(S) & A = S
 <-
     +priv::commitment(A, mAbstractService, SchName);
     commitMission(mAbstractService)[artifact_name(SchName)].
+
+
+{ include("$jacamoJar/templates/common-cartago.asl") }
+{ include("$jacamoJar/templates/common-moise.asl") }
+{ include("$jacamoJar/templates/org-obedient.asl") }

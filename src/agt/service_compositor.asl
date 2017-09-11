@@ -18,7 +18,7 @@
 
     valid_round :- round(T) & deadline(Tmax) & T <= Tmax.
 
-    +!create_services([service(Name, URI)|R])[source(self)]
+    +!create_services([service(Name, URI)|R])
     :
         numberOfServices(N) & attributes(QoS) & deadline(T)
     <-
@@ -32,15 +32,15 @@
 
 { end }
 
-::bestOffersPackage([]).
-::agreement(0).
-::paretoOptimalAgreement(0).
+bestOffersPackage([]).
+agreement(0).
+paretoOptimalAgreement(0).
 
 @p1
-+!start(AS, QoS, C, T) : priv::~init
++!start(Services, QoS, C, T) : priv::~init
 <-
-    if (.length(AS, ASlength) & ASlength = 1) {
-        .print("*** no need to negotiate on 1 AS, aborting"); .fail;
+    if (.length(Services, Slength) & Slength = 1) {
+        .print("*** no need to negotiate on 1 service, aborting"); .fail;
     };
 
     +priv::attributes(QoS); +priv::constraints(C); +priv::deadline(T);
@@ -71,7 +71,7 @@
     .print("*** initialising MAS");
 
     // create services
-    !priv::create_services(AS);
+    !priv::create_services(Services);
     .wait(priv::requested_services_initialised, 5 * 1000);
     .findall(X, ::play(X, abstract_service, _), AS_list);
     +priv::services(AS_list);
@@ -85,7 +85,7 @@
     focus(SchArtId);
     .my_name(Me); setOwner(Me)[artifact_id(SchArtId)];
     addScheme(statusscheme)[artifact_id(GrArtId)];
-    .broadcast(tell, commitTo(scheme, statusscheme));
+    .broadcast(tell, commitTo(statusscheme));
 
     .print("waiting for obligation commitments");
     while (priv::~init) {

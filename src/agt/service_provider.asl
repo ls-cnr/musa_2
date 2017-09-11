@@ -1,9 +1,5 @@
 /* OBS+ Service Provider agent */
 
-{ include("$jacamoJar/templates/common-cartago.asl") }
-{ include("$jacamoJar/templates/common-moise.asl") }
-{ include("$jacamoJar/templates/org-obedient.asl") }
-
 { begin namespace(priv, local) }
 
     ~init.
@@ -42,7 +38,7 @@
     .wait(500);
     !join.
 
-+commitTo(scheme, SchName)[source(A)]
++commitTo(SchName)[source(A)]
 :
     sc(S) & A = S
 <-
@@ -66,3 +62,8 @@
     -+offer(NewOffer);
     .my_name(Me);
     .send(A, tell, adjusted(Me)).
+
+
+{ include("$jacamoJar/templates/common-cartago.asl") }
+{ include("$jacamoJar/templates/common-moise.asl") }
+{ include("$jacamoJar/templates/org-obedient.asl") }

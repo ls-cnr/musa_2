@@ -9,17 +9,23 @@
 /**
  * Select the optimal composition for given service types list.
  *
- * @param AS list of service types in the form of (name, uri) string predicates:
- *        'name' refers to service type name, while
- *        'uri' refers to an URI of its description
- * @param QoS list of Quality of Service attributes
- * @param C list of global constraints (one for each QoS attribute)
- * @param T maximum number of rounds allowed in the negotiation
+ * @param Services
+ * list of service types in the form of (name, uri) string predicates, where
+ * 'name' refers to service type name, and 'uri' refers to an URI of its description
+ *
+ * @param QoS
+ * list of Quality of Service attributes
+ *
+ * @param C
+ * list of global constraints (one for each QoS attribute)
+ *
+ * @param T
+ * maximum number of rounds allowed in the negotiation
  */
-+!start(AS, QoS, C, T)
++!start(Services, QoS, C, T)
 <-
     .include("service_compositor.asl", SC);
-    !!SC::start(AS, QoS, C, T);
+    !!SC::start(Services, QoS, C, T);
     .wait("+SC::done", 60 * 1000); // wait until completion or some timeout
     ?SC::bestOffersPackage(B);
     if (SC::pareto_optimal_agreement(A) & A = 1) {
