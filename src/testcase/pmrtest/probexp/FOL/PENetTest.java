@@ -1,8 +1,15 @@
-package b2b_cloud_scenario;
+package pmrtest.probexp.FOL;
 
+import static org.junit.Assert.*;
+
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
+
+import org.junit.Before;
+import org.junit.Ignore;
+import org.junit.Test;
 
 import layer.awareness.AbstractCapability;
 import layer.awareness.Goal;
@@ -21,146 +28,54 @@ import net.sf.tweety.logics.commons.syntax.Variable;
 import net.sf.tweety.logics.fol.syntax.Conjunction;
 import net.sf.tweety.logics.fol.syntax.ExistsQuantifiedFormula;
 import net.sf.tweety.logics.fol.syntax.FOLAtom;
+import net.sf.tweety.logics.fol.syntax.FolFormula;
 import net.sf.tweety.logics.fol.syntax.Negation;
 import net.sf.tweety.lp.asp.parser.ParseException;
 import net.sf.tweety.lp.asp.syntax.DLPAtom;
 import pmr.graph.WorldNode;
 import pmr.probexp.ENode;
+import pmr.probexp.ExpansionNode;
+import pmr.probexp.MultipleExpansionNode;
 import pmr.probexp.ProblemExploration;
 import translator.ExtDLPHead;
 
-public class B2BCloudSetup {
+public class PENetTest {
 
-	private StateOfWorld wStart;
-	private StateOfWorld startNode;
-	private StateOfWorld regAndCloud;
-	private StateOfWorld regAndCloud2;
-	private StateOfWorld regNoCloud;
-	private StateOfWorld known;
-	private StateOfWorld unknown;
-	private StateOfWorld uncompleteRegForm;
-	private StateOfWorld acceptedOrderNoCloud;
-	private StateOfWorld acceptedOrderCloud;
-	private StateOfWorld refusedOrderNoCloud;
-	private StateOfWorld refusedOrderCloud;
-	private StateOfWorld notifyFailureCloud;
-	private StateOfWorld notifyFailureNoCloud;
-	private StateOfWorld availableInvoiceCloud;
-	private StateOfWorld availableInvoiceNoCloud;
-	private StateOfWorld uploadedOnUserCloud;
-	private StateOfWorld uploadedOnPrivateCloud;
-	private StateOfWorld sharedLink;
-	private StateOfWorld notifiedStoreHouseCloud;
-	private StateOfWorld notifiedStoreHouseNoCloud;
-
-	private WorldNode nodewStart;
-	private WorldNode noderegAndCloud;
-	private WorldNode noderegNoCloud;
-	private WorldNode nodeknown;
-	private WorldNode nodeunknown;
-	private WorldNode nodeuncompleteRegForm;
-	private WorldNode nodeacceptedOrderNoCloud;
-	private WorldNode nodeacceptedOrderCloud;
-	private WorldNode noderefusedOrderNoCloud;
-	private WorldNode noderefusedOrderCloud;
-	private WorldNode nodenotifyFailureCloud;
-	private WorldNode nodenotifyFailureNoCloud;
-	private WorldNode nodeavailableInvoiceCloud;
-	private WorldNode nodeavailableInvoiceNoCloud;
-	private WorldNode nodeuploadedOnUserCloud;
-	private WorldNode nodeuploadedOnPrivateCloud;
-	private WorldNode nodesharedLink;
-	private WorldNode nodenotifiedStoreHouseCloud;
-	private WorldNode nodenotifiedStoreHouseNoCloud;
-
-	private ENode eStart;
-	private ENode eregAndCloud;
-	private ENode eregNoCloud;
-	private ENode eknown;
-	private ENode eunknown;
-	private ENode euncompleteRegForm;
-	private ENode eacceptedOrderNoCloud;
-	private ENode eacceptedOrderCloud;
-	private ENode erefusedOrderNoCloud;
-	private ENode erefusedOrderCloud;
-	private ENode enotifyFailureCloud;
-	private ENode enotifyFailureNoCloud;
-	private ENode eavailableInvoiceCloud;
-	private ENode eavailableInvoiceNoCloud;
-	private ENode euploadedOnUserCloud;
-	private ENode euploadedOnPrivateCloud;
-	private ENode esharedLink;
-	private ENode enotifiedStoreHouseCloud;
-	private ENode enotifiedStoreHouseNoCloud;
-
-	private AbstractCapability NSM;
-	private AbstractCapability SFL;
-	private AbstractCapability UOPCS;
-	private AbstractCapability UOUCS;
-	private AbstractCapability GI;
-	private AbstractCapability NSF;
-	private AbstractCapability CS;
-	private AbstractCapability WUD;
-	private AbstractCapability SRF;
-	private AbstractCapability CU;
-	private AbstractCapability AU;
-
-	private Constant a_user = new Constant("a_user");
-	private Constant an_order = new Constant("an_order");
-	private Constant the_user_data = new Constant("the_user_data");
-	private Constant the_registration_form = new Constant("the_registration_form");
-	private Constant failure_order = new Constant("failure_order");
-	private Constant the_invoice = new Constant("the_invoice");
-	private Constant the_delivery_order = new Constant("the_delivery_order");
-	private Constant a_storehouse_manager = new Constant("a_storehouse_manager");
-	private Constant the_user_space = new Constant("the_user_space");
-	private Constant the_system_space = new Constant("the_system_space");
+	private AssumptionSet domain;
+	private GoalTreeModel model;
+	private ProblemExploration problem; 
+	
 
 	Variable doc = new Variable("Doc");
 	Variable usr = new Variable("Usr");
 	Variable mng = new Variable("Mng");
 	Variable fail = new Variable("Fail");
-
 	
-	private GoalTreeModel model;
-	private ArrayList<Token> startTokens;
-
-	private AssumptionSet domain;
-
-	public ArrayList<AbstractCapability> getCapabilities() {
-		ArrayList<AbstractCapability> al = new ArrayList<AbstractCapability>();
-		al.add(NSM);
-		al.add(SFL);
-		al.add(UOPCS);
-		al.add(UOUCS);
-		al.add(GI);
-		al.add(NSF);
-		al.add(CS);
-		al.add(WUD);
-		al.add(SRF);
-		al.add(CU);
-		al.add(AU);
-		return al;
-	}
-
-	public WorldNode getNodewStart() {
-		return this.nodewStart;
-	}
-
-	public GoalTreeModel getGoalModel() {
-		return this.model;
-
-	}
-
-	public AssumptionSet getDomain() {
-		return this.domain;
-	}
-
-	public ArrayList<Token> getStartTokens() {
-		return this.startTokens;
-	}
-
-	public B2BCloudSetup() {
+	Constant a_user = new Constant("a_user");
+	Constant an_order = new Constant("an_order");
+	Constant the_user_data = new Constant("the_user_data");
+	Constant the_registration_form = new Constant("the_registration_form");
+	Constant failure_order = new Constant("failure_order");
+	Constant the_invoice = new Constant("the_invoice");
+	Constant the_delivery_order = new Constant("the_delivery_order");
+	Constant a_storehouse_manager = new Constant("a_storehouse_manager");
+	Constant the_user_space = new Constant("the_user_space");
+	Constant the_system_space = new Constant("the_system_space");
+	
+	AbstractCapability CU;
+	AbstractCapability AU;
+	AbstractCapability SRF;
+	AbstractCapability WUD;
+	AbstractCapability CS;
+	AbstractCapability NSF;
+	AbstractCapability GI;
+	AbstractCapability UOUCS;
+	AbstractCapability UOPCS;
+	AbstractCapability SFL;
+	AbstractCapability NSM;
+	
+	@Before
+	public void init() {
 		domain = new AssumptionSet();	 
 		try {
 	
@@ -652,290 +567,153 @@ public class B2BCloudSetup {
 		model.addOrArcs(TPO, secondLevel);
 		model.addAndArcs(TPAO, thirdLevel);
 		
-		model.printModel();
-				
-		wStart = new StateOfWorld(); 
+		problem = new ProblemExploration(model, new ArrayList<AbstractCapability>(), domain);
+		
+		StateOfWorld wStart = new StateOfWorld(); 
 		try {
 		  wStart.addFact_asString("order(an_order).");
 		  wStart.addFact_asString("available(an_order).");
 		  wStart.addFact_asString("user(a_user).");
 		  wStart.addFact_asString("user_data(the_user_data).");
-		  
 		} catch (ParseException e) {
 		  e.printStackTrace();
 		} catch (layer.semantic.exception.NotAllowedInAStateOfWorld e) {
-			e.printStackTrace();
+		  e.printStackTrace();
 		}
-
-		/*
-		 * this.wStart.addFact_asASP(new ExtDLPHead(new DLPAtom("order",
-		 * an_order))); this.wStart.addFact_asASP(new ExtDLPHead(new
-		 * DLPAtom())); this.wStart.addFact_asASP(new ExtDLPHead(new
-		 * DLPAtom("available", an_order))); this.wStart.addFact_asASP(new
-		 * ExtDLPHead(new DLPAtom("user", a_user)));
-		 * this.wStart.addFact_asASP(new ExtDLPHead(new DLPAtom("user_data",
-		 * the_user_data)));
-		 */
-		this.nodewStart = new WorldNode(this.wStart);
-
-		/* Model construction */
-		model = new GoalTreeModel(THO);
-		firstLevel = new ArrayList<>();
-		firstLevel.add(TWO);
-		firstLevel.add(TPO);
-		secondLevel = new ArrayList<>();
-		secondLevel.add(TPAO);
-		secondLevel.add(TNF);
-		thirdLevel = new ArrayList<>();
-		thirdLevel.add(TNI);
-		thirdLevel.add(TDO);
-
-		model.addAndArcs(THO, firstLevel);
-		model.addOrArcs(TPO, secondLevel);
-		model.addAndArcs(TPAO, thirdLevel);
-
-		this.startTokens = new ArrayList<>();
-		this.startTokens.add(new Token("p3"));
-		this.startTokens.add(new Token("p4"));
-
-		this.noderegAndCloud = new WorldNode(this.regAndCloud);
-		this.noderegNoCloud = new WorldNode(this.regNoCloud);
-		this.nodeknown = new WorldNode(this.known);
-		this.nodeunknown = new WorldNode(this.unknown);
-		this.nodeuncompleteRegForm = new WorldNode(this.uncompleteRegForm);
-		this.nodeacceptedOrderNoCloud = new WorldNode(this.acceptedOrderNoCloud);
-		this.nodeacceptedOrderCloud = new WorldNode(this.acceptedOrderCloud);
-		this.noderefusedOrderNoCloud = new WorldNode(this.refusedOrderNoCloud);
-		this.noderefusedOrderCloud = new WorldNode(this.refusedOrderCloud);
-		this.nodeavailableInvoiceNoCloud = new WorldNode(this.availableInvoiceNoCloud);
-		this.nodenotifyFailureNoCloud = new WorldNode(this.notifyFailureNoCloud);
-		this.nodeuploadedOnPrivateCloud = new WorldNode(this.uploadedOnPrivateCloud);
-
-		this.eregAndCloud = new ENode(this.regAndCloud);
-		this.euncompleteRegForm = new ENode(this.uncompleteRegForm);
-		this.eregNoCloud = new ENode(this.regNoCloud);
-		this.eknown = new ENode(this.known);
-		this.eunknown = new ENode(this.known);
-		this.eacceptedOrderCloud = new ENode(this.acceptedOrderCloud);
-		this.eacceptedOrderNoCloud = new ENode(this.acceptedOrderNoCloud);
-		this.erefusedOrderCloud = new ENode(this.refusedOrderCloud);
-		this.erefusedOrderNoCloud = new ENode(this.refusedOrderNoCloud);
-		this.eavailableInvoiceNoCloud = new ENode(this.availableInvoiceNoCloud);
-		this.enotifyFailureNoCloud = new ENode(this.notifyFailureNoCloud);
-
+		
+		ArrayList<Token> tokens = new ArrayList<>();
+		tokens.add(new Token("p3"));
+		tokens.add(new Token("p4"));
+		
+		problem.addToVisit(new WorldNode(wStart), tokens, 9);
 	}
-
-	private void setup_goals() {
-		Variable doc = new Variable("Doc");
-		Variable usr = new Variable("Usr");
-		Variable mng = new Variable("Mng");
-		Variable fail = new Variable("Fail");
-
-		Constant a_user = new Constant("a_user");
-		Constant an_order = new Constant("an_order");
-		Constant the_user_data = new Constant("the_user_data");
-		Constant the_registration_form = new Constant("the_registration_form");
-		Constant failure_order = new Constant("failure_order");
-		Constant the_invoice = new Constant("the_invoice");
-		Constant the_delivery_order = new Constant("the_delivery_order");
-		Constant a_storehouse_manager = new Constant("a_storehouse_manager");
-		Constant the_user_space = new Constant("the_user_space");
-		Constant the_system_space = new Constant("the_system_space");
-
-		/* to_handle_order */
-		FOLAtom THO_received = new FOLAtom(new Predicate("received", 2));
-		THO_received.addArgument(doc);
-		THO_received.addArgument(usr);
-		FOLAtom THO_order = new FOLAtom(new Predicate("order", 1));
-		THO_order.addArgument(doc);
-		FOLAtom THO_user = new FOLAtom(new Predicate("user", 1));
-		THO_user.addArgument(usr);
-		Set<Variable> THO_var = new HashSet<Variable>();
-		THO_var.add(doc);
-		THO_var.add(usr);
-		Condition THO_tc = new Condition(new ExistsQuantifiedFormula(
-				new Conjunction(THO_received, new Conjunction(THO_order, THO_user)), THO_var));
-
-		FOLAtom THO_processed = new FOLAtom(new Predicate("processed", 1));
-		THO_processed.addArgument(doc);
-		Condition THO_fs = new Condition(new ExistsQuantifiedFormula(new Conjunction(THO_processed, THO_order), doc));
-
-		Goal THO = new Goal("to_handle_order", THO_tc, THO_fs);
-
-		/* to_wait_order */
-		FOLAtom TWO_received = new FOLAtom(new Predicate("received", 2));
-		TWO_received.addArgument(doc);
-		TWO_received.addArgument(usr);
-		FOLAtom TWO_order = new FOLAtom(new Predicate("order", 1));
-		TWO_order.addArgument(doc);
-		FOLAtom TWO_user = new FOLAtom(new Predicate("user", 1));
-		TWO_user.addArgument(usr);
-		Set<Variable> TWO_var = new HashSet<Variable>();
-		TWO_var.add(doc);
-		TWO_var.add(usr);
-		Condition TWO_tc = new Condition(new ExistsQuantifiedFormula(
-				new Conjunction(TWO_received, new Conjunction(TWO_order, TWO_user)), TWO_var));
-
-		FOLAtom TWO_available = new FOLAtom(new Predicate("available", 1));
-		TWO_available.addArgument(doc);
-		Condition TWO_fs = new Condition(new ExistsQuantifiedFormula(new Conjunction(TWO_available, TWO_order), doc));
-
-		 Goal TWO = new Goal("to_wait_order", TWO_tc, TWO_fs);
-
-		/* to_process_order */
-		FOLAtom TPO_available = new FOLAtom(new Predicate("available", 1));
-		TPO_available.addArgument(doc);
-		FOLAtom TPO_order = new FOLAtom(new Predicate("order", 1));
-		TPO_order.addArgument(doc);
-		FOLAtom TPO_registered = new FOLAtom(new Predicate("registered", 1));
-		TPO_registered.addArgument(usr);
-		FOLAtom TPO_user = new FOLAtom(new Predicate("user", 1));
-		TPO_user.addArgument(usr);
-		Set<Variable> TPO_var = new HashSet<Variable>();
-		TPO_var.add(doc);
-		TPO_var.add(usr);
-		Condition TPO_tc = new Condition(new ExistsQuantifiedFormula(
-				new Conjunction(new Conjunction(TPO_available, TPO_order), new Conjunction(TPO_registered, TPO_user)),
-				TPO_var));
-
-		FOLAtom TPO_processed = new FOLAtom(new Predicate("processed", 1));
-		TPO_processed.addArgument(doc);
-		Condition TPO_fs = new Condition(new ExistsQuantifiedFormula(new Conjunction(TPO_processed, TPO_order), doc));
-
-		Goal TPO = new Goal("to_process_order", TPO_tc, TPO_fs);
-
-		/* to_process_accepted_order */
-		FOLAtom TPAO_accepted = new FOLAtom(new Predicate("accepted", 1));
-		TPAO_accepted.addArgument(doc);
-		FOLAtom TPAO_order = new FOLAtom(new Predicate("order", 1));
-		TPAO_order.addArgument(doc);
-		Condition TPAO_tc = new Condition(new ExistsQuantifiedFormula(new Conjunction(TPAO_accepted, TPAO_order), doc));
-
-		FOLAtom TPAO_send = new FOLAtom(new Predicate("sent", 2));
-		TPAO_send.addArgument(doc);
-		TPAO_send.addArgument(mng);
-		FOLAtom TPAO_delivery = new FOLAtom(new Predicate("delivery_order", 1));
-		TPAO_delivery.addArgument(doc);
-		FOLAtom TPAO_manager = new FOLAtom(new Predicate("storehouse_manager", 1));
-		TPAO_manager.addArgument(mng);
-		Set<Variable> TPAO_var = new HashSet<Variable>();
-		TPAO_var.add(doc);
-		TPAO_var.add(mng);
-		Condition TPAO_fs = new Condition(new ExistsQuantifiedFormula(
-				new Conjunction(TPAO_send, new Conjunction(TPAO_delivery, TPAO_manager)), TPAO_var));
-
-		Goal  TPAO = new Goal("to_process_accepted_order", TPAO_tc, TPAO_fs);
-
-		/* to_notify_invoce */
-		FOLAtom TNI_registered = new FOLAtom(new Predicate("registered", 1));
-		TNI_registered.addArgument(usr);
-		FOLAtom TNI_user = new FOLAtom(new Predicate("user", 1));
-		TNI_user.addArgument(usr);
-		FOLAtom TNI_available = new FOLAtom(new Predicate("available", 1));
-		TNI_available.addArgument(doc);
-		FOLAtom TNI_invoice = new FOLAtom(new Predicate("invoice", 1));
-		TNI_invoice.addArgument(doc);
-		Set<Variable> TNI_var1 = new HashSet<Variable>();
-		TNI_var1.add(usr);
-		TNI_var1.add(doc);
-		Condition TNI_tc = new Condition(new ExistsQuantifiedFormula(
-				new Conjunction(new Conjunction(TNI_registered, TNI_user), new Conjunction(TNI_available, TNI_invoice)),
-				TNI_var1));
-
-		FOLAtom TNI_send = new FOLAtom(new Predicate("sent", 2));
-		TNI_send.addArgument(doc);
-		TNI_send.addArgument(usr);
-		Set<Variable> TNI_var2 = new HashSet<Variable>();
-		TNI_var2.add(doc);
-		TNI_var2.add(usr);
-		Condition TNI_fs = new Condition(new ExistsQuantifiedFormula(
-				new Conjunction(TNI_send, new Conjunction(TNI_invoice, TNI_user)), TNI_var2));
-
-		 Goal TNI = new Goal("to_notify_invoice", TNI_tc, TNI_fs);
-
-		/* to_deliver_order */
-		FOLAtom TDO_send = new FOLAtom(new Predicate("sent", 2));
-		TDO_send.addArgument(doc);
-		TDO_send.addArgument(usr);
-		FOLAtom TDO_invoice = new FOLAtom(new Predicate("invoice", 1));
-		TDO_invoice.addArgument(doc);
-		FOLAtom TDO_user = new FOLAtom(new Predicate("user", 1));
-		TDO_user.addArgument(usr);
-		Set<Variable> TDO_var1 = new HashSet<Variable>();
-		TDO_var1.add(doc);
-		TDO_var1.add(usr);
-		Condition TDO_tc = new Condition(new ExistsQuantifiedFormula(
-				new Conjunction(TDO_send, new Conjunction(TDO_invoice, TDO_user)), TDO_var1));
-
-		FOLAtom TDO_delivery = new FOLAtom(new Predicate("delivery_order", 1));
-		TDO_delivery.addArgument(doc);
-		FOLAtom TDO_manager = new FOLAtom(new Predicate("storehouse_manager", 1));
-		TDO_manager.addArgument(mng);
-		Set<Variable> TDO_var2 = new HashSet<Variable>();
-		TDO_var2.add(doc);
-		TDO_var2.add(mng);
-		Condition TDO_fs = new Condition(new ExistsQuantifiedFormula(
-				new Conjunction(TDO_send, new Conjunction(TDO_delivery, TDO_manager)), TDO_var2));
-
-		 Goal TDO = new Goal("to_delivery_order", TDO_tc, TDO_fs);
-
-		/* to_notify_failure */
-		FOLAtom TNF_refused = new FOLAtom(new Predicate("refused", 1));
-		TNF_refused.addArgument(doc);
-		FOLAtom TNF_order = new FOLAtom(new Predicate("order", 1));
-		TNF_order.addArgument(doc);
-		FOLAtom TNF_registered = new FOLAtom(new Predicate("registered", 1));
-		TNF_registered.addArgument(usr);
-		FOLAtom TNF_user = new FOLAtom(new Predicate("user", 1));
-		TNF_user.addArgument(usr);
-		Set<Variable> TNF_var1 = new HashSet<Variable>();
-		TNF_var1.add(doc);
-		TNF_var1.add(usr);
-		Condition TNF_tc = new Condition(new ExistsQuantifiedFormula(
-				new Conjunction(new Conjunction(TNF_refused, TNF_order), new Conjunction(TNF_registered, TNF_user)),
-				TNF_var1));
-
-		FOLAtom TNF_send = new FOLAtom(new Predicate("sent", 2));
-		TNF_send.addArgument(new Constant("failure_order"));
-		TNF_send.addArgument(usr);
-		Condition TNF_fs = new Condition(new ExistsQuantifiedFormula(new Conjunction(TNF_send, TNF_user), usr));
-
-		 Goal TNF = new Goal("to_notify_failure", TNF_tc, TNF_fs);
-	}
-
-	/**
-	 * 
-	 */
-	private void setup_domain_assumption() {
-		this.domain = new AssumptionSet();
+	
+	@Ignore
+	@Test
+	public void test1() {
+				
+		problem.addCapability(CU);
+		
+		problem.expandNode();
+		
+		StateOfWorld secondStart = new StateOfWorld(); 
 		try {
-
-			domain.addAssumption_asString("role(X) :- user(X).");
-			domain.addAssumption_asString("role(X) :- storehouse_manager(X).");
-			domain.addAssumption_asString("document(X) :- order(X).");
-			domain.addAssumption_asString("document(X) :- invoice(X).");
-			domain.addAssumption_asString("document(X) :- user_data(X).");
-			domain.addAssumption_asString("document(X) :- registration_form(X).");
-			domain.addAssumption_asString("order(X) :- delivery_order(X).");
-			domain.addAssumption_asString(
-					"processed(X) :- accepted(X), order(X), sent(Y,Z), delivery_order(Y), storehouse_manager(Z).");
-			domain.addAssumption_asString("processed(X) :- refused(X), order(X), sent(failure_order,Y), user(Y).");
-			domain.addAssumption_asString(
-					"notified(X,Y) :- uploaded_on_cloud(X), document(X), has_cloud_space(Y), user(Y).");
-			domain.addAssumption_asString("notified(X,Y) :- mailed_perm_link(X,Y), document(X), user(Y).");
-
+			secondStart.addFact_asString("order(an_order).");
+			secondStart.addFact_asString("available(an_order).");
+			secondStart.addFact_asString("user(a_user).");
+			secondStart.addFact_asString("user_data(the_user_data).");
+			secondStart.addFact_asString("registered(a_user).");
+			secondStart.addFact_asString("has_cloud_space(a_user).");
 		} catch (ParseException e) {
 			e.printStackTrace();
-		} catch (layer.semantic.exception.NotAllowedInAnAssumptionSet e) {
+		} catch (layer.semantic.exception.NotAllowedInAStateOfWorld e) {
 			e.printStackTrace();
 		}
 		
-		nodewStart = new WorldNode(wStart);
+		ENode e = new ENode(secondStart);
+		MultipleExpansionNode nk = (MultipleExpansionNode) problem.getExpandedList().get(0);
 		
-		startTokens = new ArrayList<>();
-		startTokens.add(new Token("p3"));
-		startTokens.add(new Token("p4"));
+		for( ENode ex : problem.getExpandedList().get(0).getDestination() ){
+			System.out.println(nk.getScenario(ex) + " " + ex.getWorldState().getFactsNumber());
+		}
 		
+		assertEquals( problem.getExpandedList().size(), 1);
+		assertTrue( problem.getExpandedList().get(0).getDestination().contains(e) );
+		
+	}
+	
+	@Ignore
+	@Test
+	public void testNet1() {
+		problem.addCapability(CU);
+		problem.expandNode();
+		
+		MultipleExpansionNode nk = (MultipleExpansionNode) problem.getExpandedList().get(0);
+		
+		for( ENode e : nk.getDestination() ){
+			String scenarioName = nk.getScenario(e);
+			System.out.print(scenarioName + " ");
+			for( Token tok : e.getTokens() )
+				System.out.print(tok.getPlaceName() + " ");
+			System.out.println("");
+			switch( scenarioName ){
+			 case "UnknownUser":
+				 assertEquals(e.getTokens().get(1).getPlaceName(), "p4");
+				 break;
+			 case "RegisteredUserWithCloud":
+				 assertEquals(e.getTokens().get(1).getPlaceName(), "p5");
+				 break;
+			 case "RegisteredUserWithoutCloud":
+				 assertEquals(e.getTokens().get(1).getPlaceName(), "p5");
+				 break;
+			 case "KnownUser":
+				 assertEquals(e.getTokens().get(1).getPlaceName(), "p4");
+				 break;
+			}
+		}
+	}
+
+	@Ignore
+	@Test
+	public void testNet2() {
+		problem.addCapability(CU);
+		problem.addCapability(CS);
+		while( !problem.toVisitIsEmpty())
+			problem.expandNode();
+		
+		MultipleExpansionNode nk = (MultipleExpansionNode) problem.getExpandedList().get(1);
+		//ExpansionNode nk = problem.getHighestExpansion();
+			
+		for( ENode e : nk.getDestination() ){
+			String scenarioName = nk.getScenario(e);
+			System.out.print(scenarioName + " ");
+			for( Token tok : e.getTokens() )
+				System.out.print(tok.getPlaceName() + " ");
+			System.out.println("");
+		}
+		System.out.println(nk.getDestination().get(0).getWorldState().getFactsList());
+	}
+	
+	@Test
+	public void testNet3() {
+		problem.addCapability(NSF);
+		
+		StateOfWorld refusedOrderNoCloud = new StateOfWorld();
+		try{
+			refusedOrderNoCloud.addFact_asString("order(an_order).");
+			refusedOrderNoCloud.addFact_asString("user(a_user).");
+			refusedOrderNoCloud.addFact_asString("logged(a_user).");
+			refusedOrderNoCloud.addFact_asString("registered(a_user).");
+			refusedOrderNoCloud.addFact_asString("refused(an_order).");
+			refusedOrderNoCloud.addFact_asString("order_failure(an_order).");
+		} catch (ParseException e) {
+			e.printStackTrace();
+		} catch (layer.semantic.exception.NotAllowedInAStateOfWorld e) {
+			e.printStackTrace();
+		}
+		
+		WorldNode en = new WorldNode(refusedOrderNoCloud);
+		ArrayList<Token> tokns = new ArrayList<>();
+		tokns.add(new Token("p3"));
+		tokns.add(new Token("p5"));
+		
+		problem.addToVisit(en, tokns, 5);
+		
+		while( !problem.toVisitIsEmpty()){
+			problem.expandNode();
+		
+		//MultipleExpansionNode nk = (MultipleExpansionNode) problem.getExpandedList().get(0);
+		ExpansionNode nk = problem.getHighestExpansion();
+			
+		for( ENode e : nk.getDestination() ){
+			//String scenarioName = nk.getScenario(e).getName();
+			//System.out.print(scenarioName + " ");
+			for( Token tok : e.getTokens() )
+				System.out.print(tok.getPlaceName() + " ");
+			System.out.println("");
+		}
+		System.out.println(nk.getDestination().get(0).getWorldState().getFactsList());
+		}
 	}
 
 }

@@ -1,33 +1,20 @@
 package translator;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import jason.asSyntax.ListTermImpl;
 import jason.asSyntax.NumberTermImpl;
 import jason.asSyntax.StringTermImpl;
 import jason.asSyntax.Structure;
 import jason.asSyntax.Term;
-import layer.awareness.net.Token;
+import layer.awareness.LTL.net.TokensConfiguration;
 import layer.semantic.StateOfWorld;
-import net.sf.tweety.logics.commons.syntax.Constant;
 import net.sf.tweety.lp.asp.parser.ParseException;
-import net.sf.tweety.lp.asp.syntax.DLPAtom;
-import net.sf.tweety.lp.asp.syntax.DLPHead;
-import pmr.graph.WorldNode;
 import pmr.probexp.ENode;
 
 public class JasonENode {
+	
 	public static Term object_to_term(ENode node) {
 		Structure term = new Structure("enode",4);
 		Term w = JasonStateOfWorld.object_to_term(node.getWorldState());
-		ListTermImpl token_list = new ListTermImpl();
-		if (node.getTokens() != null) {
-			for (Token t : node.getTokens()) {
-				Term token_term = JasonToken.object_to_term(t);
-				token_list.add(token_term);
-			}			
-		}
+		Term tokens = JasonTokensConfiguration.object_to_term(node.getTokens());
 		NumberTermImpl score = new NumberTermImpl(node.getScore());
 		StringTermImpl exit = null;
 		if (node.isExitNode()) {
@@ -37,7 +24,7 @@ public class JasonENode {
 		}
 		
 		term.addTerm(w);
-		term.addTerm(token_list);
+		term.addTerm(tokens);
 		term.addTerm(score);
 		term.addTerm(exit);
 		
@@ -50,7 +37,7 @@ public class JasonENode {
 		StateOfWorld w = null;
 		Boolean isExit;
 		int score;
-		ArrayList<Token> tokens = new ArrayList<>();
+		TokensConfiguration tokens = null;
 		
 		if (!term.isStructure()) {
 			throw new TranslateError();
@@ -62,11 +49,10 @@ public class JasonENode {
 				w = JasonStateOfWorld.term_to_object(s.getTerm(0));
 			}catch(TranslateError e1){ throw new TranslateError();}
 			
-			ListTermImpl tokenIterator = (ListTermImpl) s.getTerm(1);
-			List<Term> tokenList = tokenIterator.getAsList();
-			for(Term temp : tokenList){
-				tokens.add(JasonToken.term_to_object(temp));
-			}
+			try{
+				tokens = JasonTokensConfiguration.term_to_object(s.getTerm(1));
+			}catch(TranslateError e1){ throw new TranslateError();}
+			
 			
 			NumberTermImpl number =(NumberTermImpl) s.getTerm(2);
 			score = (int)number.solve();

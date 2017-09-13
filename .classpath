@@ -2,7 +2,6 @@
 <classpath>
 	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry excluding="**/*.asl" kind="src" path="src/agt"/>
-	<classpathentry kind="src" path="src/target/generated-sources/antlr4"/>
 	<classpathentry kind="src" path="lib/rmetzler"/>
 	<classpathentry kind="src" path="src/testcase"/>
 	<classpathentry excluding="*.ptl" kind="src" path="src/int"/>

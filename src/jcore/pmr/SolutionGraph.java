@@ -1,10 +1,9 @@
 package pmr;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 
-import layer.awareness.net.Token;
+import layer.awareness.LTL.net.TokensConfiguration;
 import pmr.graph.WTS;
 import pmr.graph.WorldNode;
 import pmr.probexp.ENode;
@@ -22,7 +21,7 @@ public class SolutionGraph {
 	private WTS wts;
 	
 	/** The token map. */
-	private HashMap<String, ArrayList<Token>> tokenMap;
+	private HashMap<String, TokensConfiguration> tokenMap;
 	
 	/** The score map. */
 	private HashMap<String, Integer> scoreMapping;
@@ -58,7 +57,7 @@ public class SolutionGraph {
 	 *
 	 * @return the token map
 	 */
-	public HashMap<String, ArrayList<Token>> getTokenMap(){
+	public HashMap<String, TokensConfiguration> getTokenMap(){
 		return this.tokenMap;
 	}
 	

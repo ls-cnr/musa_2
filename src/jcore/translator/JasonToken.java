@@ -6,8 +6,8 @@ import jason.asSyntax.NumberTermImpl;
 import jason.asSyntax.StringTermImpl;
 import jason.asSyntax.Structure;
 import jason.asSyntax.Term;
-import layer.awareness.net.MultipleToken;
-import layer.awareness.net.Token;
+import layer.awareness.FOL.net.MultipleToken;
+import layer.awareness.FOL.net.Token;
 
 public class JasonToken {
 

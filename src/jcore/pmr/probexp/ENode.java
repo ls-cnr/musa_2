@@ -1,12 +1,10 @@
 package pmr.probexp;
 
-import java.util.ArrayList;
 import java.util.Comparator;
-
-import layer.awareness.net.Token;
+import layer.awareness.LTL.net.TokensConfiguration;
 import layer.semantic.StateOfWorld;
 import pmr.graph.Node;
-import pmr.graph.WorldNode;
+
 /**
  * The Class ENode.
  * @author Alessandro Fontana
@@ -17,8 +15,8 @@ public class ENode implements Node{
 	/** The WorldNode coming from the WTS */
 	private StateOfWorld node;
 	
-	/** The Tokens to put on the Net associated to the node */
-	private ArrayList<Token> tokens;
+	/** The Tokens Configuration associated with the node to apply on the Nets*/
+	private TokensConfiguration tokens;
 	
 	/** The Score associated to the node */
 	private int score;
@@ -49,7 +47,7 @@ public class ENode implements Node{
 	 * @param exit
 	 *            the Exit condition
 	 */
-	public ENode( StateOfWorld node, ArrayList<Token> tokens, int score, boolean exit ) {
+	public ENode( StateOfWorld node, TokensConfiguration tokens, int score, boolean exit ) {
 		this.node = node;
 		this.tokens = tokens;
 		this.score = score;
@@ -66,12 +64,12 @@ public class ENode implements Node{
 	}
 	
 	/**
-	 * Sets the Tokens List.
+	 * Sets the Tokens Configuration.
 	 *
 	 * @param tokens
-	 *            the new Tokens List
+	 *            the new Tokens Configuration
 	 */
-	public void setTokens(ArrayList<Token> tokens){
+	public void setTokens(TokensConfiguration tokens){
 		this.tokens = tokens;
 	}
 	
@@ -86,21 +84,11 @@ public class ENode implements Node{
 	}
 	
 	/**
-	 * Adds a new Token.
-	 *
-	 * @param token
-	 *            the new Token
-	 */
-	public void addToken(Token token){
-		this.tokens.add(token);
-	}
-	
-	/**
 	 * Gets the Tokens List
 	 *
 	 * @return the Tokens List
 	 */
-	public ArrayList<Token> getTokens() {
+	public TokensConfiguration getTokens() {
 		return tokens;
 	}
 	

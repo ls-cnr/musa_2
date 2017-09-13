@@ -2,16 +2,15 @@ package ltlparsertest;
 
 import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.tree.*;
-import LTL.LTLLexer;
-import LTL.LTLParser;
-import layer.awareness.formulamodel.FormulaBT;
-import layer.awareness.net.PetriNetConstruction;
+import layer.awareness.LTL.formulamodel.FormulaBT;
+import layer.awareness.LTL.target.LTLLexer;
+import layer.awareness.LTL.target.LTLParser;
 
 public class LtlRunner {
 	 
 	public static void main( String[] args) throws Exception {
 		@SuppressWarnings("deprecation")
-		ANTLRInputStream input = new ANTLRInputStream("(F ( a U (F c) )) U a");
+		ANTLRInputStream input = new ANTLRInputStream("!(f R (b U (! (! (!(!(!a)))))))");
 
 		LTLLexer lexer = new LTLLexer(input);
 
@@ -22,6 +21,5 @@ public class LtlRunner {
 		System.out.println(tree.toStringTree(parser)); // print LISP-style tree
 		
 		FormulaBT forTree = new FormulaBT(parser.getStack());
-		new PetriNetConstruction(forTree).printPNS();
 	 }	 
  }

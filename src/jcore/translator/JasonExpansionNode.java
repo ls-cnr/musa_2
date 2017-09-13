@@ -2,18 +2,13 @@ package translator;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map.Entry;
 
-import ch.qos.logback.core.net.SyslogOutputStream;
 import jason.asSyntax.ListTermImpl;
 import jason.asSyntax.NumberTermImpl;
 import jason.asSyntax.StringTermImpl;
 import jason.asSyntax.Structure;
 import jason.asSyntax.Term;
-import layer.awareness.net.Token;
-import layer.semantic.StateOfWorld;
 import pmr.probexp.ENode;
 import pmr.probexp.ExpansionNode;
 import pmr.probexp.MultipleExpansionNode;
