@@ -41,7 +41,7 @@ extends PetrinetObject {
         TRANSITION_TO_PLACE {
             @Override
             public boolean canFire(Place p, int weight) {
-                return true; //MODIFIED ! p.maxTokensReached(weight);
+                return ! p.maxTokensReached(weight);
             }
 
             @Override

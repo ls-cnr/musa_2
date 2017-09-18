@@ -2,6 +2,7 @@
 
 	package layer.awareness.LTL.target;
 	import java.util.*;
+	/** Class auto-generated using ANTLR */
 
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 
@@ -21,15 +22,25 @@ public interface LTLListener extends ParseTreeListener {
 	 */
 	void exitStart(LTLParser.StartContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link LTLParser#atom}.
+	 * Enter a parse tree produced by {@link LTLParser#folfor}.
 	 * @param ctx the parse tree
 	 */
-	void enterAtom(LTLParser.AtomContext ctx);
+	void enterFolfor(LTLParser.FolforContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link LTLParser#atom}.
+	 * Exit a parse tree produced by {@link LTLParser#folfor}.
 	 * @param ctx the parse tree
 	 */
-	void exitAtom(LTLParser.AtomContext ctx);
+	void exitFolfor(LTLParser.FolforContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link LTLParser#arg}.
+	 * @param ctx the parse tree
+	 */
+	void enterArg(LTLParser.ArgContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link LTLParser#arg}.
+	 * @param ctx the parse tree
+	 */
+	void exitArg(LTLParser.ArgContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link LTLParser#expr}.
 	 * @param ctx the parse tree

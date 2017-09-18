@@ -9,6 +9,7 @@ import layer.awareness.AbstractCapability;
 import layer.awareness.DomainEntail;
 import layer.awareness.LTL.formulamodel.FormulaBT;
 import layer.awareness.LTL.net.*;
+import layer.awareness.LTL.net.condition.*;
 import layer.semantic.AssumptionSet;
 import layer.semantic.StateOfWorld;
 import layer.semantic.WorldEvolution;
@@ -80,7 +81,7 @@ public class ProblemExploration {
 	/**
 	 * The main operation, it's used to expand an ENode from the toVisit List.
 	 * It entails if one of is Capability is compatible with the StateOfWorld contained in the ENode.
-	 * If so, it calls a set of methods used to ultimate the expansion, in order: applyExpand, applyNet, score.
+	 * If so, it calls a set of methods used to ultimate the expansion, in order: applyExpand, applyNets, score.
 	 * Finally, whatever the case is, it adds the ENode to the visited List. 
 	 */
 	public void expandNode() {
@@ -104,7 +105,7 @@ public class ProblemExploration {
 						applyNets(expNode.getSource().getTokens(), destination);
 						if(destination.isExitNode() == false)	this.addToVisit(new WorldNode(destination.getWorldState()), destination.getTokens(), destination.getScore());
 					}
-				
+					
 					//Elaborates the Expansion score				
 					score(expNode);
 									
@@ -193,39 +194,24 @@ public class ProblemExploration {
 	
 	/**
 	 * After the expansion a new ENode has been created, but it's empty. This
-	 * method fills up the remaining attributes using the Net.
+	 * method fills up the remaining attributes using Nets.
 	 * 
-	 * For every transition able to fire, it checks if the new state of world
-	 * entails the condition labeled in the transition (trigger condition or
-	 * final state). Then if the condition is true, it fires the token and
-	 * elaborate the new token map. Finally it calls fillENode to fill up the
-	 * ENode.
-	 * 
-	 * It handles the creation of a new Token List considering the OR "special"
-	 * condition. Every Conditional Case has an InitialOrPlace and a FinalOrPlace.
-	 * The InitialOrPlace has a special MultipleToken that allows to start 
-	 * multiple parallel path for that case. In every path, called Branch, every
-	 * new Token is created dependent from the MultipleToken and with his branch
-	 * stored. When the first Token gets to the FinalOrPlace, it wins the "race"
-	 * and all the remaining Tokens in every parallel path are destroyed.
-	 *
-	 * This method is used in applyNet to fill up the remaining attributes in ENode.
-	 * 
-	 * First part consists in setting the list of tokens.
-	 * 
-	 * Second part consists in calculating the Hops in the net and checking if it's an exit node.
-	 * 
-	 * In third part the SCORE is elaborated using a function that follows a color rule.
-	 * The function sets a promising node at a value near 255 to represent WHITE, 0 for BLACK,  or
-	 * in between to represent GRAY.
+	 * It starts applying the tokens from the tokens configuration to the Nets.
+	 * Then it will scan the First Net (the one contained into the tree model root)
+	 * and recursively will check the state of some nets to generate a new token
+	 * configuration. Finally it fills up the ENode with the new configuration and 
+	 * calculates a new score for the ENode.
+	 * The SCORE is elaborated using a function that follows a color rule.
+	 * The function sets a promising node at a value near 0 to represent BLACK, 
+	 * 255 for WHITE, in between to represent GRAY. 
 	 *
 	 * @param startingTokens
-	 *            the list of token to start with
+	 *            the configuration of tokens to start with
 	 * @param enode
 	 *            the new eNode created from expansion
-	 */
-	
+	 */	
 	private void applyNets( TokensConfiguration startingTokens, ENode enode ) {
+		System.out.println("\n|||||||||||||||||||||||\nWorld State:\n" + enode.getWorldState());
 		StateOfWorld state = enode.getWorldState();
 		TokensConfiguration tokens = new TokensConfiguration(startingTokens);
 		
@@ -244,70 +230,133 @@ public class ProblemExploration {
 		enode.setExit( nets.getStartingPN().getNetState().equals("A") );
 		
 		//Calculating Hops
-		int nHop = nets.hop(); 
+		double nHop = nets.hop(); 
 		
 		//Elaborating score
-		int score = 0;
-		if( enode.isExitNode() ) 
-			score = 255;
-		else 
-			score = nHop; //(int) 255 - (255 / net.getNumTransitions()) * nHop;
+		int score = (int)(255 * nHop);
 		enode.setScore(score);
 		
 		//Cleans the net from tokens
 		nets.removeTokens();
 	}
 	
+	/**
+	 * This method is used inside applyNets to scan a Net checking if its State is
+	 * Accepted, Error or Waiting. For every transition able to fire in the net, 
+	 * it checks if the new state of world entails the condition labeled in the 
+	 * transition. The condition can be divided in three different type: Formula, 
+	 * Atomic Proposition and Combined Formula. If it's a Formula, the associated 
+	 * Net would be scanned recursively using formulaCheck. If it's an Atomic 
+	 * Proposition, it would be entailed by DomainEntails. If it's a Combined Formula,
+	 * it holds other two conditions (either Formula or Atomic Proposition) to be 
+	 * satisfied with a logical conjunction. When a condition is satisfied, the 
+	 * associated transition will fire.
+	 *
+	 * @param tokens
+	 *            the tokens
+	 * @param net
+	 *            the net
+	 * @param state
+	 *            the state
+	 * @param visitedNets
+	 *            the visited nets
+	 */
 	private void scanNet( TokensConfiguration tokens, String net, StateOfWorld state, HashSet<String> visitedNets ) {
 		visitedNets.add(net);
 		//Checking compatibility with StateOfWorld for every Transition for Firing
 		for( Transition t : (ArrayList<Transition>) nets.getTransitionsAbleToFire(net) ){
 			if( t.canFire() ){
-				//Take a different path if the transition has a condition containing a Formula, a Proposition or a Composed Formula 
-				TransitionCondition tCond = nets.getTransitionCondition(t);
+				//Take a different path if the transition has a condition containing a Formula, a Atomic Proposition  or a Composed Formula 
+				TransitionCondition tCond = nets.getTransitionCondition(net, t);
 				//Formula
-				if( tCond instanceof FormulaCondition )
-					if( formulaCheck(tCond, tokens, state, visitedNets) )
+				if( tCond instanceof FormulaCondition ){
+					System.out.println("-Net:("+net+")\nStarting checking "+ tCond.getTerm() + " [F] ");
+					if( formulaCheck((FormulaCondition)tCond, tokens, state, visitedNets) )
 						fire(t, tokens, net);	//Fires if the condition matches with the state
-				//Proposition
-				else if( tCond instanceof SimpleCondition )
+					System.out.println("Finished checking "+ tCond.getTerm() + " [F] in Net:("+net+")");
+				}
+				//Atomic Proposition 
+				else if( tCond instanceof SimpleCondition ){
+					System.out.println("-Net:("+net+")\nStarting checking "+ tCond.getTerm() + " [S] ");
 					if( DomainEntail.getInstance().entailsCondition(state, assumptions, ((SimpleCondition) tCond).getCondition()) )
 						fire(t, tokens, net);
+					System.out.println("Finished checking "+ tCond.getTerm() + " [S] in Net:("+net+")");
+				}
 				//Composition
-				else{
+				else if( tCond instanceof CombinationCondition ){
+					System.out.println("-Net:("+net+")\nStarting checking "+ tCond.getTerm() + " [C] ");
 					Boolean[] tmpArr = new Boolean[2];
+					tmpArr[0] = false; tmpArr[1] = false; 
 					int count = 0;
 					for( TransitionCondition tCCond : ((CombinationCondition) tCond).getCond() )
 						//Formula
-						if( tCCond instanceof FormulaCondition )
-							if( formulaCheck(tCCond, tokens, state, visitedNets) )
+						if( tCCond instanceof FormulaCondition ){
+							System.out.println("Starting checking "+ tCCond.getTerm() + " [CF] ");
+							if( formulaCheck((FormulaCondition)tCCond, tokens, state, visitedNets) )
 								tmpArr[count++] = true;	//Fires if the condition matches with the state
-						//Proposition
-						else if( tCCond instanceof SimpleCondition )
+							System.out.println("Finished checking "+ tCCond.getTerm() + " [CF] in Net:("+net+")");
+						}
+						//Atomic Proposition 
+						else if( tCCond instanceof SimpleCondition ){
+							System.out.println("Starting checking "+ tCond.getTerm() + " [CS] ");
 							if( DomainEntail.getInstance().entailsCondition(state, assumptions, ((SimpleCondition) tCCond).getCondition()) )
 								tmpArr[count++] = true;
+							System.out.println("Finished checking "+ tCond.getTerm() + " [CS] in Net:("+net+")");
+						}
 					if( tmpArr[0] && tmpArr[1] )
 						fire(t, tokens, net);
+					System.out.println("Finished checking "+ tCond.getTerm() + " [C] in Net:("+net+")");
+				}
+				//True Condition
+				else if( tCond instanceof TrueCondition ){
+					System.out.println("-Net:("+net+")\nStarting checking Empty Condition [T] ");
+					fire(t, tokens, net);//Always fires
+					System.out.println("Finished checking Empty Condition [T] in Net:("+net+")");
 				}
 			}
 		}
 	}
 	
-	private Boolean formulaCheck(TransitionCondition tCond, TokensConfiguration tokens, StateOfWorld state, HashSet<String> visitedNets) {
+	/**
+	 * This method checks if a formula is satisfied by scanning the representing net.
+	 *
+	 * @param tCond
+	 *            the transition condition
+	 * @param tokens
+	 *            the tokens
+	 * @param state
+	 *            the state
+	 * @param visitedNets
+	 *            the visited nets
+	 * @return true if the formula is satisfied
+	 */
+	private boolean formulaCheck(FormulaCondition tCond, TokensConfiguration tokens, StateOfWorld state, HashSet<String> visitedNets) {
 		String cNet = tCond.getTerm(), cNetState = tokens.getNetState(cNet);
 		//In this case the net representing the formula hasn't been accessed yet 
 		if( cNetState == null ){ 
 			tokens.addToken(cNet, nets.initNet(cNet)); //So initialize
-			tokens.setNetState(cNet, "W");
-			cNetState = "W";
+			cNetState = nets.getNetState(cNet);
+			tokens.setNetState(cNet, cNetState);
 		}
 		//Checks if the formula condition became Accepted or Error
-		if( cNetState.equals("W") && !visited.contains(cNetState) )
+		if( !visitedNets.contains(cNet) )
 			scanNet( tokens, cNet, state, visitedNets );
 		
-		return tokens.getNetState(cNet).equals( ((FormulaCondition)tCond).getCond() );
+		System.out.println( "|> Net " + cNet + " is " + tokens.getNetState(cNet) + " and Condition requires " + tCond.getCond() + " |");
+		
+		return tokens.getNetState(cNet).equals( tCond.getCond() );
 	}
 	
+	/**
+	 * Used to fire a transition in a Net and update the Tokens Configuration.
+	 *
+	 * @param t
+	 *            the transition
+	 * @param tokens
+	 *            the tokens
+	 * @param net
+	 *            the net
+	 */
 	private void fire( Transition t, TokensConfiguration tokens, String net) {
 		for( Arc in : t.getIncoming() )
 			tokens.removeToken(net, in.getPlace().getName());
@@ -315,6 +364,7 @@ public class ProblemExploration {
 		for( Arc out : t.getOutgoing() ) //I know for construction that it's just one place
 			tokens.addToken(net, out.getPlace().getName());
 		tokens.setNetState(net, nets.getNetState(net));
+		System.out.println("Fire "+net + " in State Place  " + nets.getNetState(net));
 	}
 	
 	/**
@@ -402,6 +452,10 @@ public class ProblemExploration {
 	
 	public ArrayList<ENode> getToVisit(){
 		return this.toVisit;
+	}
+	
+	public Nets getNets() {
+		return nets;
 	}
 	
 	

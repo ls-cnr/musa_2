@@ -10,7 +10,7 @@ public class LtlRunner {
 	 
 	public static void main( String[] args) throws Exception {
 		@SuppressWarnings("deprecation")
-		ANTLRInputStream input = new ANTLRInputStream("!(f R (b U (! (! (!(!(!a)))))))");
+		ANTLRInputStream input = new ANTLRInputStream("(!( G clean_work(house_work) ) ) && ( F add(document,user_ticket) )");
 
 		LTLLexer lexer = new LTLLexer(input);
 
@@ -20,6 +20,7 @@ public class LtlRunner {
 		ParseTree tree = parser.start(); // begin parsing at rule 'r'
 		System.out.println(tree.toStringTree(parser)); // print LISP-style tree
 		
-		FormulaBT forTree = new FormulaBT(parser.getStack());
+		FormulaBT forTree = new FormulaBT(parser.getStack(), parser.getDict());
+		
 	 }	 
  }

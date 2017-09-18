@@ -1,36 +1,33 @@
 package layer.awareness.LTL.net.netmodels;
 
-import layer.awareness.LTL.net.*;
+import layer.awareness.LTL.net.condition.*;
 import petrinet.logic.*;
 
+/**
+ * The Class GloballyPN, used to create a PetriNet that models a GLOBALLY formula.
+ */
 public class GloballyPN extends FormulaPN {
 	
+	/**
+	 * Instantiates a new globally PN.
+	 *
+	 * @param op1
+	 *            the op 1
+	 */
 	public GloballyPN( TransitionCondition op1 ) {
-		super();
+		super("GloballyPN");
 		this.firstOp = op1;
-		TransitionCondition firstOpCopy;
-		if( firstOp instanceof SimpleCondition )
-			firstOpCopy = new SimpleCondition(firstOp.getTerm());
-		else
-			firstOpCopy = new FormulaCondition(firstOp.getTerm());
 		this.secondOp = null;
 		
 		start = pn.place("Start");
-		association.put(start, "A");
+		placeState.put(start, "A");
 		
-		Transition t1 = pn.transition(firstOp.getTerm());
-		firstOp.setStateCondition("A");
-		labels.put(t1, firstOp);
+		Transition t1 = pn.transition("!"+firstOp.getTerm());
+		firstOp.setStateCondition("E");
+		transitionLabel.put(t1, firstOp);
 		
 		pn.arc("a1", start, t1);
-		pn.arc("a2", t1, start);
-		
-		Transition t2 = pn.transition("!"+firstOp.getTerm());
-		firstOpCopy.setStateCondition("E");
-		labels.put(t1, firstOpCopy);
-		
-		pn.arc("a3", start, t2);
-		association.put(pn.arc("a2", t2, pn.place("Error")).getPlace(), "E");
+		placeState.put(pn.arc("a2", t1, pn.place("Error")).getPlace(), "E");
 	}
 
 }

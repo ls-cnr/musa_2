@@ -1,78 +1,140 @@
 package layer.awareness.LTL.net;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Stack;
 
 import layer.awareness.LTL.formulamodel.*;
+import layer.awareness.LTL.net.condition.*;
 import layer.awareness.LTL.net.netmodels.*;
 
+/**
+ * The Class PetriNetsConstruction, used do create a set of interconnected Nets through the Formula Binary Tree.
+ */
 public class PetriNetsConstruction {
 	
-	private HashSet<String> formulasSet;
+	/** The counter. */
+	private static int counter;
 	
-	private HashMap<String, FormulaPN> petriNets;
-	
-	private int counter;
-	
-	public PetriNetsConstruction( FormulaBTNode root ) {
-		formulasSet = new HashSet<>();
-		petriNets = new HashMap<>();
-		counter = 0;
-		formulasSet.add("F"); formulasSet.add("G"); formulasSet.add("X"); 
-		formulasSet.add("U");formulasSet.add("R");formulasSet.add("AND"); formulasSet.add("OR");formulasSet.add("IMP");formulasSet.add("BIC");
+	/**
+	 * The method that starts the construction.
+	 *
+	 * @param tree
+	 *            the tree
+	 * @param hopNets
+	 *            a structure that holds the nets useful to elaborate hop 
+	 * @return the hash map
+	 */
+	public static HashMap<String, FormulaPN> construct( FormulaBT tree, HashSet<String> hopNets ) {
+		HashSet<String> formulasSet = new HashSet<>();
 		
-		construction(root, "Formula" + counter++);
+		HashMap<String, FormulaPN> petriNets = new HashMap<>();
+				
+		HashMap<String, Stack<String>> FOLFormulasDict = tree.getFOLFormulasDict();
+		
+		counter = 0;
+		formulasSet.add("F"); formulasSet.add("G"); formulasSet.add("X"); formulasSet.add("U");formulasSet.add("R");
+		formulasSet.add("AND"); formulasSet.add("OR");formulasSet.add("IMP");formulasSet.add("BIC");
+		
+		construction(tree.getRoot(), "Formula" + counter++, formulasSet, petriNets, FOLFormulasDict, hopNets);
+		counter = 0;
+		
+		return petriNets;
 	}
 	
-	private void construction( FormulaBTNode root, String name ) {
+	/**
+	 * The main construction method. It recursively visit each tree node to construct a Net using the information saved 
+	 * and associate a Net (or an Atomic Proposition) to it's dependent creating a TransitionCondition.
+	 * It also search for the nodes fathers of a leaf that will be used for hop calculation. 
+	 *
+	 * @param root
+	 *            the root
+	 * @param name
+	 *            the name
+	 * @param formulasSet
+	 *            the formulas set
+	 * @param petriNets
+	 *            the petri nets
+	 * @param FOLFormulasDict
+	 *            the FOL formulas dict
+	 * @param hopNets
+	 *            the hop nets
+	 */
+	private static void construction( FormulaBTNode root, String name, HashSet<String> formulasSet, HashMap<String, FormulaPN> petriNets, HashMap<String, Stack<String>> FOLFormulasDict, HashSet<String> hopNets ) {
 		
 		//String[] tempA = new String[2];
 		TransitionCondition[] tempA = new TransitionCondition[2];
 		
-		if( root.hasLeft() )
+		if( root.hasLeft() ){
+			if( !root.getLeft().hasLeft() ) //Finds hopNets
+				if( (root.hasRight() && !root.getRight().hasLeft()) || !root.hasRight() )
+					hopNets.add(name);
 			if( formulasSet.contains(root.getLeft().getVal()) ){
 				tempA[0] = new FormulaCondition("Formula" + counter++);
-				construction(root.getLeft(), tempA[0].getTerm());
+				construction(root.getLeft(), tempA[0].getTerm(), formulasSet, petriNets, FOLFormulasDict, hopNets);
 			}
 			else
-				tempA[0] = new SimpleCondition(root.getLeft().getVal());
+				tempA[0] = initSimpleCondition(root, FOLFormulasDict);
+		}
 		else{
-			petriNets.put(name, new SinglePlacePN(new SimpleCondition(root.getLeft().getVal())));
+			petriNets.put(name, new SingleTransitionPN( initSimpleCondition(root, FOLFormulasDict) ));
 			return;
 		}
 		
 		if( root.hasRight() )
 			if( formulasSet.contains(root.getRight().getVal()) ){
 				tempA[1] = new FormulaCondition("Formula" + counter++);
-				construction(root.getRight(), tempA[1].getTerm());
+				construction(root.getRight(), tempA[1].getTerm(), formulasSet, petriNets, FOLFormulasDict, hopNets);
 			}
 			else
-				tempA[1] = new SimpleCondition(root.getLeft().getVal());
+				tempA[1] = initSimpleCondition(root, FOLFormulasDict);
 		
 		if (root.getVal().equals("F"))
 			petriNets.put(name, new FinallyPN(tempA[0]));
 		else if (root.getVal().equals("G"))
 			petriNets.put(name, new GloballyPN(tempA[0]));
-		else if (root.getVal().equals("X")) ;
-			//TODO petriNets.put(name, new FinallyPN(tempA[0]));
+		else if (root.getVal().equals("X")) 
+			petriNets.put(name, new NextPN(tempA[0]));
 		else if (root.getVal().equals("U"))
 			petriNets.put(name, new UntilPN(tempA[0], tempA[1]));
 		else if (root.getVal().equals("R"))
 			petriNets.put(name, new RelasePN(tempA[0], tempA[1]));
-		else if (root.getVal().equals("AND")) ;
-			//TODO petriNets.put(name, new UntilPN(tempA[0], tempA[1]));
-		else if (root.getVal().equals("OR")) ;
-			//TODO petriNets.put(name, new UntilPN(tempA[0], tempA[1]));
-		else if (root.getVal().equals("IMP")) ;
-			//TODO petriNets.put(name, new UntilPN(tempA[0], tempA[1]));
-		else if (root.getVal().equals("BIC")) ;
-			//TODO petriNets.put(name, new UntilPN(tempA[0], tempA[1]));
+		else if (root.getVal().equals("AND")) 
+			petriNets.put(name, new AndPN(tempA[0], tempA[1]));
+		else if (root.getVal().equals("OR")) 
+			petriNets.put(name, new OrPN(tempA[0], tempA[1]));
+		else if (root.getVal().equals("IMP")) 
+			petriNets.put(name, new ImpPN(tempA[0], tempA[1]));
+		else if (root.getVal().equals("BIC")) 
+			petriNets.put(name, new BicPN(tempA[0], tempA[1]));
 		else
 			System.out.println("Errore " + root.getVal());//TODO exception handling			
 	}
 	
-	public HashMap<String, FormulaPN> getNets() {
-		return petriNets;
+	/**
+	 * Inits the simple condition.
+	 *
+	 * @param root
+	 *            the root
+	 * @param FOLFormulasDict
+	 *            the FOL formulas dict
+	 * @return the simple condition
+	 */
+	private static SimpleCondition initSimpleCondition(FormulaBTNode root, HashMap<String, Stack<String>> FOLFormulasDict ) {
+		String tmpStr = root.getLeft().getVal();
+		boolean neg = false;
+		if( tmpStr.startsWith("!") ){
+			tmpStr = tmpStr.substring(1);
+			neg = true;
+		}
+		@SuppressWarnings("unchecked")
+		Stack<String> tmpStack = (Stack<String>) FOLFormulasDict.get(tmpStr).clone();
+		String pred = tmpStack.pop();
+		ArrayList<String> args = new ArrayList<>();
+		while( !tmpStack.isEmpty() )
+			args.add(tmpStack.pop());
+		return new SimpleCondition(tmpStr, pred, args, neg);
 	}
 
 }

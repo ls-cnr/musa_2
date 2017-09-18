@@ -1,8 +1,6 @@
-package layer.awareness.LTL.net;
+package layer.awareness.LTL.net.condition;
 
 import java.util.ArrayList;
-
-import layer.awareness.LTL.net.TransitionCondition;
 
 public class CombinationCondition extends TransitionCondition {
 
@@ -10,6 +8,7 @@ public class CombinationCondition extends TransitionCondition {
 	
 	public CombinationCondition(TransitionCondition firstOp, TransitionCondition secondOp) {
 		super(firstOp.getTerm()+"-"+secondOp.getTerm());
+		ops = new ArrayList<>();
 		ops.add(firstOp);
 		ops.add(secondOp);
 	}

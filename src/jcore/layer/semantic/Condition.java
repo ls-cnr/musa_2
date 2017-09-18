@@ -4,6 +4,7 @@ import net.sf.tweety.commons.Formula;
 import net.sf.tweety.logics.fol.syntax.FolFormula;
 import net.sf.tweety.logics.translators.aspfol.AspFolTranslator;
 import net.sf.tweety.lp.asp.syntax.DLPAtom;
+import net.sf.tweety.lp.asp.syntax.DLPLiteral;
 
 /**                                                                            
  * This class encapsulate a Condition, i.e. a logic formula to be used in Goals and Capabilities.  
@@ -21,8 +22,8 @@ public class Condition {
 	public Condition(FolFormula folFormula) {
 		formula = folFormula;
 	}
-	public Condition(DLPAtom atom) {
-		formula = tx.toFOL(atom);
+	public Condition(DLPLiteral source) {
+		formula = tx.toFOL(source);
 	}
 	public Condition(String folFormula) {
 		/* TODO */

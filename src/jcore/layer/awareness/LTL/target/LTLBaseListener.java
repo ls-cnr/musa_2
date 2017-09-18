@@ -2,6 +2,7 @@
 
 	package layer.awareness.LTL.target;
 	import java.util.*;
+	/** Class auto-generated using ANTLR */
 
 
 import org.antlr.v4.runtime.ParserRuleContext;
@@ -31,13 +32,25 @@ public class LTLBaseListener implements LTLListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterAtom(LTLParser.AtomContext ctx) { }
+	@Override public void enterFolfor(LTLParser.FolforContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitAtom(LTLParser.AtomContext ctx) { }
+	@Override public void exitFolfor(LTLParser.FolforContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterArg(LTLParser.ArgContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitArg(LTLParser.ArgContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

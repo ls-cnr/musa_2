@@ -1,56 +1,47 @@
 package layer.awareness.LTL.net.netmodels;
 
-import layer.awareness.LTL.net.*;
+import layer.awareness.LTL.net.condition.*;
 import petrinet.logic.Transition;
 
+/**
+ * The Class RelasePN, used to create a PetriNet that models a RELASE formula.
+ */
 public class RelasePN extends FormulaPN {
 
+	/**
+	 * Instantiates a new relase PN.
+	 *
+	 * @param op1
+	 *            the op 1
+	 * @param op2
+	 *            the op 2
+	 */
 	public RelasePN( TransitionCondition op1, TransitionCondition op2 ) {
-		super();
+		super("RelasePN");
 		this.firstOp = op1;
-		TransitionCondition firstOpCopy;
-		TransitionCondition firstOpCopyCopy;
-		if( firstOp instanceof SimpleCondition ){
-			firstOpCopy = new SimpleCondition(firstOp.getTerm());
-			firstOpCopyCopy = new SimpleCondition(firstOp.getTerm());
-		}
-		else{
-			firstOpCopy = new FormulaCondition(firstOp.getTerm());
-			firstOpCopyCopy = new FormulaCondition(firstOp.getTerm());
-		}
 		this.secondOp = op2;
 		TransitionCondition secondOpCopy;
 		if( secondOp instanceof SimpleCondition )
-			secondOpCopy = new SimpleCondition(secondOp.getTerm());
+			secondOpCopy = new SimpleCondition((SimpleCondition) secondOp);
 		else
 			secondOpCopy = new FormulaCondition(secondOp.getTerm());
 		
 		start = pn.place("Start");
-		association.put(start, "A");
+		placeState.put(start, "A");
 		
-		Transition t1 = pn.transition(firstOp.getTerm());
+		Transition t1 = pn.transition(firstOp.getTerm() + "-" + secondOp.getTerm());
 		firstOp.setStateCondition("A");
-		labels.put(t1, firstOp);
+		secondOpCopy.setStateCondition("A");
+		transitionLabel.put(t1, new CombinationCondition(firstOp, secondOpCopy));
 		
 		pn.arc("a1", start, t1);
-		pn.arc("a2", t1, start);
-		
-		Transition t2 = pn.transition(firstOp.getTerm() + "-" + secondOp.getTerm());
-		firstOpCopy.setStateCondition("A");
-		secondOpCopy.setStateCondition("A");
-		CombinationCondition firstCombination = new CombinationCondition(firstOpCopy, secondOpCopy); 
-		labels.put(t1, firstCombination);
+		placeState.put(pn.arc("a2", t1, pn.place("Accept")).getPlace(), "A");
+
+		Transition t2 = pn.transition("RERR-" + secondOp.getTerm());
+		secondOpCopy.setStateCondition("E");
+		transitionLabel.put(t2, secondOpCopy);
 		
 		pn.arc("a3", start, t2);
-		association.put(pn.arc("a2", t2, pn.place("Accept")).getPlace(), "A");
-
-		Transition t3 = pn.transition("RERR-" + firstOp.getTerm() + "-" + secondOp.getTerm());
-		firstOpCopyCopy.setStateCondition("E");
-		secondOpCopy.setStateCondition("E");
-		CombinationCondition secondCombination = new CombinationCondition(firstOpCopyCopy, secondOpCopy); 
-		labels.put(t1, secondCombination);
-		
-		pn.arc("a4", start, t3);
-		association.put(pn.arc("a2", t3, pn.place("Error")).getPlace(), "E");
+		placeState.put(pn.arc("a4", t2, pn.place("Error")).getPlace(), "E");
 	}
 }

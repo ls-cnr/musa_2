@@ -4,14 +4,27 @@ grammar LTL;
 @header {
 	package layer.awareness.LTL.target;
 	import java.util.*;
+	/** Class auto-generated using ANTLR */
 }
 
 @parser::members {
 
 	private Stack<String> stack = new Stack<>();
+	private HashMap<String, Stack<String>> dict = new HashMap<>();
+	private Stack<String> tmp;	
 		
 	public Stack<String> getStack(){
 		return stack;
+	}
+	
+	public HashMap<String, Stack<String>> getDict() {
+		return dict;
+	}
+	
+	private void put( String s ) {
+		if( tmp == null )
+			tmp = new Stack<>();
+		tmp.push(s);
 	}
 
 }
@@ -19,14 +32,22 @@ grammar LTL;
 /* Starting Rules */
 start
 	:		expr
-	|		atom 
+	|		folfor 
 	;
 
-atom
-	:		VAR		{ stack.push($VAR.text); }
-	|		TRUE	{ stack.push("TRUE"); }
-	|		FALSE	{ stack.push("FALSE"); }
+folfor
+	:		VAR OP arg CL		{ 	String sTmp = $VAR.text + $OP.text + $arg.text + $CL.text;
+									stack.push(sTmp);
+									put($VAR.text);
+									dict.put(sTmp, tmp);
+									tmp = null;
+								}
 	|		OP expr CL
+	;
+	
+arg
+	:		VAR COM arg 		{  put($VAR.text); }
+	|		VAR					{  put($VAR.text); }
 	;
 
 expr
@@ -35,22 +56,22 @@ expr
 	;
 	
 unaOper
-	:		NOT atom{ stack.push("NOT"); }
-	|		F atom 	{ stack.push("F"); }
-	|		X atom	{ stack.push("X"); }
-	|		G atom	{ stack.push("G"); }
+	:		NOT folfor	{ stack.push("NOT"); }
+	|		F folfor 	{ stack.push("F"); }
+	|		X folfor	{ stack.push("X"); }
+	|		G folfor	{ stack.push("G"); }
 	;
 
 binOper
-	:		atom AND atom	{ stack.push("AND"); }
-	|		atom OR atom	{ stack.push("OR"); }
-	|		atom IMP atom	{ stack.push("IMP"); }
-	|		atom BIC atom	{ stack.push("BIC"); }
-	|		atom U atom		{ stack.push("U"); }
-	|		atom R atom		{ stack.push("R"); }
+	:		folfor AND folfor	{ stack.push("AND"); }
+	|		folfor OR folfor	{ stack.push("OR"); }
+	|		folfor IMP folfor	{ stack.push("IMP"); }
+	|		folfor BIC folfor	{ stack.push("BIC"); }
+	|		folfor U folfor		{ stack.push("U"); }
+	|		folfor R folfor		{ stack.push("R"); }
 	;
 
-VAR : [a-z][a-zA-Z]*  ;
+VAR : [a-z]('a'..'z' | 'A'..'Z' | '0'..'9' | '-' | '_' )*  ;
 
 NOT : '!' ;
 
@@ -61,6 +82,8 @@ FALSE : 'false' ;
 OP : '(' ;
 
 CL : ')' ;
+
+COM : ',';
 
 G : 'G' ;
 
