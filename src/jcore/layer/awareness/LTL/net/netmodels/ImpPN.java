@@ -54,7 +54,7 @@ public class ImpPN extends FormulaPN {
 		
 		Transition t3 = pn.transition(secondOp.getTerm());
 		secondOp.setStateCondition("A");
-		transitionLabel.put(t2, secondOp);
+		transitionLabel.put(t3, secondOp);
 		
 		pn.arc("a5", start, t3);
 		placeState.put(pn.arc("a6", t3, pn.place("Accept2")).getPlace(), "A");

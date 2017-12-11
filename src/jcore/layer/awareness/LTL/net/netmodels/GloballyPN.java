@@ -20,7 +20,7 @@ public class GloballyPN extends FormulaPN {
 		this.secondOp = null;
 		
 		start = pn.place("Start");
-		placeState.put(start, "A");
+		placeState.put(start, "W");
 		
 		Transition t1 = pn.transition("!"+firstOp.getTerm());
 		firstOp.setStateCondition("E");

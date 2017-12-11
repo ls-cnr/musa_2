@@ -5,7 +5,7 @@ import petrinet.logic.Transition;
 
 // TODO: Auto-generated Javadoc
 /**
- * The Class SingleTransitionPN, used to create a PetriNet that models a a case in which the main formula it'sjust an Atomic Preposition.
+ * The Class SingleTransitionPN, used to create a PetriNet that models a a case in which the formula it's just an Atomic Proposition.
  */
 public class SingleTransitionPN extends FormulaPN {
 

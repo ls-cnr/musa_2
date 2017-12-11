@@ -23,6 +23,9 @@ public class ENode implements Node{
 	
 	/** Indicates if the node is an ExitNode */
 	private boolean exit;
+
+	/** Indicates if the node is an ErrorNode */
+	private boolean error;
 	
 	/**
 	 * Instantiates a new empty ENode with only the WorldState.
@@ -46,12 +49,15 @@ public class ENode implements Node{
 	 *            the node's Score
 	 * @param exit
 	 *            the Exit condition
+	 * @param error
+	 *            the Exit condition  
 	 */
-	public ENode( StateOfWorld node, TokensConfiguration tokens, int score, boolean exit ) {
+	public ENode( StateOfWorld node, TokensConfiguration tokens, int score, boolean exit, Boolean error ) {
 		this.node = node;
 		this.tokens = tokens;
 		this.score = score;
 		this.exit = exit;
+		this.error = error;
 	}
 	
 	/**
@@ -74,13 +80,16 @@ public class ENode implements Node{
 	}
 	
 	/**
-	 * Sets the Exit condition.
+	 * Sets the Node condition.
 	 *
-	 * @param exit
-	 *            Condition that states if the node is ExitNode or not
+	 * @param string
+	 *            Condition that states if the node is ExitNode or ErrorNode or other
 	 */
-	public void setExit(boolean exit){
-		this.exit = exit;
+	public void setCondition(String string){
+		if( string.equals("A") )
+			this.exit = true;
+		else if( string.equals("E") )
+			this.error = true;
 	}
 	
 	/**
@@ -118,6 +127,14 @@ public class ENode implements Node{
 	 */
 	public boolean isExitNode(){
 		return this.exit;
+	}
+	/**
+	 * Checks if is error node.
+	 *
+	 * @return true, if is exit node
+	 */
+	public boolean isErrorNode(){
+		return this.error;
 	}
 	
 	@Override

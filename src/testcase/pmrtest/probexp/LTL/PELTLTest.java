@@ -399,9 +399,10 @@ public class PELTLTest {
 	}
 	
 	private void modelConstruction() {
-		FormulaBT treeModel = FormulaBTConstruction.construct("( F available(an_order) ) && ( G user_data(the_user_data) )");
+		FormulaBT treeModel = FormulaBTConstruction.construct("( F available(an_order) ) && ( G (! user_data(the_user_data) ) )");
 		problem = new ProblemExploration(treeModel, new ArrayList<AbstractCapability>(), domain);
-		
+
+
 		StateOfWorld wStart = new StateOfWorld(); 
 		try {
 		  wStart.addFact_asString("order(an_order).");

@@ -83,7 +83,7 @@ public class BicPN extends FormulaPN {
 		transitionLabel.put(t4, new CombinationCondition(firstOpCopy3, secondOpCopy3));
 		
 		pn.arc("a7", start, t4);
-		placeState.put(pn.arc("a8", t2, pn.place("Accept2")).getPlace(), "A");
+		placeState.put(pn.arc("a8", t4, pn.place("Accept2")).getPlace(), "A");
 	}
 	
 }

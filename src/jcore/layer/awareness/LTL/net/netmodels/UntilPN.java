@@ -57,7 +57,7 @@ public class UntilPN extends FormulaPN {
 		Transition t3 = pn.transition("UERR2-" + firstOp.getTerm() + "-" + secondOp.getTerm());
 		firstOpCopy.setStateCondition("A");
 		secondOpCopyCopy.setStateCondition("A");
-		transitionLabel.put(t2, new CombinationCondition(firstOpCopy, secondOpCopyCopy));
+		transitionLabel.put(t3, new CombinationCondition(firstOpCopy, secondOpCopyCopy));
 				
 		pn.arc("a5", start, t3);
 		placeState.put(pn.arc("a6", t3, pn.place("Error2")).getPlace(), "E");

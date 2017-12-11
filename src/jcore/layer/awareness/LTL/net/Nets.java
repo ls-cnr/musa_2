@@ -95,13 +95,9 @@ public class Nets {
 		else{
 			double count = 0;
 			for( String s : hopNets ){
-				String sState = getNetState(s);
-				if( sState != null ){
-					if( sState.equals("E") )
-						count = count + 1;
-					else if( sState.equals("W") )
-						count = count + 0.5;
-				}
+				if( getNetState(s) != null )
+					if( getNetState(s).equals("W") )
+						count = count + 0.4;
 				else
 					count = count + 0.6;
 			}

@@ -75,7 +75,7 @@ public class ProblemExploration {
 	 */
 	public void addToVisit( WorldNode node, TokensConfiguration tokens, int score) {
 		if( !visited.contains(node.getWorldState()) && !toVisit.contains(new ENode(node.getWorldState())))
-			toVisit.add( new ENode(node.getWorldState(), tokens, score, false) );
+			toVisit.add( new ENode(node.getWorldState(), tokens, score, false, false) );
 	}
 	
 	/**
@@ -96,14 +96,16 @@ public class ProblemExploration {
 			AbstractCapability capability = capabilities.get(i);
 			if(DomainEntail.getInstance().entailsCondition(enode.getWorldState(), this.assumptions, capability.getPreCondition()) == true){
 				//Starts the expansion
-
+				System.out.println("\n-----------------------------------------------------------------");
+				System.out.println("!Applying capability " + capability.getId() + " for enode :" );
+				System.out.println("\n|||||||||||||||||||||||\n Source World State:\n" + enode.getWorldState());
 				ExpansionNode expNode = applyExpand(enode, capability);
 
 				if (expNode != null){
 					//Applies the net to ultimate the expansion						
 					for( ENode destination : expNode.getDestination() ){
 						applyNets(expNode.getSource().getTokens(), destination);
-						if(destination.isExitNode() == false)	this.addToVisit(new WorldNode(destination.getWorldState()), destination.getTokens(), destination.getScore());
+						if(!destination.isExitNode() && !destination.isErrorNode())	this.addToVisit(new WorldNode(destination.getWorldState()), destination.getTokens(), destination.getScore());
 					}
 					
 					//Elaborates the Expansion score				
@@ -211,7 +213,7 @@ public class ProblemExploration {
 	 *            the new eNode created from expansion
 	 */	
 	private void applyNets( TokensConfiguration startingTokens, ENode enode ) {
-		System.out.println("\n|||||||||||||||||||||||\nWorld State:\n" + enode.getWorldState());
+		System.out.println("\n|||||||||||||||||||||||\n Expanded World State:\n" + enode.getWorldState());
 		StateOfWorld state = enode.getWorldState();
 		TokensConfiguration tokens = new TokensConfiguration(startingTokens);
 		
@@ -221,13 +223,13 @@ public class ProblemExploration {
 		nets.putTokens(tokens);
 		
 		//Checking compatibility with StateOfWorld through every net, starting from first
-		scanNet(tokens, nets.getStartingNet(), state, visitedNets);
+		superviseNet(tokens, nets.getStartingNet(), state, visitedNets);
 		
 		//Fills up ENode
 		enode.setTokens(tokens);
 		
 		//Checking if it's an exit node
-		enode.setExit( nets.getStartingPN().getNetState().equals("A") );
+		enode.setCondition( nets.getStartingPN().getNetState() );
 		
 		//Calculating Hops
 		double nHop = nets.hop(); 
@@ -261,7 +263,7 @@ public class ProblemExploration {
 	 * @param visitedNets
 	 *            the visited nets
 	 */
-	private void scanNet( TokensConfiguration tokens, String net, StateOfWorld state, HashSet<String> visitedNets ) {
+	private void superviseNet( TokensConfiguration tokens, String net, StateOfWorld state, HashSet<String> visitedNets ) {
 		visitedNets.add(net);
 		//Checking compatibility with StateOfWorld for every Transition for Firing
 		for( Transition t : (ArrayList<Transition>) nets.getTransitionsAbleToFire(net) ){
@@ -292,16 +294,20 @@ public class ProblemExploration {
 						//Formula
 						if( tCCond instanceof FormulaCondition ){
 							System.out.println("Starting checking "+ tCCond.getTerm() + " [CF] ");
-							if( formulaCheck((FormulaCondition)tCCond, tokens, state, visitedNets) )
+							if( formulaCheck((FormulaCondition)tCCond, tokens, state, visitedNets) ){
 								tmpArr[count++] = true;	//Fires if the condition matches with the state
+								System.out.println(tCCond.getTerm() + " is true");
+							}
 							System.out.println("Finished checking "+ tCCond.getTerm() + " [CF] in Net:("+net+")");
 						}
 						//Atomic Proposition 
 						else if( tCCond instanceof SimpleCondition ){
-							System.out.println("Starting checking "+ tCond.getTerm() + " [CS] ");
-							if( DomainEntail.getInstance().entailsCondition(state, assumptions, ((SimpleCondition) tCCond).getCondition()) )
+							System.out.println("Starting checking "+ tCCond.getTerm() + " [CS] ");
+							if( DomainEntail.getInstance().entailsCondition(state, assumptions, ((SimpleCondition) tCCond).getCondition()) ){
 								tmpArr[count++] = true;
-							System.out.println("Finished checking "+ tCond.getTerm() + " [CS] in Net:("+net+")");
+								System.out.println(tCCond.getTerm() + " is true");
+							}
+							System.out.println("Finished checking "+ tCCond.getTerm() + " [CS] in Net:("+net+")");
 						}
 					if( tmpArr[0] && tmpArr[1] )
 						fire(t, tokens, net);
@@ -340,7 +346,7 @@ public class ProblemExploration {
 		}
 		//Checks if the formula condition became Accepted or Error
 		if( !visitedNets.contains(cNet) )
-			scanNet( tokens, cNet, state, visitedNets );
+			superviseNet( tokens, cNet, state, visitedNets );
 		
 		System.out.println( "|> Net " + cNet + " is " + tokens.getNetState(cNet) + " and Condition requires " + tCond.getCond() + " |");
 		

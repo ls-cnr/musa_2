@@ -17,6 +17,8 @@ public class PetriNetsConstruction {
 	/** The counter. */
 	private static int counter;
 	
+	private static boolean orCond;
+	
 	/**
 	 * The method that starts the construction.
 	 *
@@ -26,14 +28,21 @@ public class PetriNetsConstruction {
 	 *            a structure that holds the nets useful to elaborate hop 
 	 * @return the hash map
 	 */
+	@SuppressWarnings("unchecked")
 	public static HashMap<String, FormulaPN> construct( FormulaBT tree, HashSet<String> hopNets ) {
 		HashSet<String> formulasSet = new HashSet<>();
 		
 		HashMap<String, FormulaPN> petriNets = new HashMap<>();
 				
 		HashMap<String, Stack<String>> FOLFormulasDict = tree.getFOLFormulasDict();
+//		HashMap<String, Stack<String>> tmpDict = new HashMap<>();
+//		for( String s : FOLFormulasDict.keySet() )
+//			tmpDict.put(s, (Stack<String>) FOLFormulasDict.get(s).clone());
+//		FOLFormulasDict = tmpDict;
+//		tmpDict = null;
 		
 		counter = 0;
+		orCond = false;
 		formulasSet.add("F"); formulasSet.add("G"); formulasSet.add("X"); formulasSet.add("U");formulasSet.add("R");
 		formulasSet.add("AND"); formulasSet.add("OR");formulasSet.add("IMP");formulasSet.add("BIC");
 		
@@ -66,16 +75,22 @@ public class PetriNetsConstruction {
 		//String[] tempA = new String[2];
 		TransitionCondition[] tempA = new TransitionCondition[2];
 		
+		if(root.getVal().equals("OR") || root.getVal().equals("IMP")){ //or hop special condition
+			orCond = true;
+			hopNets.add(name);
+		}
+		
 		if( root.hasLeft() ){
 			if( !root.getLeft().hasLeft() ) //Finds hopNets
 				if( (root.hasRight() && !root.getRight().hasLeft()) || !root.hasRight() )
-					hopNets.add(name);
+					if(!orCond)
+						hopNets.add(name);
 			if( formulasSet.contains(root.getLeft().getVal()) ){
 				tempA[0] = new FormulaCondition("Formula" + counter++);
 				construction(root.getLeft(), tempA[0].getTerm(), formulasSet, petriNets, FOLFormulasDict, hopNets);
 			}
 			else
-				tempA[0] = initSimpleCondition(root, FOLFormulasDict);
+				tempA[0] = initSimpleCondition(root.getLeft(), FOLFormulasDict);
 		}
 		else{
 			petriNets.put(name, new SingleTransitionPN( initSimpleCondition(root, FOLFormulasDict) ));
@@ -88,7 +103,9 @@ public class PetriNetsConstruction {
 				construction(root.getRight(), tempA[1].getTerm(), formulasSet, petriNets, FOLFormulasDict, hopNets);
 			}
 			else
-				tempA[1] = initSimpleCondition(root, FOLFormulasDict);
+				tempA[1] = initSimpleCondition(root.getRight(), FOLFormulasDict);
+		
+		orCond = false;
 		
 		if (root.getVal().equals("F"))
 			petriNets.put(name, new FinallyPN(tempA[0]));
@@ -122,7 +139,7 @@ public class PetriNetsConstruction {
 	 * @return the simple condition
 	 */
 	private static SimpleCondition initSimpleCondition(FormulaBTNode root, HashMap<String, Stack<String>> FOLFormulasDict ) {
-		String tmpStr = root.getLeft().getVal();
+		String tmpStr = root.getVal();
 		boolean neg = false;
 		if( tmpStr.startsWith("!") ){
 			tmpStr = tmpStr.substring(1);

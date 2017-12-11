@@ -19,6 +19,8 @@ public class JasonENode {
 		StringTermImpl exit = null;
 		if (node.isExitNode()) {
 			exit = new StringTermImpl("is_exit");
+		} else if( node.isErrorNode()) {
+			exit = new StringTermImpl("is_error");
 		} else {
 			exit = new StringTermImpl("normal");
 		}
@@ -35,7 +37,8 @@ public class JasonENode {
 	public static ENode term_to_object(Term term) throws TranslateError {
 		ENode res = null;
 		StateOfWorld w = null;
-		Boolean isExit;
+		Boolean isExit = false;
+		Boolean isError = false;
 		int score;
 		TokensConfiguration tokens = null;
 		
@@ -60,10 +63,10 @@ public class JasonENode {
 			StringTermImpl exitCheck = (StringTermImpl) s.getTerm(3);
 			String check = exitCheck.getString();
 			if(check.equals(new String("is_exit")) == true)	isExit = true;
-			else	isExit = false;
+			else if(check.equals(new String("is_error")) == true)	isError = true;
 		}
 		
-		res = new ENode(w, tokens, score, isExit);
+		res = new ENode(w, tokens, score, isExit, isError);
 		return res;
 	}
 	

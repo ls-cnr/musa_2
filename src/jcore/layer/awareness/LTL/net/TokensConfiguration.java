@@ -27,7 +27,7 @@ public class TokensConfiguration {
 		String start = nets.getStartingNet();
 		conf.put(start, new ArrayList<>());
 		conf.get(start).add(nets.getStartingPN().getStartPlace().getName());
-		netsState.put(start, "W");
+		netsState.put(start, nets.getStartingPN().getPlaceState().get(nets.getStartingPN().getStartPlace()));
 	}
 	
 	/**
