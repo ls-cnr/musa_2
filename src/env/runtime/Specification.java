@@ -6,9 +6,9 @@ import java.util.LinkedList;
 import java.util.List;
 
 import cartago.*;
-import layer.awareness.*;
-import layer.awareness.goalmodel.*;
-import layer.semantic.AssumptionSet;;
+import datalayer.awareness.*;
+import datalayer.awareness.legacy.GS_Goal;
+import datalayer.awareness.legacy.goalmodel.*;;
 
 public class Specification extends Artifact {
 
@@ -16,7 +16,7 @@ public class Specification extends Artifact {
 	private String domain_name;
 
 	/* original data (maybe to-be-removed) */
-	private List<Goal> goalset;
+	private List<GS_Goal> goalset;
 	private GoalModel goal_model;
 	private AssumptionSet assumptions;
 	
@@ -28,7 +28,7 @@ public class Specification extends Artifact {
 	void init(String spec_id,String domain_name) {
 		this.spec_id = spec_id;
 		this.domain_name = domain_name;
-		goalset = new LinkedList<Goal>();
+		goalset = new LinkedList<GS_Goal>();
 		goal_model=null;
 		assumptions = new AssumptionSet();
 	}

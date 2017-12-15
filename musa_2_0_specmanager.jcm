@@ -29,7 +29,7 @@ mas spec_node_01 {
     asl-path: src/agt
               src/agt/inc
 
-    node masternode running @ 194.119.214.221
+    node masternode running @ localhost //194.119.214.221
 
     platform: cartago("infrastructure")
     

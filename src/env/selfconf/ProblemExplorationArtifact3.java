@@ -7,18 +7,25 @@ import java.util.HashSet;
 import java.util.Set;
 
 import cartago.*;
+import communication.translator.ExtDLPHead;
+import communication.translator.JasonExtNode;
+import communication.translator.JasonExpansionNode;
+import communication.translator.TranslateError;
+import datalayer.awareness.AbstractCapability;
+import datalayer.awareness.AssumptionSet;
+import datalayer.awareness.ProblemSpecification;
+import datalayer.awareness.legacy.GS_Goal;
+import datalayer.awareness.legacy.goalmodel.GoalTreeModel;
+import datalayer.awareness.legacy.net.Token;
+import datalayer.world.Condition;
+import datalayer.world.StateOfWorld;
+import datalayer.world.evolution.AddStatement;
+import datalayer.world.evolution.CapabilityEvolutionScenario;
+import datalayer.world.evolution.EvolutionScenario;
+import datalayer.world.evolution.RemoveStatement;
+import datalayer.world.wts.WorldNode;
+import exception.ProblemDefinitionException;
 import jason.asSyntax.Term;
-import layer.awareness.AbstractCapability;
-import layer.awareness.Goal;
-import layer.awareness.goalmodel.GoalTreeModel;
-import layer.awareness.net.Token;
-import layer.semantic.AssumptionSet;
-import layer.semantic.Condition;
-import layer.semantic.StateOfWorld;
-import layer.semantic.evolution.AddStatement;
-import layer.semantic.evolution.CapabilityEvolutionScenario;
-import layer.semantic.evolution.EvolutionScenario;
-import layer.semantic.evolution.RemoveStatement;
 import net.sf.tweety.logics.commons.syntax.Constant;
 import net.sf.tweety.logics.commons.syntax.Predicate;
 import net.sf.tweety.logics.commons.syntax.Variable;
@@ -28,14 +35,9 @@ import net.sf.tweety.logics.fol.syntax.FOLAtom;
 import net.sf.tweety.logics.fol.syntax.Negation;
 import net.sf.tweety.lp.asp.parser.ParseException;
 import net.sf.tweety.lp.asp.syntax.DLPAtom;
-import pmr.probexp.ExpansionNode;
-import pmr.probexp.ProblemExploration;
-import translator.ExtDLPHead;
-import translator.JasonENode;
-import translator.JasonExpansionNode;
-import translator.TranslateError;
-import pmr.graph.WorldNode;
-import pmr.probexp.ENode;
+import reasoner.probexp.ExtendedNode;
+import reasoner.probexp.GraphExpansion;
+import reasoner.probexp.ProblemExploration;
 
 
 //@ARTIFACT_INFO(
@@ -54,16 +56,21 @@ public class ProblemExplorationArtifact3 extends Artifact {
 		GoalTreeModel model = get_goal_model_for_test();
 		AssumptionSet assumptions=get_domain_assumption_for_test();
 		
-		pe = new ProblemExploration( model, capabilities, assumptions);
+		ProblemSpecification ps = new ProblemSpecification(assumptions,model,null);		
+		try {
+			pe = new ProblemExploration( ps, capabilities);
+		} catch (ProblemDefinitionException e) {
+			failed("I goal devono essere specificati in LTL");
+		}
 		//this.debugSetInitialNode();
 
 	}
 	
 	@OPERATION
 	public void addToVisit( String term_string ) {
-		ENode node;
+		ExtendedNode node;
 		try{
-			node = JasonENode.term_string_to_object(term_string);
+			node = JasonExtNode.term_string_to_object(term_string);
 		}catch(TranslateError t){return;}
 		if (!node.isExitNode()) {
 			pe.addToVisit(new WorldNode(node.getWorldState()), node.getTokens(), node.getScore() );
@@ -77,13 +84,13 @@ public class ProblemExplorationArtifact3 extends Artifact {
 	
 	@OPERATION
 	void getMostPromisingExpansion(OpFeedbackParam<Term> expansion) {
-		ExpansionNode exp = pe.getHighestExpansion();
+		GraphExpansion exp = pe.getHighestExpansion();
 		expansion.set( JasonExpansionNode.object_to_term(exp) );
 	}
 	
 	@OPERATION
 	void removeWinnerNode(String node){
-		ExpansionNode exp = null;
+		GraphExpansion exp = null;
 		try{
 			exp = JasonExpansionNode.term_string_to_object(node);
 		}catch(TranslateError t){}
@@ -113,7 +120,7 @@ public class ProblemExplorationArtifact3 extends Artifact {
 		THO_processed.addArgument(doc);
 		Condition THO_fs = new Condition( new ExistsQuantifiedFormula(new Conjunction(THO_processed, THO_order), doc));
 		
-		Goal THO = new Goal("to_handle_order", THO_tc, THO_fs);
+		GS_Goal THO = new GS_Goal("to_handle_order", THO_tc, THO_fs);
 		
 		/*to_wait_order*/
 		FOLAtom TWO_received = new FOLAtom( new Predicate("received",2));
@@ -132,7 +139,7 @@ public class ProblemExplorationArtifact3 extends Artifact {
 		TWO_available.addArgument(doc);
 		Condition TWO_fs = new Condition( new ExistsQuantifiedFormula(new Conjunction(TWO_available, TWO_order), doc ) );
 		
-		Goal TWO = new Goal("to_wait_order", TWO_tc, TWO_fs);
+		GS_Goal TWO = new GS_Goal("to_wait_order", TWO_tc, TWO_fs);
 		
 		/*to_process_order*/
 		FOLAtom TPO_available = new FOLAtom( new Predicate("available",1));
@@ -152,7 +159,7 @@ public class ProblemExplorationArtifact3 extends Artifact {
 		TPO_processed.addArgument(doc);
 		Condition TPO_fs = new Condition( new ExistsQuantifiedFormula(new Conjunction(TPO_processed, TPO_order), doc ) );
 		
-		Goal TPO = new Goal("to_process_order", TPO_tc, TPO_fs);
+		GS_Goal TPO = new GS_Goal("to_process_order", TPO_tc, TPO_fs);
 		
 		/*to_process_accepted_order*/
 		FOLAtom TPAO_accepted = new FOLAtom( new Predicate("accepted",1));
@@ -173,7 +180,7 @@ public class ProblemExplorationArtifact3 extends Artifact {
 		TPAO_var.add(mng);
 		Condition TPAO_fs = new Condition( new ExistsQuantifiedFormula(new Conjunction(TPAO_send, new Conjunction(TPAO_delivery, TPAO_manager)), TPAO_var) );
 		
-		Goal TPAO = new Goal("to_process_accepted_order", TPAO_tc, TPAO_fs);
+		GS_Goal TPAO = new GS_Goal("to_process_accepted_order", TPAO_tc, TPAO_fs);
 		
 		/*to_notify_invoce*/
 		FOLAtom TNI_registered = new FOLAtom( new Predicate("registered",1));
@@ -197,7 +204,7 @@ public class ProblemExplorationArtifact3 extends Artifact {
 		TNI_var2.add(usr);		
 		Condition TNI_fs = new Condition( new ExistsQuantifiedFormula(new Conjunction(TNI_send, new Conjunction(TNI_invoice, TNI_user)), TNI_var2) );
 		
-		Goal TNI = new Goal("to_notify_invoice", TNI_tc, TNI_fs);
+		GS_Goal TNI = new GS_Goal("to_notify_invoice", TNI_tc, TNI_fs);
 		
 		/*to_deliver_order*/
 		FOLAtom TDO_send = new FOLAtom( new Predicate("send",2));
@@ -221,7 +228,7 @@ public class ProblemExplorationArtifact3 extends Artifact {
 		TDO_var2.add(mng);
 		Condition TDO_fs = new Condition( new ExistsQuantifiedFormula(new Conjunction(TDO_send, new Conjunction(TDO_delivery, TDO_manager)), TDO_var2) );
 		
-		Goal TDO = new Goal("to_delivery_order", TDO_tc, TDO_fs);
+		GS_Goal TDO = new GS_Goal("to_delivery_order", TDO_tc, TDO_fs);
 		
 		/*to_notify_failure*/
 		FOLAtom TNF_refused = new FOLAtom( new Predicate("refused",1));
@@ -242,17 +249,17 @@ public class ProblemExplorationArtifact3 extends Artifact {
 		TNF_send.addArgument(usr);	
 		Condition TNF_fs = new Condition( new ExistsQuantifiedFormula(new Conjunction(TNF_send, TNF_user), usr) );
 		
-		Goal TNF = new Goal("to_notify_failure", TNF_tc, TNF_fs);
+		GS_Goal TNF = new GS_Goal("to_notify_failure", TNF_tc, TNF_fs);
 
 		/*Model construction*/
 		GoalTreeModel model = new GoalTreeModel(THO);
-	    ArrayList<Goal> firstLevel = new ArrayList<>();
+	    ArrayList<GS_Goal> firstLevel = new ArrayList<>();
 	    firstLevel.add(TWO);
 	    firstLevel.add(TPO);
-	    ArrayList<Goal> secondLevel = new ArrayList<>();
+	    ArrayList<GS_Goal> secondLevel = new ArrayList<>();
 	    secondLevel.add(TPAO);
 	    secondLevel.add(TNF);
-	    ArrayList<Goal> thirdLevel = new ArrayList<>();
+	    ArrayList<GS_Goal> thirdLevel = new ArrayList<>();
 	    thirdLevel.add(TNI);
 	    thirdLevel.add(TDO);
 	    
@@ -437,7 +444,7 @@ public class ProblemExplorationArtifact3 extends Artifact {
 		
 		} catch (ParseException e) {
 			e.printStackTrace();
-		} catch (layer.semantic.exception.NotAllowedInAnAssumptionSet e) {
+		} catch (exception.NotAllowedInAnAssumptionSet e) {
 			e.printStackTrace();
 		}
 		return domain;
@@ -452,14 +459,15 @@ public class ProblemExplorationArtifact3 extends Artifact {
 			regNoCloud.addFact_asString("user_data(the_user_data).");
 		} catch (ParseException e) {
 			e.printStackTrace();
-		} catch (layer.semantic.exception.NotAllowedInAStateOfWorld e) {
+		} catch (exception.NotAllowedInAStateOfWorld e) {
 			e.printStackTrace();
 		}
 		
 		ArrayList<Token> tokens = new ArrayList<>();
 		tokens.add(new Token("p3"));
 		tokens.add(new Token("p4"));
-		this.pe.addToVisit(new WorldNode(regNoCloud), tokens, 9);
+		//nota di Luca: ho commentato questa istruzione perchè fa riferimento al vecchio ProblemExploration
+		//this.pe.addToVisit(new WorldNode(regNoCloud), tokens, 9);
 	}
 }
 

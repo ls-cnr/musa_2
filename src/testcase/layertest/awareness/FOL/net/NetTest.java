@@ -5,9 +5,10 @@ import static org.junit.Assert.*;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import layer.awareness.*;
-import layer.awareness.FOL.goalmodel.GoalTreeModel;
-import layer.awareness.FOL.net.*;
+import datalayer.awareness.*;
+import datalayer.awareness.legacy.GS_Goal;
+import datalayer.awareness.legacy.goalmodel.GoalTreeModel;
+import datalayer.awareness.legacy.net.*;
 
 import java.util.ArrayList;
 
@@ -28,11 +29,11 @@ public class NetTest {
 	@Ignore
 	@Test
 	public void testParallelTemplate() {
-		model = new GoalTreeModel(new Goal("root", null, null));
-		ArrayList<Goal> gs = new ArrayList<>();
-		gs.add(new Goal("secondo", null, null));
-		gs.add(new Goal("terzo", null, null));
-		model.addAndArcs(new Goal("root", null, null), gs);
+		model = new GoalTreeModel(new GS_Goal("root", null, null));
+		ArrayList<GS_Goal> gs = new ArrayList<>();
+		gs.add(new GS_Goal("secondo", null, null));
+		gs.add(new GS_Goal("terzo", null, null));
+		model.addAndArcs(new GS_Goal("root", null, null), gs);
 		net = new Net(model);
 	}
 	
@@ -42,16 +43,16 @@ public class NetTest {
 	@Ignore
 	@Test
 	public void testHops1() {
-		model = new GoalTreeModel(new Goal("root", null, null));
-		ArrayList<Goal> gs = new ArrayList<>();
-		ArrayList<Goal> gsor = new ArrayList<>();
-		gs.add(new Goal("secondo", null, null));
-		gs.add(new Goal("terzo", null, null));
-		gsor.add(new Goal("quarto", null, null));
-		gsor.add(new Goal("quinto", null, null));
+		model = new GoalTreeModel(new GS_Goal("root", null, null));
+		ArrayList<GS_Goal> gs = new ArrayList<>();
+		ArrayList<GS_Goal> gsor = new ArrayList<>();
+		gs.add(new GS_Goal("secondo", null, null));
+		gs.add(new GS_Goal("terzo", null, null));
+		gsor.add(new GS_Goal("quarto", null, null));
+		gsor.add(new GS_Goal("quinto", null, null));
 		
-		model.addAndArcs(new Goal("root", null, null), gs);
-		model.addOrArcs(new Goal("terzo", null, null), gsor);
+		model.addAndArcs(new GS_Goal("root", null, null), gs);
+		model.addOrArcs(new GS_Goal("terzo", null, null), gsor);
 		
 		
 		net = new Net(model);
@@ -65,20 +66,20 @@ public class NetTest {
 	 */
 	@Test
 	public void testHops3() {
-		model = new GoalTreeModel(new Goal("root", null, null));
-		ArrayList<Goal> gs = new ArrayList<>();
-		ArrayList<Goal> gsor = new ArrayList<>();
-		ArrayList<Goal> gsandor = new ArrayList<>();
-		gs.add(new Goal("secondo", null, null));
-		gs.add(new Goal("terzo", null, null));
-		gsor.add(new Goal("quarto", null, null));
-		gsor.add(new Goal("quinto", null, null));
-		gsandor.add(new Goal("sesto", null, null));
-		gsandor.add(new Goal("settimo", null, null));
+		model = new GoalTreeModel(new GS_Goal("root", null, null));
+		ArrayList<GS_Goal> gs = new ArrayList<>();
+		ArrayList<GS_Goal> gsor = new ArrayList<>();
+		ArrayList<GS_Goal> gsandor = new ArrayList<>();
+		gs.add(new GS_Goal("secondo", null, null));
+		gs.add(new GS_Goal("terzo", null, null));
+		gsor.add(new GS_Goal("quarto", null, null));
+		gsor.add(new GS_Goal("quinto", null, null));
+		gsandor.add(new GS_Goal("sesto", null, null));
+		gsandor.add(new GS_Goal("settimo", null, null));
 		
-		model.addAndArcs(new Goal("root", null, null), gs);
-		model.addOrArcs(new Goal("terzo", null, null), gsor);
-		model.addAndArcs(new Goal("quinto", null, null), gsandor);
+		model.addAndArcs(new GS_Goal("root", null, null), gs);
+		model.addOrArcs(new GS_Goal("terzo", null, null), gsor);
+		model.addAndArcs(new GS_Goal("quinto", null, null), gsandor);
 		
 		net = new Net(model);
 		
@@ -125,28 +126,28 @@ public class NetTest {
 	 */
 	@Test
 	public void testHops4() {
-		model = new GoalTreeModel(new Goal("root", null, null));
-		ArrayList<Goal> rootAnd = new ArrayList<>();
-		ArrayList<Goal> rootAndOr1 = new ArrayList<>();
-		ArrayList<Goal> rootAndOr2 = new ArrayList<>();
-		ArrayList<Goal> rootAndOr2Or = new ArrayList<>();
-		ArrayList<Goal> rootAndOr2And = new ArrayList<>();
-		rootAnd.add(new Goal("secondo", null, null));
-		rootAnd.add(new Goal("terzo", null, null));
-		rootAndOr1.add(new Goal("quarto", null, null));
-		rootAndOr1.add(new Goal("quinto", null, null));
-		rootAndOr2.add(new Goal("sesto", null, null));
-		rootAndOr2.add(new Goal("settimo", null, null));
-		rootAndOr2Or.add(new Goal("ottavo", null, null));
-		rootAndOr2Or.add(new Goal("nono", null, null));
-		rootAndOr2And.add(new Goal("decimo", null, null));
-		rootAndOr2And.add(new Goal("undicesimo", null, null));
+		model = new GoalTreeModel(new GS_Goal("root", null, null));
+		ArrayList<GS_Goal> rootAnd = new ArrayList<>();
+		ArrayList<GS_Goal> rootAndOr1 = new ArrayList<>();
+		ArrayList<GS_Goal> rootAndOr2 = new ArrayList<>();
+		ArrayList<GS_Goal> rootAndOr2Or = new ArrayList<>();
+		ArrayList<GS_Goal> rootAndOr2And = new ArrayList<>();
+		rootAnd.add(new GS_Goal("secondo", null, null));
+		rootAnd.add(new GS_Goal("terzo", null, null));
+		rootAndOr1.add(new GS_Goal("quarto", null, null));
+		rootAndOr1.add(new GS_Goal("quinto", null, null));
+		rootAndOr2.add(new GS_Goal("sesto", null, null));
+		rootAndOr2.add(new GS_Goal("settimo", null, null));
+		rootAndOr2Or.add(new GS_Goal("ottavo", null, null));
+		rootAndOr2Or.add(new GS_Goal("nono", null, null));
+		rootAndOr2And.add(new GS_Goal("decimo", null, null));
+		rootAndOr2And.add(new GS_Goal("undicesimo", null, null));
 		
-		model.addAndArcs(new Goal("root", null, null), rootAnd);
-		model.addOrArcs(new Goal("secondo", null, null), rootAndOr1);
-		model.addOrArcs(new Goal("terzo", null, null), rootAndOr2);
-		model.addOrArcs(new Goal("sesto", null, null), rootAndOr2Or);
-		model.addAndArcs(new Goal("settimo", null, null), rootAndOr2And);
+		model.addAndArcs(new GS_Goal("root", null, null), rootAnd);
+		model.addOrArcs(new GS_Goal("secondo", null, null), rootAndOr1);
+		model.addOrArcs(new GS_Goal("terzo", null, null), rootAndOr2);
+		model.addOrArcs(new GS_Goal("sesto", null, null), rootAndOr2Or);
+		model.addAndArcs(new GS_Goal("settimo", null, null), rootAndOr2And);
 		
 		net = new Net(model);
 		

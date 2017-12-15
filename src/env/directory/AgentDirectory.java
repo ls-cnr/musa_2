@@ -30,8 +30,8 @@ public class AgentDirectory extends Artifact {
 	}
 
 	@OPERATION
-	void broadcast_announce_WTS_creation(String spec_id, String workspace, String artifactName) {
-		signal("announcement_WTS_creation",spec_id,workspace,artifactName);
+	void broadcast_announce_WTS_creation(String spec_id, String artifactName) {
+		signal("announcement_WTS_creation",spec_id,artifactName);
 	}
 	
 }

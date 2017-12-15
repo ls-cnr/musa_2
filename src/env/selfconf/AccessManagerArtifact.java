@@ -6,16 +6,20 @@ import java.util.LinkedList;
 import java.util.List;
 
 import cartago.*;
+import communication.auction.Bid;
+import communication.translator.JasonExtNode;
+import communication.translator.JasonExpansionNode;
+import communication.translator.JasonStateOfWorld;
+import communication.translator.TranslateError;
+import datalayer.awareness.LTL.formulamodel.FormulaBTConstruction;
+import datalayer.awareness.LTL.formulamodel.LTLGoal;
+import datalayer.awareness.LTL.net.Nets;
+import datalayer.awareness.LTL.net.TokensConfiguration;
+import datalayer.world.StateOfWorld;
+import datalayer.world.wts.WorldNode;
 import jason.asSyntax.Term;
-import layer.semantic.StateOfWorld;
-import pmr.graph.WorldNode;
-import pmr.probexp.ENode;
-import pmr.probexp.ExpansionNode;
-import translator.JasonENode;
-import translator.JasonExpansionNode;
-import translator.JasonStateOfWorld;
-import translator.TranslateError;
-import pmr.auction.Bid;
+import reasoner.probexp.ExtendedNode;
+import reasoner.probexp.GraphExpansion;
 
 @ARTIFACT_INFO(
 		  outports = {
@@ -32,6 +36,7 @@ public class AccessManagerArtifact extends Artifact {
 
 	void init(String spec_id_string) {
 		this.spec_id_string = spec_id_string;
+				
 		auction_id=0;
 		
 		bids = new LinkedList<Bid>();
@@ -41,15 +46,19 @@ public class AccessManagerArtifact extends Artifact {
 	/* interface: CONFIGURE */
 	@OPERATION
 	void set_initial_node(String node_string) {
-		System.out.println("set_initial_node "+node_string);
+		//System.out.println("set_initial_node "+node_string);
 
 		try {
 			execLinkedOp("mygraph","set_initial_state",node_string);
 			StateOfWorld w = JasonStateOfWorld.term_string_to_object(node_string);
 			
-			ENode enode = new ENode(w);
+			// TODO recuperare i goal dal DB per settare gli initial tokens
+			LTLGoal treeModel = FormulaBTConstruction.construct("G on(l1)");
+			TokensConfiguration startingTokens = new TokensConfiguration(new Nets(treeModel));
+			
+			ExtendedNode enode = new ExtendedNode(w, startingTokens, 0, false, false);
 			enode.setExit(false);
-			Term term=JasonENode.object_to_term(enode);
+			Term term=JasonExtNode.object_to_term(enode);
 			signal("announcement_new_node",spec_id_string,term);
 			
 		} catch (OperationException | TranslateError e) {
@@ -106,12 +115,15 @@ public class AccessManagerArtifact extends Artifact {
 	/* interface: GRANT ACCESS */
 	@OPERATION
 	void apply_changes(String expansion) {
-		ExpansionNode exp;
+		GraphExpansion exp;
 		try {
+			
+			
 			execLinkedOp("mygraph","expand",expansion, spec_id_string);
 			exp = JasonExpansionNode.term_string_to_object(expansion);
-			for(ENode temp : exp.getDestination()){
-				Term term=JasonENode.object_to_term(temp);
+			for(ExtendedNode temp : exp.getDestination()){
+				//System.out.println("Auction: added "+exp.getSource().getWorldState().toSortedString()+"->"+exp.getCapability()+"->"+temp.getWorldState().toSortedString());
+				Term term=JasonExtNode.object_to_term(temp);
 				signal("announcement_new_node",spec_id_string,term);
 			}
 		} catch (OperationException e) {

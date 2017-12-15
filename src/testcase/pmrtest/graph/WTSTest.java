@@ -5,18 +5,20 @@ import static org.junit.Assert.*;
 import java.util.ArrayList;
 
 import org.junit.Test;
+
+import datalayer.awareness.AbstractCapability;
+import datalayer.world.StateOfWorld;
+import datalayer.world.wts.WTS;
+import datalayer.world.wts.WorldNode;
+import datalayer.world.wts.XORNode;
+
 import org.junit.Before;
 
-import layer.awareness.AbstractCapability;
-import layer.semantic.StateOfWorld;
 import net.sf.tweety.lp.asp.parser.ParseException;
-import pmr.graph.WTS;
-import pmr.graph.WorldNode;
-import pmr.graph.XORNode;
-import pmr.probexp.ENode;
-import pmr.probexp.ExpansionNode;
-import pmr.probexp.MultipleExpansionNode;
-import pmr.probexp.NormalExpansionNode;
+import reasoner.probexp.ExtendedNode;
+import reasoner.probexp.GraphExpansion;
+import reasoner.probexp.MultipleExpansion;
+import reasoner.probexp.NormalExpansion;
 
 public class WTSTest {
 		private WTS wts;
@@ -40,19 +42,19 @@ public class WTSTest {
 		private XORNode x3;
 		private XORNode x4;
 		
-		private ENode e1;
-		private ENode e2;
-		private ENode e3;
-		private ENode e4;
-		private ENode e5;
-		private ENode e6;
+		private ExtendedNode e1;
+		private ExtendedNode e2;
+		private ExtendedNode e3;
+		private ExtendedNode e4;
+		private ExtendedNode e5;
+		private ExtendedNode e6;
 		
-		private ExpansionNode ex1;
-		private ExpansionNode ex2;
-		private ExpansionNode ex3;
-		private ExpansionNode ex4;
-		private ExpansionNode ex5;
-		private ExpansionNode ex6;
+		private GraphExpansion ex1;
+		private GraphExpansion ex2;
+		private GraphExpansion ex3;
+		private GraphExpansion ex4;
+		private GraphExpansion ex5;
+		private GraphExpansion ex6;
 		
 		private AbstractCapability cap1;
 		private AbstractCapability cap2;
@@ -70,7 +72,7 @@ public class WTSTest {
 			w1.addFact_asString("penguin(tweety).");
 		} catch (ParseException e) {
 			e.printStackTrace();
-		} catch (layer.semantic.exception.NotAllowedInAStateOfWorld e) {
+		} catch (exception.NotAllowedInAStateOfWorld e) {
 			e.printStackTrace();
 		}
 		this.w2 = new StateOfWorld();
@@ -79,7 +81,7 @@ public class WTSTest {
 			w2.addFact_asString("penguin(tweety).");
 		} catch (ParseException e) {
 			e.printStackTrace();
-		} catch (layer.semantic.exception.NotAllowedInAStateOfWorld e) {
+		} catch (exception.NotAllowedInAStateOfWorld e) {
 			e.printStackTrace();
 		}
 		this.w3 = new StateOfWorld();
@@ -88,7 +90,7 @@ public class WTSTest {
 			w3.addFact_asString("parrot(polly).");
 		} catch (ParseException e) {
 			e.printStackTrace();
-		} catch (layer.semantic.exception.NotAllowedInAStateOfWorld e) {
+		} catch (exception.NotAllowedInAStateOfWorld e) {
 			e.printStackTrace();
 		}
 		this.w4 = new StateOfWorld();
@@ -97,7 +99,7 @@ public class WTSTest {
 			w4.addFact_asString("broken_wing(sid).");
 		} catch (ParseException e) {
 			e.printStackTrace();
-		} catch (layer.semantic.exception.NotAllowedInAStateOfWorld e) {
+		} catch (exception.NotAllowedInAStateOfWorld e) {
 			e.printStackTrace();
 		}
 		this.w5 = new StateOfWorld();
@@ -106,7 +108,7 @@ public class WTSTest {
 			w5.addFact_asString("can_fly(berry).");
 		} catch (ParseException e) {
 			e.printStackTrace();
-		} catch (layer.semantic.exception.NotAllowedInAStateOfWorld e) {
+		} catch (exception.NotAllowedInAStateOfWorld e) {
 			e.printStackTrace();
 		}
 		this.w6 = new StateOfWorld();
@@ -115,7 +117,7 @@ public class WTSTest {
 			w6.addFact_asString("broken_wing(sid).");
 		} catch (ParseException e) {
 			e.printStackTrace();
-		} catch (layer.semantic.exception.NotAllowedInAStateOfWorld e) {
+		} catch (exception.NotAllowedInAStateOfWorld e) {
 			e.printStackTrace();
 		}
 		this.w7 = new StateOfWorld();
@@ -124,7 +126,7 @@ public class WTSTest {
 			w7.addFact_asString("can_fly(claire).");
 		} catch (ParseException e) {
 			e.printStackTrace();
-		} catch (layer.semantic.exception.NotAllowedInAStateOfWorld e) {
+		} catch (exception.NotAllowedInAStateOfWorld e) {
 			e.printStackTrace();
 		}
 		
@@ -135,30 +137,30 @@ public class WTSTest {
 		this.n4 = new WorldNode(w2);
 		this.n5 = new WorldNode(w5);
 		
-		this.e1 = new ENode(w1);
-		this.e2 = new ENode(w2);
-		this.e3 = new ENode(w3);
-		this.e4 = new ENode(w4);
-		this.e5 = new ENode(null);
-		this.e6 = new ENode(w5);
+		this.e1 = new ExtendedNode(w1);
+		this.e2 = new ExtendedNode(w2);
+		this.e3 = new ExtendedNode(w3);
+		this.e4 = new ExtendedNode(w4);
+		this.e5 = new ExtendedNode(null);
+		this.e6 = new ExtendedNode(w5);
 		
-		ArrayList<ENode> ENodeList1 = new ArrayList<ENode>();
+		ArrayList<ExtendedNode> ENodeList1 = new ArrayList<ExtendedNode>();
 		ENodeList1.add(e1);
 		ENodeList1.add(e2);
 		ENodeList1.add(e3);
 		
-		ArrayList<ENode> ENodeList2 = new ArrayList<ENode>();
+		ArrayList<ExtendedNode> ENodeList2 = new ArrayList<ExtendedNode>();
 		ENodeList2.add(e2);
 		
-		ArrayList<ENode> ENodeList3 = new ArrayList<ENode>();
+		ArrayList<ExtendedNode> ENodeList3 = new ArrayList<ExtendedNode>();
 		ENodeList3.add(e3);
 
-		this.ex1 = new NormalExpansionNode(e5, ENodeList2, cap1.getId(), null);
-		this.ex2 = new NormalExpansionNode(e2, ENodeList3, cap2.getId(), null);
-		this.ex3 = new NormalExpansionNode(e3, ENodeList1, cap3.getId(), null);
-		this.ex4 = new MultipleExpansionNode(e4, ENodeList1, cap1.getId());
-		this.ex5 = new MultipleExpansionNode(e5, ENodeList1, cap1.getId());
-		this.ex6 = new MultipleExpansionNode(e6, ENodeList1, cap1.getId());
+		this.ex1 = new NormalExpansion(e5, ENodeList2, cap1.getId(), null);
+		this.ex2 = new NormalExpansion(e2, ENodeList3, cap2.getId(), null);
+		this.ex3 = new NormalExpansion(e3, ENodeList1, cap3.getId(), null);
+		this.ex4 = new MultipleExpansion(e4, ENodeList1, cap1.getId());
+		this.ex5 = new MultipleExpansion(e5, ENodeList1, cap1.getId());
+		this.ex6 = new MultipleExpansion(e6, ENodeList1, cap1.getId());
 		
 		this.wts = new WTS();
 	}

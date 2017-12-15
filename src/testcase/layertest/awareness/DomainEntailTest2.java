@@ -5,13 +5,13 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
-import layer.awareness.DomainEntail;
-import layer.semantic.AssumptionSet;
-import layer.semantic.Condition;
-import layer.semantic.StateOfWorld;
+import datalayer.awareness.AssumptionSet;
+import datalayer.world.Condition;
+import datalayer.world.StateOfWorld;
 import net.sf.tweety.logics.commons.syntax.Constant;
 import net.sf.tweety.lp.asp.parser.ParseException;
 import net.sf.tweety.lp.asp.syntax.DLPAtom;
+import reasoner.EntailOperator;
 
 /**
  * DomainEntail TestCase 2
@@ -36,7 +36,7 @@ public class DomainEntailTest2 {
 			w.addFact_asString("ostrich(olga).");
 		} catch (ParseException e) {
 			e.printStackTrace();
-		} catch (layer.semantic.exception.NotAllowedInAStateOfWorld e) {
+		} catch (exception.NotAllowedInAStateOfWorld e) {
 			e.printStackTrace();
 		}
 		
@@ -53,7 +53,7 @@ public class DomainEntailTest2 {
 		
 		} catch (ParseException e) {
 			e.printStackTrace();
-		} catch (layer.semantic.exception.NotAllowedInAnAssumptionSet e) {
+		} catch (exception.NotAllowedInAnAssumptionSet e) {
 			e.printStackTrace();
 		}
 	}
@@ -64,7 +64,7 @@ public class DomainEntailTest2 {
 	 */
 	@Test
 	public void entailsConditionTest1(){
-		DomainEntail env = DomainEntail.getInstance();
+		EntailOperator env = EntailOperator.getInstance();
 
 		Constant polly = new Constant("polly");
 		DLPAtom q1 = new DLPAtom("can_fly", polly);
@@ -79,7 +79,7 @@ public class DomainEntailTest2 {
 	 */
 	@Test
 	public void entailsConditionTest2(){
-		DomainEntail env = DomainEntail.getInstance();
+		EntailOperator env = EntailOperator.getInstance();
 		
 		Constant sid = new Constant("sid");
 		DLPAtom q2 = new DLPAtom("can_fly", sid);
@@ -95,7 +95,7 @@ public class DomainEntailTest2 {
 	 */
 	@Test
 	public void entailsConditionTest3(){
-		DomainEntail env = DomainEntail.getInstance();
+		EntailOperator env = EntailOperator.getInstance();
 		
 		Constant tweety = new Constant("tweety");
 		DLPAtom q3 = new DLPAtom("can_fly", tweety);

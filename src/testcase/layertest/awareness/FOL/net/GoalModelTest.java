@@ -4,8 +4,8 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
-import layer.awareness.Goal;
-import layer.awareness.FOL.goalmodel.GoalTreeModel;
+import datalayer.awareness.legacy.GS_Goal;
+import datalayer.awareness.legacy.goalmodel.GoalTreeModel;
 
 import java.util.ArrayList;
 
@@ -22,7 +22,7 @@ public class GoalModelTest {
 	 */
 	@Before	
 	public void init() {
-		Goal g = new Goal("root", null, null);
+		GS_Goal g = new GS_Goal("root", null, null);
 		model = new GoalTreeModel(g);
 	}
 	
@@ -31,7 +31,7 @@ public class GoalModelTest {
 	 */
 	@Test 
 	public void testRoot() {
-		Goal h = new Goal("root", null, null);
+		GS_Goal h = new GS_Goal("root", null, null);
 		assertEquals(model.getRoot(), h);
 	}
 	
@@ -41,8 +41,8 @@ public class GoalModelTest {
 	 */
 	@Test 
 	public void testSameRoot() {
-		ArrayList<Goal> a = new ArrayList<>();
-		a.add(new Goal("root", null, null));	//New goal but already present in the model (Same name)
+		ArrayList<GS_Goal> a = new ArrayList<>();
+		a.add(new GS_Goal("root", null, null));	//New goal but already present in the model (Same name)
 		model.addOrArcs(model.getRoot(), a);
 		assertNull( model.getArcs(model.getRoot()));
 	}
@@ -52,8 +52,8 @@ public class GoalModelTest {
 	 */
 	@Test 
 	public void testAddArc() {
-		ArrayList<Goal> a = new ArrayList<>();
-		Goal g = new Goal("second", null, null);
+		ArrayList<GS_Goal> a = new ArrayList<>();
+		GS_Goal g = new GS_Goal("second", null, null);
 		a.add(g);
 		model.addOrArcs(model.getRoot(), a);
 		assertEquals( model.getArcs(model.getRoot()).get(0).getNextNode(), g);
@@ -64,9 +64,9 @@ public class GoalModelTest {
 	 */
 	@Test
 	public void testSameGoals() {
-		ArrayList<Goal> a = new ArrayList<>();
-		Goal g = new Goal("second", null, null);	// These goals are considered
-		Goal h = new Goal("second", null, null);	// equal
+		ArrayList<GS_Goal> a = new ArrayList<>();
+		GS_Goal g = new GS_Goal("second", null, null);	// These goals are considered
+		GS_Goal h = new GS_Goal("second", null, null);	// equal
 		a.add(g);
 		a.add(h);
 		model.addOrArcs(model.getRoot(), a);

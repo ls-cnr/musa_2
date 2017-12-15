@@ -5,8 +5,8 @@ import java.util.Scanner;
 
 import org.junit.Test;
 
-import configuration.distributed.Sequences;
-import configuration.distributed.Solution;
+import datalayer.world.configuration.distributed.Sequences;
+import datalayer.world.configuration.distributed.Solution;
 
 /**
  * 

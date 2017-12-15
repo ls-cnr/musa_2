@@ -4,18 +4,22 @@ import java.util.HashMap;
 import java.util.Iterator;
 import org.junit.Test;
 
-import b2b_cloud_scenario.B2BCloudSetup;
-import configuration.centralized.Solution;
-import configuration.centralized.SolutionSet;
-import configuration.centralized.SolutionTree;
-import pmr.SolutionGraph;
-import pmr.graph.EvolutionEdge;
-import pmr.graph.NormalEdge;
-import pmr.graph.OPNode;
-import pmr.graph.WTS;
-import pmr.graph.WorldNode;
-import pmr.probexp.ExpansionNode;
-import pmr.probexp.ProblemExploration;
+import datalayer.awareness.ProblemSpecification;
+import datalayer.awareness.LTL.net.Nets;
+import datalayer.awareness.LTL.net.TokensConfiguration;
+import datalayer.world.configuration.centralized.Solution;
+import datalayer.world.configuration.centralized.SolutionSet;
+import datalayer.world.configuration.centralized.SolutionTree;
+import datalayer.world.wts.EvolutionEdge;
+import datalayer.world.wts.NormalEdge;
+import datalayer.world.wts.OPNode;
+import datalayer.world.wts.WTS;
+import datalayer.world.wts.WorldNode;
+import domain.legacy.B2BCloudSetup;
+import exception.ProblemDefinitionException;
+import reasoner.SolutionGraph;
+import reasoner.probexp.GraphExpansion;
+import reasoner.probexp.ProblemExploration;
 
 /**
  * SolutionTree test class.
@@ -25,20 +29,23 @@ import pmr.probexp.ProblemExploration;
  */
 public class SolutionTreeTest {
 	@Test
-	public void testB2BCloud() {
+	public void testB2BCloud() throws ProblemDefinitionException {
 		B2BCloudSetup b2bcs = new B2BCloudSetup();
 		SolutionGraph sg = new SolutionGraph();
-		ProblemExploration pe = new ProblemExploration(b2bcs.getGoalModel(), b2bcs.getCapabilities(),
-				b2bcs.getDomain());
+		ProblemSpecification ps = new ProblemSpecification(b2bcs.getDomain(), b2bcs.getGoalModel(), null);
+		ProblemExploration pe = new ProblemExploration(ps, b2bcs.getCapabilities());
+
 		// b2bcs.getGoalModel().printModel();
 		sg.getWTS().setInitialState(b2bcs.getNodewStart().getWorldState());
-		pe.addToVisit(b2bcs.getNodewStart(), b2bcs.getStartTokens(), 9);
+		TokensConfiguration startingTokens = null; //new TokensConfiguration(new Nets(b2bcs.getGoalModel()));
+		
+		pe.addToVisit(b2bcs.getNodewStart(), startingTokens, 9);
 		for (int i = 0; i < 40; i++) {
 			pe.expandNode();
 			// for (ENode t : pe.getHighestExpansion().getDestination()) {
 			// System.out.println(t.getScore());
 			// }
-			ExpansionNode en = pe.getHighestExpansion();
+			GraphExpansion en = pe.getHighestExpansion();
 			if (en != null) {
 				sg.addNode(en);
 				pe.removeExpandedNode(en);

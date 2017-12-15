@@ -1,7 +1,5 @@
 package layertest.awareness;
 
-import layer.awareness.DomainEntail;
-import layer.semantic.*;
 import net.sf.tweety.lp.asp.parser.ParseException;
 
 import java.io.IOException;
@@ -10,8 +8,11 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
+import datalayer.awareness.AssumptionSet;
+import datalayer.world.*;
 import net.sf.tweety.logics.commons.syntax.Constant;
 import net.sf.tweety.lp.asp.syntax.DLPAtom;
+import reasoner.EntailOperator;
 
 
 // TODO: Auto-generated Javadoc
@@ -36,7 +37,7 @@ public class DomainEntailTest1 {
 	private Condition cond_q3;
 	
 	/** The env. */
-	DomainEntail env;
+	EntailOperator env;
 	
 
 	
@@ -59,7 +60,7 @@ public class DomainEntailTest1 {
 		catch (ParseException e) {
 			e.printStackTrace();
 		} 
-		catch (layer.semantic.exception.NotAllowedInAStateOfWorld e) {
+		catch (exception.NotAllowedInAStateOfWorld e) {
 			e.printStackTrace();
 		}
 	
@@ -77,11 +78,11 @@ public class DomainEntailTest1 {
 		catch (ParseException e) {
 			e.printStackTrace();
 		} 
-		catch (layer.semantic.exception.NotAllowedInAnAssumptionSet e) {
+		catch (exception.NotAllowedInAnAssumptionSet e) {
 			e.printStackTrace();
 		}
 		
-		this.env = DomainEntail.getInstance();
+		this.env = EntailOperator.getInstance();
 		
 		Constant polly = new Constant ("polly");
 		Constant tweety = new Constant ("tweety");

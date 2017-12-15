@@ -6,18 +6,19 @@ import java.util.HashMap;
 import java.util.HashSet;
 
 import cartago.*;
-import configuration.distributed.Sequences;
-import configuration.distributed.Solution;
-import pmr.probexp.ENode;
-import pmr.probexp.ExpansionNode;
-import translator.JasonExpansionNode;
-import translator.TranslateError;
+import communication.translator.JasonExpansionNode;
+import communication.translator.TranslateError;
+import datalayer.world.configuration.distributed.Sequences;
+import datalayer.world.configuration.distributed.Solution;
+import reasoner.probexp.ExtendedNode;
+import reasoner.probexp.GraphExpansion;
 
 @ARTIFACT_INFO(outports = { @OUTPORT(name = "graph") })
 public class ConfigSelector extends Artifact {
 	private Sequences sc;
+	
 	HashMap<String, String> translation;
-	@SuppressWarnings("unused")
+	
 	private String spec_id_string;
 
 	void init(String spec_id_string) {
@@ -43,7 +44,7 @@ public class ConfigSelector extends Artifact {
 
 	@OPERATION
 	void notifyENode(String expNodeString) {
-		ExpansionNode expNode;
+		GraphExpansion expNode;
 		try {
 			expNode = JasonExpansionNode.term_string_to_object(expNodeString);
 			String src = expNode.getSource().getWorldState().toString();
@@ -61,7 +62,7 @@ public class ConfigSelector extends Artifact {
 				 */
 				this.sc.processEdge(src, "X" + src.hashCode(), expNode.getCapability());
 				HashSet<String> tmp = new HashSet<>();
-				for (ENode d : expNode.getDestination()) {
+				for (ExtendedNode d : expNode.getDestination()) {
 					String dest = d.getWorldState().toString();
 					if (dest.equals(""))
 						dest = "w0";
@@ -75,7 +76,7 @@ public class ConfigSelector extends Artifact {
 				tmp.clear();
 			} else if (expNode.getDestination().size() == 1) {
 				/*
-				 * ExpansionNode semplice. Aggiungo dest e se è soluzione ne
+				 * ExpansionNode semplice. Aggiungo dest e se ï¿½ soluzione ne
 				 * tengo conto.
 				 */
 				String dest = expNode.getDestination().get(0).getWorldState().toString();
@@ -86,7 +87,6 @@ public class ConfigSelector extends Artifact {
 					this.sc.processSolution(dest);
 			}
 		} catch (TranslateError e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

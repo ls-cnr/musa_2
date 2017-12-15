@@ -5,16 +5,16 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
-import layer.awareness.AbstractCapability;
-import layer.semantic.StateOfWorld;
+import datalayer.awareness.AbstractCapability;
+import datalayer.world.StateOfWorld;
+import datalayer.world.wts.Edge;
+import datalayer.world.wts.EvolutionEdge;
+import datalayer.world.wts.Node;
+import datalayer.world.wts.NormalEdge;
+import datalayer.world.wts.OPNode;
+import datalayer.world.wts.WorldNode;
+import datalayer.world.wts.XORNode;
 import net.sf.tweety.lp.asp.parser.ParseException;
-import pmr.graph.Edge;
-import pmr.graph.EvolutionEdge;
-import pmr.graph.Node;
-import pmr.graph.NormalEdge;
-import pmr.graph.OPNode;
-import pmr.graph.WorldNode;
-import pmr.graph.XORNode;
 
 public class EdgeTest {
 	
@@ -51,7 +51,7 @@ public class EdgeTest {
 			w1.addFact_asString("penguin(tweety).");
 		} catch (ParseException e) {
 			e.printStackTrace();
-		} catch (layer.semantic.exception.NotAllowedInAStateOfWorld e) {
+		} catch (exception.NotAllowedInAStateOfWorld e) {
 			e.printStackTrace();
 		}
 		this.w2 = new StateOfWorld();
@@ -60,7 +60,7 @@ public class EdgeTest {
 			w2.addFact_asString("penguin(tweety).");
 		} catch (ParseException e) {
 			e.printStackTrace();
-		} catch (layer.semantic.exception.NotAllowedInAStateOfWorld e) {
+		} catch (exception.NotAllowedInAStateOfWorld e) {
 			e.printStackTrace();
 		}
 		this.w3 = new StateOfWorld();
@@ -69,7 +69,7 @@ public class EdgeTest {
 			w3.addFact_asString("parrot(polly).");
 		} catch (ParseException e) {
 			e.printStackTrace();
-		} catch (layer.semantic.exception.NotAllowedInAStateOfWorld e) {
+		} catch (exception.NotAllowedInAStateOfWorld e) {
 			e.printStackTrace();
 		}
 		this.w4 = new StateOfWorld();
@@ -78,12 +78,12 @@ public class EdgeTest {
 			w4.addFact_asString("broken_wing(sid).");
 		} catch (ParseException e) {
 			e.printStackTrace();
-		} catch (layer.semantic.exception.NotAllowedInAStateOfWorld e) {
+		} catch (exception.NotAllowedInAStateOfWorld e) {
 			e.printStackTrace();
 		}
 		
 		//Radice(n1) due rami figli: (n2) (n3), figlio(n2) : un ramo figlio(n4)
-		//n4 contiene uno stato del mondo uguale a n3, quindi l'ipotetico figlio di n2 è in realtà n3, quindi
+		//n4 contiene uno stato del mondo uguale a n3, quindi l'ipotetico figlio di n2 ï¿½ in realtï¿½ n3, quindi
 		//dovrebbe nascere un nuovo arco da (n2) a (n3)
 		this.n1 = new WorldNode(w4);
 		this.n2 = new WorldNode(w3);

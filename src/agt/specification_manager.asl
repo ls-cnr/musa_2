@@ -6,6 +6,8 @@
 
 
 /* Initial beliefs and rules */
+iterazioni(0).
+num_nodi(0).
 
 /* TODO: aggiungere 
  * goals e domain assumptions
@@ -37,20 +39,21 @@
 	makeArtifact(AMArtifactName,"selfconf.AccessManagerArtifact",[SpecId],AccessManagerId)[wsp(my_spec_wp)];//[artifact_id(ArtId)];//[wsp_id("node_local")];
 	makeArtifact(SGArtifactName,"selfconf.SolutionGraphArtifact",[],SolutionGraphId)[wsp(my_spec_wp)];//[artifact_id(ArtId)];//[wsp_id("node_local")];	
 	
+	.wait(2000);
 	?joined(common,MainWp);
 	//cartago.set_current_wsp(MainWp);
-	broadcast_announce_WTS_creation(SpecId,my_spec_wp,AMArtifactName);
+	broadcast_announce_WTS_creation(SpecId,AMArtifactName);
 	
 	//cartago.set_current_wsp(LocalWp);
 	linkArtifacts(AccessManagerId,"mygraph",SolutionGraphId)[wsp(my_spec_wp)];
 	.print("linking ", AccessManagerId, " to ", SolutionGraphId);	
 	
 	+solution_management_info(SpecId,AccessManagerId,SolutionGraphId);
-	+auction_loop_delay(SpecIdString,300);														// this allows to change loop frequency during the execution
+	+auction_loop_delay(SpecIdString,50);														// this allows to change loop frequency during the execution
 	
-	.wait(1000);
-	set_initial_node(w([order(an_order),available(an_order),user(a_user),user_data(the_user_data)]))[artifact_id(AccessManagerId)];
-	
+	.wait(500);
+	set_initial_node(w([on(main),closed(i1),open(i2),closed(i3),open(i4)]))[artifact_id(AccessManagerId)];
+	.wait(500);
 	!auction_loop(SpecId);
 .
 
@@ -58,15 +61,25 @@
 <-
 	?solution_management_info(SpecId,AccessManagerId,_);
 	
-	get_number_of_nodes(N)[artifact_id(AccessManagerId)];
-	.print("num nodi ",N);	
 	
 	startAuction[artifact_id(AccessManagerId)];
 	.wait(100);
 	closeAuction[artifact_id(AccessManagerId)];
 	
-	if (N<19) {
+	get_number_of_nodes(N)[artifact_id(AccessManagerId)];
+	?num_nodi(OLD_N);
+	
+	if (N > OLD_N) {
+	 	.print("num nodi ",N,"    (old=",OLD_N,")");	
+		//	print_graph[artifact_id(AccessManagerId)];
+		//	.println("=============================================");
+	}
+	-+num_nodi(N);
+
+	?iterazioni(I);
+	if (I<30) {
 		?auction_loop_delay(SpecIdString,AuctionDelay);
+		-+iterazioni(I+1);
 		.wait(AuctionDelay);
 		!!auction_loop(SpecId);
 	} else {

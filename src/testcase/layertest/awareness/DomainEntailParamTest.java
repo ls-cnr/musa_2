@@ -10,18 +10,18 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
-import layer.awareness.DomainEntail;
-import layer.semantic.AssumptionSet;
-import layer.semantic.Condition;
-import layer.semantic.StateOfWorld;
+import datalayer.awareness.AssumptionSet;
+import datalayer.world.Condition;
+import datalayer.world.StateOfWorld;
 import net.sf.tweety.logics.commons.syntax.Constant;
 import net.sf.tweety.lp.asp.parser.ParseException;
 import net.sf.tweety.lp.asp.syntax.DLPAtom;
+import reasoner.EntailOperator;
 
 @RunWith(Parameterized.class)
 public class DomainEntailParamTest {
 	
-	DomainEntail env;
+	EntailOperator env;
 	StateOfWorld w;
 	AssumptionSet domain;
 	Condition cond;
@@ -43,7 +43,7 @@ public class DomainEntailParamTest {
 			w.addFact_asString("ostrich(olga).");
 		} catch (ParseException e) {
 			e.printStackTrace();
-		} catch (layer.semantic.exception.NotAllowedInAStateOfWorld e) {
+		} catch (exception.NotAllowedInAStateOfWorld e) {
 			e.printStackTrace();
 		}
 		
@@ -60,11 +60,11 @@ public class DomainEntailParamTest {
 		
 		} catch (ParseException e) {
 			e.printStackTrace();
-		} catch (layer.semantic.exception.NotAllowedInAnAssumptionSet e) {
+		} catch (exception.NotAllowedInAnAssumptionSet e) {
 			e.printStackTrace();
 		}
 		
-		env = DomainEntail.getInstance();
+		env = EntailOperator.getInstance();
 		
 		Constant cons = new Constant(one);
 		DLPAtom q = new DLPAtom(two, cons);

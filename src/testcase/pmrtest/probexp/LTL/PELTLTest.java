@@ -9,19 +9,23 @@ import java.util.Set;
 import org.junit.Before;
 import org.junit.Test;
 
-import layer.awareness.AbstractCapability;
-import layer.awareness.FOL.net.Token;
-import layer.awareness.LTL.formulamodel.FormulaBT;
-import layer.awareness.LTL.formulamodel.FormulaBTConstruction;
-import layer.awareness.LTL.net.Nets;
-import layer.awareness.LTL.net.TokensConfiguration;
-import layer.semantic.AssumptionSet;
-import layer.semantic.Condition;
-import layer.semantic.StateOfWorld;
-import layer.semantic.evolution.AddStatement;
-import layer.semantic.evolution.CapabilityEvolutionScenario;
-import layer.semantic.evolution.EvolutionScenario;
-import layer.semantic.evolution.RemoveStatement;
+import communication.translator.ExtDLPHead;
+import datalayer.awareness.AbstractCapability;
+import datalayer.awareness.AssumptionSet;
+import datalayer.awareness.ProblemSpecification;
+import datalayer.awareness.LTL.formulamodel.LTLGoal;
+import datalayer.awareness.LTL.formulamodel.FormulaBTConstruction;
+import datalayer.awareness.LTL.net.Nets;
+import datalayer.awareness.LTL.net.TokensConfiguration;
+import datalayer.awareness.legacy.net.Token;
+import datalayer.world.Condition;
+import datalayer.world.StateOfWorld;
+import datalayer.world.evolution.AddStatement;
+import datalayer.world.evolution.CapabilityEvolutionScenario;
+import datalayer.world.evolution.EvolutionScenario;
+import datalayer.world.evolution.RemoveStatement;
+import datalayer.world.wts.WorldNode;
+import exception.ProblemDefinitionException;
 import net.sf.tweety.logics.commons.syntax.Constant;
 import net.sf.tweety.logics.commons.syntax.Predicate;
 import net.sf.tweety.logics.commons.syntax.Variable;
@@ -32,11 +36,9 @@ import net.sf.tweety.logics.fol.syntax.Negation;
 import net.sf.tweety.lp.asp.parser.ParseException;
 import net.sf.tweety.lp.asp.syntax.DLPAtom;
 import petrinet.logic.Place;
-import pmr.graph.WorldNode;
-import pmr.probexp.ENode;
-import pmr.probexp.MultipleExpansionNode;
-import pmr.probexp.ProblemExploration;
-import translator.ExtDLPHead;
+import reasoner.probexp.ExtendedNode;
+import reasoner.probexp.MultipleExpansion;
+import reasoner.probexp.ProblemExploration;
 
 public class PELTLTest {
 	
@@ -91,7 +93,7 @@ public class PELTLTest {
 		
 		} catch (ParseException e) {
 			e.printStackTrace();
-		} catch (layer.semantic.exception.NotAllowedInAnAssumptionSet e) {
+		} catch (exception.NotAllowedInAnAssumptionSet e) {
 			e.printStackTrace();
 		}
 		
@@ -399,9 +401,14 @@ public class PELTLTest {
 	}
 	
 	private void modelConstruction() {
-		FormulaBT treeModel = FormulaBTConstruction.construct("( F available(an_order) ) && ( G (! user_data(the_user_data) ) )");
-		problem = new ProblemExploration(treeModel, new ArrayList<AbstractCapability>(), domain);
+		LTLGoal treeModel = FormulaBTConstruction.construct("( F available(an_order) ) && ( G (! user_data(the_user_data) ) )");
+		ProblemSpecification ps = new ProblemSpecification(domain,treeModel,null);
 
+		try {
+			problem = new ProblemExploration(ps, new ArrayList<AbstractCapability>());
+		} catch (ProblemDefinitionException e1) {
+			e1.printStackTrace();
+		}
 
 		StateOfWorld wStart = new StateOfWorld(); 
 		try {
@@ -411,7 +418,7 @@ public class PELTLTest {
 		  wStart.addFact_asString("user_data(the_user_data).");
 		} catch (ParseException e) {
 		  e.printStackTrace();
-		} catch (layer.semantic.exception.NotAllowedInAStateOfWorld e) {
+		} catch (exception.NotAllowedInAStateOfWorld e) {
 		  e.printStackTrace();
 		}
 		
@@ -438,10 +445,10 @@ public class PELTLTest {
 		
 		problem.expandNode();
 		
-		MultipleExpansionNode nk = (MultipleExpansionNode) problem.getExpandedList().get(0);
+		MultipleExpansion nk = (MultipleExpansion) problem.getExpandedList().get(0);
 		//ExpansionNode nk = problem.getHighestExpansion();
 		System.out.println("-----------------------------------------------------------------");
-		for( ENode e : nk.getDestination() ){
+		for( ExtendedNode e : nk.getDestination() ){
 			String scenarioName = nk.getScenario(e);
 			System.out.println(scenarioName + " ");
 			

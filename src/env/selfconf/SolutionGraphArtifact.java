@@ -3,15 +3,15 @@
 package selfconf;
 
 import cartago.*;
+import communication.translator.JasonExtNode;
+import communication.translator.JasonExpansionNode;
+import communication.translator.JasonStateOfWorld;
+import communication.translator.TranslateError;
+import datalayer.world.StateOfWorld;
 import jason.asSyntax.Term;
-import layer.semantic.StateOfWorld;
-import pmr.SolutionGraph;
-import pmr.probexp.ENode;
-import pmr.probexp.ExpansionNode;
-import translator.JasonENode;
-import translator.JasonExpansionNode;
-import translator.JasonStateOfWorld;
-import translator.TranslateError;
+import reasoner.SolutionGraph;
+import reasoner.probexp.ExtendedNode;
+import reasoner.probexp.GraphExpansion;
 
 public class SolutionGraphArtifact extends Artifact {
 	
@@ -31,7 +31,6 @@ public class SolutionGraphArtifact extends Artifact {
 		
 		try {
 			StateOfWorld w = JasonStateOfWorld.term_string_to_object(node_string);
-			//TODO add the initial state to the graph
 		} catch (TranslateError e1) {
 			e1.printStackTrace();
 		}
@@ -46,12 +45,12 @@ public class SolutionGraphArtifact extends Artifact {
 	/* interface: EXPAND */
 	@LINK
 	void expand(String expansion_node, String spec_id_string) {
-		ExpansionNode exp;
+		GraphExpansion exp;
 		try{
 		exp = JasonExpansionNode.term_string_to_object(expansion_node);
 		}catch(TranslateError t){return;}
 		graph.addNode(exp);
-		System.out.println("Ho aggiunto un nodo al grafo. Il grafo coniente ora " + this.graph.getWTSHashmap().size() + "nodi.");
+		//System.out.println("Ho aggiunto un nodo al grafo. Il grafo coniente ora " + this.graph.getWTSHashmap().size() + " nodi.");
 	}
 
 	/* interface: VISIT */

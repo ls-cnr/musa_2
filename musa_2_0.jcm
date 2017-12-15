@@ -15,20 +15,42 @@
 mas musa_2_0 {
 
     agent specification_manager {
-    		join: musa_wp
+    		join: my_spec_wp, common
     }
 
-    agent explorer1 {
-    		join: musa_wp
+/* 
+	VERSIONE CON UNICO AGENTE EXPLORER
+    agent explorer1 : explorer.asl {
+    		beliefs: cap_set("all") 
+    		focus: common.agent_directory
+    		join: explorer_wp,my_spec_wp
     }
-    agent explorer2 {
-    		join: musa_wp
+*/
+
+/* VERSIONE CON TRE AGENTI EXPLORER */ 
+    agent explorer1 : explorer.asl {
+    		beliefs: cap_set("set1") 
+    		focus: common.agent_directory
+    		join: explorer_wp,my_spec_wp
     }
-    agent explorer3 {
-    		join: musa_wp
+    agent explorer2 : explorer.asl {
+    		beliefs: cap_set("set2") 
+    		focus: common.agent_directory
+    		join: explorer_wp,my_spec_wp
+    }
+    agent explorer3 : explorer.asl {
+    		beliefs: cap_set("set3") 
+    		focus: common.agent_directory
+    		join: explorer_wp,my_spec_wp
     }
 
-	workspace musa_wp {
+ 	workspace explorer_wp {
+	}
+ 
+ 	workspace my_spec_wp {
+	}
+
+	workspace common {
 	    artifact agent_directory: directory.AgentDirectory()
 	}
     
