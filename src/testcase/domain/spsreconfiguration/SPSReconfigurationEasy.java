@@ -70,7 +70,10 @@ public class SPSReconfigurationEasy implements Scenario {
 
 	@Override
 	public Requirements getRequirements() {
-		String g1 =  "G on(l2) ";	//"G(on(l2) U (!on(l1)))"; //
+//		String g1 =  "G on(main) && F on(l2) ";	//"G(on(l2) U (!on(l1)))"; //
+//		String g1 =  "G on(l2) ";	//"G(on(l2) U (!on(l1)))"; //
+//		String g1 =  "G (F on(l2) ) ";	//"G(on(l2) U (!on(l1)))"; //
+		String g1 =  "G on(main) && G (F on(l2) ) ";	//"G(on(l2) U (!on(l1)))"; //
 		
 		return FormulaBTConstruction.construct(g1);
 	}
@@ -80,7 +83,7 @@ public class SPSReconfigurationEasy implements Scenario {
 		StateOfWorld w = new StateOfWorld();
 		try {
 			w.addFact_asString("on(main).");
-			w.addFact_asString("closed(i1).");
+			w.addFact_asString("open(i1).");
 			w.addFact_asString("open(i2).");
 			w.addFact_asString("closed(i3).");
 			w.addFact_asString("open(i4).");

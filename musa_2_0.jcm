@@ -20,14 +20,15 @@ mas musa_2_0 {
 
 /* 
 	VERSIONE CON UNICO AGENTE EXPLORER
+	* 
+	*/
     agent explorer1 : explorer.asl {
     		beliefs: cap_set("all") 
     		focus: common.agent_directory
     		join: explorer_wp,my_spec_wp
     }
-*/
 
-/* VERSIONE CON TRE AGENTI EXPLORER */ 
+/* VERSIONE CON TRE AGENTI EXPLORER 
     agent explorer1 : explorer.asl {
     		beliefs: cap_set("set1") 
     		focus: common.agent_directory
@@ -43,7 +44,7 @@ mas musa_2_0 {
     		focus: common.agent_directory
     		join: explorer_wp,my_spec_wp
     }
-
+*/ 
  	workspace explorer_wp {
 	}
  

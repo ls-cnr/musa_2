@@ -82,7 +82,7 @@ public class SolutionGraphArtifact extends Artifact {
 	
 	@LINK
 	void printGraph(){
-		this.graph.printGraph();
+		this.graph.printForGraphviz();
 	}
 
 }

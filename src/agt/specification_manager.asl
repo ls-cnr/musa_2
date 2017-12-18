@@ -52,7 +52,7 @@ num_nodi(0).
 	+auction_loop_delay(SpecIdString,50);														// this allows to change loop frequency during the execution
 	
 	.wait(500);
-	set_initial_node(w([on(main),closed(i1),open(i2),closed(i3),open(i4)]))[artifact_id(AccessManagerId)];
+	set_initial_node(w([on(main),open(i1),open(i2),closed(i3),open(i4)]))[artifact_id(AccessManagerId)];
 	.wait(500);
 	!auction_loop(SpecId);
 .
@@ -77,7 +77,7 @@ num_nodi(0).
 	-+num_nodi(N);
 
 	?iterazioni(I);
-	if (I<30) {
+	if (I<200) {
 		?auction_loop_delay(SpecIdString,AuctionDelay);
 		-+iterazioni(I+1);
 		.wait(AuctionDelay);

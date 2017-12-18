@@ -48,10 +48,11 @@ import reasoner.probexp.ProblemExploration;
 //		  }
 //	) 
 public class ProblemExplorationArtifact extends Artifact {
+	private String my_agent_name ="unspecified";
 	
 	private ProblemExploration pe;
 	
-	void init(String cap_set) {
+	void init(String agent_name,String cap_set) {
 		// a regime questi dati vanno presi dal artefatto Specification
 		SPSReconfigurationEasy problem_domain = new SPSReconfigurationEasy();	
 		ArrayList<AbstractCapability> capabilities=null;
@@ -72,7 +73,7 @@ public class ProblemExplorationArtifact extends Artifact {
 		
 		ProblemSpecification ps = new ProblemSpecification(assumptions,model,null);		
 		try {
-			pe = new ProblemExploration( ps, capabilities);
+			pe = new ProblemExploration( ps, capabilities, agent_name);
 		} catch (ProblemDefinitionException e) {
 			failed("I goal devono essere specificati in LTL");
 		}

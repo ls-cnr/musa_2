@@ -4,6 +4,9 @@ import java.util.HashMap;
 import java.util.Iterator;
 
 import datalayer.awareness.LTL.net.TokensConfiguration;
+import datalayer.world.wts.EvolutionEdge;
+import datalayer.world.wts.NormalEdge;
+import datalayer.world.wts.OPNode;
 import datalayer.world.wts.WTS;
 import datalayer.world.wts.WorldNode;
 import reasoner.probexp.ExtendedNode;
@@ -126,11 +129,11 @@ public class SolutionGraph {
 	 */
 	public void updateExitNodeMap(GraphExpansion node){
 		if(node.getSource().isExitNode() == true)	
-			this.exitNodeMap.put(node.getSource().getWorldState().toString(), wts.getWTS().get(node.getSource().getWorldState().toString()));
+			this.exitNodeMap.put(node.getSource().getWorldState().toSortedString(), wts.getWTS().get(node.getSource().getWorldState().toSortedString()));
 		Iterator<ExtendedNode> i = node.getDestination().iterator();
 		while (i.hasNext()){
 			ExtendedNode temp = i.next();
-			if(temp.isExitNode() == true)	this.exitNodeMap.put(temp.getWorldState().toString(), wts.getWTS().get(temp.getWorldState().toString()));
+			if(temp.isExitNode() == true)	this.exitNodeMap.put(temp.getWorldState().toSortedString(), wts.getWTS().get(temp.getWorldState().toSortedString()));
 		}
 	}
 	
@@ -170,7 +173,38 @@ public class SolutionGraph {
 //	}
 	
 	
-	public void printGraph(){
-		this.wts.printGraph();
+	public void printForGraphviz(){
+		//this.wts.printForGraphviz();
+		System.out.println("digraph G {");
+
+		// set the initial state as green
+		System.out.println("\""+wts.getInitialState().getWorldState().toSortedString()+"\"[color=green]");
+		for (String node : exitNodeMap.keySet()) {
+			System.out.println("\""+node+"\"[color=red]");
+		}
+
+		
+		Iterator<String> i = wts.getGraphNodeIterator();
+		while(i.hasNext()){
+			String temp = (String) i.next();
+			
+			WorldNode w = wts.getGraph().get(temp);
+			
+			
+			// draw all outgoing arcs from node to neighbours
+			for( NormalEdge e : w.getOutcomingEdgeList()){
+				System.out.println("\""+w.getWorldState().toSortedString()+"\" -> \""+e.getDestination().getWorldState().toSortedString()+"\"[label=\""+ e.getCapability()+ "\"]");
+			}
+			
+			for( OPNode opNode : w.getOPNodeList()){
+				for( EvolutionEdge ee : opNode.getOutcomingEdge()){
+					//ee.getDestination().
+					System.out.println("\""+w.getWorldState().toSortedString() + "\" -> \"" + ee.getDestination().getWorldState().toSortedString()+"\" [label=\""+ ee.getScenario()+ "\"][style=bold][color=red]");
+				}
+			}
+
+		}
+		System.out.println("}");
 	}
+
 }

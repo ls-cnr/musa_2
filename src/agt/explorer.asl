@@ -50,7 +50,7 @@
 	.println("Creating ", ArtifactName ," for ", SpecIdString);
 	
 	?cap_set(Set);
-	makeArtifact(ArtifactName,"selfconf.ProblemExplorationArtifact",[Set],PEId);
+	makeArtifact(ArtifactName,"selfconf.ProblemExplorationArtifact",[MyName1,Set],PEId);
 	//makeArtifact("copia","selfconf.ProblemExplorationArtifact",[],PEId2);
 	.println("Created ", ArtifactName ," for ( ", SpecIdString," ) ArtifactName: ", PEId);
 	
@@ -78,7 +78,7 @@
 	getMostPromisingExpansion(Expansion);
 	
 	if(Expansion \== null_expansion){
-		.println("Expansion:",Expansion);
+		//.println("Expansion:",Expansion);
 		Expansion = expansionNode(_,_,Score,_,_);
 		.my_name(MyName);
 		bid(AuctionId,MyName,Score) [artifact_id(AccessManagerId)];	

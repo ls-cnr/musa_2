@@ -26,8 +26,10 @@ import reasoner.EntailOperator;
  * @author Alessandro Fontana
  * @author Mirko Zichichi
  */
+// nota di Luca: in questa versione del ProblemExploration, i goal ammessi sono solo quelli LTL
 public class ProblemExploration {
-
+	private String my_agent_name = "";
+	
 	/** The Assumption Set defined globally that the Agent has to maintain */
 	private AssumptionSet assumptions;
 	
@@ -51,6 +53,8 @@ public class ProblemExploration {
 	
 	private int iterations=0;
 	
+	private boolean verbose=false;
+	
 //	boolean terminated=false;
 	
 	/**
@@ -64,8 +68,17 @@ public class ProblemExploration {
 	 *            the assumptions
 	 * @throws ProblemDefinitionException 
 	 */
-	// nota di Luca: in questa versione del ProblemExploration, i goal ammessi sono solo quelli LTL
+	public ProblemExploration( ProblemSpecification ps, ArrayList<AbstractCapability> capabilities, String agent_name) throws ProblemDefinitionException {
+		initialize(ps,capabilities);
+		setAgentName(agent_name);
+	}
+
+	
 	public ProblemExploration( ProblemSpecification ps, ArrayList<AbstractCapability> capabilities) throws ProblemDefinitionException {
+		initialize(ps,capabilities);
+	}
+	
+	private void initialize(ProblemSpecification ps, ArrayList<AbstractCapability> capabilities) throws ProblemDefinitionException {
 		this.capabilities = new ArrayList<>(capabilities);
 		this.assumptions = ps.getAssumptions();
 		toVisit = new ArrayList<>();
@@ -79,6 +92,11 @@ public class ProblemExploration {
 			LTLGoal model = (LTLGoal) ps.getGoal_specification();
 			nets = new Nets(model);
 		}
+	}
+	
+	
+	public void setAgentName(String name) {
+		my_agent_name = name;
 	}
 	
 //	public boolean isTerminated() {
@@ -128,15 +146,15 @@ public class ProblemExploration {
 			return;
 		}
 		
-		//System.out.println("Visito node :"+enode.getWorldState().toSortedString());
+		if(verbose) System.out.println("Visito node :"+enode.getWorldState().toSortedString());
 		visited.add(enode.getWorldState());
 		
 		for( int i = 0; i < capabilities.size(); i++ ){
 			AbstractCapability capability = capabilities.get(i);
 			if(EntailOperator.getInstance().entailsCondition(enode.getWorldState(), this.assumptions, capability.getPreCondition()) == true){
 				//Starts the expansion
-				//System.out.println("\n-----------------------------------------------------------------");
-				//System.out.println("Applying capability " + capability.getId() );
+				if(verbose) System.out.println("\n-----------------------------------------------------------------");
+				if(verbose) System.out.println("Applying capability " + capability.getId() );
 				GraphExpansion expNode = applyExpand(enode, capability);
 
 				
@@ -145,13 +163,18 @@ public class ProblemExploration {
 					//Applies the net to ultimate the expansion						
 					for( ExtendedNode destination : expNode.getDestination() ){
 						applyNets(expNode.getSource().getTokens(), destination);
-						//System.out.print("generated arc to node :"+destination.getWorldState().toSortedString() );
-						if(!destination.isExitNode() && !destination.isErrorNode())	{
-							//System.out.println("VALID" );
+						if(verbose) System.out.print("generated arc to node :"+destination.getWorldState().toSortedString() );
+						if(!destination.isErrorNode())	{
+							if (destination.isExitNode()) {
+								if(verbose) System.out.println("EXIT" );
+							} else {
+								if(verbose) System.out.println("VALID" );
+							}
+							
 							//this.addToVisit(new WorldNode(destination.getWorldState()), destination.getTokens(), destination.getScore());
 						} else {
 							toAdd=false;
-							//System.out.println("NOT VALID" );
+							if(verbose) System.out.println("NOT VALID" );
 						}
 					}
 					
@@ -160,16 +183,12 @@ public class ProblemExploration {
 						score(expNode);
 										
 						//Adds the Expansion to the List in order 
-						// ATTENZIONE: così aggiungo l'espansione anche se contiene nodi vietati!!!!!
 						expandedList.add(expNode);
 					}
-//					for (ExtendedNode e : expNode.getDestination()) {
-//						all_states.add(e);
-//					}
 				}
 			}
 		}
-		//log_current_state();
+		if(verbose) log_current_state();
 	}	
 	
 	/**
@@ -244,7 +263,7 @@ public class ProblemExploration {
 				ExtendedNode newEnode = new ExtendedNode(evo.getEvolution().getLast());
 				newEnodeList.add(newEnode);
 				//String scenario = (String)capability.getScenarioSet().iterator().next().getName();
-				GraphExpansion result = new NormalExpansion(enode, newEnodeList, capability.getId());
+				GraphExpansion result = new NormalExpansion(enode, newEnodeList, capability.getId(),my_agent_name);
 				return result;
 			}
 			else	return null;
@@ -253,7 +272,7 @@ public class ProblemExploration {
 			//When Capability's got more than one Scenario, I have to create a WorldEvolution for each Scenario. Every WorldEvolution 
 			//will produce a StateOfWorld, that would be stored in a Node (that would get to the destinations list in MultipleExpansioNode. 
 			//It will also update the Node-Scenario map with the Node-Scenario entry.
-			MultipleExpansion expNode = new MultipleExpansion(enode, new ArrayList<ExtendedNode>(), capability.getId());
+			MultipleExpansion expNode = new MultipleExpansion(enode, new ArrayList<ExtendedNode>(), capability.getId(),my_agent_name);
 			
 			Iterator<EvolutionScenario> i = capability.getScenarioSet().iterator();
 			while(i.hasNext()){

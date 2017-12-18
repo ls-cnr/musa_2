@@ -31,6 +31,14 @@ public class WTS {
 		this.graph = new HashMap<String, WorldNode> ();
 	}
 	
+	public Iterator<String> getGraphNodeIterator() {
+		return graph.keySet().iterator();
+	}
+	
+	public HashMap<String, WorldNode> getGraph() {
+		return graph;
+	}
+	
 	/**
 	 * Set the first Node of the graph. It creates a new WorldNode using the StateOfWorld param.
 	 *
@@ -338,26 +346,33 @@ public class WTS {
 		checkedNode.remove(start);
 	}
 	
-	public void printGraph(){
+	public void printForGraphviz(){
 		Iterator<String> i = this.graph.keySet().iterator();
-		//System.out.println("\n graphviz\n \n");
+		System.out.println("digraph G {");
 		while(i.hasNext()){
 			String temp = (String) i.next();
 			
 			WorldNode w = this.graph.get(temp);
-			System.out.println("/*----    "+w.getWorldState().toSortedString()+"    ------*/");
-
+			
+			// set the initial state as green
+			if (getInitialState().equals(w)) {
+				System.out.println(w.getWorldState().toSortedString()+"[[style=bold][color=green]]");
+			}
+			
+			// draw all outgoing arcs from node to neighbours
 			for( NormalEdge e : w.getOutcomingEdgeList()){
 				System.out.println("\""+w.getWorldState().toSortedString()+"\" -> \""+e.getDestination().getWorldState().toSortedString()+"\"[label=\""+ e.getCapability()+ "\"]");
 			}
 			
 			for( OPNode opNode : w.getOPNodeList()){
 				for( EvolutionEdge ee : opNode.getOutcomingEdge()){
+					//ee.getDestination().
 					System.out.println("\""+w.getWorldState().toSortedString() + "\" -> \"" + ee.getDestination().getWorldState().toSortedString()+"\" [label=\""+ ee.getScenario()+ "\"][style=bold][color=red]");
 				}
 			}
 
 		}
+		System.out.println("}");
 	}
 		
 }
