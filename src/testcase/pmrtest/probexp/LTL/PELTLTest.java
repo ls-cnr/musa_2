@@ -15,7 +15,7 @@ import datalayer.awareness.AssumptionSet;
 import datalayer.awareness.ProblemSpecification;
 import datalayer.awareness.LTL.formulamodel.LTLGoal;
 import datalayer.awareness.LTL.formulamodel.FormulaBTConstruction;
-import datalayer.awareness.LTL.net.Nets;
+import datalayer.awareness.LTL.net.PNHierarchy;
 import datalayer.awareness.LTL.net.TokensConfiguration;
 import datalayer.awareness.legacy.net.Token;
 import datalayer.world.Condition;
@@ -422,7 +422,7 @@ public class PELTLTest {
 		  e.printStackTrace();
 		}
 		
-		startingTokens = new TokensConfiguration(new Nets(treeModel));
+		startingTokens = new TokensConfiguration(new PNHierarchy(treeModel));
 		
 		System.out.println("- Starting Tokens");
 		for( String net : startingTokens.getNetsState().keySet() )

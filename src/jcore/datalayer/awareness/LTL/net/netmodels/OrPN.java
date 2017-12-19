@@ -1,5 +1,6 @@
 package datalayer.awareness.LTL.net.netmodels;
 
+import datalayer.awareness.LTL.net.PetriNetState;
 import datalayer.awareness.LTL.net.condition.CombinationCondition;
 import datalayer.awareness.LTL.net.condition.FormulaCondition;
 import datalayer.awareness.LTL.net.condition.SimpleCondition;
@@ -35,29 +36,29 @@ public class OrPN extends FormulaPN {
 			secondOpCopy = new FormulaCondition(secondOp.getTerm()); 
 		
 		start = pn.place("Start");
-		placeState.put(start, "W");
+		placeState.put(start, PetriNetState.WAIT_BUT);
 		
 		Transition t1 = pn.transition(firstOp.getTerm());
-		firstOp.setStateCondition("A");
+		firstOp.setStateCondition(PetriNetState.ACCEPTED);
 		transitionLabel.put(t1, firstOp);
 		
 		pn.arc("a1", start, t1);
-		placeState.put(pn.arc("a2", t1, pn.place("Accept1")).getPlace(), "A");
+		placeState.put(pn.arc("a2", t1, pn.place("Accept1")).getPlace(), PetriNetState.ACCEPTED);
 
 		Transition t2 = pn.transition("ORERR-" + firstOp.getTerm() + "-" + secondOp.getTerm());
-		firstOpCopy.setStateCondition("E");
-		secondOpCopy.setStateCondition("E");
+		firstOpCopy.setStateCondition(PetriNetState.ERROR);
+		secondOpCopy.setStateCondition(PetriNetState.ERROR);
 		transitionLabel.put(t2, new CombinationCondition(firstOpCopy, secondOpCopy));
 				
 		pn.arc("a3", start, t2);
-		placeState.put(pn.arc("a4", t2, pn.place("Error")).getPlace(), "E");
+		placeState.put(pn.arc("a4", t2, pn.place("Error")).getPlace(), PetriNetState.ERROR);
 		
 		Transition t3 = pn.transition(secondOp.getTerm());
-		secondOp.setStateCondition("A");
+		secondOp.setStateCondition(PetriNetState.ACCEPTED);
 		transitionLabel.put(t3, secondOp);
 		
 		pn.arc("a5", start, t3);
-		placeState.put(pn.arc("a6", t3, pn.place("Accept2")).getPlace(), "A");
+		placeState.put(pn.arc("a6", t3, pn.place("Accept2")).getPlace(), PetriNetState.ACCEPTED);
 		
 	}
 }

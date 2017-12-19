@@ -5,7 +5,7 @@ import java.util.Iterator;
 import org.junit.Test;
 
 import datalayer.awareness.ProblemSpecification;
-import datalayer.awareness.LTL.net.Nets;
+import datalayer.awareness.LTL.net.PNHierarchy;
 import datalayer.awareness.LTL.net.TokensConfiguration;
 import datalayer.world.configuration.centralized.Solution;
 import datalayer.world.configuration.centralized.SolutionSet;

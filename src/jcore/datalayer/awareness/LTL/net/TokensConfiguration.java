@@ -12,7 +12,7 @@ public class TokensConfiguration {
 	private HashMap<String, ArrayList<String>> conf;
 	
 	/** The nets state. */
-	private HashMap<String, String> netsState;
+	private HashMap<String, PetriNetState> netsState;
 	
 	/**
 	 * Instantiates a new tokens configuration, putting a token in the starting place of the starting net.
@@ -20,7 +20,7 @@ public class TokensConfiguration {
 	 * @param nets
 	 *            the nets
 	 */
-	public TokensConfiguration( Nets nets ){
+	public TokensConfiguration( PNHierarchy nets ){
 		conf = new HashMap<>();
 		netsState = new HashMap<>();
 		
@@ -53,7 +53,7 @@ public class TokensConfiguration {
 	 * @param netsState
 	 *            the nets state
 	 */
-	public TokensConfiguration(HashMap<String, ArrayList<String>> conf, HashMap<String, String> netsState) {
+	public TokensConfiguration(HashMap<String, ArrayList<String>> conf, HashMap<String, PetriNetState> netsState) {
 		this.conf = conf;
 		this.netsState = netsState;
 	}
@@ -91,7 +91,7 @@ public class TokensConfiguration {
 	 *            the net
 	 * @return the net state
 	 */
-	public String getNetState( String net ) {
+	public PetriNetState getNetState( String net ) {
 		return netsState.get(net);
 	}
 	
@@ -103,7 +103,7 @@ public class TokensConfiguration {
 	 * @param state
 	 *            the state
 	 */
-	public void setNetState( String net, String state ) {
+	public void setNetState( String net, PetriNetState state ) {
 		netsState.put(net, state);
 	}
 	
@@ -122,7 +122,7 @@ public class TokensConfiguration {
 	 *
 	 * @return the nets state
 	 */
-	public HashMap<String, String> getNetsState() {
+	public HashMap<String, PetriNetState> getNetsState() {
 		return netsState;
 	}
 	

@@ -13,7 +13,7 @@ import petrinet.logic.Transition;
  * The Class Nets holds every Net generated from the main LTL formula. It's used to manage the Petri Nets dynamic behavior, controlling 
  * tokens firing, transitions conditions and places state. It's also used for hop elaboration. 
  */
-public class Nets {
+public class PNHierarchy {
 	
 	/** The dictionary that associates an id to a Net. */
 	private HashMap<String, FormulaPN> nets;
@@ -23,16 +23,16 @@ public class Nets {
 	
 	/** The starting formula name. */
 	private final String startingName = "Formula0"; 
-	
+		
 	/**
 	 * Instantiates a new nets.
 	 *
 	 * @param tree
 	 *            the tree
 	 */
-	public Nets( LTLGoal tree ) {
+	public PNHierarchy( LTLGoal tree ) {
 		hopNets = new HashSet<>();
-		this.nets = PetriNetsConstruction.construct(tree, hopNets);
+		this.nets = PNHierarchyConstruction.construct(tree, hopNets);
 	}
 	
 	/**
@@ -87,21 +87,25 @@ public class Nets {
 	 * @return the value
 	 */
 	public double hop() {
-		String tmp = nets.get(startingName).getNetState();
-		if( tmp.equals("A") )
+		PetriNetState tmp = nets.get(startingName).getNetState();
+		if( tmp==PetriNetState.ACCEPTED ) // .equals("A") )
 			return 0;
-		else if( tmp.equals("E") )
+		else if( tmp==PetriNetState.ERROR ) // tmp.equals("E") )
 			return 1;
 		else{
 			double count = 0;
+			
 			for( String s : hopNets ){
-				if( getNetState(s) != null )
-					if( getNetState(s).equals("W") )
-						count = count + 0.4;
-				else
-					count = count + 0.6;
+				if( getNetState(s) != null ) {
+					if( getNetState(s) == PetriNetState.WAIT_BUT_ACCEPTED ) // .equals("W") )
+						count = count + 0.6;
+					if( getNetState(s) == PetriNetState.WAIT_BUT_ERROR ) // .equals("W") )
+						count = count + 0.2;
+				} else {
+					count = count + 0.4;
+				}
 			}
-			return count / hopNets.size();
+			return (double) count / hopNets.size();
 		}
 	}
 	
@@ -124,7 +128,7 @@ public class Nets {
 	 *            the net
 	 * @return the net state
 	 */
-	public String getNetState( String net ) {
+	public PetriNetState getNetState( String net ) {
 		return nets.get(net).getNetState();
 	}
 	

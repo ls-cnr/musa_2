@@ -1,5 +1,6 @@
 package datalayer.awareness.LTL.net.netmodels;
 
+import datalayer.awareness.LTL.net.PetriNetState;
 import datalayer.awareness.LTL.net.condition.*;
 import petrinet.logic.Transition;
 
@@ -26,21 +27,21 @@ public class SingleTransitionPN extends FormulaPN {
 		this.secondOp = null;
 		
 		start = pn.place("Start");
-		placeState.put(start, "W");
+		placeState.put(start, PetriNetState.WAIT_BUT_ACCEPTED);
 		
 		Transition t1 = pn.transition(firstOp.getTerm());
-		firstOp.setStateCondition("A");
+		firstOp.setStateCondition(PetriNetState.ACCEPTED);
 		transitionLabel.put(t1, firstOp);
 		
 		pn.arc("a1", start, t1);
-		placeState.put(pn.arc("a2", t1, pn.place("Accept")).getPlace(), "A");
+		placeState.put(pn.arc("a2", t1, pn.place("Accept")).getPlace(), PetriNetState.ACCEPTED);
 		
 		Transition t2 = pn.transition("!"+firstOp.getTerm());
-		firstOpCopy.setStateCondition("E");
+		firstOpCopy.setStateCondition(PetriNetState.ERROR);
 		transitionLabel.put(t2, firstOpCopy);
 		
 		pn.arc("a3", start, t2);
-		placeState.put(pn.arc("a6", t2, pn.place("Error")).getPlace(), "E");
+		placeState.put(pn.arc("a6", t2, pn.place("Error")).getPlace(), PetriNetState.ERROR);
 	}
 	
 }

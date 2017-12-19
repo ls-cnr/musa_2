@@ -2,6 +2,7 @@ package datalayer.awareness.LTL.net.condition;
 
 import java.util.ArrayList;
 
+import datalayer.awareness.LTL.net.PetriNetState;
 import datalayer.world.Condition;
 import net.sf.tweety.logics.commons.syntax.Constant;
 import net.sf.tweety.logics.fol.syntax.Negation;
@@ -25,7 +26,7 @@ public class SimpleCondition extends TransitionCondition {
 	private DLPLiteral negPred;
 	
 	/** The state condition that indicates if the formula must be accepted or error */
-	private String stateCondition;
+	private PetriNetState stateCondition;
 	
 	/** The negation condition of predicate */
 	private boolean neg;
@@ -50,7 +51,7 @@ public class SimpleCondition extends TransitionCondition {
 	 */
 	public SimpleCondition(String term, String pred, ArrayList<String> args, boolean neg) {
 		super(term);
-		stateCondition = "A";
+		stateCondition = PetriNetState.ACCEPTED;
 		this.pred = pred;
 		this.args = args;
 		this.neg = neg;
@@ -96,8 +97,8 @@ public class SimpleCondition extends TransitionCondition {
 	 * @see layer.awareness.LTL.net.condition.TransitionCondition#setStateCondition(java.lang.String)
 	 */
 	@Override
-	public void setStateCondition(String s) {
-		if( s.equals("E") ){
+	public void setStateCondition(PetriNetState s) {
+		if( s == PetriNetState.ERROR ){
 			//cond = new Condition( new Negation((ExistsQuantifiedFormula) cond.getFOLFormula()) );
 			//cond = new Condition(new Negation( (RelationalFormula) cond.getFOLFormula()));
 			cond = new Condition(negPred);
@@ -105,7 +106,7 @@ public class SimpleCondition extends TransitionCondition {
 			if( !getTerm().startsWith("!") )
 				setTerm("!" + getTerm());
 		}
-		else if( s.equals("A") ){
+		else if( s == PetriNetState.ACCEPTED ){
 			//cond = new Condition( new Negation((ExistsQuantifiedFormula) cond.getFOLFormula()) );
 			//cond = new Condition(new Negation( (RelationalFormula) cond.getFOLFormula()));
 			cond = new Condition(defaultPred);
@@ -129,7 +130,7 @@ public class SimpleCondition extends TransitionCondition {
 	 *
 	 * @return the state condition
 	 */
-	public String getStateCondition() {
+	public PetriNetState getStateCondition() {
 		return stateCondition;
 	}
 

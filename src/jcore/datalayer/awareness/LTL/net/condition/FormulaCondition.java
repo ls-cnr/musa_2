@@ -1,12 +1,14 @@
 package datalayer.awareness.LTL.net.condition;
 
+import datalayer.awareness.LTL.net.PetriNetState;
+
 /**
  * This Class is used for a Formula type Condition. It stores the net reference to look up for checking if the condition is Accepted or Error.
  */
 public class FormulaCondition extends TransitionCondition {
 
 	/** The cond. */
-	private String cond;
+	private PetriNetState cond;
 	
 	/**
 	 * Instantiates a new formula condition.
@@ -22,7 +24,7 @@ public class FormulaCondition extends TransitionCondition {
 	 * @see layer.awareness.LTL.net.condition.TransitionCondition#setStateCondition(java.lang.String)
 	 */
 	@Override
-	public void setStateCondition(String s) {
+	public void setStateCondition(PetriNetState s) {
 		cond = s;
 	}
 
@@ -31,7 +33,7 @@ public class FormulaCondition extends TransitionCondition {
 	 *
 	 * @return the cond
 	 */
-	public String getCond() {
+	public PetriNetState getCond() {
 		return cond;
 	}
 }

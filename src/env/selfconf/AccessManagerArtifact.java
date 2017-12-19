@@ -13,7 +13,7 @@ import communication.translator.JasonStateOfWorld;
 import communication.translator.TranslateError;
 import datalayer.awareness.LTL.formulamodel.FormulaBTConstruction;
 import datalayer.awareness.LTL.formulamodel.LTLGoal;
-import datalayer.awareness.LTL.net.Nets;
+import datalayer.awareness.LTL.net.PNHierarchy;
 import datalayer.awareness.LTL.net.TokensConfiguration;
 import datalayer.world.StateOfWorld;
 import datalayer.world.wts.WorldNode;
@@ -54,7 +54,7 @@ public class AccessManagerArtifact extends Artifact {
 			
 			// TODO recuperare i goal dal DB per settare gli initial tokens
 			LTLGoal treeModel = FormulaBTConstruction.construct("G on(l1)");
-			TokensConfiguration startingTokens = new TokensConfiguration(new Nets(treeModel));
+			TokensConfiguration startingTokens = new TokensConfiguration(new PNHierarchy(treeModel));
 			
 			ExtendedNode enode = new ExtendedNode(w, startingTokens, 0, false, false);
 			enode.setExit(false);

@@ -2,6 +2,7 @@ package reasoner.probexp;
 
 import java.util.Comparator;
 
+import datalayer.awareness.LTL.net.PetriNetState;
 import datalayer.awareness.LTL.net.TokensConfiguration;
 import datalayer.world.StateOfWorld;
 import datalayer.world.wts.Node;
@@ -86,10 +87,10 @@ public class ExtendedNode implements Node{
 	 * @param string
 	 *            Condition that states if the node is ExitNode or ErrorNode or other
 	 */
-	public void setCondition(String string){
-		if( string.equals("A") )
+	public void checkNodeType(PetriNetState state){
+		if( state==PetriNetState.ACCEPTED )
 			this.exit = true;
-		else if( string.equals("E") )
+		else if( state==PetriNetState.ERROR )
 			this.error = true;
 	}
 	

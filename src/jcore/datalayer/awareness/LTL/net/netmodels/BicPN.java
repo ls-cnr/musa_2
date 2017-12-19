@@ -1,5 +1,6 @@
 package datalayer.awareness.LTL.net.netmodels;
 
+import datalayer.awareness.LTL.net.PetriNetState;
 import datalayer.awareness.LTL.net.condition.CombinationCondition;
 import datalayer.awareness.LTL.net.condition.FormulaCondition;
 import datalayer.awareness.LTL.net.condition.SimpleCondition;
@@ -51,39 +52,39 @@ public class BicPN extends FormulaPN {
 		}
 		
 		start = pn.place("Start");
-		placeState.put(start, "W");
+		placeState.put(start, PetriNetState.WAIT_BUT_ACCEPTED);
 		
 		Transition t1 = pn.transition("BICACC1-" + firstOp.getTerm() + "-" + secondOp.getTerm());
-		firstOp.setStateCondition("A");
-		secondOp.setStateCondition("A");
+		firstOp.setStateCondition(PetriNetState.ACCEPTED);
+		secondOp.setStateCondition(PetriNetState.ACCEPTED);
 		transitionLabel.put(t1, new CombinationCondition(firstOp, secondOp));
 		
 		pn.arc("a1", start, t1);
-		placeState.put(pn.arc("a2", t1, pn.place("Accept1")).getPlace(), "A");
+		placeState.put(pn.arc("a2", t1, pn.place("Accept1")).getPlace(), PetriNetState.ACCEPTED);
 
 		Transition t2 = pn.transition("BICERR1-" + firstOp.getTerm() + "-" + secondOp.getTerm());
-		firstOpCopy1.setStateCondition("E");
-		secondOpCopy1.setStateCondition("A");
+		firstOpCopy1.setStateCondition(PetriNetState.ERROR);
+		secondOpCopy1.setStateCondition(PetriNetState.ACCEPTED);
 		transitionLabel.put(t2, new CombinationCondition(firstOpCopy1, secondOpCopy1));
 		
 		pn.arc("a3", start, t2);
-		placeState.put(pn.arc("a4", t2, pn.place("Error1")).getPlace(), "E");
+		placeState.put(pn.arc("a4", t2, pn.place("Error1")).getPlace(), PetriNetState.ERROR);
 		
 		Transition t3 = pn.transition("BICERR2-" + firstOp.getTerm() + "-" + secondOp.getTerm());
-		firstOpCopy2.setStateCondition("A");
-		secondOpCopy2.setStateCondition("E");
+		firstOpCopy2.setStateCondition(PetriNetState.ACCEPTED);
+		secondOpCopy2.setStateCondition(PetriNetState.ERROR);
 		transitionLabel.put(t3, new CombinationCondition(firstOpCopy2, secondOpCopy2));
 		
 		pn.arc("a5", start, t3);
-		placeState.put(pn.arc("a6", t3, pn.place("Error2")).getPlace(), "E");
+		placeState.put(pn.arc("a6", t3, pn.place("Error2")).getPlace(), PetriNetState.ERROR);
 
 		Transition t4 = pn.transition("BICACC1-" + firstOp.getTerm() + "-" + secondOp.getTerm());
-		firstOpCopy3.setStateCondition("E");
-		secondOpCopy3.setStateCondition("E");
+		firstOpCopy3.setStateCondition(PetriNetState.ERROR);
+		secondOpCopy3.setStateCondition(PetriNetState.ERROR);
 		transitionLabel.put(t4, new CombinationCondition(firstOpCopy3, secondOpCopy3));
 		
 		pn.arc("a7", start, t4);
-		placeState.put(pn.arc("a8", t4, pn.place("Accept2")).getPlace(), "A");
+		placeState.put(pn.arc("a8", t4, pn.place("Accept2")).getPlace(), PetriNetState.ACCEPTED);
 	}
 	
 }

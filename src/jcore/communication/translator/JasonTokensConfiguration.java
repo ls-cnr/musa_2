@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import datalayer.awareness.LTL.net.PetriNetState;
 import datalayer.awareness.LTL.net.TokensConfiguration;
 import jason.asSyntax.ListTermImpl;
 import jason.asSyntax.StringTermImpl;
@@ -35,7 +36,7 @@ public class JasonTokensConfiguration {
 			Structure stateS = new Structure("s", 2);
 			
 			StringTermImpl keyState = new StringTermImpl(key);
-			StringTermImpl valueState = new StringTermImpl(tokens.getNetState(key));
+			StringTermImpl valueState = new StringTermImpl(enum_to_string(tokens.getNetState(key)));
 			
 			stateS.addTerm(keyState);
 			stateS.addTerm(valueState);
@@ -52,7 +53,7 @@ public class JasonTokensConfiguration {
 	public static TokensConfiguration term_to_object(Term term) throws TranslateError {
 		TokensConfiguration res = null;
 		HashMap<String, ArrayList<String>> conf = new HashMap<>();
-		HashMap<String, String> netsState = new HashMap<>();
+		HashMap<String, PetriNetState> netsState = new HashMap<>();
 		
 		if (!term.isStructure()) 
 			throw new TranslateError(); 
@@ -79,7 +80,7 @@ public class JasonTokensConfiguration {
 				String keyState = ((StringTermImpl) stateS.getTerm(0)).getString();
 				String valueState = ((StringTermImpl) stateS.getTerm(1)).getString();
 								
-				netsState.put(keyState, valueState);
+				netsState.put(keyState, string_to_enum(valueState));
 			}
 			
 		}
@@ -91,6 +92,24 @@ public class JasonTokensConfiguration {
 	public static TokensConfiguration term_string_to_object(String term_string) throws TranslateError{
 		Structure t = Structure.parse(term_string);
 		return term_to_object(t);
+	}
+	
+	
+	
+	private static String enum_to_string(PetriNetState s) {
+		if (s==PetriNetState.ACCEPTED) return "A";
+		if (s==PetriNetState.ERROR) return "E";
+		if (s==PetriNetState.WAIT_BUT_ACCEPTED) return "WA";
+		if (s==PetriNetState.WAIT_BUT_ERROR) return "WE";
+		return "W";
+	}
+	
+	private static PetriNetState string_to_enum(String s) {
+		if (s.equals("A")) return PetriNetState.ACCEPTED;
+		if (s.equals("E")) return PetriNetState.ERROR;
+		if (s.equals("WA")) return PetriNetState.WAIT_BUT_ACCEPTED;
+		if (s.equals("WE")) return PetriNetState.WAIT_BUT_ERROR;
+		return PetriNetState.WAIT_BUT;
 	}
 	
 }

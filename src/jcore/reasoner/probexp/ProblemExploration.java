@@ -49,7 +49,7 @@ public class ProblemExploration {
 	private ArrayList<GraphExpansion> expandedList;
 	
 	/** Nets generated from the LTL Formula*/
-	private Nets nets;
+	private PNHierarchy nets;
 	
 	private int iterations=0;
 	
@@ -90,7 +90,7 @@ public class ProblemExploration {
 			throw new ProblemDefinitionException();
 		} else {
 			LTLGoal model = (LTLGoal) ps.getGoal_specification();
-			nets = new Nets(model);
+			nets = new PNHierarchy(model);
 		}
 	}
 	
@@ -325,7 +325,7 @@ public class ProblemExploration {
 		enode.setTokens(tokens);
 		
 		//Checking if it's an exit node
-		enode.setCondition( nets.getStartingPN().getNetState() );
+		enode.checkNodeType( nets.getStartingPN().getNetState() );
 		
 		//Calculating Hops
 		double nHop = nets.hop(); 
@@ -433,7 +433,9 @@ public class ProblemExploration {
 	 * @return true if the formula is satisfied
 	 */
 	private boolean formulaCheck(FormulaCondition tCond, TokensConfiguration tokens, StateOfWorld state, HashSet<String> visitedNets) {
-		String cNet = tCond.getTerm(), cNetState = tokens.getNetState(cNet);
+		String cNet = tCond.getTerm();
+		PetriNetState cNetState = tokens.getNetState(cNet);
+		
 		//In this case the net representing the formula hasn't been accessed yet 
 		if( cNetState == null ){ 
 			tokens.addToken(cNet, nets.initNet(cNet)); //So initialize
@@ -446,7 +448,7 @@ public class ProblemExploration {
 		
 		//System.out.println( "|> Net " + cNet + " is " + tokens.getNetState(cNet) + " and Condition requires " + tCond.getCond() + " |");
 		
-		return tokens.getNetState(cNet).equals( tCond.getCond() );
+		return tokens.getNetState(cNet)== tCond.getCond() ;
 	}
 	
 	/**
@@ -560,7 +562,7 @@ public class ProblemExploration {
 		return this.toVisit;
 	}
 	
-	public Nets getNets() {
+	public PNHierarchy getNets() {
 		return nets;
 	}
 	

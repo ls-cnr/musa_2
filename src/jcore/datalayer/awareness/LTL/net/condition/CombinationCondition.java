@@ -2,6 +2,8 @@ package datalayer.awareness.LTL.net.condition;
 
 import java.util.ArrayList;
 
+import datalayer.awareness.LTL.net.PetriNetState;
+
 public class CombinationCondition extends TransitionCondition {
 
 	ArrayList<TransitionCondition> ops;
@@ -14,7 +16,7 @@ public class CombinationCondition extends TransitionCondition {
 	}
 
 	@Override
-	public void setStateCondition(String s) {
+	public void setStateCondition(PetriNetState s) {
 		//Empty
 	}
 	

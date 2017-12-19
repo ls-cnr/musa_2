@@ -12,7 +12,7 @@ import datalayer.awareness.LTL.net.netmodels.*;
 /**
  * The Class PetriNetsConstruction, used do create a set of interconnected Nets through the Formula Binary Tree.
  */
-public class PetriNetsConstruction {
+public class PNHierarchyConstruction {
 	
 	/** The counter. */
 	private static int counter;
