@@ -2,6 +2,8 @@ package datalayer.world.configuration.distributed;
 
 import java.util.ArrayList;
 
+import datalayer.awareness.AbstractWorkflowNode;
+
 public class Tree<T> {
 	static final int NORMAL_CODE = 0;
 	static final int XOR_CODE = 1;
@@ -66,7 +68,7 @@ public class Tree<T> {
 	public boolean equals(Object that) {
 		if (that != null) {
 			@SuppressWarnings("unchecked")
-			Tree<String> tmp = (Tree<String>) that;
+			Tree<T> tmp = (Tree<T>) that;
 			return this.getValue().toString().equals(tmp.getValue().toString());
 		}
 		return false;

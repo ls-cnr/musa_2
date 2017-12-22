@@ -119,6 +119,7 @@ public class AccessManagerArtifact extends Artifact {
 		GraphExpansion exp;
 		try {
 			
+			//System.out.println("EXP:"+expansion);
 			execLinkedOp("mysolution","notifyENode",expansion);
 			
 			execLinkedOp("mygraph","expand",expansion, spec_id_string);

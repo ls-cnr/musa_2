@@ -5,6 +5,9 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 
+import datalayer.awareness.AbstractCapability;
+import datalayer.awareness.AbstractWorkflowNode;
+
 /**
  * 
  * @author Mirko Avantaggiato
@@ -22,37 +25,9 @@ public class Sequences {
 	private HashSet<String> treeSafeNodes;
 	private SolutionSet solutionsSoFar;
 
-	private ArrayList<Triple> capabilities;
-
-	public class Triple {
-		private String a;
-		private String b;
-		private String c;
-
-		Triple(String a, String b, String c) {
-			this.a = a;
-			this.b = b;
-			this.c = c;
-		}
-
-		@Override
-		public boolean equals(Object obj) {
-			Triple that = (Triple) obj;
-			if (this.a.equals(that.a))
-				if (this.b.equals(that.b))
-					if (this.c.equals(that.c))
-						return true;
-			return false;
-		}
-
-		@Override
-		public String toString() {
-			// TODO Auto-generated method stub
-			return "[" + this.a + ", " + this.b + ", " + this.c + "]";
-		}
-
-	}
-
+	private ArrayList<CapInfo> capabilities;
+	
+	private int number_of_shown_solutions = 0;
 
 	public Sequences() {
 		this.seqs = new ArrayList<>();
@@ -62,12 +37,12 @@ public class Sequences {
 		this.successNodes = new HashSet<>();
 		this.treeSafeNodes = new HashSet<>();
 		this.solutionsSoFar = new SolutionSet(this);
-		this.capabilities = new ArrayList<Triple>();
+		this.capabilities = new ArrayList<CapInfo>();
 	}
 
 	public void processEdge(String src, String dest, String capability, String agent) {
-		if (!this.capabilities.contains(new Triple(src, dest, capability)))
-			this.capabilities.add(new Triple(src, dest, capability));
+		if (!this.capabilities.contains(new CapInfo(src, dest, capability,agent)))
+			this.capabilities.add(new CapInfo(src, dest, capability,agent));
 		/* temporaneo */
 		src = src.replace("\n", "");
 		dest = dest.replace("\n", "");
@@ -241,8 +216,9 @@ public class Sequences {
 			if (tmp != null) {
 				for (Tree<String> sol : tmp) {
 					Solution _sol = new Solution(sol, this.solutionsSoFar);
-					if (!this.solutionsSoFar.containsSolution(_sol))
+					if (!this.solutionsSoFar.containsSolution(_sol)) {
 						this.solutionsSoFar.addSolution(_sol);
+					}
 				}
 				Iterator<Solution> i = this.solutionsSoFar.iterator();
 				while (i.hasNext()) {
@@ -266,11 +242,21 @@ public class Sequences {
 						i.remove();
 				}
 			}
-		int i = 0;
-		for (Solution s : this.solutionsSoFar) {
-			System.out.println("Solution " + i++);
-			printTree(s.getRoot(), 0);
+		int start_i = number_of_shown_solutions;
+		for (int i=start_i; i<solutionsSoFar.getSize(); i++) {
+			System.out.println("Solution " + i);
+			Solution s = solutionsSoFar.getSolutions().get(i);
+			Tree<AbstractWorkflowNode> t = convertToAbstractWorkflow(s.getRoot());
+			printCapTree(t,0);
+			number_of_shown_solutions++;
 		}
+//		for (Solution s : this.solutionsSoFar) {
+//			System.out.println("Solution " + i++);
+//			Tree<AbstractWorkflowNode> t = convertToAbstractWorkflow(s.getRoot());
+//			printCapTree(t,0);
+//			//printTree(s.getRoot(), 0);
+//		}
+//	}
 	}
 
 	private ArrayList<Tree<String>> tree_toSolutionSet(Tree<String> currentNode) {
@@ -376,6 +362,61 @@ public class Sequences {
 			for (Tree<String> t : node.getChildren())
 				printTree(t, depth + 1);
 		}
+	}
+
+	public static void printCapTree(Tree<AbstractWorkflowNode> node, int depth) {
+		if (node != null) {
+			String tab = String.join("", Collections.nCopies(depth, "  "));
+			System.out.println(tab + node.getValue().getAbstract_cap_name()+"/" + node.getValue().getAgent());
+			for (Tree<AbstractWorkflowNode> t : node.getChildren())
+				printCapTree(t, depth + 1);
+		}
+	}
+
+	public Tree<AbstractWorkflowNode> convertToAbstractWorkflow(Tree<String> node_w) {
+		boolean xor_node_succ = false;
+		Tree<AbstractWorkflowNode> node_c = null;
+		if (node_w.isLeaf()) {
+			return null;
+		} else {	
+			if (node_w.getChildren().get(0).getNodeType()==Tree.EXPLICIT_XOR_CODE) {
+				xor_node_succ=true;
+				return convertToAbstractWorkflow(node_w.getChildren().get(0));
+			} else {			
+				CapInfo cap_info = get_cap_from_src_dest(node_w.getValue(),node_w.getChildren().get(0).getValue());
+				AbstractWorkflowNode cap_tree = new AbstractWorkflowNode();
+				
+				cap_tree.setAbstract_cap_name(cap_info.getCap());
+				cap_tree.setAgent(cap_info.getAgent());
+	//			cap_tree.setSrc(node_w.getValue());
+	//			cap_tree.setDest(succ.getValue());
+				node_c = new Tree<AbstractWorkflowNode>(cap_tree);
+	
+				for (Tree<String> succ : node_w.getChildren()) {
+					//Tree<String> succ= node_w.getChildren().get(0);
+					
+					Tree<AbstractWorkflowNode> child_cap = convertToAbstractWorkflow(succ);
+					if (child_cap != null) {
+						//System.out.println("figli prima: "+node_c.getChildren().size());
+						node_c.addChild(child_cap);
+						//System.out.println("adding "+child_cap.getValue().getAbstract_cap_name()+" to "+node_c.getValue().getAbstract_cap_name());
+						//System.out.println("figli dopo: "+node_c.getChildren().size());
+					}
+				}
+				
+				return node_c;
+			}
+		}
+	}
+
+	private CapInfo get_cap_from_src_dest(String node1, String node2) {
+		Iterator<CapInfo> it = capabilities.iterator();
+		while (it.hasNext()) {
+			CapInfo a = it.next();
+			if (a.getSrc().equals(node1) & a.getDest().equals(node2))
+				return a;
+		}
+		return null;
 	}
 
 	/**
@@ -513,7 +554,7 @@ public class Sequences {
 		this.solutionsSoFar = solutionsSoFar;
 	}
 
-	public ArrayList<Triple> getCapabilities() {
+	public ArrayList<CapInfo> getCapabilities() {
 		return capabilities;
 	}
 }
