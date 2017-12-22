@@ -135,21 +135,23 @@ public class StateOfWorld {
 	 */
 	@Override
 	public String toString(){
-		String res = new String("["); 
-		Iterator i = this.facts.iterator();
-		int ind=0;
-		while(i.hasNext()){
-			ExtDLPHead temp = (ExtDLPHead) i.next();
-			if (ind==0) {
-				res = res + temp.toString();
-			} else {
-				res = res + "," + temp.toString();
-			}
-			ind++;
-		}
-		res = res + "]";
-		//System.out.println(res);
-		return res;
+		return toSortedString();
+		
+//		String res = new String("["); 
+//		Iterator i = this.facts.iterator();
+//		int ind=0;
+//		while(i.hasNext()){
+//			ExtDLPHead temp = (ExtDLPHead) i.next();
+//			if (ind==0) {
+//				res = res + temp.toString();
+//			} else {
+//				res = res + "," + temp.toString();
+//			}
+//			ind++;
+//		}
+//		res = res + "]";
+//		//System.out.println(res);
+//		return res;
 	}
 	
 	/* (non-Javadoc)
@@ -167,7 +169,7 @@ public class StateOfWorld {
 		return new StateOfWorld( (HashSet<ExtDLPHead>) this.facts.clone() );
 	}
 
-	public String toSortedString() {
+	private String toSortedString() {
 		if (hash==null) {
 			hash=toSortedString_SPSreconfig();
 		}

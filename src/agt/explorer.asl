@@ -73,7 +73,7 @@
 
 +announcement_new_auction(SpecIdString,AuctionId)[artifact_id(AccessManagerId)]
 <-
-	.abolish(placed_bid(AuctionId,SpecIdString,_));
+	//.abolish(placed_bid(AuctionId,SpecIdString,_));
 	?problem_exploration_info(SpecIdString,PEId);
 	getMostPromisingExpansion(Expansion);
 	

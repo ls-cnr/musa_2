@@ -22,6 +22,8 @@ public class Sequences {
 	private HashSet<String> treeSafeNodes;
 	private SolutionSet solutionsSoFar;
 
+	private ArrayList<Triple> capabilities;
+
 	public class Triple {
 		private String a;
 		private String b;
@@ -51,7 +53,6 @@ public class Sequences {
 
 	}
 
-	private ArrayList<Triple> capabilities;
 
 	public Sequences() {
 		this.seqs = new ArrayList<>();
@@ -61,10 +62,10 @@ public class Sequences {
 		this.successNodes = new HashSet<>();
 		this.treeSafeNodes = new HashSet<>();
 		this.solutionsSoFar = new SolutionSet(this);
-		this.capabilities = new ArrayList<>();
+		this.capabilities = new ArrayList<Triple>();
 	}
 
-	public void processEdge(String src, String dest, String capability) {
+	public void processEdge(String src, String dest, String capability, String agent) {
 		if (!this.capabilities.contains(new Triple(src, dest, capability)))
 			this.capabilities.add(new Triple(src, dest, capability));
 		/* temporaneo */

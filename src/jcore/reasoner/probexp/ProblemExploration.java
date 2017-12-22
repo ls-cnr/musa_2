@@ -146,7 +146,7 @@ public class ProblemExploration {
 			return;
 		}
 		
-		if(verbose) System.out.println("Visito node :"+enode.getWorldState().toSortedString());
+		if(verbose) System.out.println("Visito node :"+enode.getWorldState().toString());
 		visited.add(enode.getWorldState());
 		
 		for( int i = 0; i < capabilities.size(); i++ ){
@@ -163,7 +163,7 @@ public class ProblemExploration {
 					//Applies the net to ultimate the expansion						
 					for( ExtendedNode destination : expNode.getDestination() ){
 						applyNets(expNode.getSource().getTokens(), destination);
-						if(verbose) System.out.print("generated arc to node :"+destination.getWorldState().toSortedString() );
+						if(verbose) System.out.print("generated arc to node :"+destination.getWorldState().toString() );
 						if(!destination.isErrorNode())	{
 							if (destination.isExitNode()) {
 								if(verbose) System.out.println("EXIT" );
@@ -570,11 +570,11 @@ public class ProblemExploration {
 		System.out.println("========iteration ("+iterations+")========");
 		System.out.println("------------visited states---------------");
 		for (StateOfWorld w : visited) {
-			System.out.println(w.toSortedString());
+			System.out.println(w.toString());
 		}
 		System.out.println("------------to visited states---------------");
 		for (ExtendedNode n : toVisit) {
-			System.out.print(n.getWorldState().toSortedString());
+			System.out.print(n.getWorldState().toString());
 			if (n.isExitNode())
 				System.out.print(" Exit ");
 			if (n.isErrorNode())
@@ -584,7 +584,7 @@ public class ProblemExploration {
 		System.out.println("--------------expanded---------------");
 		for (GraphExpansion ex : expandedList) {
 			for (ExtendedNode n : ex.getDestination() ) {
-				System.out.println(ex.getSource().getWorldState().toSortedString()+"->"+ex.getCapability()+"->"+n.getWorldState().toSortedString()+"=>"+ex.hashCode()+" [score("+ex.getScore()+")]");
+				System.out.println(ex.getSource().getWorldState().toString()+"->"+ex.getCapability()+"->"+n.getWorldState().toString()+"=>"+ex.hashCode()+" [score("+ex.getScore()+")]");
 			}
 		}
 	}

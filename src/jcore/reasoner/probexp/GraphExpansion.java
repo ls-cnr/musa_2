@@ -224,7 +224,7 @@ public abstract class GraphExpansion implements Node{
 	      
 		  String sum=getSource().getWorldState().toString()+getCapability();
 		  for(int i = 0; i<this.destination.size(); i++){
-	    	  	sum += this.destination.get(i).getWorldState().toSortedString();
+	    	  	sum += this.destination.get(i).getWorldState().toString();
 	      }
 		  
 		  return sum.hashCode();

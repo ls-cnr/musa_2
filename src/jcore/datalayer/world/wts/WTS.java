@@ -104,11 +104,11 @@ public class WTS {
 
 	public WorldNode createSafeNode(StateOfWorld desc){
 		WorldNode new_node = null;
-		if (this.graph.containsKey(desc.toSortedString())) {
-			return graph.get(desc.toSortedString());
+		if (this.graph.containsKey(desc.toString())) {
+			return graph.get(desc.toString());
 		} else {
 			new_node = new WorldNode(desc);
-			this.graph.put(desc.toSortedString(), new_node);
+			this.graph.put(desc.toString(), new_node);
 		}
 		
 		return new_node;
@@ -227,7 +227,7 @@ public class WTS {
 				Eedge.getSource().removeOutcomingEdge(new EvolutionEdge(Eedge.getSource(), node, Eedge.getSource().getCapability()));
 			}
 		}
-		this.graph.remove(node.getWorldState().toSortedString());
+		this.graph.remove(node.getWorldState().toString());
 	}
 	
 	/**
@@ -356,18 +356,18 @@ public class WTS {
 			
 			// set the initial state as green
 			if (getInitialState().equals(w)) {
-				System.out.println(w.getWorldState().toSortedString()+"[[style=bold][color=green]]");
+				System.out.println(w.getWorldState().toString()+"[[style=bold][color=green]]");
 			}
 			
 			// draw all outgoing arcs from node to neighbours
 			for( NormalEdge e : w.getOutcomingEdgeList()){
-				System.out.println("\""+w.getWorldState().toSortedString()+"\" -> \""+e.getDestination().getWorldState().toSortedString()+"\"[label=\""+ e.getCapability()+ "\"]");
+				System.out.println("\""+w.getWorldState().toString()+"\" -> \""+e.getDestination().getWorldState().toString()+"\"[label=\""+ e.getCapability()+ "\"]");
 			}
 			
 			for( OPNode opNode : w.getOPNodeList()){
 				for( EvolutionEdge ee : opNode.getOutcomingEdge()){
 					//ee.getDestination().
-					System.out.println("\""+w.getWorldState().toSortedString() + "\" -> \"" + ee.getDestination().getWorldState().toSortedString()+"\" [label=\""+ ee.getScenario()+ "\"][style=bold][color=red]");
+					System.out.println("\""+w.getWorldState().toString() + "\" -> \"" + ee.getDestination().getWorldState().toString()+"\" [label=\""+ ee.getScenario()+ "\"][style=bold][color=red]");
 				}
 			}
 

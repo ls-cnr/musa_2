@@ -46,7 +46,7 @@ public class SequencesTest {
 				String src = tmp[0];
 				String dest = tmp[1];
 				if (src != dest) {
-					sc.processEdge(src, dest, "capabilityName");
+					sc.processEdge(src, dest, "capabilityName","agent_1");
 					for (ArrayList<String> seqs : sc.getSeqs()) {
 						System.out.print(seqs + ", ");
 						System.out.println("");

@@ -25,7 +25,7 @@
 	
 	.concat("CM_", SpecId, CMArtifactName);
 	
-	makeArtifact(CMArtifactName,"selfconf.ConfigSelector",[SpecId],AccessManagerId);
+	makeArtifact(CMArtifactName,"selfconf.ConfigSelectorArtifact",[SpecId],AccessManagerId);
 	
 	/* Simulate a WTS creation */
 	

@@ -14,7 +14,7 @@ import reasoner.probexp.ExtendedNode;
 import reasoner.probexp.GraphExpansion;
 
 @ARTIFACT_INFO(outports = { @OUTPORT(name = "graph") })
-public class ConfigSelector extends Artifact {
+public class ConfigSelectorArtifact extends Artifact {
 	private Sequences sc;
 	
 	HashMap<String, String> translation;
@@ -42,7 +42,7 @@ public class ConfigSelector extends Artifact {
 		// System.out.println(t.toString().replaceAll("\n", ""));
 	}
 
-	@OPERATION
+	@LINK @OPERATION
 	void notifyENode(String expNodeString) {
 		GraphExpansion expNode;
 		try {
@@ -60,13 +60,13 @@ public class ConfigSelector extends Artifact {
 				 * in cui qualcuna di queste destinazioni sia un nodo di
 				 * successo, viene processato successivamente.
 				 */
-				this.sc.processEdge(src, "X" + src.hashCode(), expNode.getCapability());
+				this.sc.processEdge(src, "X" + src.hashCode(), expNode.getCapability(), expNode.getAgent());
 				HashSet<String> tmp = new HashSet<>();
 				for (ExtendedNode d : expNode.getDestination()) {
 					String dest = d.getWorldState().toString();
 					if (dest.equals(""))
 						dest = "w0";
-					this.sc.processEdge("X" + src.hashCode(), dest, "");
+					this.sc.processEdge("X" + src.hashCode(), dest, "", expNode.getAgent());
 					if (d.isExitNode())
 						tmp.add(d.getWorldState().toString());
 				}
@@ -82,7 +82,7 @@ public class ConfigSelector extends Artifact {
 				String dest = expNode.getDestination().get(0).getWorldState().toString();
 				if (dest.equals(""))
 					dest = "w0";
-				this.sc.processEdge(src, dest, expNode.getCapability());
+				this.sc.processEdge(src, dest, expNode.getCapability(), expNode.getAgent());
 				if (expNode.getDestination().get(0).isExitNode())
 					this.sc.processSolution(dest);
 			}

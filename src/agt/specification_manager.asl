@@ -35,9 +35,12 @@ num_nodi(0).
 	
 	.concat("SG_", SpecId, SGArtifactName);
 	.concat("AM_", SpecId, AMArtifactName);
+	.concat("CM_", SpecId, CONFArtifactName);
 
 	makeArtifact(AMArtifactName,"selfconf.AccessManagerArtifact",[SpecId],AccessManagerId)[wsp(my_spec_wp)];//[artifact_id(ArtId)];//[wsp_id("node_local")];
 	makeArtifact(SGArtifactName,"selfconf.SolutionGraphArtifact",[],SolutionGraphId)[wsp(my_spec_wp)];//[artifact_id(ArtId)];//[wsp_id("node_local")];	
+	makeArtifact(CONFArtifactName,"selfconf.ConfigSelectorArtifact",[SpecId],ConfManagerId)[wsp(my_spec_wp)];//[artifact_id(ArtId)];//[wsp_id("node_local")];	
+	
 	
 	.wait(2000);
 	?joined(common,MainWp);
@@ -48,7 +51,11 @@ num_nodi(0).
 	linkArtifacts(AccessManagerId,"mygraph",SolutionGraphId)[wsp(my_spec_wp)];
 	.print("linking ", AccessManagerId, " to ", SolutionGraphId);	
 	
+	linkArtifacts(AccessManagerId,"mysolution",ConfManagerId)[wsp(my_spec_wp)];
+	.print("linking ", AccessManagerId, " to ", ConfManagerId);	
+
 	+solution_management_info(SpecId,AccessManagerId,SolutionGraphId);
+	+solution_configuration_info(SpecId,AccessManagerId,ConfManagerId);
 	+auction_loop_delay(SpecIdString,50);														// this allows to change loop frequency during the execution
 	
 	.wait(500);
