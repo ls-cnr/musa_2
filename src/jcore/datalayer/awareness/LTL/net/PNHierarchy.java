@@ -6,7 +6,9 @@ import java.util.List;
 
 import datalayer.awareness.LTL.formulamodel.*;
 import datalayer.awareness.LTL.net.condition.TransitionCondition;
+import datalayer.awareness.LTL.net.netmodels.AndPN;
 import datalayer.awareness.LTL.net.netmodels.FormulaPN;
+import datalayer.awareness.LTL.net.netmodels.OrPN;
 import petrinet.logic.Transition;
 
 /**
@@ -148,6 +150,12 @@ public class PNHierarchy {
 	 */
 	public FormulaPN getStartingPN() {
 		return nets.get(startingName);
+	}
+	
+	public boolean isORorAND( String net ) {
+		if(nets.get(net) instanceof AndPN || nets.get(net) instanceof OrPN )
+			return true;
+		return false;
 	}
 	
 	

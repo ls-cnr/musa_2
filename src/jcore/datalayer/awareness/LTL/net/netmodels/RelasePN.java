@@ -17,10 +17,11 @@ public class RelasePN extends FormulaPN {
 	 * @param op2
 	 *            the op 2
 	 */
-	public RelasePN( TransitionCondition op1, TransitionCondition op2 ) {
+	public RelasePN( TransitionCondition op1, TransitionCondition op2, String fatherName ) {
 		super("RelasePN");
 		this.firstOp = op1;
 		this.secondOp = op2;
+		EndCondition thirdOp = new EndCondition(fatherName);
 		TransitionCondition secondOpCopy;
 		if( secondOp instanceof SimpleCondition )
 			secondOpCopy = new SimpleCondition((SimpleCondition) secondOp);
@@ -28,7 +29,7 @@ public class RelasePN extends FormulaPN {
 			secondOpCopy = new FormulaCondition(secondOp.getTerm());
 		
 		start = pn.place("Start");
-		placeState.put(start, PetriNetState.ACCEPTED);
+		placeState.put(start, PetriNetState.WAIT_BUT_ACCEPTED);
 		
 		Transition t1 = pn.transition(firstOp.getTerm() + "-" + secondOp.getTerm());
 		firstOp.setStateCondition(PetriNetState.ACCEPTED);
@@ -36,7 +37,7 @@ public class RelasePN extends FormulaPN {
 		transitionLabel.put(t1, new CombinationCondition(firstOp, secondOpCopy));
 		
 		pn.arc("a1", start, t1);
-		placeState.put(pn.arc("a2", t1, pn.place("Accept")).getPlace(), PetriNetState.ACCEPTED);
+		placeState.put(pn.arc("a2", t1, pn.place("Accept1")).getPlace(), PetriNetState.ACCEPTED);
 
 		Transition t2 = pn.transition("RERR-" + secondOp.getTerm());
 		secondOpCopy.setStateCondition(PetriNetState.ERROR);
@@ -44,5 +45,11 @@ public class RelasePN extends FormulaPN {
 		
 		pn.arc("a3", start, t2);
 		placeState.put(pn.arc("a4", t2, pn.place("Error")).getPlace(), PetriNetState.ERROR);
+
+		Transition t3 = pn.transition("END-" + fatherName);
+		transitionLabel.put(t3, thirdOp);
+		
+		pn.arc("a5", start, t3);
+		placeState.put(pn.arc("a6", t3, pn.place("Accept2")).getPlace(), PetriNetState.ACCEPTED);
 	}
 }

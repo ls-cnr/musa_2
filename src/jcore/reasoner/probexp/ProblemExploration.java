@@ -1,6 +1,7 @@
 package reasoner.probexp;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
@@ -50,6 +51,8 @@ public class ProblemExploration {
 	
 	/** Nets generated from the LTL Formula*/
 	private PNHierarchy nets;
+	
+	private HashMap<String, Boolean> ends;
 	
 	private int iterations=0;
 	
@@ -386,7 +389,7 @@ public class ProblemExploration {
 					Boolean[] tmpArr = new Boolean[2];
 					tmpArr[0] = false; tmpArr[1] = false; 
 					int count = 0;
-					for( TransitionCondition tCCond : ((CombinationCondition) tCond).getCond() )
+					for( TransitionCondition tCCond : ((CombinationCondition) tCond).getCond() ) {
 						//Formula
 						if( tCCond instanceof FormulaCondition ){
 							//System.out.println("Starting checking "+ tCCond.getTerm() + " [CF] ");
@@ -405,6 +408,9 @@ public class ProblemExploration {
 							}
 							//System.out.println("Finished checking "+ tCCond.getTerm() + " [CS] in Net:("+net+")");
 						}
+						if( tmpArr[count-1] && nets.isORorAND(net) )//for END
+							ends.put(net, true);
+					}
 					if( tmpArr[0] && tmpArr[1] )
 						fire(t, tokens, net);
 					//System.out.println("Finished checking "+ tCond.getTerm() + " [C] in Net:("+net+")");
@@ -414,6 +420,13 @@ public class ProblemExploration {
 					//System.out.println("-Net:("+net+")\nStarting checking Empty Condition [T] ");
 					fire(t, tokens, net);//Always fires
 					//System.out.println("Finished checking Empty Condition [T] in Net:("+net+")");
+				}
+				//End Condition
+				else if( tCond instanceof EndCondition ){
+					//System.out.println("-Net:("+net+")\nStarting checking END Condition [E] ");
+					if( endCheck((EndCondition)tCond) )
+						fire(t, tokens, net);//Fires if this formula monitoring isn't useful anymore 
+					//System.out.println("Finished checking END Condition [E] in Net:("+net+")");
 				}
 			}
 		}
@@ -449,6 +462,13 @@ public class ProblemExploration {
 		//System.out.println( "|> Net " + cNet + " is " + tokens.getNetState(cNet) + " and Condition requires " + tCond.getCond() + " |");
 		
 		return tokens.getNetState(cNet)== tCond.getCond() ;
+	}
+	
+	private boolean endCheck(EndCondition tCond) {
+		String net = tCond.getFather();
+		if( ends.containsKey(net) && ends.get(net) )
+			return true;
+		return false;
 	}
 	
 	/**
