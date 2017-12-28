@@ -587,7 +587,11 @@ public class ProblemExploration {
 		System.out.println("--------------expanded---------------");
 		for (GraphExpansion ex : expandedList) {
 			for (ExtendedNode n : ex.getDestination() ) {
-				System.out.println(ex.getSource().getWorldState().toString()+"->"+ex.getCapability()+"->"+n.getWorldState().toString()+"=>"+ex.hashCode()+" [score("+ex.getScore()+")]");
+				System.out.print(ex.getSource().getWorldState().toString()+"->"+ex.getCapability()+"->\t");
+				if (n.isExitNode())
+					System.out.println(n.getWorldState().toString()+" EXIT =>\t"+ex.hashCode()+" [score("+ex.getScore()+")]");
+				else
+					System.out.println(n.getWorldState().toString()+"=>\t"+ex.hashCode()+" [score("+ex.getScore()+")]");
 			}
 		}
 	}
