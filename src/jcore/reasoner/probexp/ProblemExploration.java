@@ -87,6 +87,7 @@ public class ProblemExploration {
 		toVisit = new ArrayList<>();
 		visited = new HashSet<>();
 		expandedList = new ArrayList<>();
+		ends = new HashMap<String, Boolean>();
 		//all_states = new HashSet<ExtendedNode>();
 		
 		if (!(ps.getGoal_specification() instanceof LTLGoal)) {
