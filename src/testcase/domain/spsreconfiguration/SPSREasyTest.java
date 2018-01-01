@@ -18,6 +18,9 @@ import datalayer.world.StateOfWorld;
 import datalayer.world.wts.WorldNode;
 import exception.ProblemDefinitionException;
 import jason.stdlib.perceive;
+import reasoner.SolutionGraph;
+import reasoner.probexp.ExtendedNode;
+import reasoner.probexp.GraphExpansion;
 import reasoner.probexp.ProblemExploration;
 
 public class SPSREasyTest {
@@ -49,6 +52,7 @@ public class SPSREasyTest {
 	
 	@Test
 	public void test() {
+		SolutionGraph graph = new SolutionGraph();
 		ProblemExploration pe = null;
 		try {
 			pe = new ProblemExploration(ps, allCap);
@@ -58,10 +62,29 @@ public class SPSREasyTest {
 		pe.addToVisit(new WorldNode(first), new TokensConfiguration(new PNHierarchy((LTLGoal) requirements)), 10);
 		
 		int k = 0;
-		while( !pe.toVisitIsEmpty() && k++ < 10) {
+		// simula il ciclo di espansione di un WTS
+		while( !pe.terminated() && k++ < 100) {
+			//System.out.println("ciclo "+k);
 			pe.expandNode();
 			pe.log_current_state();
+			
+			
+			GraphExpansion exp = pe.getHighestExpansion();
+			pe.removeExpandedNode(exp);
+			
+			//System.out.println("expand "+exp.getCapability());
+			
+			//update graph
+			graph.addNode(exp);
+			
+			//update problem exploration with new nodes
+			for(ExtendedNode node : exp.getDestination()){
+				//System.out.println("new "+node.getWorldState());
+				pe.addToVisit(new WorldNode(node.getWorldState()), node.getTokens(), node.getScore() );
+			}
 		}
+		
+		graph.printForGraphviz();
 	}
 
 }

@@ -508,6 +508,14 @@ public class ProblemExploration {
 		return toVisit.isEmpty();
 	}
 	
+	public boolean expandedIsEmpty() {
+		return expandedList.isEmpty();
+	}
+	
+	public boolean terminated() {
+		return toVisit.isEmpty() & expandedList.isEmpty();
+	}
+	
 	/**
 	 * Removes the expanded list.
 	 */
