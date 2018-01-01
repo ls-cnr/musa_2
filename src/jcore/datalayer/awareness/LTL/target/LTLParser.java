@@ -127,6 +127,11 @@ public class LTLParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof LTLListener ) ((LTLListener)listener).exitStart(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof LTLVisitor ) return ((LTLVisitor<? extends T>)visitor).visitStart(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final StartContext start() throws RecognitionException {
@@ -188,6 +193,11 @@ public class LTLParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof LTLListener ) ((LTLListener)listener).exitFolfor(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof LTLVisitor ) return ((LTLVisitor<? extends T>)visitor).visitFolfor(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -262,6 +272,11 @@ public class LTLParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof LTLListener ) ((LTLListener)listener).exitArg(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof LTLVisitor ) return ((LTLVisitor<? extends T>)visitor).visitArg(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final ArgContext arg() throws RecognitionException {
@@ -322,6 +337,11 @@ public class LTLParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof LTLListener ) ((LTLListener)listener).exitExpr(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof LTLVisitor ) return ((LTLVisitor<? extends T>)visitor).visitExpr(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -384,6 +404,11 @@ public class LTLParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof LTLListener ) ((LTLListener)listener).exitUnaOper(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof LTLVisitor ) return ((LTLVisitor<? extends T>)visitor).visitUnaOper(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -473,6 +498,11 @@ public class LTLParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof LTLListener ) ((LTLListener)listener).exitBinOper(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof LTLVisitor ) return ((LTLVisitor<? extends T>)visitor).visitBinOper(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
