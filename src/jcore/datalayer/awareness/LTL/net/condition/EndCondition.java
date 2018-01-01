@@ -2,6 +2,7 @@ package datalayer.awareness.LTL.net.condition;
 
 import datalayer.awareness.LTL.net.PetriNetState;
 
+@Deprecated
 public class EndCondition extends TransitionCondition {
 
 	private String father;

@@ -17,7 +17,7 @@ public class UntilPN extends FormulaPN {
 	 * @param op2
 	 *            the op 2
 	 */
-	public UntilPN( TransitionCondition op1, TransitionCondition op2, String fatherName ) {
+	public UntilPN( TransitionCondition op1, TransitionCondition op2/*, String endFatherName*/) {
 		super("UntilPN");
 		this.firstOp = op1;
 		TransitionCondition firstOpCopy;
@@ -36,7 +36,7 @@ public class UntilPN extends FormulaPN {
 			secondOpCopy = new FormulaCondition(secondOp.getTerm()); 
 			secondOpCopyCopy = new FormulaCondition(secondOp.getTerm()); 
 		}
-		EndCondition thirdOp = new EndCondition(fatherName);
+		//EndCondition thirdOp = new EndCondition(endFatherName);
 		
 		start = pn.place("Start");
 		placeState.put(start, PetriNetState.WAIT_BUT_ERROR);
@@ -64,11 +64,11 @@ public class UntilPN extends FormulaPN {
 		pn.arc("a5", start, t3);
 		placeState.put(pn.arc("a6", t3, pn.place("Error2")).getPlace(), PetriNetState.ERROR);
 		
-		Transition t4 = pn.transition("END-" + fatherName);
+		/*Transition t4 = pn.transition("END-" + endFatherName);
 		transitionLabel.put(t4, thirdOp);
 		
 		pn.arc("a7", start, t4);
-		placeState.put(pn.arc("a8", t4, pn.place("Error3")).getPlace(), PetriNetState.ERROR);
+		placeState.put(pn.arc("a8", t4, pn.place("Error3")).getPlace(), PetriNetState.ERROR);*/
 	}
 	
 }
