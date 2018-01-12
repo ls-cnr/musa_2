@@ -148,8 +148,7 @@ public class PNHierarchy {
 	 */
 	public FormulaPN getStartingPN() {
 		return nets.get(startingName);
-	}
-	
+	}	
 	
 	// For testing
 	public HashMap<String, FormulaPN> getNets() {

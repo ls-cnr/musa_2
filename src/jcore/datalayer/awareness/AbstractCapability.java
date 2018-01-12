@@ -2,8 +2,6 @@ package datalayer.awareness;
 
 import java.util.Set;
 
-import org.inferred.freebuilder.FreeBuilder;
-
 import datalayer.world.Condition;
 import datalayer.world.evolution.AddStatement;
 import datalayer.world.evolution.CapabilityEvoScenario;
@@ -16,7 +14,6 @@ import datalayer.world.evolution.EvolutionScenario;
  * @author icar-aose
  */
 
-//@FreeBuilder
 public class AbstractCapability implements RunTimeEntity {
 	
 	/** The unique id that identify a capability. */
@@ -97,21 +94,12 @@ public class AbstractCapability implements RunTimeEntity {
 		return sum;
 	}
 	
-//	public void test_evo() {
-//		EvolutionScenario s = new EvolutionScenario.Builder()
-//				.setName("uno")
-//				.addOperators(new AddStatement(null))
-//				.build();
-//	}
 
-//	public String getName();
 	public Condition getPreCondition(){
 		return this.pre;
 	}
 	public Condition getPostCondition(){
 		return this.post;
 	}
-//	
-//	class Builder extends AbstractCapability_Builder {}
 	
 }

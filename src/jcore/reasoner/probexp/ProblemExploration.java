@@ -84,6 +84,7 @@ public class ProblemExploration {
 		toVisit = new ArrayList<>();
 		visited = new HashSet<>();
 		expandedList = new ArrayList<>();
+//		ends = new HashMap<String, Boolean>();
 		//all_states = new HashSet<ExtendedNode>();
 		
 		if (!(ps.getGoal_specification() instanceof LTLGoal)) {
@@ -383,29 +384,32 @@ public class ProblemExploration {
 				//Composition
 				else if( tCond instanceof CombinationCondition ){
 					//System.out.println("-Net:("+net+")\nStarting checking "+ tCond.getTerm() + " [C] ");
-					Boolean[] tmpArr = new Boolean[2];
-					tmpArr[0] = false; tmpArr[1] = false; 
+					double[] tmpArr = {0.0, 0.0};
 					int count = 0;
-					for( TransitionCondition tCCond : ((CombinationCondition) tCond).getCond() )
+					for( TransitionCondition tCCond : ((CombinationCondition) tCond).getCond() ) {
 						//Formula
 						if( tCCond instanceof FormulaCondition ){
 							//System.out.println("Starting checking "+ tCCond.getTerm() + " [CF] ");
 							if( formulaCheck((FormulaCondition)tCCond, tokens, state, visitedNets) ){
-								tmpArr[count++] = true;	//Fires if the condition matches with the state
+								tmpArr[count++] = 1.0;//Fires if the condition matches with the state
 								//System.out.println(tCCond.getTerm() + " is true");
 							}
+							else if( tokens.getNetState(tCCond.getTerm()) == PetriNetState.WAIT_BUT_ACCEPTED )
+								tmpArr[count++] = 0.5;
+								
 							//System.out.println("Finished checking "+ tCCond.getTerm() + " [CF] in Net:("+net+")");
 						}
 						//Atomic Proposition 
 						else if( tCCond instanceof SimpleCondition ){
 							//System.out.println("Starting checking "+ tCCond.getTerm() + " [CS] ");
 							if( EntailOperator.getInstance().entailsCondition(state, assumptions, ((SimpleCondition) tCCond).getCondition()) ){
-								tmpArr[count++] = true;
+								tmpArr[count++] = 1.0;
 								//System.out.println(tCCond.getTerm() + " is true");
 							}
 							//System.out.println("Finished checking "+ tCCond.getTerm() + " [CS] in Net:("+net+")");
 						}
-					if( tmpArr[0] && tmpArr[1] )
+					}
+					if( (tmpArr[0] + tmpArr[1]) >= 1.489 )
 						fire(t, tokens, net);
 					//System.out.println("Finished checking "+ tCond.getTerm() + " [C] in Net:("+net+")");
 				}
@@ -504,6 +508,14 @@ public class ProblemExploration {
 		return toVisit.isEmpty();
 	}
 	
+	public boolean expandedIsEmpty() {
+		return expandedList.isEmpty();
+	}
+	
+	public boolean terminated() {
+		return toVisit.isEmpty() & expandedList.isEmpty();
+	}
+	
 	/**
 	 * Removes the expanded list.
 	 */
@@ -584,7 +596,11 @@ public class ProblemExploration {
 		System.out.println("--------------expanded---------------");
 		for (GraphExpansion ex : expandedList) {
 			for (ExtendedNode n : ex.getDestination() ) {
-				System.out.println(ex.getSource().getWorldState().toString()+"->"+ex.getCapability()+"->"+n.getWorldState().toString()+"=>"+ex.hashCode()+" [score("+ex.getScore()+")]");
+				System.out.print(ex.getSource().getWorldState().toString()+"->"+ex.getCapability()+"->\t");
+				if (n.isExitNode())
+					System.out.println(n.getWorldState().toString()+" EXIT =>\t"+ex.hashCode()+" [score("+ex.getScore()+")]");
+				else
+					System.out.println(n.getWorldState().toString()+"=>\t"+ex.hashCode()+" [score("+ex.getScore()+")]");
 			}
 		}
 	}

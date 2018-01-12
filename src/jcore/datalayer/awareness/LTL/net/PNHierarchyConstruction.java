@@ -46,7 +46,7 @@ public class PNHierarchyConstruction {
 		formulasSet.add("F"); formulasSet.add("G"); formulasSet.add("X"); formulasSet.add("U");formulasSet.add("R");
 		formulasSet.add("AND"); formulasSet.add("OR");formulasSet.add("IMP");formulasSet.add("BIC");
 		
-		construction(tree.getRoot(), "Formula" + counter++, formulasSet, petriNets, FOLFormulasDict, hopNets);
+		construction(tree.getRoot(), "Formula" + counter++/*, "Formula" + counter-1*/, formulasSet, petriNets, FOLFormulasDict, hopNets);
 		counter = 0;
 		
 		return petriNets;
@@ -70,7 +70,7 @@ public class PNHierarchyConstruction {
 	 * @param hopNets
 	 *            the hop nets
 	 */
-	private static void construction( FormulaBTNode root, String name, HashSet<String> formulasSet, HashMap<String, FormulaPN> petriNets, HashMap<String, Stack<String>> FOLFormulasDict, HashSet<String> hopNets ) {
+	private static void construction( FormulaBTNode root, String name/*, String endFatherName*/, HashSet<String> formulasSet, HashMap<String, FormulaPN> petriNets, HashMap<String, Stack<String>> FOLFormulasDict, HashSet<String> hopNets ) {
 		
 		//String[] tempA = new String[2];
 		TransitionCondition[] tempA = new TransitionCondition[2];
@@ -87,7 +87,7 @@ public class PNHierarchyConstruction {
 						hopNets.add(name);
 			if( formulasSet.contains(root.getLeft().getVal()) ){
 				tempA[0] = new FormulaCondition("Formula" + counter++);
-				construction(root.getLeft(), tempA[0].getTerm(), formulasSet, petriNets, FOLFormulasDict, hopNets);
+				construction(root.getLeft(), tempA[0].getTerm()/*, name*/, formulasSet, petriNets, FOLFormulasDict, hopNets);
 			}
 			else
 				tempA[0] = initSimpleCondition(root.getLeft(), FOLFormulasDict);
@@ -100,7 +100,7 @@ public class PNHierarchyConstruction {
 		if( root.hasRight() )
 			if( formulasSet.contains(root.getRight().getVal()) ){
 				tempA[1] = new FormulaCondition("Formula" + counter++);
-				construction(root.getRight(), tempA[1].getTerm(), formulasSet, petriNets, FOLFormulasDict, hopNets);
+				construction(root.getRight(), tempA[1].getTerm()/*, name*/, formulasSet, petriNets, FOLFormulasDict, hopNets);
 			}
 			else
 				tempA[1] = initSimpleCondition(root.getRight(), FOLFormulasDict);
@@ -108,15 +108,15 @@ public class PNHierarchyConstruction {
 		orCond = false;
 		
 		if (root.getVal().equals("F"))
-			petriNets.put(name, new FinallyPN(tempA[0]));
+			petriNets.put(name, new FinallyPN(tempA[0]/*, endFatherName*/));
 		else if (root.getVal().equals("G"))
-			petriNets.put(name, new GloballyPN(tempA[0]));
+			petriNets.put(name, new GloballyPN(tempA[0]/*, endFatherName*/));
 		else if (root.getVal().equals("X")) 
 			petriNets.put(name, new NextPN(tempA[0]));
 		else if (root.getVal().equals("U"))
-			petriNets.put(name, new UntilPN(tempA[0], tempA[1]));
+			petriNets.put(name, new UntilPN(tempA[0], tempA[1]/*, endFatherName*/));
 		else if (root.getVal().equals("R"))
-			petriNets.put(name, new RelasePN(tempA[0], tempA[1]));
+			petriNets.put(name, new RelasePN(tempA[0], tempA[1]/*, endFatherName*/));
 		else if (root.getVal().equals("AND")) 
 			petriNets.put(name, new AndPN(tempA[0], tempA[1]));
 		else if (root.getVal().equals("OR")) 

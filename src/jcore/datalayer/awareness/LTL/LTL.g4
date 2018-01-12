@@ -2,7 +2,7 @@
 grammar LTL;
 
 @header {
-	package layer.awareness.LTL.target;
+	package datalayer.awareness.LTL.target;
 	import java.util.*;
 	/** Class auto-generated using ANTLR */
 }

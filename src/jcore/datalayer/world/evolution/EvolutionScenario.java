@@ -2,8 +2,6 @@ package datalayer.world.evolution;
 
 import java.util.Set;
 
-import org.inferred.freebuilder.FreeBuilder;
-
 /**
  * The Interface EvolutionScenario.
  */
