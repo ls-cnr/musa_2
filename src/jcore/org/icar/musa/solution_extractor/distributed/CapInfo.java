@@ -1,4 +1,4 @@
-package datalayer.world.configuration.distributed;
+package org.icar.musa.solution_extractor.distributed;
 
 public class CapInfo {
 	public String getSrc() {

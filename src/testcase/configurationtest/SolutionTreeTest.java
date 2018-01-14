@@ -2,24 +2,25 @@ package configurationtest;
 
 import java.util.HashMap;
 import java.util.Iterator;
+
+import org.icar.musa.core.runtime_entity.ProblemSpecification;
+import org.icar.musa.exception.ProblemDefinitionException;
+import org.icar.musa.proactive_means_end_reasoning.GraphExpansion;
+import org.icar.musa.proactive_means_end_reasoning.ProblemExploration;
+import org.icar.musa.proactive_means_end_reasoning.SolutionGraph;
+import org.icar.musa.proactive_means_end_reasoning.wts.EvolutionEdge;
+import org.icar.musa.proactive_means_end_reasoning.wts.NormalEdge;
+import org.icar.musa.proactive_means_end_reasoning.wts.OPNode;
+import org.icar.musa.proactive_means_end_reasoning.wts.WTS;
+import org.icar.musa.proactive_means_end_reasoning.wts.WorldNode;
+import org.icar.musa.solution_extractor.centralized.Solution;
+import org.icar.musa.solution_extractor.centralized.SolutionSet;
+import org.icar.musa.solution_extractor.centralized.SolutionTree;
+import org.icar.specification.linear_temporal_logic.net.PNHierarchy;
+import org.icar.specification.linear_temporal_logic.net.TokenConf;
 import org.junit.Test;
 
-import datalayer.awareness.ProblemSpecification;
-import datalayer.awareness.LTL.net.PNHierarchy;
-import datalayer.awareness.LTL.net.TokensConfiguration;
-import datalayer.world.configuration.centralized.Solution;
-import datalayer.world.configuration.centralized.SolutionSet;
-import datalayer.world.configuration.centralized.SolutionTree;
-import datalayer.world.wts.EvolutionEdge;
-import datalayer.world.wts.NormalEdge;
-import datalayer.world.wts.OPNode;
-import datalayer.world.wts.WTS;
-import datalayer.world.wts.WorldNode;
 import domain.legacy.B2BCloudSetup;
-import exception.ProblemDefinitionException;
-import reasoner.SolutionGraph;
-import reasoner.probexp.GraphExpansion;
-import reasoner.probexp.ProblemExploration;
 
 /**
  * SolutionTree test class.
@@ -37,7 +38,7 @@ public class SolutionTreeTest {
 
 		// b2bcs.getGoalModel().printModel();
 		sg.getWTS().setInitialState(b2bcs.getNodewStart().getWorldState());
-		TokensConfiguration startingTokens = null; //new TokensConfiguration(new Nets(b2bcs.getGoalModel()));
+		TokenConf startingTokens = null; //new TokensConfiguration(new Nets(b2bcs.getGoalModel()));
 		
 		pe.addToVisit(b2bcs.getNodewStart(), startingTokens, 9);
 		for (int i = 0; i < 40; i++) {

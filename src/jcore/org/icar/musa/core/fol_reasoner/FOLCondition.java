@@ -1,4 +1,6 @@
-package datalayer.world;
+package org.icar.musa.core.fol_reasoner;
+
+import org.icar.musa.core.Condition;
 
 import net.sf.tweety.commons.Formula;
 import net.sf.tweety.logics.fol.syntax.FolFormula;
@@ -14,18 +16,18 @@ import net.sf.tweety.lp.asp.syntax.DLPLiteral;
  * @version 1.0.0
  */
 
-public class Condition {
+public class FOLCondition implements Condition {
 	private FolFormula formula;
 	
 	private static AspFolTranslator tx = new AspFolTranslator();
 	
-	public Condition(FolFormula folFormula) {
+	public FOLCondition(FolFormula folFormula) {
 		formula = folFormula;
 	}
-	public Condition(DLPLiteral source) {
+	public FOLCondition(DLPLiteral source) {
 		formula = tx.toFOL(source);
 	}
-	public Condition(String folFormula) {
+	public FOLCondition(String folFormula) {
 		/* TODO */
 	}
 

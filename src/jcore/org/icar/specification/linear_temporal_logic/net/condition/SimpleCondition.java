@@ -1,9 +1,11 @@
-package datalayer.awareness.LTL.net.condition;
+package org.icar.specification.linear_temporal_logic.net.condition;
 
 import java.util.ArrayList;
 
-import datalayer.awareness.LTL.net.PetriNetState;
-import datalayer.world.Condition;
+import org.icar.musa.core.Condition;
+import org.icar.musa.core.fol_reasoner.FOLCondition;
+import org.icar.specification.linear_temporal_logic.net.PNStateEnum;
+
 import net.sf.tweety.logics.commons.syntax.Constant;
 import net.sf.tweety.logics.fol.syntax.Negation;
 import net.sf.tweety.logics.fol.syntax.RelationalFormula;
@@ -26,7 +28,7 @@ public class SimpleCondition extends TransitionCondition {
 	private DLPLiteral negPred;
 	
 	/** The state condition that indicates if the formula must be accepted or error */
-	private PetriNetState stateCondition;
+	private PNStateEnum stateCondition;
 	
 	/** The negation condition of predicate */
 	private boolean neg;
@@ -51,7 +53,7 @@ public class SimpleCondition extends TransitionCondition {
 	 */
 	public SimpleCondition(String term, String pred, ArrayList<String> args, boolean neg) {
 		super(term);
-		stateCondition = PetriNetState.ACCEPTED;
+		stateCondition = PNStateEnum.ACCEPTED;
 		this.pred = pred;
 		this.args = args;
 		this.neg = neg;
@@ -80,7 +82,7 @@ public class SimpleCondition extends TransitionCondition {
 			negPred = new DLPNeg(new DLPAtom(pred, cs));
 		}
 		
-		cond = new Condition(defaultPred);
+		cond = new FOLCondition(defaultPred);
 	}
 	
 	/**
@@ -97,19 +99,19 @@ public class SimpleCondition extends TransitionCondition {
 	 * @see layer.awareness.LTL.net.condition.TransitionCondition#setStateCondition(java.lang.String)
 	 */
 	@Override
-	public void setStateCondition(PetriNetState s) {
-		if( s == PetriNetState.ERROR ){
+	public void setStateCondition(PNStateEnum s) {
+		if( s == PNStateEnum.ERROR ){
 			//cond = new Condition( new Negation((ExistsQuantifiedFormula) cond.getFOLFormula()) );
 			//cond = new Condition(new Negation( (RelationalFormula) cond.getFOLFormula()));
-			cond = new Condition(negPred);
+			cond = new FOLCondition(negPred);
 			stateCondition = s;
 			if( !getTerm().startsWith("!") )
 				setTerm("!" + getTerm());
 		}
-		else if( s == PetriNetState.ACCEPTED ){
+		else if( s == PNStateEnum.ACCEPTED ){
 			//cond = new Condition( new Negation((ExistsQuantifiedFormula) cond.getFOLFormula()) );
 			//cond = new Condition(new Negation( (RelationalFormula) cond.getFOLFormula()));
-			cond = new Condition(defaultPred);
+			cond = new FOLCondition(defaultPred);
 			stateCondition = s;
 			if( getTerm().startsWith("!") )
 				setTerm(getTerm().substring(1));
@@ -130,7 +132,7 @@ public class SimpleCondition extends TransitionCondition {
 	 *
 	 * @return the state condition
 	 */
-	public PetriNetState getStateCondition() {
+	public PNStateEnum getStateCondition() {
 		return stateCondition;
 	}
 

@@ -1,6 +1,6 @@
-package datalayer.awareness.legacy.goalmodel;
+package org.icar.specification.goalspec.goalmodel;
 
-import datalayer.awareness.Requirements;
+import org.icar.musa.core.Requirements;
 
 public interface GoalModel extends Requirements {
 

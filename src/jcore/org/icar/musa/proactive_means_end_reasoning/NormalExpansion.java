@@ -1,8 +1,6 @@
-package reasoner.probexp;
+package org.icar.musa.proactive_means_end_reasoning;
 
 import java.util.ArrayList;
-
-import datalayer.awareness.AbstractCapability;
 
 // TODO: Auto-generated Javadoc
 /**

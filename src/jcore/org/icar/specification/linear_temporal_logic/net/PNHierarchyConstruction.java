@@ -1,13 +1,13 @@
-package datalayer.awareness.LTL.net;
+package org.icar.specification.linear_temporal_logic.net;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Stack;
 
-import datalayer.awareness.LTL.formulamodel.*;
-import datalayer.awareness.LTL.net.condition.*;
-import datalayer.awareness.LTL.net.netmodels.*;
+import org.icar.specification.linear_temporal_logic.formulamodel.*;
+import org.icar.specification.linear_temporal_logic.net.condition.*;
+import org.icar.specification.linear_temporal_logic.net.netmodels.*;
 
 /**
  * The Class PetriNetsConstruction, used do create a set of interconnected Nets through the Formula Binary Tree.

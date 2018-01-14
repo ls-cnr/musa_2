@@ -1,12 +1,9 @@
-package reasoner.probexp;
+package org.icar.musa.proactive_means_end_reasoning;
 
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.Iterator;
 
-import datalayer.awareness.AbstractCapability;
-import datalayer.world.wts.Node;
-import datalayer.world.wts.WorldNode;
+import org.icar.musa.proactive_means_end_reasoning.wts.Node;
 
 /**
  * The Class ExpansionNode.

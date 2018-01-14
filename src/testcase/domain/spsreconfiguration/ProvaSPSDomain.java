@@ -2,17 +2,17 @@ package domain.spsreconfiguration;
 
 import static org.junit.Assert.*;
 
+import org.icar.musa.core.domain.StateOfWorld;
+import org.icar.musa.core.fol_reasoner.FOLCondition;
+import org.icar.musa.core.fol_reasoner.EntailOperator;
+import org.icar.musa.core.runtime_entity.AssumptionSet;
+import org.icar.specification.linear_temporal_logic.net.condition.SimpleCondition;
 import org.junit.Test;
 
-import datalayer.awareness.AssumptionSet;
-import datalayer.awareness.LTL.net.condition.SimpleCondition;
-import datalayer.world.Condition;
-import datalayer.world.StateOfWorld;
 import net.sf.tweety.logics.commons.syntax.Constant;
 import net.sf.tweety.lp.asp.parser.ParseException;
 import net.sf.tweety.lp.asp.syntax.DLPAtom;
 import net.sf.tweety.lp.asp.syntax.DLPHead;
-import reasoner.EntailOperator;
 
 public class ProvaSPSDomain {
 
@@ -91,7 +91,7 @@ public class ProvaSPSDomain {
 		
 		} catch (ParseException e) {
 			e.printStackTrace();
-		} catch (exception.NotAllowedInAnAssumptionSet e) {
+		} catch (org.icar.musa.exception.NotAllowedInAnAssumptionSet e) {
 			e.printStackTrace();
 		}
 		
@@ -120,12 +120,12 @@ public class ProvaSPSDomain {
 			  wStart.addFact_asString("closed(i17).");
 			} catch (ParseException e) {
 			  e.printStackTrace();
-			} catch (exception.NotAllowedInAStateOfWorld e) {
+			} catch (org.icar.musa.exception.NotAllowedInAStateOfWorld e) {
 			  e.printStackTrace();
 			}
 
 		/************************************************************************************/
-		System.out.println( EntailOperator.getInstance().entailsCondition(wStart, domain, new Condition(new DLPAtom("off", new Constant("l2")))));
+		System.out.println( EntailOperator.getInstance().entailsCondition(wStart, domain, new FOLCondition(new DLPAtom("off", new Constant("l2")))));
 		
 		
 	}

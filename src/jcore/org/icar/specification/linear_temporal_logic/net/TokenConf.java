@@ -1,18 +1,20 @@
-package datalayer.awareness.LTL.net;
+package org.icar.specification.linear_temporal_logic.net;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import org.icar.musa.core.TokenConfInterface;
+
 /**
  * The Class TokensConfiguration maintains the informations about tokens position for every net and nets state.
  */
-public class TokensConfiguration {
+public class TokenConf implements TokenConfInterface {
 	
 	/** The dictionary that associate a net (with its reference) to a list of that net's places that indicates tokens positions  */
 	private HashMap<String, ArrayList<String>> conf;
 	
 	/** The nets state. */
-	private HashMap<String, PetriNetState> netsState;
+	private HashMap<String, PNStateEnum> netsState;
 	
 	/**
 	 * Instantiates a new tokens configuration, putting a token in the starting place of the starting net.
@@ -20,7 +22,7 @@ public class TokensConfiguration {
 	 * @param nets
 	 *            the nets
 	 */
-	public TokensConfiguration( PNHierarchy nets ){
+	public TokenConf( PNHierarchy nets ){
 		conf = new HashMap<>();
 		netsState = new HashMap<>();
 		
@@ -36,7 +38,7 @@ public class TokensConfiguration {
 	 * @param prevConf
 	 *            the prev conf
 	 */
-	public TokensConfiguration( TokensConfiguration prevConf ) {
+	public TokenConf( TokenConfInterface prevConf ) {
 		conf = new HashMap<>();
 		netsState = new HashMap<>();
 		for( String map : prevConf.getConf().keySet() )
@@ -53,86 +55,65 @@ public class TokensConfiguration {
 	 * @param netsState
 	 *            the nets state
 	 */
-	public TokensConfiguration(HashMap<String, ArrayList<String>> conf, HashMap<String, PetriNetState> netsState) {
+	public TokenConf(HashMap<String, ArrayList<String>> conf, HashMap<String, PNStateEnum> netsState) {
 		this.conf = conf;
 		this.netsState = netsState;
 	}
 
-	/**
-	 * Adds a token in a net.
-	 *
-	 * @param net
-	 *            the net
-	 * @param token
-	 *            the token
+	/* (non-Javadoc)
+	 * @see org.icar.specification.linear_temporal_logic.net.TokenConfInterface#addToken(java.lang.String, java.lang.String)
 	 */
+	@Override
 	public void addToken( String net, String token ) {	
 		if( !conf.containsKey(net) )
 			conf.put(net, new ArrayList<>()); 
 		conf.get(net).add(token);
 	}
 	
-	/**
-	 * Removes a token from a net.
-	 *
-	 * @param net
-	 *            the net
-	 * @param token
-	 *            the token
+	/* (non-Javadoc)
+	 * @see org.icar.specification.linear_temporal_logic.net.TokenConfInterface#removeToken(java.lang.String, java.lang.String)
 	 */
+	@Override
 	public void removeToken(String net, String token ) {
 		conf.get(net).remove(token);
 	}
 	
-	/**
-	 * Gets the net state.
-	 *
-	 * @param net
-	 *            the net
-	 * @return the net state
+	/* (non-Javadoc)
+	 * @see org.icar.specification.linear_temporal_logic.net.TokenConfInterface#getNetState(java.lang.String)
 	 */
-	public PetriNetState getNetState( String net ) {
+	@Override
+	public PNStateEnum getNetState( String net ) {
 		return netsState.get(net);
 	}
 	
-	/**
-	 * Sets the net state.
-	 *
-	 * @param net
-	 *            the net
-	 * @param state
-	 *            the state
+	/* (non-Javadoc)
+	 * @see org.icar.specification.linear_temporal_logic.net.TokenConfInterface#setNetState(java.lang.String, org.icar.specification.linear_temporal_logic.net.PetriNetState)
 	 */
-	public void setNetState( String net, PetriNetState state ) {
+	@Override
+	public void setNetState( String net, PNStateEnum state ) {
 		netsState.put(net, state);
 	}
 	
-	/**
-	 * Removes the net state from the dictionary.
-	 *
-	 * @param net
-	 *            the net
+	/* (non-Javadoc)
+	 * @see org.icar.specification.linear_temporal_logic.net.TokenConfInterface#removeNetState(java.lang.String)
 	 */
+	@Override
 	public void removeNetState( String net ) {
 		netsState.remove(net);
 	}
 
-	/**
-	 * Gets the nets state.
-	 *
-	 * @return the nets state
+	/* (non-Javadoc)
+	 * @see org.icar.specification.linear_temporal_logic.net.TokenConfInterface#getNetsState()
 	 */
-	public HashMap<String, PetriNetState> getNetsState() {
+	@Override
+	public HashMap<String, PNStateEnum> getNetsState() {
 		return netsState;
 	}
 	
-	/**
-	 * Gets the tokens.
-	 *
-	 * @param net
-	 *            the net
-	 * @return the tokens
+	/* (non-Javadoc)
+	 * @see org.icar.specification.linear_temporal_logic.net.TokenConfInterface#getTokens(java.lang.String)
 	 */
+	@Override
 	public ArrayList<String> getTokens( String net ) {
 		if(conf.containsKey(net))
 			return conf.get(net);
@@ -140,20 +121,18 @@ public class TokensConfiguration {
 			return null;
 	}
 
-	/**
-	 * Gets the conf.
-	 *
-	 * @return the conf
+	/* (non-Javadoc)
+	 * @see org.icar.specification.linear_temporal_logic.net.TokenConfInterface#getConf()
 	 */
+	@Override
 	public HashMap<String, ArrayList<String>> getConf() {
 		return conf;
 	}
 	
-	/**
-	 * Gets the nets.
-	 *
-	 * @return the nets
+	/* (non-Javadoc)
+	 * @see org.icar.specification.linear_temporal_logic.net.TokenConfInterface#getNets()
 	 */
+	@Override
 	public Iterable<String> getNets() {
 		return conf.keySet();
 	}

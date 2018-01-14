@@ -1,4 +1,4 @@
-package datalayer.awareness;
+package org.icar.musa.core.runtime_entity;
 
 public class AbstractWorkflowNode {
 	private String abstract_cap_name;

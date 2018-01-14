@@ -1,4 +1,4 @@
-package datalayer.awareness.legacy.goalmodel;
+package org.icar.specification.goalspec.goalmodel;
 
 /**
  * The Class NodeNotFoundException.

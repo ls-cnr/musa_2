@@ -1,6 +1,6 @@
-package datalayer.awareness.LTL.net.condition;
+package org.icar.specification.linear_temporal_logic.net.condition;
 
-import datalayer.awareness.LTL.net.PetriNetState;
+import org.icar.specification.linear_temporal_logic.net.PNStateEnum;
 
 /**
  * A TransitionCondition it's a condition associated to a Transition in a PetriNet. This class is the common abstract class for every type
@@ -46,6 +46,6 @@ public abstract class TransitionCondition {
 	 * @param s
 	 *            the new state condition
 	 */
-	public abstract void setStateCondition(PetriNetState s);
+	public abstract void setStateCondition(PNStateEnum s);
 	
 }

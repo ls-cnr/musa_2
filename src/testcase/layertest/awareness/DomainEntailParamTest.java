@@ -5,18 +5,18 @@ import static org.junit.Assert.*;
 import java.util.Arrays;
 import java.util.Collection;
 
+import org.icar.musa.core.domain.StateOfWorld;
+import org.icar.musa.core.fol_reasoner.FOLCondition;
+import org.icar.musa.core.fol_reasoner.EntailOperator;
+import org.icar.musa.core.runtime_entity.AssumptionSet;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
-import datalayer.awareness.AssumptionSet;
-import datalayer.world.Condition;
-import datalayer.world.StateOfWorld;
 import net.sf.tweety.logics.commons.syntax.Constant;
 import net.sf.tweety.lp.asp.parser.ParseException;
 import net.sf.tweety.lp.asp.syntax.DLPAtom;
-import reasoner.EntailOperator;
 
 @RunWith(Parameterized.class)
 public class DomainEntailParamTest {
@@ -24,7 +24,7 @@ public class DomainEntailParamTest {
 	EntailOperator env;
 	StateOfWorld w;
 	AssumptionSet domain;
-	Condition cond;
+	FOLCondition cond;
 	
 	@Parameters
     public static Collection<String[]> data() {
@@ -43,7 +43,7 @@ public class DomainEntailParamTest {
 			w.addFact_asString("ostrich(olga).");
 		} catch (ParseException e) {
 			e.printStackTrace();
-		} catch (exception.NotAllowedInAStateOfWorld e) {
+		} catch (org.icar.musa.exception.NotAllowedInAStateOfWorld e) {
 			e.printStackTrace();
 		}
 		
@@ -60,7 +60,7 @@ public class DomainEntailParamTest {
 		
 		} catch (ParseException e) {
 			e.printStackTrace();
-		} catch (exception.NotAllowedInAnAssumptionSet e) {
+		} catch (org.icar.musa.exception.NotAllowedInAnAssumptionSet e) {
 			e.printStackTrace();
 		}
 		
@@ -68,7 +68,7 @@ public class DomainEntailParamTest {
 		
 		Constant cons = new Constant(one);
 		DLPAtom q = new DLPAtom(two, cons);
-		cond = new Condition(q);
+		cond = new FOLCondition(q);
 	}
 	
 	@Test

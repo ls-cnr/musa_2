@@ -1,11 +1,11 @@
-package reasoner;
+package org.icar.musa.core.fol_reasoner;
 
 import java.util.Iterator;
 
-import communication.translator.ExtDLPHead;
-import datalayer.awareness.AssumptionSet;
-import datalayer.world.Condition;
-import datalayer.world.StateOfWorld;
+import org.icar.musa.agent_communication.translator.ExtDLPHead;
+import org.icar.musa.core.domain.StateOfWorld;
+import org.icar.musa.core.runtime_entity.AssumptionSet;
+
 import net.sf.tweety.lp.asp.syntax.Rule;
 import net.sf.tweety.lp.asp.util.AnswerSet;
 import net.sf.tweety.lp.asp.util.AnswerSetList;
@@ -74,7 +74,7 @@ public class EntailOperator {
 	 *            the condition
 	 * @return true, if successful
 	 */
-	public boolean entailsCondition(StateOfWorld world,  AssumptionSet assumptions, Condition condition) {
+	public boolean entailsCondition(StateOfWorld world,  AssumptionSet assumptions, FOLCondition condition) {
 		Program test = assumptions.getASPClone();
 		Iterator<ExtDLPHead> fact_it = world.getFacts().iterator();
 		while (fact_it.hasNext()) {

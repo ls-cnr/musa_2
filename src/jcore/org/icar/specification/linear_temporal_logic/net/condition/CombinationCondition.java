@@ -1,8 +1,8 @@
-package datalayer.awareness.LTL.net.condition;
+package org.icar.specification.linear_temporal_logic.net.condition;
 
 import java.util.ArrayList;
 
-import datalayer.awareness.LTL.net.PetriNetState;
+import org.icar.specification.linear_temporal_logic.net.PNStateEnum;
 
 public class CombinationCondition extends TransitionCondition {
 
@@ -16,7 +16,7 @@ public class CombinationCondition extends TransitionCondition {
 	}
 
 	@Override
-	public void setStateCondition(PetriNetState s) {
+	public void setStateCondition(PNStateEnum s) {
 		//Empty
 	}
 	

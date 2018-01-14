@@ -1,6 +1,6 @@
-package datalayer.world.evolution;
+package org.icar.musa.core.domain.evolution;
 
-import datalayer.world.StateOfWorld;
+import org.icar.musa.core.domain.StateOfWorld;
 
 /**
  * The Interface EvolutionOperator.

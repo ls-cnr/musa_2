@@ -1,10 +1,11 @@
-package datalayer.world.evolution;
+package org.icar.musa.core.domain.evolution;
 
 import java.util.HashSet;
 import java.util.Set;
 
-import communication.translator.ExtDLPHead;
-import exception.NotAllowedInAStateOfWorld;
+import org.icar.musa.agent_communication.translator.ExtDLPHead;
+import org.icar.musa.exception.NotAllowedInAStateOfWorld;
+
 import net.sf.tweety.lp.asp.parser.ASPParser;
 import net.sf.tweety.lp.asp.parser.ParseException;
 import net.sf.tweety.lp.asp.syntax.DLPHead;

@@ -1,11 +1,11 @@
-package reasoner.probexp;
+package org.icar.musa.proactive_means_end_reasoning;
 
 import java.util.Comparator;
 
-import datalayer.awareness.LTL.net.PetriNetState;
-import datalayer.awareness.LTL.net.TokensConfiguration;
-import datalayer.world.StateOfWorld;
-import datalayer.world.wts.Node;
+import org.icar.musa.core.domain.StateOfWorld;
+import org.icar.musa.proactive_means_end_reasoning.wts.Node;
+import org.icar.specification.linear_temporal_logic.net.PNStateEnum;
+import org.icar.specification.linear_temporal_logic.net.TokenConf;
 
 /**
  * The Class ENode.
@@ -18,7 +18,7 @@ public class ExtendedNode implements Node{
 	private StateOfWorld node;
 	
 	/** The Tokens Configuration associated with the node to apply on the Nets*/
-	private TokensConfiguration tokens;
+	private TokenConf tokens;
 	
 	/** The Score associated to the node */
 	private int score;
@@ -54,7 +54,7 @@ public class ExtendedNode implements Node{
 	 * @param error
 	 *            the Exit condition  
 	 */
-	public ExtendedNode( StateOfWorld node, TokensConfiguration tokens, int score, boolean exit, Boolean error ) {
+	public ExtendedNode( StateOfWorld node, TokenConf tokens, int score, boolean exit, Boolean error ) {
 		this.node = node;
 		this.tokens = tokens;
 		this.score = score;
@@ -77,7 +77,7 @@ public class ExtendedNode implements Node{
 	 * @param tokens
 	 *            the new Tokens Configuration
 	 */
-	public void setTokens(TokensConfiguration tokens){
+	public void setTokens(TokenConf tokens){
 		this.tokens = tokens;
 	}
 	
@@ -87,10 +87,10 @@ public class ExtendedNode implements Node{
 	 * @param string
 	 *            Condition that states if the node is ExitNode or ErrorNode or other
 	 */
-	public void checkNodeType(PetriNetState state){
-		if( state==PetriNetState.ACCEPTED )
+	public void checkNodeType(PNStateEnum state){
+		if( state==PNStateEnum.ACCEPTED )
 			this.exit = true;
-		else if( state==PetriNetState.ERROR )
+		else if( state==PNStateEnum.ERROR )
 			this.error = true;
 	}
 	
@@ -99,7 +99,7 @@ public class ExtendedNode implements Node{
 	 *
 	 * @return the Tokens List
 	 */
-	public TokensConfiguration getTokens() {
+	public TokenConf getTokens() {
 		return tokens;
 	}
 	

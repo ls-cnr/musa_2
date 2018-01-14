@@ -4,17 +4,19 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
-import communication.translator.ExtDLPHead;
-import datalayer.awareness.AbstractCapability;
-import datalayer.awareness.AssumptionSet;
-import datalayer.awareness.Requirements;
-import datalayer.awareness.LTL.formulamodel.FormulaBTConstruction;
-import datalayer.world.Condition;
-import datalayer.world.StateOfWorld;
-import datalayer.world.evolution.AddStatement;
-import datalayer.world.evolution.CapabilityEvolutionScenario;
-import datalayer.world.evolution.EvolutionScenario;
-import datalayer.world.evolution.RemoveStatement;
+import org.icar.musa.agent_communication.translator.ExtDLPHead;
+import org.icar.musa.core.Condition;
+import org.icar.musa.core.Requirements;
+import org.icar.musa.core.domain.StateOfWorld;
+import org.icar.musa.core.domain.evolution.AddStatement;
+import org.icar.musa.core.domain.evolution.CapabilityEvolutionScenario;
+import org.icar.musa.core.domain.evolution.EvolutionScenario;
+import org.icar.musa.core.domain.evolution.RemoveStatement;
+import org.icar.musa.core.fol_reasoner.FOLCondition;
+import org.icar.musa.core.runtime_entity.AbstractCapability;
+import org.icar.musa.core.runtime_entity.AssumptionSet;
+import org.icar.specification.linear_temporal_logic.formulamodel.FormulaBTConstruction;
+
 import domain.Scenario;
 import net.sf.tweety.logics.commons.syntax.Constant;
 import net.sf.tweety.lp.asp.parser.ParseException;
@@ -62,7 +64,7 @@ public class SPSReconfigurationEasy implements Scenario {
 		
 		} catch (ParseException e) {
 			e.printStackTrace();
-		} catch (exception.NotAllowedInAnAssumptionSet e) {
+		} catch (org.icar.musa.exception.NotAllowedInAnAssumptionSet e) {
 			e.printStackTrace();
 		}
 		return domain;
@@ -89,7 +91,7 @@ public class SPSReconfigurationEasy implements Scenario {
 			w.addFact_asString("open(i4).");
 		} catch (ParseException e) {
 			e.printStackTrace();
-		} catch (exception.NotAllowedInAStateOfWorld e) {
+		} catch (org.icar.musa.exception.NotAllowedInAStateOfWorld e) {
 			e.printStackTrace();
 		}
 		return w;
@@ -147,7 +149,7 @@ public class SPSReconfigurationEasy implements Scenario {
 		 * PRE: off(main)
 		 * SCENARIO mainOn: remove {off(main)}, add {on(main)}
 		*/
-		Condition main_on_pre = new Condition(new DLPAtom("off", new Constant("main")));
+		Condition main_on_pre = new FOLCondition(new DLPAtom("off", new Constant("main")));
 		Set<EvolutionScenario> main_on_evo = new HashSet<>();
 		CapabilityEvolutionScenario main_on_evo1 = new CapabilityEvolutionScenario("mainOn");
 		main_on_evo1.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("on", new Constant("main"))) ) );
@@ -161,7 +163,7 @@ public class SPSReconfigurationEasy implements Scenario {
 		 * PRE: on(main)
 		 * SCENARIO mainOff: remove {on(main)}, add {off(main)}
 		*/
-		Condition main_on_pre = new Condition(new DLPAtom("on", new Constant("main")));
+		Condition main_on_pre = new FOLCondition(new DLPAtom("on", new Constant("main")));
 		Set<EvolutionScenario> main_on_evo = new HashSet<>();
 		CapabilityEvolutionScenario main_on_evo1 = new CapabilityEvolutionScenario("mainOff");
 		main_on_evo1.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("off", new Constant("main"))) ) );
@@ -176,7 +178,7 @@ public class SPSReconfigurationEasy implements Scenario {
 		 * SCENARIO iClosed: remove {open(<name>)}, add {closed(<name>)}
 		*/
 		Constant i_const = new Constant(switch_name);
-		Condition i_pre = new Condition(new DLPAtom("open", i_const));
+		Condition i_pre = new FOLCondition(new DLPAtom("open", i_const));
 		Set<EvolutionScenario> i_evo = new HashSet<>();
 		CapabilityEvolutionScenario i_evo_scenario = new CapabilityEvolutionScenario("iClosed");
 		i_evo_scenario.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("closed", i_const)) ) );
@@ -191,7 +193,7 @@ public class SPSReconfigurationEasy implements Scenario {
 		 * SCENARIO iOpen: remove {closed(<name>)}, add {open(<name>)}
 		*/
 		Constant i_const = new Constant(switch_name);
-		Condition i_pre = new Condition(new DLPAtom("closed", i_const));
+		Condition i_pre = new FOLCondition(new DLPAtom("closed", i_const));
 		Set<EvolutionScenario> i_evo = new HashSet<>();
 		CapabilityEvolutionScenario i_evo_scenario = new CapabilityEvolutionScenario("iOpen");
 		i_evo_scenario.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("open", i_const)) ) );

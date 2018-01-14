@@ -1,14 +1,7 @@
-package reasoner.probexp;
+package org.icar.musa.proactive_means_end_reasoning;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.Iterator;
-
-import datalayer.awareness.AbstractCapability;
-import datalayer.world.evolution.EvolutionOperator;
-import datalayer.world.evolution.EvolutionScenario;
-import datalayer.world.wts.WorldNode;
 
 // TODO: Auto-generated Javadoc
 /**

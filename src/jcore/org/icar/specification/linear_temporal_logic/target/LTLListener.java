@@ -1,6 +1,6 @@
 // Generated from LTL.g4 by ANTLR 4.7
 
-	package datalayer.awareness.LTL.target;
+	package org.icar.specification.linear_temporal_logic.target;
 	import java.util.*;
 	/** Class auto-generated using ANTLR */
 

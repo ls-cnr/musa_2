@@ -1,18 +1,14 @@
-package reasoner;
+package org.icar.musa.proactive_means_end_reasoning;
 
 import java.util.HashMap;
 import java.util.Iterator;
 
-import datalayer.awareness.LTL.net.TokensConfiguration;
-import datalayer.world.wts.EvolutionEdge;
-import datalayer.world.wts.NormalEdge;
-import datalayer.world.wts.OPNode;
-import datalayer.world.wts.WTS;
-import datalayer.world.wts.WorldNode;
-import reasoner.probexp.ExtendedNode;
-import reasoner.probexp.GraphExpansion;
-import reasoner.probexp.MultipleExpansion;
-import reasoner.probexp.NormalExpansion;
+import org.icar.musa.proactive_means_end_reasoning.wts.EvolutionEdge;
+import org.icar.musa.proactive_means_end_reasoning.wts.NormalEdge;
+import org.icar.musa.proactive_means_end_reasoning.wts.OPNode;
+import org.icar.musa.proactive_means_end_reasoning.wts.WTS;
+import org.icar.musa.proactive_means_end_reasoning.wts.WorldNode;
+import org.icar.specification.linear_temporal_logic.net.TokenConf;
 
 /**
  * The SolutionGraph Artifact. It contains the graph of solutions, the score map for each World node, the map of solution WorldNodes
@@ -24,7 +20,7 @@ public class SolutionGraph {
 	private WTS wts;
 	
 	/** The token map. */
-	private HashMap<String, TokensConfiguration> tokenMap;
+	private HashMap<String, TokenConf> tokenMap;
 	
 	/** The score map. */
 	private HashMap<String, Integer> scoreMapping;
@@ -60,7 +56,7 @@ public class SolutionGraph {
 	 *
 	 * @return the token map
 	 */
-	public HashMap<String, TokensConfiguration> getTokenMap(){
+	public HashMap<String, TokenConf> getTokenMap(){
 		return this.tokenMap;
 	}
 	

@@ -1,7 +1,8 @@
-package datalayer.awareness.LTL.net.netmodels;
+package org.icar.specification.linear_temporal_logic.net.netmodels;
 
-import datalayer.awareness.LTL.net.PetriNetState;
-import datalayer.awareness.LTL.net.condition.*;
+import org.icar.specification.linear_temporal_logic.net.PNStateEnum;
+import org.icar.specification.linear_temporal_logic.net.condition.*;
+
 import petrinet.logic.*;
 
 /**
@@ -21,14 +22,14 @@ public class GloballyPN extends FormulaPN {
 		//this.secondOp = new EndCondition(endFatherName);
 		
 		start = pn.place("Start");
-		placeState.put(start, PetriNetState.WAIT_BUT_ACCEPTED);
+		placeState.put(start, PNStateEnum.WAIT_BUT_ACCEPTED);
 		
 		Transition t1 = pn.transition("!"+firstOp.getTerm());
-		firstOp.setStateCondition(PetriNetState.ERROR);
+		firstOp.setStateCondition(PNStateEnum.ERROR);
 		transitionLabel.put(t1, firstOp);
 		
 		pn.arc("a1", start, t1);
-		placeState.put(pn.arc("a2", t1, pn.place("Error")).getPlace(), PetriNetState.ERROR);
+		placeState.put(pn.arc("a2", t1, pn.place("Error")).getPlace(), PNStateEnum.ERROR);
 		
 		/*Transition t2 = pn.transition("END-" + endFatherName);
 		transitionLabel.put(t2, secondOp);

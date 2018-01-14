@@ -1,13 +1,14 @@
-package communication.translator;
+package org.icar.musa.agent_communication.translator;
 
-import datalayer.awareness.LTL.net.TokensConfiguration;
-import datalayer.world.StateOfWorld;
+import org.icar.musa.core.domain.StateOfWorld;
+import org.icar.musa.proactive_means_end_reasoning.ExtendedNode;
+import org.icar.specification.linear_temporal_logic.net.TokenConf;
+
 import jason.asSyntax.NumberTermImpl;
 import jason.asSyntax.StringTermImpl;
 import jason.asSyntax.Structure;
 import jason.asSyntax.Term;
 import net.sf.tweety.lp.asp.parser.ParseException;
-import reasoner.probexp.ExtendedNode;
 
 public class JasonExtNode {
 	
@@ -45,7 +46,7 @@ public class JasonExtNode {
 		Boolean isExit = false;
 		Boolean isError = false;
 		int score;
-		TokensConfiguration tokens = null;
+		TokenConf tokens = null;
 		
 		if (!term.isStructure()) {
 			throw new TranslateError();
@@ -97,7 +98,7 @@ public class JasonExtNode {
 			
 		} catch (ParseException e) {
 			e.printStackTrace();
-		} catch (exception.NotAllowedInAStateOfWorld e) {
+		} catch (org.icar.musa.exception.NotAllowedInAStateOfWorld e) {
 			e.printStackTrace();
 		}
 		

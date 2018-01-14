@@ -1,8 +1,8 @@
-package datalayer.world.configuration.distributed;
+package org.icar.musa.solution_extractor.distributed;
 
 import java.util.ArrayList;
 
-import datalayer.awareness.AbstractWorkflowNode;
+import org.icar.musa.core.runtime_entity.AbstractWorkflowNode;
 
 public class Tree<T> {
 	static final int NORMAL_CODE = 0;

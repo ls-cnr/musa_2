@@ -4,18 +4,20 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
-import communication.translator.ExtDLPHead;
-import datalayer.awareness.AbstractCapability;
-import datalayer.awareness.AssumptionSet;
-import datalayer.awareness.Requirements;
-import datalayer.awareness.LTL.formulamodel.FormulaBTConstruction;
-import datalayer.awareness.LTL.formulamodel.LTLGoal;
-import datalayer.world.Condition;
-import datalayer.world.StateOfWorld;
-import datalayer.world.evolution.AddStatement;
-import datalayer.world.evolution.CapabilityEvolutionScenario;
-import datalayer.world.evolution.EvolutionScenario;
-import datalayer.world.evolution.RemoveStatement;
+import org.icar.musa.agent_communication.translator.ExtDLPHead;
+import org.icar.musa.core.Condition;
+import org.icar.musa.core.Requirements;
+import org.icar.musa.core.domain.StateOfWorld;
+import org.icar.musa.core.domain.evolution.AddStatement;
+import org.icar.musa.core.domain.evolution.CapabilityEvolutionScenario;
+import org.icar.musa.core.domain.evolution.EvolutionScenario;
+import org.icar.musa.core.domain.evolution.RemoveStatement;
+import org.icar.musa.core.fol_reasoner.FOLCondition;
+import org.icar.musa.core.runtime_entity.AbstractCapability;
+import org.icar.musa.core.runtime_entity.AssumptionSet;
+import org.icar.specification.linear_temporal_logic.formulamodel.FormulaBTConstruction;
+import org.icar.specification.linear_temporal_logic.formulamodel.LTLGoal;
+
 import domain.Scenario;
 import net.sf.tweety.logics.commons.syntax.Constant;
 import net.sf.tweety.logics.commons.syntax.Predicate;
@@ -53,7 +55,7 @@ public class FashionFirmScenario implements Scenario {
 		
 		} catch (ParseException e) {
 			e.printStackTrace();
-		} catch (exception.NotAllowedInAnAssumptionSet e) {
+		} catch (org.icar.musa.exception.NotAllowedInAnAssumptionSet e) {
 			e.printStackTrace();
 		}
 		return domain;
@@ -108,7 +110,7 @@ public class FashionFirmScenario implements Scenario {
 		Set CU_Set = new HashSet<Variable>();
 		CU_Set.add(doc);
 		CU_Set.add(usr);
-		Condition CU_pre = new Condition(new ExistsQuantifiedFormula(new Conjunction( new Conjunction(CU_available, CU_order), new Conjunction(CU_neg, CU_user) ), CU_Set ));
+		Condition CU_pre = new FOLCondition(new ExistsQuantifiedFormula(new Conjunction( new Conjunction(CU_available, CU_order), new Conjunction(CU_neg, CU_user) ), CU_Set ));
 
 		Set<EvolutionScenario> CU_evo = new HashSet<>();
 		CapabilityEvolutionScenario CU_evo1 = new CapabilityEvolutionScenario("RegisteredUserWithCloud");
@@ -153,7 +155,7 @@ public class FashionFirmScenario implements Scenario {
 		Set AU_Set = new HashSet<Variable>();
 		AU_Set.add(new Variable("Doc"));
 		AU_Set.add(new Variable("Usr"));
-		Condition AU_pre = new Condition(new ExistsQuantifiedFormula(new Conjunction(new Conjunction(AU_complete, AU_user_data), new Conjunction(AU_unregistered, AU_user)), AU_Set));
+		Condition AU_pre = new FOLCondition(new ExistsQuantifiedFormula(new Conjunction(new Conjunction(AU_complete, AU_user_data), new Conjunction(AU_unregistered, AU_user)), AU_Set));
 
 		Set<EvolutionScenario> AU_evo = new HashSet<>();
 		CapabilityEvolutionScenario AU_evo1 = new CapabilityEvolutionScenario("RegisteredUser");
@@ -179,7 +181,7 @@ public class FashionFirmScenario implements Scenario {
 		Set SRF_Set = new HashSet<Variable>();
 		SRF_Set.add(new Variable("Doc"));
 		SRF_Set.add(new Variable("Usr"));
-		Condition SRF_pre = new Condition(new ExistsQuantifiedFormula( new Conjunction(new Conjunction(SRF_uncomplete, SRF_user_data), new Conjunction(SRF_unregistered, SRF_user)), SRF_Set ));
+		Condition SRF_pre = new FOLCondition(new ExistsQuantifiedFormula( new Conjunction(new Conjunction(SRF_uncomplete, SRF_user_data), new Conjunction(SRF_unregistered, SRF_user)), SRF_Set ));
 
 		Set<EvolutionScenario> SRF_evo = new HashSet<>();
 		CapabilityEvolutionScenario SRF_evo1 = new CapabilityEvolutionScenario("UncompleteRegistrationForm");
@@ -195,7 +197,7 @@ public class FashionFirmScenario implements Scenario {
 		WUD_uncomplete.addArgument(new Variable("Doc"));
 		FOLAtom WUD_registration_form = new FOLAtom( new Predicate("registration_form",1));
 		WUD_registration_form.addArgument(new Variable("Doc"));
-		Condition WUD_pre = new Condition( new ExistsQuantifiedFormula( new Conjunction(WUD_uncomplete, WUD_registration_form), new Variable("Doc")));
+		Condition WUD_pre = new FOLCondition( new ExistsQuantifiedFormula( new Conjunction(WUD_uncomplete, WUD_registration_form), new Variable("Doc")));
 
 		Set<EvolutionScenario> WUD_evo = new HashSet<>();
 		CapabilityEvolutionScenario WUD_evo1 = new CapabilityEvolutionScenario("CompleteForm");
@@ -224,7 +226,7 @@ public class FashionFirmScenario implements Scenario {
 		Set CS_Set = new HashSet<Variable>();
 		CS_Set.add(new Variable("Doc"));
 		CS_Set.add(new Variable("Usr"));
-		Condition CS_pre = new Condition(new ExistsQuantifiedFormula( new Conjunction(new Conjunction(CS_available, CS_order), new Conjunction(CS_registered, CS_user)), CS_Set ));
+		Condition CS_pre = new FOLCondition(new ExistsQuantifiedFormula( new Conjunction(new Conjunction(CS_available, CS_order), new Conjunction(CS_registered, CS_user)), CS_Set ));
 
 		Set<EvolutionScenario> CS_evo = new HashSet<>();
 		CapabilityEvolutionScenario CS_evo1 = new CapabilityEvolutionScenario("AcceptableOrder");
@@ -255,7 +257,7 @@ public class FashionFirmScenario implements Scenario {
 		Set NSF_Set = new HashSet<Variable>();
 		NSF_Set.add(new Variable("Doc"));
 		NSF_Set.add(new Variable("Usr"));
-		Condition NSF_pre = new Condition(new ExistsQuantifiedFormula( new Conjunction( new Conjunction(new Conjunction(NSF_refused, NSF_order), new Conjunction(NSF_registered, NSF_user)), new Conjunction(NSF_ord_fail, NSF_order)), NSF_Set ));
+		Condition NSF_pre = new FOLCondition(new ExistsQuantifiedFormula( new Conjunction( new Conjunction(new Conjunction(NSF_refused, NSF_order), new Conjunction(NSF_registered, NSF_user)), new Conjunction(NSF_ord_fail, NSF_order)), NSF_Set ));
 
 		Set<EvolutionScenario> NSF_evo = new HashSet<>();
 		CapabilityEvolutionScenario NSF_evo1 = new CapabilityEvolutionScenario("Failure");
@@ -282,7 +284,7 @@ public class FashionFirmScenario implements Scenario {
 		Set GT_Set = new HashSet<Variable>();
 		GT_Set.add(new Variable("Doc"));
 		GT_Set.add(new Variable("Usr"));
-		Condition GI_pre = new Condition(new ExistsQuantifiedFormula(new Conjunction( new Conjunction(new Conjunction(GI_accepted, GI_order), new Conjunction(GI_registered, GI_user)), GI_notAvailable), GT_Set) );
+		Condition GI_pre = new FOLCondition(new ExistsQuantifiedFormula(new Conjunction( new Conjunction(new Conjunction(GI_accepted, GI_order), new Conjunction(GI_registered, GI_user)), GI_notAvailable), GT_Set) );
 
 		Set<EvolutionScenario> GI_evo = new HashSet<>();
 		CapabilityEvolutionScenario GI_evo1 = new CapabilityEvolutionScenario("AvailableInvoice");
@@ -308,7 +310,7 @@ public class FashionFirmScenario implements Scenario {
 		Set UOUCS_Set = new HashSet<Variable>();
 		UOUCS_Set.add(new Variable("Doc"));
 		UOUCS_Set.add(new Variable("Usr"));
-		Condition UOUCS_pre = new Condition(new ExistsQuantifiedFormula(new Conjunction( new Conjunction(new Conjunction(UOUCS_available, UOUCS_invoice), new Conjunction(UOUCS_has_cloud_space, UOUCS_user)), UOUCS_notUploaded), UOUCS_Set ));
+		Condition UOUCS_pre = new FOLCondition(new ExistsQuantifiedFormula(new Conjunction( new Conjunction(new Conjunction(UOUCS_available, UOUCS_invoice), new Conjunction(UOUCS_has_cloud_space, UOUCS_user)), UOUCS_notUploaded), UOUCS_Set ));
 
 		Set<EvolutionScenario> UOUCS_evo = new HashSet<>();
 		CapabilityEvolutionScenario UOUCS_evo1 = new CapabilityEvolutionScenario("UploadedOnCloud");
@@ -335,7 +337,7 @@ public class FashionFirmScenario implements Scenario {
 		Set UOPCS_Set = new HashSet<Variable>();
 		UOPCS_Set.add(new Variable("Doc"));
 		UOPCS_Set.add(new Variable("Usr"));
-		Condition UOPCS_pre = new Condition(new ExistsQuantifiedFormula(new Conjunction( new Conjunction(new Conjunction(UOPCS_available, UOPCS_invoice), new Conjunction(neg1, UOPCS_user)), UOPCS_notUploaded), UOPCS_Set ));
+		Condition UOPCS_pre = new FOLCondition(new ExistsQuantifiedFormula(new Conjunction( new Conjunction(new Conjunction(UOPCS_available, UOPCS_invoice), new Conjunction(neg1, UOPCS_user)), UOPCS_notUploaded), UOPCS_Set ));
 
 		Set<EvolutionScenario> UOPCS_evo = new HashSet<>();
 		CapabilityEvolutionScenario UOPCS_evo1 = new CapabilityEvolutionScenario("UploadedOnCloud");
@@ -363,7 +365,7 @@ public class FashionFirmScenario implements Scenario {
 		Set SFL_Set = new HashSet<Variable>();
 		SFL_Set.add(new Variable("Doc"));
 		SFL_Set.add(new Variable("Usr"));
-		Condition SFL_pre = new Condition(new ExistsQuantifiedFormula(new Conjunction( new Conjunction(new Conjunction(SFL_uploaded_on_cloud, SFL_invoice), new Conjunction(neg2, SFL_user)), SFL_notMailed), SFL_Set ));
+		Condition SFL_pre = new FOLCondition(new ExistsQuantifiedFormula(new Conjunction( new Conjunction(new Conjunction(SFL_uploaded_on_cloud, SFL_invoice), new Conjunction(neg2, SFL_user)), SFL_notMailed), SFL_Set ));
 
 		
 		Set<EvolutionScenario> SFL_evo = new HashSet<>();
@@ -391,7 +393,7 @@ public class FashionFirmScenario implements Scenario {
 		NSM_sent.addArgument(new Variable("Doc"));
 		NSM_sent.addArgument(new Variable("Usr"));
 		Negation NSM_notSent = new Negation(NSM_sent);
-		Condition NSM_pre = new Condition(new ExistsQuantifiedFormula( new Conjunction(new Conjunction(NSM_notified, NSM_notSent), new Conjunction(NSM_invoice, NSM_user)), NSM_Set ));
+		Condition NSM_pre = new FOLCondition(new ExistsQuantifiedFormula( new Conjunction(new Conjunction(NSM_notified, NSM_notSent), new Conjunction(NSM_invoice, NSM_user)), NSM_Set ));
 
 		Set<EvolutionScenario> NSM_evo = new HashSet<>();
 		CapabilityEvolutionScenario NSM_evo1 = new CapabilityEvolutionScenario("SentDeliveryOrderToStorehouseManager");

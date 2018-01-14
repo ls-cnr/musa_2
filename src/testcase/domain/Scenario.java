@@ -2,10 +2,10 @@ package domain;
 
 import java.util.ArrayList;
 
-import datalayer.awareness.AbstractCapability;
-import datalayer.awareness.AssumptionSet;
-import datalayer.awareness.Requirements;
-import datalayer.world.StateOfWorld;
+import org.icar.musa.core.Requirements;
+import org.icar.musa.core.domain.StateOfWorld;
+import org.icar.musa.core.runtime_entity.AbstractCapability;
+import org.icar.musa.core.runtime_entity.AssumptionSet;
 
 public interface Scenario {
 	public String getName();

@@ -1,4 +1,4 @@
-package datalayer.world.configuration.centralized;
+package org.icar.musa.solution_extractor.centralized;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -6,11 +6,11 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 
-import datalayer.world.wts.EvolutionEdge;
-import datalayer.world.wts.NormalEdge;
-import datalayer.world.wts.OPNode;
-import datalayer.world.wts.WTS;
-import datalayer.world.wts.WorldNode;
+import org.icar.musa.proactive_means_end_reasoning.wts.EvolutionEdge;
+import org.icar.musa.proactive_means_end_reasoning.wts.NormalEdge;
+import org.icar.musa.proactive_means_end_reasoning.wts.OPNode;
+import org.icar.musa.proactive_means_end_reasoning.wts.WTS;
+import org.icar.musa.proactive_means_end_reasoning.wts.WorldNode;
 
 /**
  * This class describe a Solution Tree. It takes as input the WTS and extracts

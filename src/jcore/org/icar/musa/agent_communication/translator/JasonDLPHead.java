@@ -1,4 +1,4 @@
-package communication.translator;
+package org.icar.musa.agent_communication.translator;
 
 import java.util.Set;
 

@@ -1,4 +1,4 @@
-package datalayer.database.crud;
+package org.icar.musa.persistence.crud;
 
 
 import java.util.List;
@@ -7,9 +7,8 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-
-import datalayer.database.entity.Domain;
-import datalayer.database.entity.GeneralConfiguration;
+import org.icar.musa.persistence.entity.Domain;
+import org.icar.musa.persistence.entity.GeneralConfiguration;
 
 
 public class DomainDAO {

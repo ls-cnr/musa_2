@@ -1,11 +1,13 @@
-package datalayer.awareness.legacy.net;
+package org.icar.specification.goalspec.net;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 
-import datalayer.awareness.legacy.goalmodel.GoalTreeModel;
-import datalayer.world.Condition;
+import org.icar.musa.core.Condition;
+import org.icar.musa.core.fol_reasoner.FOLCondition;
+import org.icar.specification.goalspec.goalmodel.GoalTreeModel;
+
 import petrinet.logic.*;
 
 /**
@@ -18,7 +20,7 @@ public class Net {
 	private Petrinet pn;
 	
 	/** A structure used to associate all the transition with a trigger condition or final state */
-	private HashMap<Transition, Condition> labels;
+	private HashMap<Transition, FOLCondition> labels;
 	
 	/** A map used to store the remaining hop in a transition ( used to follow the path to the final place once ) */
 	private HashMap<Transition, Integer> hopMap;

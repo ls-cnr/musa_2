@@ -2,16 +2,16 @@ package layertest.awareness;
 
 import static org.junit.Assert.*;
 
+import org.icar.musa.core.domain.StateOfWorld;
+import org.icar.musa.core.fol_reasoner.FOLCondition;
+import org.icar.musa.core.fol_reasoner.EntailOperator;
+import org.icar.musa.core.runtime_entity.AssumptionSet;
 import org.junit.Before;
 import org.junit.Test;
 
-import datalayer.awareness.AssumptionSet;
-import datalayer.world.Condition;
-import datalayer.world.StateOfWorld;
 import net.sf.tweety.logics.commons.syntax.Constant;
 import net.sf.tweety.lp.asp.parser.ParseException;
 import net.sf.tweety.lp.asp.syntax.DLPAtom;
-import reasoner.EntailOperator;
 
 /**
  * DomainEntail TestCase 2
@@ -36,7 +36,7 @@ public class DomainEntailTest2 {
 			w.addFact_asString("ostrich(olga).");
 		} catch (ParseException e) {
 			e.printStackTrace();
-		} catch (exception.NotAllowedInAStateOfWorld e) {
+		} catch (org.icar.musa.exception.NotAllowedInAStateOfWorld e) {
 			e.printStackTrace();
 		}
 		
@@ -53,7 +53,7 @@ public class DomainEntailTest2 {
 		
 		} catch (ParseException e) {
 			e.printStackTrace();
-		} catch (exception.NotAllowedInAnAssumptionSet e) {
+		} catch (org.icar.musa.exception.NotAllowedInAnAssumptionSet e) {
 			e.printStackTrace();
 		}
 	}
@@ -68,7 +68,7 @@ public class DomainEntailTest2 {
 
 		Constant polly = new Constant("polly");
 		DLPAtom q1 = new DLPAtom("can_fly", polly);
-		Condition cond_q1 = new Condition(q1);
+		FOLCondition cond_q1 = new FOLCondition(q1);
 		
 		assertTrue( env.entailsCondition(w, domain, cond_q1) );
 	}
@@ -83,7 +83,7 @@ public class DomainEntailTest2 {
 		
 		Constant sid = new Constant("sid");
 		DLPAtom q2 = new DLPAtom("can_fly", sid);
-		Condition cond_q2 = new Condition(q2);
+		FOLCondition cond_q2 = new FOLCondition(q2);
 		
 		assertFalse( env.entailsCondition(w, domain, cond_q2) );
 		
@@ -99,7 +99,7 @@ public class DomainEntailTest2 {
 		
 		Constant tweety = new Constant("tweety");
 		DLPAtom q3 = new DLPAtom("can_fly", tweety);
-		Condition cond_q3 = new Condition(q3);
+		FOLCondition cond_q3 = new FOLCondition(q3);
 		
 		assertTrue( env.entailsCondition(w, domain, cond_q3) );
 		

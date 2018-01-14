@@ -1,12 +1,14 @@
-package datalayer.awareness.LTL.net;
+package org.icar.specification.linear_temporal_logic.net;
 
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 
-import datalayer.awareness.LTL.formulamodel.*;
-import datalayer.awareness.LTL.net.condition.TransitionCondition;
-import datalayer.awareness.LTL.net.netmodels.FormulaPN;
+import org.icar.musa.core.TokenConfInterface;
+import org.icar.specification.linear_temporal_logic.formulamodel.*;
+import org.icar.specification.linear_temporal_logic.net.condition.TransitionCondition;
+import org.icar.specification.linear_temporal_logic.net.netmodels.FormulaPN;
+
 import petrinet.logic.Transition;
 
 /**
@@ -41,7 +43,7 @@ public class PNHierarchy {
 	 * @param tokens
 	 *            the tokens
 	 */
-	public void putTokens( TokensConfiguration tokens ) {
+	public void putTokens( TokenConfInterface tokens ) {
 		for( String net : tokens.getNets() )
 			for( String place : tokens.getTokens(net) )
 				nets.get(net).putToken(place);
@@ -87,19 +89,19 @@ public class PNHierarchy {
 	 * @return the value
 	 */
 	public double hop() {
-		PetriNetState tmp = nets.get(startingName).getNetState();
-		if( tmp==PetriNetState.ACCEPTED ) // .equals("A") )
+		PNStateEnum tmp = nets.get(startingName).getNetState();
+		if( tmp==PNStateEnum.ACCEPTED ) // .equals("A") )
 			return 0;
-		else if( tmp==PetriNetState.ERROR ) // tmp.equals("E") )
+		else if( tmp==PNStateEnum.ERROR ) // tmp.equals("E") )
 			return 1;
 		else{
 			double count = 0;
 			
 			for( String s : hopNets ){
 				if( getNetState(s) != null ) {
-					if( getNetState(s) == PetriNetState.WAIT_BUT_ACCEPTED ) // .equals("W") )
+					if( getNetState(s) == PNStateEnum.WAIT_BUT_ACCEPTED ) // .equals("W") )
 						count = count + 0.6;
-					if( getNetState(s) == PetriNetState.WAIT_BUT_ERROR ) // .equals("W") )
+					if( getNetState(s) == PNStateEnum.WAIT_BUT_ERROR ) // .equals("W") )
 						count = count + 0.2;
 				} else {
 					count = count + 0.4;
@@ -128,7 +130,7 @@ public class PNHierarchy {
 	 *            the net
 	 * @return the net state
 	 */
-	public PetriNetState getNetState( String net ) {
+	public PNStateEnum getNetState( String net ) {
 		return nets.get(net).getNetState();
 	}
 	

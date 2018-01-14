@@ -1,7 +1,7 @@
-package datalayer.awareness.legacy;
+package org.icar.specification.goalspec;
 
-import datalayer.awareness.RunTimeEntity;
-import datalayer.world.Condition;
+import org.icar.musa.core.RunTimeEntity;
+import org.icar.musa.core.fol_reasoner.FOLCondition;
 
 /**
  * The Class Goal encapsulate the Goals. A goal is a desired change in the state of the world an actor wants to achieve.
@@ -17,10 +17,10 @@ public class GS_Goal implements RunTimeEntity {
 	private String name;
 	
 	/** The trigger condition. A goal can be pursued only if this condition is true */
-	private Condition trigger_condition;
+	private FOLCondition trigger_condition;
 	
 	/** The final state describes how the state of the world should be after that the goal was achieved. */
-	private Condition final_state;
+	private FOLCondition final_state;
 	
 	/**
 	 * Instantiates a new goal.
@@ -30,7 +30,7 @@ public class GS_Goal implements RunTimeEntity {
 	 * @param final_state
 	 *            the final state
 	 */
-	public GS_Goal(String name, Condition trigger_condition, Condition final_state) {
+	public GS_Goal(String name, FOLCondition trigger_condition, FOLCondition final_state) {
 		super();
 		this.name = name;
 		this.trigger_condition = trigger_condition;
@@ -53,7 +53,7 @@ public class GS_Goal implements RunTimeEntity {
 	 *
 	 * @return the trigger condition
 	 */
-	public Condition getTrigger_condition() {
+	public FOLCondition getTrigger_condition() {
 		return trigger_condition;
 	}
 
@@ -62,7 +62,7 @@ public class GS_Goal implements RunTimeEntity {
 	 *
 	 * @return the final state
 	 */
-	public Condition getFinal_state() {
+	public FOLCondition getFinal_state() {
 		return final_state;
 	}
 	

@@ -5,21 +5,22 @@ package selfconf;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.icar.musa.agent_communication.auction.Bid;
+import org.icar.musa.agent_communication.translator.JasonExpansionNode;
+import org.icar.musa.agent_communication.translator.JasonExtNode;
+import org.icar.musa.agent_communication.translator.JasonStateOfWorld;
+import org.icar.musa.agent_communication.translator.TranslateError;
+import org.icar.musa.core.domain.StateOfWorld;
+import org.icar.musa.proactive_means_end_reasoning.ExtendedNode;
+import org.icar.musa.proactive_means_end_reasoning.GraphExpansion;
+import org.icar.musa.proactive_means_end_reasoning.wts.WorldNode;
+import org.icar.specification.linear_temporal_logic.formulamodel.FormulaBTConstruction;
+import org.icar.specification.linear_temporal_logic.formulamodel.LTLGoal;
+import org.icar.specification.linear_temporal_logic.net.PNHierarchy;
+import org.icar.specification.linear_temporal_logic.net.TokenConf;
+
 import cartago.*;
-import communication.auction.Bid;
-import communication.translator.JasonExtNode;
-import communication.translator.JasonExpansionNode;
-import communication.translator.JasonStateOfWorld;
-import communication.translator.TranslateError;
-import datalayer.awareness.LTL.formulamodel.FormulaBTConstruction;
-import datalayer.awareness.LTL.formulamodel.LTLGoal;
-import datalayer.awareness.LTL.net.PNHierarchy;
-import datalayer.awareness.LTL.net.TokensConfiguration;
-import datalayer.world.StateOfWorld;
-import datalayer.world.wts.WorldNode;
 import jason.asSyntax.Term;
-import reasoner.probexp.ExtendedNode;
-import reasoner.probexp.GraphExpansion;
 
 @ARTIFACT_INFO(
 		  outports = {
@@ -55,7 +56,7 @@ public class AccessManagerArtifact extends Artifact {
 			
 			// TODO recuperare i goal dal DB per settare gli initial tokens
 			LTLGoal treeModel = FormulaBTConstruction.construct("G on(l1)");
-			TokensConfiguration startingTokens = new TokensConfiguration(new PNHierarchy(treeModel));
+			TokenConf startingTokens = new TokenConf(new PNHierarchy(treeModel));
 			
 			ExtendedNode enode = new ExtendedNode(w, startingTokens, 0, false, false);
 			enode.setExit(false);

@@ -1,7 +1,4 @@
-package datalayer.world.wts;
-
-import datalayer.awareness.AbstractCapability;
-import datalayer.world.evolution.EvolutionScenario;
+package org.icar.musa.proactive_means_end_reasoning.wts;
 
 /**
  * The Class OPEdge. it Connects a WorldNode to an OPNode. Is stored inside the OPNode

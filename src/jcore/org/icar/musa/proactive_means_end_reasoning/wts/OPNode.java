@@ -1,11 +1,6 @@
-package datalayer.world.wts;
+package org.icar.musa.proactive_means_end_reasoning.wts;
 
 import java.util.ArrayList;
-import java.util.HashSet;
-
-import datalayer.awareness.AbstractCapability;
-import datalayer.world.StateOfWorld;
-import datalayer.world.evolution.EvolutionScenario;
 
 /**
  * The Class OPNode. It implements the Node interface.

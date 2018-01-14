@@ -1,10 +1,11 @@
-package datalayer.awareness.LTL.net.netmodels;
+package org.icar.specification.linear_temporal_logic.net.netmodels;
 
-import datalayer.awareness.LTL.net.PetriNetState;
-import datalayer.awareness.LTL.net.condition.CombinationCondition;
-import datalayer.awareness.LTL.net.condition.FormulaCondition;
-import datalayer.awareness.LTL.net.condition.SimpleCondition;
-import datalayer.awareness.LTL.net.condition.TransitionCondition;
+import org.icar.specification.linear_temporal_logic.net.PNStateEnum;
+import org.icar.specification.linear_temporal_logic.net.condition.CombinationCondition;
+import org.icar.specification.linear_temporal_logic.net.condition.FormulaCondition;
+import org.icar.specification.linear_temporal_logic.net.condition.SimpleCondition;
+import org.icar.specification.linear_temporal_logic.net.condition.TransitionCondition;
+
 import petrinet.logic.Transition;
 /**
  * The Class AndPN, used to create a PetriNet that models an AND formula.
@@ -35,29 +36,29 @@ public class AndPN extends FormulaPN {
 			secondOpCopy = new FormulaCondition(secondOp.getTerm()); 
 		
 		start = pn.place("Start");
-		placeState.put(start, PetriNetState.WAIT_BUT);
+		placeState.put(start, PNStateEnum.WAIT);
 		
 		Transition t1 = pn.transition("!"+firstOp.getTerm());
-		firstOp.setStateCondition(PetriNetState.ERROR);
+		firstOp.setStateCondition(PNStateEnum.ERROR);
 		transitionLabel.put(t1, firstOp);
 		
 		pn.arc("a1", start, t1);
-		placeState.put(pn.arc("a2", t1, pn.place("Error1")).getPlace(), PetriNetState.ERROR);
+		placeState.put(pn.arc("a2", t1, pn.place("Error1")).getPlace(), PNStateEnum.ERROR);
 
 		Transition t2 = pn.transition(firstOp.getTerm() + "-" + secondOp.getTerm());
-		firstOpCopy.setStateCondition(PetriNetState.ACCEPTED);
-		secondOpCopy.setStateCondition(PetriNetState.ACCEPTED);
+		firstOpCopy.setStateCondition(PNStateEnum.ACCEPTED);
+		secondOpCopy.setStateCondition(PNStateEnum.ACCEPTED);
 		transitionLabel.put(t2, new CombinationCondition(firstOpCopy, secondOpCopy));
 		
 		pn.arc("a3", start, t2);
-		placeState.put(pn.arc("a4", t2, pn.place("Accept")).getPlace(), PetriNetState.ACCEPTED);
+		placeState.put(pn.arc("a4", t2, pn.place("Accept")).getPlace(), PNStateEnum.ACCEPTED);
 		
 		Transition t3 = pn.transition("!"+secondOp.getTerm());
-		secondOp.setStateCondition(PetriNetState.ERROR);
+		secondOp.setStateCondition(PNStateEnum.ERROR);
 		transitionLabel.put(t3, secondOp);
 		
 		pn.arc("a5", start, t3);
-		placeState.put(pn.arc("a6", t3, pn.place("Error2")).getPlace(), PetriNetState.ERROR);
+		placeState.put(pn.arc("a6", t3, pn.place("Error2")).getPlace(), PNStateEnum.ERROR);
 		
 	}
 

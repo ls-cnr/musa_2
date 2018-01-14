@@ -1,4 +1,4 @@
-package datalayer.world.configuration.centralized;
+package org.icar.musa.solution_extractor.centralized;
 
 /**
  * This class describes one solution.

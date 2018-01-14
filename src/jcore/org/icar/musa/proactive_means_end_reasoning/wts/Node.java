@@ -1,12 +1,4 @@
-package datalayer.world.wts;
-
-
-import java.util.ArrayList;
-import java.util.Iterator;
-
-import datalayer.awareness.AbstractCapability;
-import datalayer.world.StateOfWorld;
-import net.sf.tweety.lp.asp.syntax.DLPHead;
+package org.icar.musa.proactive_means_end_reasoning.wts;
 
 /**
  * The Interface Node.

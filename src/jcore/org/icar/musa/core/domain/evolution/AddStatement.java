@@ -1,7 +1,7 @@
-package datalayer.world.evolution;
+package org.icar.musa.core.domain.evolution;
 
-import communication.translator.ExtDLPHead;
-import datalayer.world.StateOfWorld;
+import org.icar.musa.agent_communication.translator.ExtDLPHead;
+import org.icar.musa.core.domain.StateOfWorld;
 
 /**
  * The Class AddStatement.

@@ -1,11 +1,12 @@
-package datalayer.awareness.legacy.net;
+package org.icar.specification.goalspec.net;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import datalayer.awareness.legacy.GS_Goal;
-import datalayer.awareness.legacy.goalmodel.*;
-import datalayer.world.Condition;
+import org.icar.musa.core.fol_reasoner.FOLCondition;
+import org.icar.specification.goalspec.GS_Goal;
+import org.icar.specification.goalspec.goalmodel.*;
+
 import petrinet.logic.*;
 
 /**
@@ -24,7 +25,7 @@ public class PetriNetConstruction {
 	 * The structure that maintains associations between transitions and goals
 	 * conditions (trigger condition, final state).
 	 */
-	private HashMap<Transition, Condition> labels;
+	private HashMap<Transition, FOLCondition> labels;
 	
 	/** A structure used to relate an initialOrPlace with a finalOrPlace */
 	private HashMap<Place, Place> initialOrPlaces;	
@@ -70,7 +71,7 @@ public class PetriNetConstruction {
 	 *
 	 * @return the labels
 	 */
-	HashMap<Transition, Condition> getLabels() {
+	HashMap<Transition, FOLCondition> getLabels() {
 		return labels;
 	}
 	

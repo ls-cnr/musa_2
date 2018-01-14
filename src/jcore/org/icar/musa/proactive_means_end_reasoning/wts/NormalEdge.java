@@ -1,6 +1,4 @@
-package datalayer.world.wts;
-
-import datalayer.awareness.AbstractCapability;
+package org.icar.musa.proactive_means_end_reasoning.wts;
 
 /**
  * The Class NormalEdge. it connects a WorldNode to another.

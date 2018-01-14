@@ -1,9 +1,10 @@
-package communication.translator;
+package org.icar.musa.agent_communication.translator;
 
 import java.util.ArrayList;
 
-import datalayer.awareness.legacy.net.MultipleToken;
-import datalayer.awareness.legacy.net.Token;
+import org.icar.specification.goalspec.net.MultipleToken;
+import org.icar.specification.goalspec.net.Token;
+
 import jason.asSyntax.NumberTermImpl;
 import jason.asSyntax.StringTermImpl;
 import jason.asSyntax.Structure;

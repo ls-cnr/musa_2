@@ -1,6 +1,6 @@
-package datalayer.awareness.LTL.net.condition;
+package org.icar.specification.linear_temporal_logic.net.condition;
 
-import datalayer.awareness.LTL.net.PetriNetState;
+import org.icar.specification.linear_temporal_logic.net.PNStateEnum;
 
 /**
  * An always true condition (used for NextPN).
@@ -18,7 +18,7 @@ public class TrueCondition extends TransitionCondition {
 	 * @see layer.awareness.LTL.net.condition.TransitionCondition#setStateCondition(java.lang.String)
 	 */
 	@Override
-	public void setStateCondition(PetriNetState s) {
+	public void setStateCondition(PNStateEnum s) {
 	}
 
 }

@@ -1,7 +1,8 @@
-package datalayer.awareness.LTL.net.netmodels;
+package org.icar.specification.linear_temporal_logic.net.netmodels;
 
-import datalayer.awareness.LTL.net.PetriNetState;
-import datalayer.awareness.LTL.net.condition.*;
+import org.icar.specification.linear_temporal_logic.net.PNStateEnum;
+import org.icar.specification.linear_temporal_logic.net.condition.*;
+
 import petrinet.logic.Transition;
 
 /**
@@ -39,30 +40,30 @@ public class UntilPN extends FormulaPN {
 		//EndCondition thirdOp = new EndCondition(endFatherName);
 		
 		start = pn.place("Start");
-		placeState.put(start, PetriNetState.WAIT_BUT_ERROR);
+		placeState.put(start, PNStateEnum.WAIT_BUT_ERROR);
 		
 		Transition t1 = pn.transition(secondOp.getTerm());
-		secondOp.setStateCondition(PetriNetState.ACCEPTED);
+		secondOp.setStateCondition(PNStateEnum.ACCEPTED);
 		transitionLabel.put(t1, secondOp);
 		
 		pn.arc("a1", start, t1);
-		placeState.put(pn.arc("a2", t1, pn.place("Accept")).getPlace(), PetriNetState.ACCEPTED);
+		placeState.put(pn.arc("a2", t1, pn.place("Accept")).getPlace(), PNStateEnum.ACCEPTED);
 
 		Transition t2 = pn.transition("UERR1-" + firstOp.getTerm() + "-" + secondOp.getTerm());
-		firstOp.setStateCondition(PetriNetState.ERROR);
-		secondOpCopy.setStateCondition(PetriNetState.ERROR);
+		firstOp.setStateCondition(PNStateEnum.ERROR);
+		secondOpCopy.setStateCondition(PNStateEnum.ERROR);
 		transitionLabel.put(t2, new CombinationCondition(firstOp, secondOpCopy));
 				
 		pn.arc("a3", start, t2);
-		placeState.put(pn.arc("a4", t2, pn.place("Error1")).getPlace(), PetriNetState.ERROR);
+		placeState.put(pn.arc("a4", t2, pn.place("Error1")).getPlace(), PNStateEnum.ERROR);
 		
 		Transition t3 = pn.transition("UERR2-" + firstOp.getTerm() + "-" + secondOp.getTerm());
-		firstOpCopy.setStateCondition(PetriNetState.ACCEPTED);
-		secondOpCopyCopy.setStateCondition(PetriNetState.ACCEPTED);
+		firstOpCopy.setStateCondition(PNStateEnum.ACCEPTED);
+		secondOpCopyCopy.setStateCondition(PNStateEnum.ACCEPTED);
 		transitionLabel.put(t3, new CombinationCondition(firstOpCopy, secondOpCopyCopy));
 				
 		pn.arc("a5", start, t3);
-		placeState.put(pn.arc("a6", t3, pn.place("Error2")).getPlace(), PetriNetState.ERROR);
+		placeState.put(pn.arc("a6", t3, pn.place("Error2")).getPlace(), PNStateEnum.ERROR);
 		
 		/*Transition t4 = pn.transition("END-" + endFatherName);
 		transitionLabel.put(t4, thirdOp);

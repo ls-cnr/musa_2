@@ -1,6 +1,6 @@
-package datalayer.awareness.LTL.net.condition;
+package org.icar.specification.linear_temporal_logic.net.condition;
 
-import datalayer.awareness.LTL.net.PetriNetState;
+import org.icar.specification.linear_temporal_logic.net.PNStateEnum;
 
 @Deprecated
 public class EndCondition extends TransitionCondition {
@@ -17,7 +17,7 @@ public class EndCondition extends TransitionCondition {
 	}
 
 	@Override
-	public void setStateCondition(PetriNetState s) {
+	public void setStateCondition(PNStateEnum s) {
 	}
 
 }

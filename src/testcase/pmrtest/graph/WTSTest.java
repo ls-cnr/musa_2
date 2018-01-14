@@ -5,20 +5,18 @@ import static org.junit.Assert.*;
 import java.util.ArrayList;
 
 import org.junit.Test;
-
-import datalayer.awareness.AbstractCapability;
-import datalayer.world.StateOfWorld;
-import datalayer.world.wts.WTS;
-import datalayer.world.wts.WorldNode;
-import datalayer.world.wts.XORNode;
-
+import org.icar.musa.core.domain.StateOfWorld;
+import org.icar.musa.core.runtime_entity.AbstractCapability;
+import org.icar.musa.proactive_means_end_reasoning.ExtendedNode;
+import org.icar.musa.proactive_means_end_reasoning.GraphExpansion;
+import org.icar.musa.proactive_means_end_reasoning.MultipleExpansion;
+import org.icar.musa.proactive_means_end_reasoning.NormalExpansion;
+import org.icar.musa.proactive_means_end_reasoning.wts.WTS;
+import org.icar.musa.proactive_means_end_reasoning.wts.WorldNode;
+import org.icar.musa.proactive_means_end_reasoning.wts.XORNode;
 import org.junit.Before;
 
 import net.sf.tweety.lp.asp.parser.ParseException;
-import reasoner.probexp.ExtendedNode;
-import reasoner.probexp.GraphExpansion;
-import reasoner.probexp.MultipleExpansion;
-import reasoner.probexp.NormalExpansion;
 
 public class WTSTest {
 		private WTS wts;
@@ -72,7 +70,7 @@ public class WTSTest {
 			w1.addFact_asString("penguin(tweety).");
 		} catch (ParseException e) {
 			e.printStackTrace();
-		} catch (exception.NotAllowedInAStateOfWorld e) {
+		} catch (org.icar.musa.exception.NotAllowedInAStateOfWorld e) {
 			e.printStackTrace();
 		}
 		this.w2 = new StateOfWorld();
@@ -81,7 +79,7 @@ public class WTSTest {
 			w2.addFact_asString("penguin(tweety).");
 		} catch (ParseException e) {
 			e.printStackTrace();
-		} catch (exception.NotAllowedInAStateOfWorld e) {
+		} catch (org.icar.musa.exception.NotAllowedInAStateOfWorld e) {
 			e.printStackTrace();
 		}
 		this.w3 = new StateOfWorld();
@@ -90,7 +88,7 @@ public class WTSTest {
 			w3.addFact_asString("parrot(polly).");
 		} catch (ParseException e) {
 			e.printStackTrace();
-		} catch (exception.NotAllowedInAStateOfWorld e) {
+		} catch (org.icar.musa.exception.NotAllowedInAStateOfWorld e) {
 			e.printStackTrace();
 		}
 		this.w4 = new StateOfWorld();
@@ -99,7 +97,7 @@ public class WTSTest {
 			w4.addFact_asString("broken_wing(sid).");
 		} catch (ParseException e) {
 			e.printStackTrace();
-		} catch (exception.NotAllowedInAStateOfWorld e) {
+		} catch (org.icar.musa.exception.NotAllowedInAStateOfWorld e) {
 			e.printStackTrace();
 		}
 		this.w5 = new StateOfWorld();
@@ -108,7 +106,7 @@ public class WTSTest {
 			w5.addFact_asString("can_fly(berry).");
 		} catch (ParseException e) {
 			e.printStackTrace();
-		} catch (exception.NotAllowedInAStateOfWorld e) {
+		} catch (org.icar.musa.exception.NotAllowedInAStateOfWorld e) {
 			e.printStackTrace();
 		}
 		this.w6 = new StateOfWorld();
@@ -117,7 +115,7 @@ public class WTSTest {
 			w6.addFact_asString("broken_wing(sid).");
 		} catch (ParseException e) {
 			e.printStackTrace();
-		} catch (exception.NotAllowedInAStateOfWorld e) {
+		} catch (org.icar.musa.exception.NotAllowedInAStateOfWorld e) {
 			e.printStackTrace();
 		}
 		this.w7 = new StateOfWorld();
@@ -126,7 +124,7 @@ public class WTSTest {
 			w7.addFact_asString("can_fly(claire).");
 		} catch (ParseException e) {
 			e.printStackTrace();
-		} catch (exception.NotAllowedInAStateOfWorld e) {
+		} catch (org.icar.musa.exception.NotAllowedInAStateOfWorld e) {
 			e.printStackTrace();
 		}
 		

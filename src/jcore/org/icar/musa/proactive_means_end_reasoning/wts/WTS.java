@@ -1,15 +1,15 @@
-package datalayer.world.wts;
+package org.icar.musa.proactive_means_end_reasoning.wts;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 
-import datalayer.awareness.AbstractCapability;
-import datalayer.world.StateOfWorld;
-import reasoner.probexp.ExtendedNode;
-import reasoner.probexp.GraphExpansion;
-import reasoner.probexp.MultipleExpansion;
-import reasoner.probexp.NormalExpansion;
+import org.icar.musa.core.domain.StateOfWorld;
+import org.icar.musa.core.runtime_entity.AbstractCapability;
+import org.icar.musa.proactive_means_end_reasoning.ExtendedNode;
+import org.icar.musa.proactive_means_end_reasoning.GraphExpansion;
+import org.icar.musa.proactive_means_end_reasoning.MultipleExpansion;
+import org.icar.musa.proactive_means_end_reasoning.NormalExpansion;
 
 /**
  * The Class WTS is the graph of solutions implementation.

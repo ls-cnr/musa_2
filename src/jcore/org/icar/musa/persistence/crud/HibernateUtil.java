@@ -1,4 +1,4 @@
-package datalayer.database.crud;
+package org.icar.musa.persistence.crud;
 
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;

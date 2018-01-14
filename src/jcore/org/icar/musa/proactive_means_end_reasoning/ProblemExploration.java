@@ -1,24 +1,32 @@
-package reasoner.probexp;
+package org.icar.musa.proactive_means_end_reasoning;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-import datalayer.awareness.AbstractCapability;
-import datalayer.awareness.AssumptionSet;
-import datalayer.awareness.ProblemSpecification;
-import datalayer.awareness.LTL.formulamodel.LTLGoal;
-import datalayer.awareness.LTL.net.*;
-import datalayer.awareness.LTL.net.condition.*;
-import datalayer.world.StateOfWorld;
-import datalayer.world.WorldEvolution;
-import datalayer.world.evolution.EvolutionScenario;
-import datalayer.world.wts.WorldNode;
-import exception.ProblemDefinitionException;
+import org.icar.musa.core.TokenConfInterface;
+import org.icar.musa.core.domain.StateOfWorld;
+import org.icar.musa.core.domain.evolution.EvolutionScenario;
+import org.icar.musa.core.domain.evolution.WorldEvolution;
+import org.icar.musa.core.fol_reasoner.EntailOperator;
+import org.icar.musa.core.runtime_entity.AbstractCapability;
+import org.icar.musa.core.runtime_entity.AssumptionSet;
+import org.icar.musa.core.runtime_entity.ProblemSpecification;
+import org.icar.musa.exception.ProblemDefinitionException;
+import org.icar.musa.proactive_means_end_reasoning.wts.WorldNode;
+import org.icar.specification.linear_temporal_logic.formulamodel.LTLGoal;
+import org.icar.specification.linear_temporal_logic.net.PNHierarchy;
+import org.icar.specification.linear_temporal_logic.net.PNStateEnum;
+import org.icar.specification.linear_temporal_logic.net.TokenConf;
+import org.icar.specification.linear_temporal_logic.net.condition.CombinationCondition;
+import org.icar.specification.linear_temporal_logic.net.condition.FormulaCondition;
+import org.icar.specification.linear_temporal_logic.net.condition.SimpleCondition;
+import org.icar.specification.linear_temporal_logic.net.condition.TransitionCondition;
+import org.icar.specification.linear_temporal_logic.net.condition.TrueCondition;
+
 import petrinet.logic.Arc;
 import petrinet.logic.Transition;
-import reasoner.EntailOperator;
  
 /**
  * The Artifact ProblemExploration. It's used by an Agent to perform evolution for the various StateOfWorld passed, using his Capability.
@@ -115,7 +123,7 @@ public class ProblemExploration {
 	 * @param score
 	 *            the Score associated to that node
 	 */
-	public void addToVisit( WorldNode node, TokensConfiguration tokens, int score) {
+	public void addToVisit( WorldNode node, TokenConf tokens, int score) {
 		//all_states.add(new ExtendedNode(node.getWorldState(), tokens, score, false, false));
 		
 		if( visited.contains(node.getWorldState())) {
@@ -309,10 +317,10 @@ public class ProblemExploration {
 	 * @param enode
 	 *            the new eNode created from expansion
 	 */	
-	private void applyNets( TokensConfiguration startingTokens, ExtendedNode enode ) {
+	private void applyNets( TokenConfInterface startingTokens, ExtendedNode enode ) {
 		//System.out.println("\n|||||||||||||||||||||||\n Expanded World State:\n" + enode.getWorldState());
 		StateOfWorld state = enode.getWorldState();
-		TokensConfiguration tokens = new TokensConfiguration(startingTokens);
+		TokenConf tokens = new TokenConf(startingTokens);
 		
 		HashSet<String> visitedNets = new HashSet<>();
 		
@@ -360,7 +368,7 @@ public class ProblemExploration {
 	 * @param visitedNets
 	 *            the visited nets
 	 */
-	private void superviseNet( TokensConfiguration tokens, String net, StateOfWorld state, HashSet<String> visitedNets ) {
+	private void superviseNet( TokenConfInterface tokens, String net, StateOfWorld state, HashSet<String> visitedNets ) {
 		visitedNets.add(net);
 		//Checking compatibility with StateOfWorld for every Transition for Firing
 		for( Transition t : (ArrayList<Transition>) nets.getTransitionsAbleToFire(net) ){
@@ -394,7 +402,7 @@ public class ProblemExploration {
 								tmpArr[count++] = 1.0;//Fires if the condition matches with the state
 								//System.out.println(tCCond.getTerm() + " is true");
 							}
-							else if( tokens.getNetState(tCCond.getTerm()) == PetriNetState.WAIT_BUT_ACCEPTED )
+							else if( tokens.getNetState(tCCond.getTerm()) == PNStateEnum.WAIT_BUT_ACCEPTED )
 								tmpArr[count++] = 0.5;
 								
 							//System.out.println("Finished checking "+ tCCond.getTerm() + " [CF] in Net:("+net+")");
@@ -436,9 +444,9 @@ public class ProblemExploration {
 	 *            the visited nets
 	 * @return true if the formula is satisfied
 	 */
-	private boolean formulaCheck(FormulaCondition tCond, TokensConfiguration tokens, StateOfWorld state, HashSet<String> visitedNets) {
+	private boolean formulaCheck(FormulaCondition tCond, TokenConfInterface tokens, StateOfWorld state, HashSet<String> visitedNets) {
 		String cNet = tCond.getTerm();
-		PetriNetState cNetState = tokens.getNetState(cNet);
+		PNStateEnum cNetState = tokens.getNetState(cNet);
 		
 		//In this case the net representing the formula hasn't been accessed yet 
 		if( cNetState == null ){ 
@@ -465,7 +473,7 @@ public class ProblemExploration {
 	 * @param net
 	 *            the net
 	 */
-	private void fire( Transition t, TokensConfiguration tokens, String net) {
+	private void fire( Transition t, TokenConfInterface tokens, String net) {
 		for( Arc in : t.getIncoming() )
 			tokens.removeToken(net, in.getPlace().getName());
 		t.fire();

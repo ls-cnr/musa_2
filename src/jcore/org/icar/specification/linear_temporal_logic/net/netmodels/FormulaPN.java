@@ -1,11 +1,12 @@
-package datalayer.awareness.LTL.net.netmodels;
+package org.icar.specification.linear_temporal_logic.net.netmodels;
 
 import java.util.HashMap;
 import java.util.List;
 
-import datalayer.awareness.LTL.net.PNTreeNode;
-import datalayer.awareness.LTL.net.PetriNetState;
-import datalayer.awareness.LTL.net.condition.TransitionCondition;
+import org.icar.specification.linear_temporal_logic.net.PNTreeNode;
+import org.icar.specification.linear_temporal_logic.net.PNStateEnum;
+import org.icar.specification.linear_temporal_logic.net.condition.TransitionCondition;
+
 import petrinet.logic.*;
 
 /**
@@ -27,7 +28,7 @@ public abstract class FormulaPN implements PNTreeNode {
 	protected Place start;
 	
 	/** The association between Place and State */
-	protected HashMap<Place, PetriNetState> placeState;
+	protected HashMap<Place, PNStateEnum> placeState;
 	
 	/** The conditions labels associated to Transitions */
 	protected HashMap<Transition, TransitionCondition> transitionLabel;
@@ -112,7 +113,7 @@ public abstract class FormulaPN implements PNTreeNode {
 	 *
 	 * @return the net state
 	 */
-	public PetriNetState getNetState() {		 
+	public PNStateEnum getNetState() {		 
 		Place p = getPlaceWithToken();
 		return placeState.get(p);
 //		if( p != null )
@@ -156,7 +157,7 @@ public abstract class FormulaPN implements PNTreeNode {
 	 *
 	 * @return the place state
 	 */
-	public HashMap<Place, PetriNetState> getPlaceState() {
+	public HashMap<Place, PNStateEnum> getPlaceState() {
 		return placeState;
 	}
 

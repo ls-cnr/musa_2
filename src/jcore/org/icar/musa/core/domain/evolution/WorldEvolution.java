@@ -1,12 +1,13 @@
-package datalayer.world;
+package org.icar.musa.core.domain.evolution;
 
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedList;
 
-import datalayer.awareness.AssumptionSet;
-import datalayer.world.evolution.EvolutionOperator;
-import reasoner.EntailOperator;
+import org.icar.musa.core.fol_reasoner.FOLCondition;
+import org.icar.musa.core.domain.StateOfWorld;
+import org.icar.musa.core.fol_reasoner.EntailOperator;
+import org.icar.musa.core.runtime_entity.AssumptionSet;
 
 /**
  * The Class WorldEvolution.
@@ -70,7 +71,7 @@ public class WorldEvolution {
 	 * @param fs the fs
 	 * @return true, if successful
 	 */
-	public boolean test_TC_FS(Condition tc, Condition fs) {
+	public boolean test_TC_FS(FOLCondition tc, FOLCondition fs) {
 		int state = 0;		// 0 = test TC, 1 = test FS, 2 = satisfied
 		
 		Iterator<StateOfWorld> it = evo.iterator();

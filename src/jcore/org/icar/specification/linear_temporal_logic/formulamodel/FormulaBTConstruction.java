@@ -1,11 +1,10 @@
-package datalayer.awareness.LTL.formulamodel;
+package org.icar.specification.linear_temporal_logic.formulamodel;
 
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
-
-import datalayer.awareness.LTL.target.LTLLexer;
-import datalayer.awareness.LTL.target.LTLParser;
+import org.icar.specification.linear_temporal_logic.target.LTLLexer;
+import org.icar.specification.linear_temporal_logic.target.LTLParser;
 
 /**
  * Class basically used to Parse a string and to generate a Formula Binary Tree. 

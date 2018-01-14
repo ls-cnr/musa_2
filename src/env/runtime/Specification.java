@@ -5,10 +5,11 @@ package runtime;
 import java.util.LinkedList;
 import java.util.List;
 
-import cartago.*;
-import datalayer.awareness.*;
-import datalayer.awareness.legacy.GS_Goal;
-import datalayer.awareness.legacy.goalmodel.*;;
+import org.icar.musa.core.runtime_entity.*;
+import org.icar.specification.goalspec.GS_Goal;
+import org.icar.specification.goalspec.goalmodel.*;
+
+import cartago.*;;
 
 public class Specification extends Artifact {
 

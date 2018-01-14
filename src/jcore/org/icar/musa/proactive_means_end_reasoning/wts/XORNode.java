@@ -1,8 +1,4 @@
-package datalayer.world.wts;
-
-import datalayer.awareness.AbstractCapability;
-import datalayer.world.StateOfWorld;
-import datalayer.world.evolution.EvolutionScenario;
+package org.icar.musa.proactive_means_end_reasoning.wts;
 
 public class XORNode extends OPNode{
 	public XORNode(String capability, int score){

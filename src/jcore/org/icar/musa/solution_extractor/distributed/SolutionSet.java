@@ -1,4 +1,4 @@
-package datalayer.world.configuration.distributed;
+package org.icar.musa.solution_extractor.distributed;
 
 import java.util.ArrayList;
 import java.util.Iterator;

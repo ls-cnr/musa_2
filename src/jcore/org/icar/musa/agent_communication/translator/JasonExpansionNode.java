@@ -1,18 +1,19 @@
-package communication.translator;
+package org.icar.musa.agent_communication.translator;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import org.icar.musa.proactive_means_end_reasoning.ExtendedNode;
+import org.icar.musa.proactive_means_end_reasoning.GraphExpansion;
+import org.icar.musa.proactive_means_end_reasoning.MultipleExpansion;
+import org.icar.musa.proactive_means_end_reasoning.NormalExpansion;
 
 import jason.asSyntax.ListTermImpl;
 import jason.asSyntax.NumberTermImpl;
 import jason.asSyntax.StringTermImpl;
 import jason.asSyntax.Structure;
 import jason.asSyntax.Term;
-import reasoner.probexp.ExtendedNode;
-import reasoner.probexp.GraphExpansion;
-import reasoner.probexp.MultipleExpansion;
-import reasoner.probexp.NormalExpansion;
 
 public class JasonExpansionNode {
 	public static Term object_to_term(GraphExpansion exp) {

@@ -1,10 +1,10 @@
-package datalayer.awareness.legacy.goalmodel;
+package org.icar.specification.goalspec.goalmodel;
 
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import datalayer.awareness.legacy.GS_Goal;
+import org.icar.specification.goalspec.GS_Goal;
 
 /**
  * The Class GoalTree is used to create a Tree containing goals and arcs. Construction, starting from the root, 

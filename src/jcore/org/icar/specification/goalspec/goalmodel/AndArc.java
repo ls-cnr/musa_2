@@ -1,6 +1,6 @@
-package datalayer.awareness.legacy.goalmodel;
+package org.icar.specification.goalspec.goalmodel;
 
-import datalayer.awareness.legacy.GS_Goal;
+import org.icar.specification.goalspec.GS_Goal;
 
 /**
  * The Class AndArc, used to represent the And Arc in the model.

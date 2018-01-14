@@ -1,7 +1,8 @@
-package datalayer.awareness.LTL.net.netmodels;
+package org.icar.specification.linear_temporal_logic.net.netmodels;
 
-import datalayer.awareness.LTL.net.PetriNetState;
-import datalayer.awareness.LTL.net.condition.*;
+import org.icar.specification.linear_temporal_logic.net.PNStateEnum;
+import org.icar.specification.linear_temporal_logic.net.condition.*;
+
 import petrinet.logic.Transition;
 
 // TODO: Auto-generated Javadoc
@@ -27,21 +28,21 @@ public class SingleTransitionPN extends FormulaPN {
 		this.secondOp = null;
 		
 		start = pn.place("Start");
-		placeState.put(start, PetriNetState.WAIT_BUT_ACCEPTED);
+		placeState.put(start, PNStateEnum.WAIT_BUT_ACCEPTED);
 		
 		Transition t1 = pn.transition(firstOp.getTerm());
-		firstOp.setStateCondition(PetriNetState.ACCEPTED);
+		firstOp.setStateCondition(PNStateEnum.ACCEPTED);
 		transitionLabel.put(t1, firstOp);
 		
 		pn.arc("a1", start, t1);
-		placeState.put(pn.arc("a2", t1, pn.place("Accept")).getPlace(), PetriNetState.ACCEPTED);
+		placeState.put(pn.arc("a2", t1, pn.place("Accept")).getPlace(), PNStateEnum.ACCEPTED);
 		
 		Transition t2 = pn.transition("!"+firstOp.getTerm());
-		firstOpCopy.setStateCondition(PetriNetState.ERROR);
+		firstOpCopy.setStateCondition(PNStateEnum.ERROR);
 		transitionLabel.put(t2, firstOpCopy);
 		
 		pn.arc("a3", start, t2);
-		placeState.put(pn.arc("a6", t2, pn.place("Error")).getPlace(), PetriNetState.ERROR);
+		placeState.put(pn.arc("a6", t2, pn.place("Error")).getPlace(), PNStateEnum.ERROR);
 	}
 	
 }

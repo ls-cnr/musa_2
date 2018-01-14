@@ -1,4 +1,4 @@
-package datalayer.awareness;
+package org.icar.musa.core;
 
 public interface RunTimeEntity {
 

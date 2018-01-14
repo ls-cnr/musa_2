@@ -1,7 +1,8 @@
-package communication.translator;
+package org.icar.musa.agent_communication.translator;
 
-import datalayer.world.StateOfWorld;
-import exception.NotAllowedInAStateOfWorld;
+import org.icar.musa.core.domain.StateOfWorld;
+import org.icar.musa.exception.NotAllowedInAStateOfWorld;
+
 import jason.asSyntax.ListTermImpl;
 import jason.asSyntax.Structure;
 import jason.asSyntax.Term;

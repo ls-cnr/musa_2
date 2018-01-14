@@ -1,9 +1,9 @@
-package datalayer.awareness.LTL.formulamodel;
+package org.icar.specification.linear_temporal_logic.formulamodel;
 
 import java.util.HashMap;
 import java.util.Stack;
 
-import datalayer.awareness.Requirements;
+import org.icar.musa.core.Requirements;
 /**
  * This class represents a binary tree structure, used to maintain a hierarchy between all sub-formulas that derive from the main
  * LTL formula. Every node contains a LTL operator that depends on his sons, the operands. Leaves just contain Atomic Propositions.

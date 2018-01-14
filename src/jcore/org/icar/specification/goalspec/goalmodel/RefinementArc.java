@@ -1,6 +1,6 @@
-package datalayer.awareness.legacy.goalmodel;
+package org.icar.specification.goalspec.goalmodel;
 
-import datalayer.awareness.legacy.GS_Goal;
+import org.icar.specification.goalspec.GS_Goal;
 
 /**
  * The Class RefinementArc, used as generalization for And and Or arcs.

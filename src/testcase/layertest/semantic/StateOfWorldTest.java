@@ -2,11 +2,11 @@ package layertest.semantic;
 
 import static org.junit.Assert.*;
 
+import org.icar.musa.agent_communication.translator.ExtDLPHead;
+import org.icar.musa.core.domain.StateOfWorld;
 import org.junit.Before;
 import org.junit.Test;
 
-import communication.translator.ExtDLPHead;
-import datalayer.world.StateOfWorld;
 import net.sf.tweety.logics.commons.syntax.interfaces.Term;
 import net.sf.tweety.lp.asp.parser.ParseException;
 
@@ -25,7 +25,7 @@ public class StateOfWorldTest {
 			w.addFact_asString("penguin(tweety).");
 		} catch (ParseException e) {
 			e.printStackTrace();
-		} catch (exception.NotAllowedInAStateOfWorld e) {
+		} catch (org.icar.musa.exception.NotAllowedInAStateOfWorld e) {
 			e.printStackTrace();
 		}
 	
@@ -35,7 +35,7 @@ public class StateOfWorldTest {
 		w1.addFact_asString("penguin(tweety).");
 	} catch (ParseException e) {
 		e.printStackTrace();
-	} catch (exception.NotAllowedInAStateOfWorld e) {
+	} catch (org.icar.musa.exception.NotAllowedInAStateOfWorld e) {
 		e.printStackTrace();
 	}
 	
@@ -45,7 +45,7 @@ public class StateOfWorldTest {
 		w2.addFact_asString("bird(tweety).");
 	} catch (ParseException e) {
 		e.printStackTrace();
-	} catch (exception.NotAllowedInAStateOfWorld e) {
+	} catch (org.icar.musa.exception.NotAllowedInAStateOfWorld e) {
 		e.printStackTrace();
 	}
 	
@@ -55,7 +55,7 @@ public class StateOfWorldTest {
 
 	} catch (ParseException e) {
 		e.printStackTrace();
-	} catch (exception.NotAllowedInAStateOfWorld e) {
+	} catch (org.icar.musa.exception.NotAllowedInAStateOfWorld e) {
 		e.printStackTrace();
 	}
 }

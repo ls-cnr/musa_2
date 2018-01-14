@@ -1,4 +1,4 @@
-package communication.translator;
+package org.icar.musa.agent_communication.translator;
 
 import net.sf.tweety.logics.commons.syntax.AssociativeFormulaSupport;
 import net.sf.tweety.logics.commons.syntax.interfaces.AssociativeFormula;

@@ -1,4 +1,4 @@
-package communication.auction;
+package org.icar.musa.agent_communication.auction;
 
 public class Bid {
 	private String agent;

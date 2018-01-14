@@ -1,9 +1,4 @@
-package datalayer.world.wts;
-
-import java.util.ArrayList;
-
-import datalayer.awareness.AbstractCapability;
-import datalayer.world.evolution.EvolutionScenario;
+package org.icar.musa.proactive_means_end_reasoning.wts;
 
 /**
  * The Class EvolutionEdge. It connects an OPNode to a WorldNode.

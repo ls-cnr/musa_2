@@ -1,11 +1,12 @@
-package datalayer.awareness;
+package org.icar.musa.core.runtime_entity;
 
 import java.util.Set;
 
-import datalayer.world.Condition;
-import datalayer.world.evolution.AddStatement;
-import datalayer.world.evolution.CapabilityEvoScenario;
-import datalayer.world.evolution.EvolutionScenario;
+import org.icar.musa.core.Condition;
+import org.icar.musa.core.RunTimeEntity;
+import org.icar.musa.core.domain.evolution.AddStatement;
+import org.icar.musa.core.domain.evolution.CapabilityEvoScenario;
+import org.icar.musa.core.domain.evolution.EvolutionScenario;
 
 /**
  * The Class AbstractCapability encapsulate a capability. A capability is an atomic and self-contained action the system may

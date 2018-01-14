@@ -1,9 +1,9 @@
-package datalayer.awareness.legacy.goalmodel;
+package org.icar.specification.goalspec.goalmodel;
 
 import java.util.ArrayList;
 
-import datalayer.awareness.RunTimeEntity;
-import datalayer.awareness.legacy.GS_Goal;
+import org.icar.musa.core.RunTimeEntity;
+import org.icar.specification.goalspec.GS_Goal;
 
 /**
  * The Class GoalModel is used to visit a Goal Tree. 

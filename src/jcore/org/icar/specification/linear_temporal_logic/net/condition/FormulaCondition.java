@@ -1,6 +1,6 @@
-package datalayer.awareness.LTL.net.condition;
+package org.icar.specification.linear_temporal_logic.net.condition;
 
-import datalayer.awareness.LTL.net.PetriNetState;
+import org.icar.specification.linear_temporal_logic.net.PNStateEnum;
 
 /**
  * This Class is used for a Formula type Condition. It stores the net reference to look up for checking if the condition is Accepted or Error.
@@ -8,7 +8,7 @@ import datalayer.awareness.LTL.net.PetriNetState;
 public class FormulaCondition extends TransitionCondition {
 
 	/** The cond. */
-	private PetriNetState cond;
+	private PNStateEnum cond;
 	
 	/**
 	 * Instantiates a new formula condition.
@@ -24,7 +24,7 @@ public class FormulaCondition extends TransitionCondition {
 	 * @see layer.awareness.LTL.net.condition.TransitionCondition#setStateCondition(java.lang.String)
 	 */
 	@Override
-	public void setStateCondition(PetriNetState s) {
+	public void setStateCondition(PNStateEnum s) {
 		cond = s;
 	}
 
@@ -33,7 +33,7 @@ public class FormulaCondition extends TransitionCondition {
 	 *
 	 * @return the cond
 	 */
-	public PetriNetState getCond() {
+	public PNStateEnum getCond() {
 		return cond;
 	}
 }

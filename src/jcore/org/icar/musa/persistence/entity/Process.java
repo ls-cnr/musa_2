@@ -1,4 +1,4 @@
-package datalayer.database.entity;
+package org.icar.musa.persistence.entity;
 
 // Generated 22-nov-2016 14.40.56 by Hibernate Tools 3.4.0.CR1
 

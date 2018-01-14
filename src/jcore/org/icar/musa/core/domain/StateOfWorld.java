@@ -1,4 +1,4 @@
-package datalayer.world;
+package org.icar.musa.core.domain;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -6,8 +6,9 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 
-import communication.translator.ExtDLPHead;
-import exception.*;
+import org.icar.musa.agent_communication.translator.ExtDLPHead;
+import org.icar.musa.exception.*;
+
 import net.sf.tweety.lp.asp.parser.ASPParser;
 import net.sf.tweety.lp.asp.parser.ParseException;
 import net.sf.tweety.lp.asp.syntax.Rule;

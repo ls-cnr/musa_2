@@ -1,4 +1,4 @@
-package datalayer.awareness.legacy.net;
+package org.icar.specification.goalspec.net;
 
 /**
  * The Class Token, used to manipulate tokens in the Petrinet.

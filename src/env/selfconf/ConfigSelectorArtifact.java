@@ -5,13 +5,14 @@ package selfconf;
 import java.util.HashMap;
 import java.util.HashSet;
 
+import org.icar.musa.agent_communication.translator.JasonExpansionNode;
+import org.icar.musa.agent_communication.translator.TranslateError;
+import org.icar.musa.proactive_means_end_reasoning.ExtendedNode;
+import org.icar.musa.proactive_means_end_reasoning.GraphExpansion;
+import org.icar.musa.solution_extractor.distributed.Sequences;
+import org.icar.musa.solution_extractor.distributed.Solution;
+
 import cartago.*;
-import communication.translator.JasonExpansionNode;
-import communication.translator.TranslateError;
-import datalayer.world.configuration.distributed.Sequences;
-import datalayer.world.configuration.distributed.Solution;
-import reasoner.probexp.ExtendedNode;
-import reasoner.probexp.GraphExpansion;
 
 @ARTIFACT_INFO(outports = { @OUTPORT(name = "graph") })
 public class ConfigSelectorArtifact extends Artifact {

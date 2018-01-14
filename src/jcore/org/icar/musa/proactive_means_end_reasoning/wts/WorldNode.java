@@ -1,12 +1,9 @@
-package datalayer.world.wts;
+package org.icar.musa.proactive_means_end_reasoning.wts;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 
-import communication.translator.ExtDLPHead;
-import datalayer.awareness.AbstractCapability;
-import datalayer.world.StateOfWorld;
-import net.sf.tweety.lp.asp.syntax.DLPHead;
+import org.icar.musa.agent_communication.translator.ExtDLPHead;
+import org.icar.musa.core.domain.StateOfWorld;
 
 /**
  * The Class WorldNode. It's the standard node of the graph of the solutions. It implements the Node Interface

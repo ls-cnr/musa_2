@@ -1,5 +1,5 @@
 
-package datalayer.world.configuration.distributed;
+package org.icar.musa.solution_extractor.distributed;
 
 /**
  * This class describes one solution.

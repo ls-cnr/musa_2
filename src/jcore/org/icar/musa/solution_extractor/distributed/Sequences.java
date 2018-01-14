@@ -1,12 +1,12 @@
-package datalayer.world.configuration.distributed;
+package org.icar.musa.solution_extractor.distributed;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 
-import datalayer.awareness.AbstractCapability;
-import datalayer.awareness.AbstractWorkflowNode;
+import org.icar.musa.core.runtime_entity.AbstractCapability;
+import org.icar.musa.core.runtime_entity.AbstractWorkflowNode;
 
 /**
  * 

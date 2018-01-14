@@ -1,4 +1,4 @@
-package datalayer.awareness.LTL.formulamodel;
+package org.icar.specification.linear_temporal_logic.formulamodel;
 
 /**
  * The Class FormulaBTNode, used to represent a node in a Formula Binary Tree.

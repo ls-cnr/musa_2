@@ -2,10 +2,10 @@ package logics;
 
 import static org.junit.Assert.*;
 
+import org.icar.musa.core.domain.StateOfWorld;
 import org.junit.Before;
 import org.junit.Test;
 
-import datalayer.world.StateOfWorld;
 import net.sf.tweety.lp.asp.parser.ParseException;
 import net.sf.tweety.lp.asp.syntax.DLPHead;
 
@@ -37,7 +37,7 @@ public class DLPHeadHashSet {
 		catch (ParseException e) {
 			e.printStackTrace();
 		} 
-		catch (exception.NotAllowedInAStateOfWorld e) {
+		catch (org.icar.musa.exception.NotAllowedInAStateOfWorld e) {
 			e.printStackTrace();
 		}
 	}
