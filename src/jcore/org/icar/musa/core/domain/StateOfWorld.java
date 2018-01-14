@@ -171,11 +171,11 @@ public class StateOfWorld {
 	}
 
 	private String toSortedString() {
-		if (hash==null) {
-			hash=toSortedString_SPSreconfig();
-		}
-		
-		if (true) return hash;
+//		if (hash==null) {
+//			hash=toSortedString_SPSreconfig();
+//		}
+//		
+//		if (true) return hash;
 		
 		String res = new String("[");
 		
