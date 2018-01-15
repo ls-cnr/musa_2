@@ -2,11 +2,10 @@ package ltlparsertest;
 
 import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.tree.*;
-
-import datalayer.awareness.LTL.formulamodel.FormulaBTConstruction;
-import datalayer.awareness.LTL.formulamodel.LTLGoal;
-import datalayer.awareness.LTL.target.LTLLexer;
-import datalayer.awareness.LTL.target.LTLParser;
+import org.icar.specification.linear_temporal_logic.formulamodel.FormulaBTConstruction;
+import org.icar.specification.linear_temporal_logic.formulamodel.LTLGoal;
+import org.icar.specification.linear_temporal_logic.target.LTLLexer;
+import org.icar.specification.linear_temporal_logic.target.LTLParser;
 
 public class LtlRunner {
 	 

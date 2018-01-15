@@ -3,11 +3,12 @@ package logics;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import org.icar.musa.core.domain.StateOfWorld;
+import org.icar.musa.core.fol_reasoner.FOLCondition;
+import org.icar.musa.core.fol_reasoner.EntailOperator;
+import org.icar.musa.core.runtime_entity.AssumptionSet;
 import org.junit.Test;
 
-import datalayer.awareness.AssumptionSet;
-import datalayer.world.Condition;
-import datalayer.world.StateOfWorld;
 import net.sf.tweety.logics.commons.syntax.Constant;
 import net.sf.tweety.logics.commons.syntax.Variable;
 import net.sf.tweety.lp.asp.parser.ASPParser;
@@ -19,7 +20,6 @@ import net.sf.tweety.lp.asp.syntax.DLPHead;
 import net.sf.tweety.lp.asp.syntax.Program;
 import net.sf.tweety.lp.asp.syntax.Rule;
 import net.sf.tweety.lp.asp.util.AnswerSetList;
-import reasoner.EntailOperator;
 
 
 public class AnswerSetExample {
@@ -131,7 +131,7 @@ public class AnswerSetExample {
 			w.addFact_asString("ostrich(olga).");
 		} catch (ParseException e) {
 			e.printStackTrace();
-		} catch (exception.NotAllowedInAStateOfWorld e) {
+		} catch (org.icar.musa.exception.NotAllowedInAStateOfWorld e) {
 			e.printStackTrace();
 		}
 		
@@ -149,12 +149,12 @@ public class AnswerSetExample {
 		
 		} catch (ParseException e) {
 			e.printStackTrace();
-		} catch (exception.NotAllowedInAnAssumptionSet e) {
+		} catch (org.icar.musa.exception.NotAllowedInAnAssumptionSet e) {
 			e.printStackTrace();
 		}
 		
-		Condition c1 = new Condition( new DLPAtom("can_fly",new Constant("polly")) );
-		Condition c2 = new Condition( new DLPAtom("can_fly",new Constant("tweety")) );
+		FOLCondition c1 = new FOLCondition( new DLPAtom("can_fly",new Constant("polly")) );
+		FOLCondition c2 = new FOLCondition( new DLPAtom("can_fly",new Constant("tweety")) );
 		
 		EntailOperator env = EntailOperator.getInstance();
 		env.setVerbose(false);
@@ -179,7 +179,7 @@ public class AnswerSetExample {
 			w.addFact_asString("open(i2).");
 		} catch (ParseException e) {
 			e.printStackTrace();
-		} catch (exception.NotAllowedInAStateOfWorld e) {
+		} catch (org.icar.musa.exception.NotAllowedInAStateOfWorld e) {
 			e.printStackTrace();
 		}
 		
@@ -203,11 +203,11 @@ public class AnswerSetExample {
 		
 		} catch (ParseException e) {
 			e.printStackTrace();
-		} catch (exception.NotAllowedInAnAssumptionSet e) {
+		} catch (org.icar.musa.exception.NotAllowedInAnAssumptionSet e) {
 			e.printStackTrace();
 		}
 		
-		Condition c1 = new Condition( new DLPAtom("on",new Constant("l1")) );
+		FOLCondition c1 = new FOLCondition( new DLPAtom("on",new Constant("l1")) );
 		//Condition c2 = new Condition( new DLPAtom("can_fly",new Constant("tweety")) );
 		
 		EntailOperator env = EntailOperator.getInstance();
@@ -234,7 +234,7 @@ public class AnswerSetExample {
 			w.addFact_asString("closed(i1).");
 		} catch (ParseException e) {
 			e.printStackTrace();
-		} catch (exception.NotAllowedInAStateOfWorld e) {
+		} catch (org.icar.musa.exception.NotAllowedInAStateOfWorld e) {
 			e.printStackTrace();
 		}
 		
@@ -269,12 +269,12 @@ public class AnswerSetExample {
 		
 		} catch (ParseException e) {
 			e.printStackTrace();
-		} catch (exception.NotAllowedInAnAssumptionSet e) {
+		} catch (org.icar.musa.exception.NotAllowedInAnAssumptionSet e) {
 			e.printStackTrace();
 		}
 		
-		Condition c1 = new Condition( new DLPAtom("on",new Constant("l1")) );
-		Condition c2 = new Condition( new DLPAtom("off",new Constant("l2")) );
+		FOLCondition c1 = new FOLCondition( new DLPAtom("on",new Constant("l1")) );
+		FOLCondition c2 = new FOLCondition( new DLPAtom("off",new Constant("l2")) );
 		
 		EntailOperator env = EntailOperator.getInstance();
 		env.setVerbose(false);

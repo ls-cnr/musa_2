@@ -3,17 +3,17 @@ package communication;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import org.icar.musa.agent_communication.translator.JasonExtNode;
+import org.icar.musa.core.domain.StateOfWorld;
+import org.icar.musa.proactive_means_end_reasoning.ExtendedNode;
+import org.icar.specification.linear_temporal_logic.formulamodel.FormulaBTConstruction;
+import org.icar.specification.linear_temporal_logic.formulamodel.LTLGoal;
+import org.icar.specification.linear_temporal_logic.net.PNHierarchy;
+import org.icar.specification.linear_temporal_logic.net.TokenConf;
 import org.junit.Test;
 
-import communication.translator.JasonExtNode;
-import datalayer.awareness.LTL.formulamodel.FormulaBTConstruction;
-import datalayer.awareness.LTL.formulamodel.LTLGoal;
-import datalayer.awareness.LTL.net.PNHierarchy;
-import datalayer.awareness.LTL.net.TokensConfiguration;
-import datalayer.world.StateOfWorld;
 import jason.asSyntax.Term;
 import net.sf.tweety.lp.asp.parser.ParseException;
-import reasoner.probexp.ExtendedNode;
 
 
 public class Translation {
@@ -28,11 +28,11 @@ public class Translation {
 			w.addFact_asString("user_data(the_user_data).");
 		} catch (ParseException e) {
 			e.printStackTrace();
-		} catch (exception.NotAllowedInAStateOfWorld e) {
+		} catch (org.icar.musa.exception.NotAllowedInAStateOfWorld e) {
 			e.printStackTrace();
 		}
 		LTLGoal treeModel = FormulaBTConstruction.construct("G on(l1)");
-		TokensConfiguration startingTokens = new TokensConfiguration(new PNHierarchy(treeModel));
+		TokenConf startingTokens = new TokenConf(new PNHierarchy(treeModel));
 		
 		ExtendedNode enode = new ExtendedNode(w, startingTokens, 0, false, false);
 		enode.setExit(false);

@@ -1,11 +1,11 @@
 package layertest.awareness.FOL.net;
 
 import static org.junit.Assert.*;
+
+import org.icar.specification.goalspec.GS_Goal;
+import org.icar.specification.goalspec.goalmodel.GoalTreeModel;
 import org.junit.Before;
 import org.junit.Test;
-
-import datalayer.awareness.legacy.GS_Goal;
-import datalayer.awareness.legacy.goalmodel.GoalTreeModel;
 
 import java.util.ArrayList;
 

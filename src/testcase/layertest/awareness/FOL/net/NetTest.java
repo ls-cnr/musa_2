@@ -2,13 +2,12 @@
 
 import static org.junit.Assert.*;
 
+import org.icar.musa.core.runtime_entity.*;
+import org.icar.specification.goalspec.GS_Goal;
+import org.icar.specification.goalspec.goalmodel.GoalTreeModel;
+import org.icar.specification.goalspec.net.*;
 import org.junit.Ignore;
 import org.junit.Test;
-
-import datalayer.awareness.*;
-import datalayer.awareness.legacy.GS_Goal;
-import datalayer.awareness.legacy.goalmodel.GoalTreeModel;
-import datalayer.awareness.legacy.net.*;
 
 import java.util.ArrayList;
 

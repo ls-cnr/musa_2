@@ -5,14 +5,15 @@ import net.sf.tweety.lp.asp.parser.ParseException;
 import java.io.IOException;
 import static org.junit.Assert.*;
 
+import org.icar.musa.core.domain.*;
+import org.icar.musa.core.fol_reasoner.FOLCondition;
+import org.icar.musa.core.fol_reasoner.EntailOperator;
+import org.icar.musa.core.runtime_entity.AssumptionSet;
 import org.junit.Before;
 import org.junit.Test;
 
-import datalayer.awareness.AssumptionSet;
-import datalayer.world.*;
 import net.sf.tweety.logics.commons.syntax.Constant;
 import net.sf.tweety.lp.asp.syntax.DLPAtom;
-import reasoner.EntailOperator;
 
 
 // TODO: Auto-generated Javadoc
@@ -28,13 +29,13 @@ public class DomainEntailTest1 {
 	private AssumptionSet domain;
 	
 	/** The cond q 1. */
-	private Condition cond_q1;
+	private FOLCondition cond_q1;
 	
 	/** The cond q 2. */
-	private Condition cond_q2;
+	private FOLCondition cond_q2;
 	
 	/** The cond q 3. */
-	private Condition cond_q3;
+	private FOLCondition cond_q3;
 	
 	/** The env. */
 	EntailOperator env;
@@ -60,7 +61,7 @@ public class DomainEntailTest1 {
 		catch (ParseException e) {
 			e.printStackTrace();
 		} 
-		catch (exception.NotAllowedInAStateOfWorld e) {
+		catch (org.icar.musa.exception.NotAllowedInAStateOfWorld e) {
 			e.printStackTrace();
 		}
 	
@@ -78,7 +79,7 @@ public class DomainEntailTest1 {
 		catch (ParseException e) {
 			e.printStackTrace();
 		} 
-		catch (exception.NotAllowedInAnAssumptionSet e) {
+		catch (org.icar.musa.exception.NotAllowedInAnAssumptionSet e) {
 			e.printStackTrace();
 		}
 		
@@ -92,9 +93,9 @@ public class DomainEntailTest1 {
 		DLPAtom q2 = new DLPAtom("can_fly",tweety);
 		DLPAtom q3 = new DLPAtom("can_fly", sid);
 		
-		this.cond_q1 = new Condition(q1);
-		this.cond_q2 = new Condition(q2);
-		this.cond_q3 = new Condition(q3);
+		this.cond_q1 = new FOLCondition(q1);
+		this.cond_q2 = new FOLCondition(q2);
+		this.cond_q3 = new FOLCondition(q3);
 	}
 	
 	

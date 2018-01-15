@@ -4,19 +4,22 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
-import communication.translator.ExtDLPHead;
-import datalayer.awareness.AbstractCapability;
-import datalayer.awareness.AssumptionSet;
-import datalayer.awareness.legacy.GS_Goal;
-import datalayer.awareness.legacy.goalmodel.GoalTreeModel;
-import datalayer.awareness.legacy.net.Token;
-import datalayer.world.Condition;
-import datalayer.world.StateOfWorld;
-import datalayer.world.evolution.AddStatement;
-import datalayer.world.evolution.CapabilityEvolutionScenario;
-import datalayer.world.evolution.EvolutionScenario;
-import datalayer.world.evolution.RemoveStatement;
-import datalayer.world.wts.WorldNode;
+import org.icar.musa.agent_communication.translator.ExtDLPHead;
+import org.icar.musa.core.Condition;
+import org.icar.musa.core.domain.StateOfWorld;
+import org.icar.musa.core.domain.evolution.AddStatement;
+import org.icar.musa.core.domain.evolution.CapabilityEvolutionScenario;
+import org.icar.musa.core.domain.evolution.EvolutionScenario;
+import org.icar.musa.core.domain.evolution.RemoveStatement;
+import org.icar.musa.core.fol_reasoner.FOLCondition;
+import org.icar.musa.core.runtime_entity.AbstractCapability;
+import org.icar.musa.core.runtime_entity.AssumptionSet;
+import org.icar.musa.proactive_means_end_reasoning.ExtendedNode;
+import org.icar.musa.proactive_means_end_reasoning.wts.WorldNode;
+import org.icar.specification.goalspec.GS_Goal;
+import org.icar.specification.goalspec.goalmodel.GoalTreeModel;
+import org.icar.specification.goalspec.net.Token;
+
 import net.sf.tweety.logics.commons.syntax.Constant;
 import net.sf.tweety.logics.commons.syntax.Predicate;
 import net.sf.tweety.logics.commons.syntax.Variable;
@@ -26,7 +29,6 @@ import net.sf.tweety.logics.fol.syntax.FOLAtom;
 import net.sf.tweety.logics.fol.syntax.Negation;
 import net.sf.tweety.lp.asp.parser.ParseException;
 import net.sf.tweety.lp.asp.syntax.DLPAtom;
-import reasoner.probexp.ExtendedNode;
 
 public class B2BCloudSetup {
 
@@ -177,7 +179,7 @@ public class B2BCloudSetup {
 		
 		} catch (ParseException e) {
 			e.printStackTrace();
-		} catch (exception.NotAllowedInAnAssumptionSet e) {
+		} catch (org.icar.musa.exception.NotAllowedInAnAssumptionSet e) {
 			e.printStackTrace();
 		}
 		
@@ -195,11 +197,11 @@ public class B2BCloudSetup {
 		Set<Variable> THO_var = new HashSet<Variable>();
 		THO_var.add(doc);
 		THO_var.add(usr);
-		Condition THO_tc = new Condition( new ExistsQuantifiedFormula(new Conjunction(THO_received, new Conjunction(THO_order,THO_user)), THO_var ) );
+		FOLCondition THO_tc = new FOLCondition( new ExistsQuantifiedFormula(new Conjunction(THO_received, new Conjunction(THO_order,THO_user)), THO_var ) );
 		
 		FOLAtom THO_processed = new FOLAtom( new Predicate("processed", 1) );
 		THO_processed.addArgument(doc);
-		Condition THO_fs = new Condition( new ExistsQuantifiedFormula(new Conjunction(THO_processed, THO_order), doc));
+		FOLCondition THO_fs = new FOLCondition( new ExistsQuantifiedFormula(new Conjunction(THO_processed, THO_order), doc));
 		
 		GS_Goal THO = new GS_Goal("to_handle_order", THO_tc, THO_fs);
 		
@@ -214,11 +216,11 @@ public class B2BCloudSetup {
 		Set<Variable> TWO_var = new HashSet<Variable>();
 		TWO_var.add(doc);
 		TWO_var.add(usr);
-		Condition TWO_tc = new Condition( new ExistsQuantifiedFormula(new Conjunction(TWO_received, new Conjunction(TWO_order,TWO_user)), TWO_var ) );
+		FOLCondition TWO_tc = new FOLCondition( new ExistsQuantifiedFormula(new Conjunction(TWO_received, new Conjunction(TWO_order,TWO_user)), TWO_var ) );
 		
 		FOLAtom TWO_available = new FOLAtom( new Predicate("available",1));
 		TWO_available.addArgument(doc);
-		Condition TWO_fs = new Condition( new ExistsQuantifiedFormula(new Conjunction(TWO_available, TWO_order), doc ) );
+		FOLCondition TWO_fs = new FOLCondition( new ExistsQuantifiedFormula(new Conjunction(TWO_available, TWO_order), doc ) );
 		
 		GS_Goal TWO = new GS_Goal("to_wait_order", TWO_tc, TWO_fs);
 		
@@ -234,11 +236,11 @@ public class B2BCloudSetup {
 		Set<Variable> TPO_var = new HashSet<Variable>();
 		TPO_var.add(doc);
 		TPO_var.add(usr);
-		Condition TPO_tc = new Condition( new ExistsQuantifiedFormula(new Conjunction(new Conjunction(TPO_available,TPO_order), new Conjunction(TPO_registered,TPO_user)), TPO_var ) );
+		FOLCondition TPO_tc = new FOLCondition( new ExistsQuantifiedFormula(new Conjunction(new Conjunction(TPO_available,TPO_order), new Conjunction(TPO_registered,TPO_user)), TPO_var ) );
 		
 		FOLAtom TPO_processed = new FOLAtom( new Predicate("processed", 1) );
 		TPO_processed.addArgument(doc);
-		Condition TPO_fs = new Condition( new ExistsQuantifiedFormula(new Conjunction(TPO_processed, TPO_order), doc ) );
+		FOLCondition TPO_fs = new FOLCondition( new ExistsQuantifiedFormula(new Conjunction(TPO_processed, TPO_order), doc ) );
 		
 		GS_Goal TPO = new GS_Goal("to_process_order", TPO_tc, TPO_fs);
 		
@@ -247,7 +249,7 @@ public class B2BCloudSetup {
 		TPAO_accepted.addArgument(doc);
 		FOLAtom TPAO_order = new FOLAtom( new Predicate("order",1));
 		TPAO_order.addArgument(doc);
-		Condition TPAO_tc = new Condition( new ExistsQuantifiedFormula(new Conjunction(TPAO_accepted, TPAO_order), doc) );
+		FOLCondition TPAO_tc = new FOLCondition( new ExistsQuantifiedFormula(new Conjunction(TPAO_accepted, TPAO_order), doc) );
 		
 		FOLAtom TPAO_send = new FOLAtom( new Predicate("sent",2));
 		TPAO_send.addArgument(doc);
@@ -259,7 +261,7 @@ public class B2BCloudSetup {
 		Set<Variable> TPAO_var = new HashSet<Variable>();
 		TPAO_var.add(doc);
 		TPAO_var.add(mng);
-		Condition TPAO_fs = new Condition( new ExistsQuantifiedFormula(new Conjunction(TPAO_send, new Conjunction(TPAO_delivery, TPAO_manager)), TPAO_var) );
+		FOLCondition TPAO_fs = new FOLCondition( new ExistsQuantifiedFormula(new Conjunction(TPAO_send, new Conjunction(TPAO_delivery, TPAO_manager)), TPAO_var) );
 		
 		GS_Goal TPAO = new GS_Goal("to_process_accepted_order", TPAO_tc, TPAO_fs);
 		
@@ -275,7 +277,7 @@ public class B2BCloudSetup {
 		Set<Variable> TNI_var1 = new HashSet<Variable>();
 		TNI_var1.add(usr);
 		TNI_var1.add(doc);
-		Condition TNI_tc = new Condition( new ExistsQuantifiedFormula(new Conjunction(new Conjunction(TNI_registered, TNI_user), new Conjunction(TNI_available, TNI_invoice)), TNI_var1) );
+		FOLCondition TNI_tc = new FOLCondition( new ExistsQuantifiedFormula(new Conjunction(new Conjunction(TNI_registered, TNI_user), new Conjunction(TNI_available, TNI_invoice)), TNI_var1) );
 		
 		FOLAtom TNI_send = new FOLAtom( new Predicate("sent",2));
 		TNI_send.addArgument(doc);
@@ -283,7 +285,7 @@ public class B2BCloudSetup {
 		Set<Variable> TNI_var2 = new HashSet<Variable>();
 		TNI_var2.add(doc);
 		TNI_var2.add(usr);		
-		Condition TNI_fs = new Condition( new ExistsQuantifiedFormula(new Conjunction(TNI_send, new Conjunction(TNI_invoice, TNI_user)), TNI_var2) );
+		FOLCondition TNI_fs = new FOLCondition( new ExistsQuantifiedFormula(new Conjunction(TNI_send, new Conjunction(TNI_invoice, TNI_user)), TNI_var2) );
 		
 		GS_Goal TNI = new GS_Goal("to_notify_invoice", TNI_tc, TNI_fs);
 		
@@ -298,7 +300,7 @@ public class B2BCloudSetup {
 		Set<Variable> TDO_var1 = new HashSet<Variable>();
 		TDO_var1.add(doc);
 		TDO_var1.add(usr);
-		Condition TDO_tc = new Condition( new ExistsQuantifiedFormula(new Conjunction(TDO_send, new Conjunction(TDO_invoice, TDO_user)), TDO_var1) );
+		FOLCondition TDO_tc = new FOLCondition( new ExistsQuantifiedFormula(new Conjunction(TDO_send, new Conjunction(TDO_invoice, TDO_user)), TDO_var1) );
 		
 		FOLAtom TDO_delivery = new FOLAtom( new Predicate("delivery_order", 1));
 		TDO_delivery.addArgument(doc);
@@ -307,7 +309,7 @@ public class B2BCloudSetup {
 		Set<Variable> TDO_var2 = new HashSet<Variable>();
 		TDO_var2.add(doc);
 		TDO_var2.add(mng);
-		Condition TDO_fs = new Condition( new ExistsQuantifiedFormula(new Conjunction(TDO_send, new Conjunction(TDO_delivery, TDO_manager)), TDO_var2) );
+		FOLCondition TDO_fs = new FOLCondition( new ExistsQuantifiedFormula(new Conjunction(TDO_send, new Conjunction(TDO_delivery, TDO_manager)), TDO_var2) );
 		
 		GS_Goal TDO = new GS_Goal("to_delivery_order", TDO_tc, TDO_fs);
 		
@@ -323,12 +325,12 @@ public class B2BCloudSetup {
 		Set<Variable> TNF_var1 = new HashSet<Variable>();
 		TNF_var1.add(doc);
 		TNF_var1.add(usr);
-		Condition TNF_tc = new Condition( new ExistsQuantifiedFormula(new Conjunction(new Conjunction(TNF_refused, TNF_order), new Conjunction(TNF_registered, TNF_user)), TNF_var1) );
+		FOLCondition TNF_tc = new FOLCondition( new ExistsQuantifiedFormula(new Conjunction(new Conjunction(TNF_refused, TNF_order), new Conjunction(TNF_registered, TNF_user)), TNF_var1) );
 		
 		FOLAtom TNF_send = new FOLAtom( new Predicate("sent",2));
 		TNF_send.addArgument(new Constant("failure_order"));
 		TNF_send.addArgument(usr);	
-		Condition TNF_fs = new Condition( new ExistsQuantifiedFormula(new Conjunction(TNF_send, TNF_user), usr) );
+		FOLCondition TNF_fs = new FOLCondition( new ExistsQuantifiedFormula(new Conjunction(TNF_send, TNF_user), usr) );
 		
 		GS_Goal TNF = new GS_Goal("to_notify_failure", TNF_tc, TNF_fs);
 		
@@ -348,7 +350,7 @@ public class B2BCloudSetup {
 		Set CU_Set = new HashSet<Variable>();
 		CU_Set.add(doc);
 		CU_Set.add(usr);
-		Condition CU_pre = new Condition(new ExistsQuantifiedFormula(new Conjunction( new Conjunction(CU_available, CU_order), new Conjunction(CU_neg, CU_user) ), CU_Set ));
+		Condition CU_pre = new FOLCondition(new ExistsQuantifiedFormula(new Conjunction( new Conjunction(CU_available, CU_order), new Conjunction(CU_neg, CU_user) ), CU_Set ));
 
 		Set<EvolutionScenario> CU_evo = new HashSet<>();
 		CapabilityEvolutionScenario CU_evo1 = new CapabilityEvolutionScenario("RegisteredUserWithCloud");
@@ -393,7 +395,7 @@ public class B2BCloudSetup {
 		Set AU_Set = new HashSet<Variable>();
 		AU_Set.add(doc);
 		AU_Set.add(usr);
-		Condition AU_pre = new Condition(new ExistsQuantifiedFormula(new Conjunction(new Conjunction(AU_complete, AU_user_data), new Conjunction(AU_unregistered, AU_user)), AU_Set));
+		Condition AU_pre = new FOLCondition(new ExistsQuantifiedFormula(new Conjunction(new Conjunction(AU_complete, AU_user_data), new Conjunction(AU_unregistered, AU_user)), AU_Set));
 
 		Set<EvolutionScenario> AU_evo = new HashSet<>();
 		CapabilityEvolutionScenario AU_evo1 = new CapabilityEvolutionScenario("RegisteredUser");
@@ -418,7 +420,7 @@ public class B2BCloudSetup {
 		Set SRF_Set = new HashSet<Variable>();
 		SRF_Set.add(doc);
 		SRF_Set.add(usr);
-		Condition SRF_pre = new Condition(new ExistsQuantifiedFormula( new Conjunction(new Conjunction(SRF_uncomplete, SRF_user_data), new Conjunction(SRF_unregistered, SRF_user)), SRF_Set ));
+		Condition SRF_pre = new FOLCondition(new ExistsQuantifiedFormula( new Conjunction(new Conjunction(SRF_uncomplete, SRF_user_data), new Conjunction(SRF_unregistered, SRF_user)), SRF_Set ));
 
 		Set<EvolutionScenario> SRF_evo = new HashSet<>();
 		CapabilityEvolutionScenario SRF_evo1 = new CapabilityEvolutionScenario("UncompleteRegistrationForm");
@@ -433,7 +435,7 @@ public class B2BCloudSetup {
 		WUD_uncomplete.addArgument(doc);
 		FOLAtom WUD_registration_form = new FOLAtom( new Predicate("registration_form",1));
 		WUD_registration_form.addArgument(doc);
-		Condition WUD_pre = new Condition( new ExistsQuantifiedFormula( new Conjunction(WUD_uncomplete, WUD_registration_form), doc));
+		Condition WUD_pre = new FOLCondition( new ExistsQuantifiedFormula( new Conjunction(WUD_uncomplete, WUD_registration_form), doc));
 
 		Set<EvolutionScenario> WUD_evo = new HashSet<>();
 		CapabilityEvolutionScenario WUD_evo1 = new CapabilityEvolutionScenario("CompleteForm");
@@ -461,7 +463,7 @@ public class B2BCloudSetup {
 		Set CS_Set = new HashSet<Variable>();
 		CS_Set.add(doc);
 		CS_Set.add(usr);
-		Condition CS_pre = new Condition(new ExistsQuantifiedFormula( new Conjunction(new Conjunction(CS_available, CS_order), new Conjunction(CS_registered, CS_user)), CS_Set ));
+		Condition CS_pre = new FOLCondition(new ExistsQuantifiedFormula( new Conjunction(new Conjunction(CS_available, CS_order), new Conjunction(CS_registered, CS_user)), CS_Set ));
 
 		Set<EvolutionScenario> CS_evo = new HashSet<>();
 		CapabilityEvolutionScenario CS_evo1 = new CapabilityEvolutionScenario("AcceptableOrder");
@@ -491,7 +493,7 @@ public class B2BCloudSetup {
 		Set NSF_Set = new HashSet<Variable>();
 		NSF_Set.add(doc);
 		NSF_Set.add(usr);
-		Condition NSF_pre = new Condition(new ExistsQuantifiedFormula( new Conjunction( new Conjunction(new Conjunction(NSF_refused, NSF_order), new Conjunction(NSF_registered, NSF_user)), new Conjunction(NSF_ord_fail, NSF_order)), NSF_Set ));
+		Condition NSF_pre = new FOLCondition(new ExistsQuantifiedFormula( new Conjunction( new Conjunction(new Conjunction(NSF_refused, NSF_order), new Conjunction(NSF_registered, NSF_user)), new Conjunction(NSF_ord_fail, NSF_order)), NSF_Set ));
 
 		Set<EvolutionScenario> NSF_evo = new HashSet<>();
 		CapabilityEvolutionScenario NSF_evo1 = new CapabilityEvolutionScenario("Failure");
@@ -517,7 +519,7 @@ public class B2BCloudSetup {
 		Set GT_Set = new HashSet<Variable>();
 		GT_Set.add(doc);
 		GT_Set.add(usr);
-		Condition GI_pre = new Condition(new ExistsQuantifiedFormula(new Conjunction( new Conjunction(new Conjunction(GI_accepted, GI_order), new Conjunction(GI_registered, GI_user)), GI_notAvailable), GT_Set) );
+		Condition GI_pre = new FOLCondition(new ExistsQuantifiedFormula(new Conjunction( new Conjunction(new Conjunction(GI_accepted, GI_order), new Conjunction(GI_registered, GI_user)), GI_notAvailable), GT_Set) );
 
 		Set<EvolutionScenario> GI_evo = new HashSet<>();
 		CapabilityEvolutionScenario GI_evo1 = new CapabilityEvolutionScenario("AvailableInvoice");
@@ -542,7 +544,7 @@ public class B2BCloudSetup {
 		Set UOUCS_Set = new HashSet<Variable>();
 		UOUCS_Set.add(doc);
 		UOUCS_Set.add(usr);
-		Condition UOUCS_pre = new Condition(new ExistsQuantifiedFormula(new Conjunction( new Conjunction(new Conjunction(UOUCS_available, UOUCS_invoice), new Conjunction(UOUCS_has_cloud_space, UOUCS_user)), UOUCS_notUploaded), UOUCS_Set ));
+		Condition UOUCS_pre = new FOLCondition(new ExistsQuantifiedFormula(new Conjunction( new Conjunction(new Conjunction(UOUCS_available, UOUCS_invoice), new Conjunction(UOUCS_has_cloud_space, UOUCS_user)), UOUCS_notUploaded), UOUCS_Set ));
 
 		Set<EvolutionScenario> UOUCS_evo = new HashSet<>();
 		CapabilityEvolutionScenario UOUCS_evo1 = new CapabilityEvolutionScenario("UploadedOnCloud");
@@ -568,7 +570,7 @@ public class B2BCloudSetup {
 		Set UOPCS_Set = new HashSet<Variable>();
 		UOPCS_Set.add(doc);
 		UOPCS_Set.add(usr);
-		Condition UOPCS_pre = new Condition(new ExistsQuantifiedFormula(new Conjunction( new Conjunction(new Conjunction(UOPCS_available, UOPCS_invoice), new Conjunction(neg1, UOPCS_user)), UOPCS_notUploaded), UOPCS_Set ));
+		Condition UOPCS_pre = new FOLCondition(new ExistsQuantifiedFormula(new Conjunction( new Conjunction(new Conjunction(UOPCS_available, UOPCS_invoice), new Conjunction(neg1, UOPCS_user)), UOPCS_notUploaded), UOPCS_Set ));
 
 		Set<EvolutionScenario> UOPCS_evo = new HashSet<>();
 		CapabilityEvolutionScenario UOPCS_evo1 = new CapabilityEvolutionScenario("UploadedOnCloud");
@@ -595,7 +597,7 @@ public class B2BCloudSetup {
 		Set SFL_Set = new HashSet<Variable>();
 		SFL_Set.add(doc);
 		SFL_Set.add(usr);
-		Condition SFL_pre = new Condition(new ExistsQuantifiedFormula(new Conjunction( new Conjunction(new Conjunction(SFL_uploaded_on_cloud, SFL_invoice), new Conjunction(neg2, SFL_user)), SFL_notMailed), SFL_Set ));
+		Condition SFL_pre = new FOLCondition(new ExistsQuantifiedFormula(new Conjunction( new Conjunction(new Conjunction(SFL_uploaded_on_cloud, SFL_invoice), new Conjunction(neg2, SFL_user)), SFL_notMailed), SFL_Set ));
 
 		
 		Set<EvolutionScenario> SFL_evo = new HashSet<>();
@@ -622,7 +624,7 @@ public class B2BCloudSetup {
 		NSM_sent.addArgument(doc);
 		NSM_sent.addArgument(usr);
 		Negation NSM_notSent = new Negation(NSM_sent);
-		Condition NSM_pre = new Condition(new ExistsQuantifiedFormula( new Conjunction(new Conjunction(NSM_notified, NSM_notSent), new Conjunction(NSM_invoice, NSM_user)), NSM_Set ));
+		Condition NSM_pre = new FOLCondition(new ExistsQuantifiedFormula( new Conjunction(new Conjunction(NSM_notified, NSM_notSent), new Conjunction(NSM_invoice, NSM_user)), NSM_Set ));
 
 		Set<EvolutionScenario> NSM_evo = new HashSet<>();
 		CapabilityEvolutionScenario NSM_evo1 = new CapabilityEvolutionScenario("SentDeliveryOrderToStorehouseManager");
@@ -662,7 +664,7 @@ public class B2BCloudSetup {
 		  
 		} catch (ParseException e) {
 		  e.printStackTrace();
-		} catch (exception.NotAllowedInAStateOfWorld e) {
+		} catch (org.icar.musa.exception.NotAllowedInAStateOfWorld e) {
 			e.printStackTrace();
 		}
 
@@ -752,12 +754,12 @@ public class B2BCloudSetup {
 		Set<Variable> THO_var = new HashSet<Variable>();
 		THO_var.add(doc);
 		THO_var.add(usr);
-		Condition THO_tc = new Condition(new ExistsQuantifiedFormula(
+		FOLCondition THO_tc = new FOLCondition(new ExistsQuantifiedFormula(
 				new Conjunction(THO_received, new Conjunction(THO_order, THO_user)), THO_var));
 
 		FOLAtom THO_processed = new FOLAtom(new Predicate("processed", 1));
 		THO_processed.addArgument(doc);
-		Condition THO_fs = new Condition(new ExistsQuantifiedFormula(new Conjunction(THO_processed, THO_order), doc));
+		FOLCondition THO_fs = new FOLCondition(new ExistsQuantifiedFormula(new Conjunction(THO_processed, THO_order), doc));
 
 		GS_Goal THO = new GS_Goal("to_handle_order", THO_tc, THO_fs);
 
@@ -772,12 +774,12 @@ public class B2BCloudSetup {
 		Set<Variable> TWO_var = new HashSet<Variable>();
 		TWO_var.add(doc);
 		TWO_var.add(usr);
-		Condition TWO_tc = new Condition(new ExistsQuantifiedFormula(
+		FOLCondition TWO_tc = new FOLCondition(new ExistsQuantifiedFormula(
 				new Conjunction(TWO_received, new Conjunction(TWO_order, TWO_user)), TWO_var));
 
 		FOLAtom TWO_available = new FOLAtom(new Predicate("available", 1));
 		TWO_available.addArgument(doc);
-		Condition TWO_fs = new Condition(new ExistsQuantifiedFormula(new Conjunction(TWO_available, TWO_order), doc));
+		FOLCondition TWO_fs = new FOLCondition(new ExistsQuantifiedFormula(new Conjunction(TWO_available, TWO_order), doc));
 
 		 GS_Goal TWO = new GS_Goal("to_wait_order", TWO_tc, TWO_fs);
 
@@ -793,13 +795,13 @@ public class B2BCloudSetup {
 		Set<Variable> TPO_var = new HashSet<Variable>();
 		TPO_var.add(doc);
 		TPO_var.add(usr);
-		Condition TPO_tc = new Condition(new ExistsQuantifiedFormula(
+		FOLCondition TPO_tc = new FOLCondition(new ExistsQuantifiedFormula(
 				new Conjunction(new Conjunction(TPO_available, TPO_order), new Conjunction(TPO_registered, TPO_user)),
 				TPO_var));
 
 		FOLAtom TPO_processed = new FOLAtom(new Predicate("processed", 1));
 		TPO_processed.addArgument(doc);
-		Condition TPO_fs = new Condition(new ExistsQuantifiedFormula(new Conjunction(TPO_processed, TPO_order), doc));
+		FOLCondition TPO_fs = new FOLCondition(new ExistsQuantifiedFormula(new Conjunction(TPO_processed, TPO_order), doc));
 
 		GS_Goal TPO = new GS_Goal("to_process_order", TPO_tc, TPO_fs);
 
@@ -808,7 +810,7 @@ public class B2BCloudSetup {
 		TPAO_accepted.addArgument(doc);
 		FOLAtom TPAO_order = new FOLAtom(new Predicate("order", 1));
 		TPAO_order.addArgument(doc);
-		Condition TPAO_tc = new Condition(new ExistsQuantifiedFormula(new Conjunction(TPAO_accepted, TPAO_order), doc));
+		FOLCondition TPAO_tc = new FOLCondition(new ExistsQuantifiedFormula(new Conjunction(TPAO_accepted, TPAO_order), doc));
 
 		FOLAtom TPAO_send = new FOLAtom(new Predicate("sent", 2));
 		TPAO_send.addArgument(doc);
@@ -820,7 +822,7 @@ public class B2BCloudSetup {
 		Set<Variable> TPAO_var = new HashSet<Variable>();
 		TPAO_var.add(doc);
 		TPAO_var.add(mng);
-		Condition TPAO_fs = new Condition(new ExistsQuantifiedFormula(
+		FOLCondition TPAO_fs = new FOLCondition(new ExistsQuantifiedFormula(
 				new Conjunction(TPAO_send, new Conjunction(TPAO_delivery, TPAO_manager)), TPAO_var));
 
 		GS_Goal  TPAO = new GS_Goal("to_process_accepted_order", TPAO_tc, TPAO_fs);
@@ -837,7 +839,7 @@ public class B2BCloudSetup {
 		Set<Variable> TNI_var1 = new HashSet<Variable>();
 		TNI_var1.add(usr);
 		TNI_var1.add(doc);
-		Condition TNI_tc = new Condition(new ExistsQuantifiedFormula(
+		FOLCondition TNI_tc = new FOLCondition(new ExistsQuantifiedFormula(
 				new Conjunction(new Conjunction(TNI_registered, TNI_user), new Conjunction(TNI_available, TNI_invoice)),
 				TNI_var1));
 
@@ -847,7 +849,7 @@ public class B2BCloudSetup {
 		Set<Variable> TNI_var2 = new HashSet<Variable>();
 		TNI_var2.add(doc);
 		TNI_var2.add(usr);
-		Condition TNI_fs = new Condition(new ExistsQuantifiedFormula(
+		FOLCondition TNI_fs = new FOLCondition(new ExistsQuantifiedFormula(
 				new Conjunction(TNI_send, new Conjunction(TNI_invoice, TNI_user)), TNI_var2));
 
 		 GS_Goal TNI = new GS_Goal("to_notify_invoice", TNI_tc, TNI_fs);
@@ -863,7 +865,7 @@ public class B2BCloudSetup {
 		Set<Variable> TDO_var1 = new HashSet<Variable>();
 		TDO_var1.add(doc);
 		TDO_var1.add(usr);
-		Condition TDO_tc = new Condition(new ExistsQuantifiedFormula(
+		FOLCondition TDO_tc = new FOLCondition(new ExistsQuantifiedFormula(
 				new Conjunction(TDO_send, new Conjunction(TDO_invoice, TDO_user)), TDO_var1));
 
 		FOLAtom TDO_delivery = new FOLAtom(new Predicate("delivery_order", 1));
@@ -873,7 +875,7 @@ public class B2BCloudSetup {
 		Set<Variable> TDO_var2 = new HashSet<Variable>();
 		TDO_var2.add(doc);
 		TDO_var2.add(mng);
-		Condition TDO_fs = new Condition(new ExistsQuantifiedFormula(
+		FOLCondition TDO_fs = new FOLCondition(new ExistsQuantifiedFormula(
 				new Conjunction(TDO_send, new Conjunction(TDO_delivery, TDO_manager)), TDO_var2));
 
 		 GS_Goal TDO = new GS_Goal("to_delivery_order", TDO_tc, TDO_fs);
@@ -890,14 +892,14 @@ public class B2BCloudSetup {
 		Set<Variable> TNF_var1 = new HashSet<Variable>();
 		TNF_var1.add(doc);
 		TNF_var1.add(usr);
-		Condition TNF_tc = new Condition(new ExistsQuantifiedFormula(
+		FOLCondition TNF_tc = new FOLCondition(new ExistsQuantifiedFormula(
 				new Conjunction(new Conjunction(TNF_refused, TNF_order), new Conjunction(TNF_registered, TNF_user)),
 				TNF_var1));
 
 		FOLAtom TNF_send = new FOLAtom(new Predicate("sent", 2));
 		TNF_send.addArgument(new Constant("failure_order"));
 		TNF_send.addArgument(usr);
-		Condition TNF_fs = new Condition(new ExistsQuantifiedFormula(new Conjunction(TNF_send, TNF_user), usr));
+		FOLCondition TNF_fs = new FOLCondition(new ExistsQuantifiedFormula(new Conjunction(TNF_send, TNF_user), usr));
 
 		 GS_Goal TNF = new GS_Goal("to_notify_failure", TNF_tc, TNF_fs);
 	}
@@ -925,7 +927,7 @@ public class B2BCloudSetup {
 
 		} catch (ParseException e) {
 			e.printStackTrace();
-		} catch (exception.NotAllowedInAnAssumptionSet e) {
+		} catch (org.icar.musa.exception.NotAllowedInAnAssumptionSet e) {
 			e.printStackTrace();
 		}
 		

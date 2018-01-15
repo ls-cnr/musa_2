@@ -6,26 +6,30 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.icar.musa.agent_communication.translator.ExtDLPHead;
+import org.icar.musa.core.Condition;
+import org.icar.musa.core.domain.StateOfWorld;
+import org.icar.musa.core.domain.evolution.AddStatement;
+import org.icar.musa.core.domain.evolution.CapabilityEvolutionScenario;
+import org.icar.musa.core.domain.evolution.EvolutionScenario;
+import org.icar.musa.core.domain.evolution.RemoveStatement;
+import org.icar.musa.core.fol_reasoner.FOLCondition;
+import org.icar.musa.core.runtime_entity.AbstractCapability;
+import org.icar.musa.core.runtime_entity.AssumptionSet;
+import org.icar.musa.core.runtime_entity.ProblemSpecification;
+import org.icar.musa.exception.ProblemDefinitionException;
+import org.icar.musa.proactive_means_end_reasoning.ExtendedNode;
+import org.icar.musa.proactive_means_end_reasoning.MultipleExpansion;
+import org.icar.musa.proactive_means_end_reasoning.ProblemExploration;
+import org.icar.musa.proactive_means_end_reasoning.wts.WorldNode;
+import org.icar.specification.goalspec.net.Token;
+import org.icar.specification.linear_temporal_logic.formulamodel.FormulaBTConstruction;
+import org.icar.specification.linear_temporal_logic.formulamodel.LTLGoal;
+import org.icar.specification.linear_temporal_logic.net.PNHierarchy;
+import org.icar.specification.linear_temporal_logic.net.TokenConf;
 import org.junit.Before;
 import org.junit.Test;
 
-import communication.translator.ExtDLPHead;
-import datalayer.awareness.AbstractCapability;
-import datalayer.awareness.AssumptionSet;
-import datalayer.awareness.ProblemSpecification;
-import datalayer.awareness.LTL.formulamodel.LTLGoal;
-import datalayer.awareness.LTL.formulamodel.FormulaBTConstruction;
-import datalayer.awareness.LTL.net.PNHierarchy;
-import datalayer.awareness.LTL.net.TokensConfiguration;
-import datalayer.awareness.legacy.net.Token;
-import datalayer.world.Condition;
-import datalayer.world.StateOfWorld;
-import datalayer.world.evolution.AddStatement;
-import datalayer.world.evolution.CapabilityEvolutionScenario;
-import datalayer.world.evolution.EvolutionScenario;
-import datalayer.world.evolution.RemoveStatement;
-import datalayer.world.wts.WorldNode;
-import exception.ProblemDefinitionException;
 import net.sf.tweety.logics.commons.syntax.Constant;
 import net.sf.tweety.logics.commons.syntax.Predicate;
 import net.sf.tweety.logics.commons.syntax.Variable;
@@ -36,15 +40,12 @@ import net.sf.tweety.logics.fol.syntax.Negation;
 import net.sf.tweety.lp.asp.parser.ParseException;
 import net.sf.tweety.lp.asp.syntax.DLPAtom;
 import petrinet.logic.Place;
-import reasoner.probexp.ExtendedNode;
-import reasoner.probexp.MultipleExpansion;
-import reasoner.probexp.ProblemExploration;
 
 public class PELTLTest {
 	
 	private AssumptionSet domain;
 	private ProblemExploration problem; 
-	private TokensConfiguration startingTokens;
+	private TokenConf startingTokens;
 	
 	Variable doc = new Variable("Doc");
 	Variable usr = new Variable("Usr");
@@ -93,7 +94,7 @@ public class PELTLTest {
 		
 		} catch (ParseException e) {
 			e.printStackTrace();
-		} catch (exception.NotAllowedInAnAssumptionSet e) {
+		} catch (org.icar.musa.exception.NotAllowedInAnAssumptionSet e) {
 			e.printStackTrace();
 		}
 		
@@ -112,7 +113,7 @@ public class PELTLTest {
 		Set<Variable> CU_Set = new HashSet<Variable>();
 		CU_Set.add(doc);
 		CU_Set.add(usr);
-		Condition CU_pre = new Condition(new ExistsQuantifiedFormula(new Conjunction( new Conjunction(CU_available, CU_order), new Conjunction(CU_neg, CU_user) ), CU_Set ));
+		Condition CU_pre = new FOLCondition(new ExistsQuantifiedFormula(new Conjunction( new Conjunction(CU_available, CU_order), new Conjunction(CU_neg, CU_user) ), CU_Set ));
 
 		Set<EvolutionScenario> CU_evo = new HashSet<>();
 		CapabilityEvolutionScenario CU_evo1 = new CapabilityEvolutionScenario("RegisteredUserWithCloud");
@@ -157,7 +158,7 @@ public class PELTLTest {
 		Set<Variable> AU_Set = new HashSet<Variable>();
 		AU_Set.add(doc);
 		AU_Set.add(usr);
-		Condition AU_pre = new Condition(new ExistsQuantifiedFormula(new Conjunction(new Conjunction(AU_complete, AU_user_data), new Conjunction(AU_unregistered, AU_user)), AU_Set));
+		Condition AU_pre = new FOLCondition(new ExistsQuantifiedFormula(new Conjunction(new Conjunction(AU_complete, AU_user_data), new Conjunction(AU_unregistered, AU_user)), AU_Set));
 
 		Set<EvolutionScenario> AU_evo = new HashSet<>();
 		CapabilityEvolutionScenario AU_evo1 = new CapabilityEvolutionScenario("RegisteredUser");
@@ -182,7 +183,7 @@ public class PELTLTest {
 		Set<Variable> SRF_Set = new HashSet<Variable>();
 		SRF_Set.add(doc);
 		SRF_Set.add(usr);
-		Condition SRF_pre = new Condition(new ExistsQuantifiedFormula( new Conjunction(new Conjunction(SRF_uncomplete, SRF_user_data), new Conjunction(SRF_unregistered, SRF_user)), SRF_Set ));
+		Condition SRF_pre = new FOLCondition(new ExistsQuantifiedFormula( new Conjunction(new Conjunction(SRF_uncomplete, SRF_user_data), new Conjunction(SRF_unregistered, SRF_user)), SRF_Set ));
 
 		Set<EvolutionScenario> SRF_evo = new HashSet<>();
 		CapabilityEvolutionScenario SRF_evo1 = new CapabilityEvolutionScenario("UncompleteRegistrationForm");
@@ -197,7 +198,7 @@ public class PELTLTest {
 		WUD_uncomplete.addArgument(doc);
 		FOLAtom WUD_registration_form = new FOLAtom( new Predicate("registration_form",1));
 		WUD_registration_form.addArgument(doc);
-		Condition WUD_pre = new Condition( new ExistsQuantifiedFormula( new Conjunction(WUD_uncomplete, WUD_registration_form), doc));
+		Condition WUD_pre = new FOLCondition( new ExistsQuantifiedFormula( new Conjunction(WUD_uncomplete, WUD_registration_form), doc));
 
 		Set<EvolutionScenario> WUD_evo = new HashSet<>();
 		CapabilityEvolutionScenario WUD_evo1 = new CapabilityEvolutionScenario("CompleteForm");
@@ -225,7 +226,7 @@ public class PELTLTest {
 		Set<Variable> CS_Set = new HashSet<Variable>();
 		CS_Set.add(doc);
 		CS_Set.add(usr);
-		Condition CS_pre = new Condition(new ExistsQuantifiedFormula( new Conjunction(new Conjunction(CS_available, CS_order), new Conjunction(CS_registered, CS_user)), CS_Set ));
+		Condition CS_pre = new FOLCondition(new ExistsQuantifiedFormula( new Conjunction(new Conjunction(CS_available, CS_order), new Conjunction(CS_registered, CS_user)), CS_Set ));
 
 		Set<EvolutionScenario> CS_evo = new HashSet<>();
 		CapabilityEvolutionScenario CS_evo1 = new CapabilityEvolutionScenario("AcceptableOrder");
@@ -255,7 +256,7 @@ public class PELTLTest {
 		Set<Variable> NSF_Set = new HashSet<Variable>();
 		NSF_Set.add(doc);
 		NSF_Set.add(usr);
-		Condition NSF_pre = new Condition(new ExistsQuantifiedFormula( new Conjunction( new Conjunction(new Conjunction(NSF_refused, NSF_order), new Conjunction(NSF_registered, NSF_user)), new Conjunction(NSF_ord_fail, NSF_order)), NSF_Set ));
+		Condition NSF_pre = new FOLCondition(new ExistsQuantifiedFormula( new Conjunction( new Conjunction(new Conjunction(NSF_refused, NSF_order), new Conjunction(NSF_registered, NSF_user)), new Conjunction(NSF_ord_fail, NSF_order)), NSF_Set ));
 
 		Set<EvolutionScenario> NSF_evo = new HashSet<>();
 		CapabilityEvolutionScenario NSF_evo1 = new CapabilityEvolutionScenario("Failure");
@@ -281,7 +282,7 @@ public class PELTLTest {
 		Set<Variable> GT_Set = new HashSet<Variable>();
 		GT_Set.add(doc);
 		GT_Set.add(usr);
-		Condition GI_pre = new Condition(new ExistsQuantifiedFormula(new Conjunction( new Conjunction(new Conjunction(GI_accepted, GI_order), new Conjunction(GI_registered, GI_user)), GI_notAvailable), GT_Set) );
+		Condition GI_pre = new FOLCondition(new ExistsQuantifiedFormula(new Conjunction( new Conjunction(new Conjunction(GI_accepted, GI_order), new Conjunction(GI_registered, GI_user)), GI_notAvailable), GT_Set) );
 
 		Set<EvolutionScenario> GI_evo = new HashSet<>();
 		CapabilityEvolutionScenario GI_evo1 = new CapabilityEvolutionScenario("AvailableInvoice");
@@ -306,7 +307,7 @@ public class PELTLTest {
 		Set<Variable> UOUCS_Set = new HashSet<Variable>();
 		UOUCS_Set.add(doc);
 		UOUCS_Set.add(usr);
-		Condition UOUCS_pre = new Condition(new ExistsQuantifiedFormula(new Conjunction( new Conjunction(new Conjunction(UOUCS_available, UOUCS_invoice), new Conjunction(UOUCS_has_cloud_space, UOUCS_user)), UOUCS_notUploaded), UOUCS_Set ));
+		Condition UOUCS_pre = new FOLCondition(new ExistsQuantifiedFormula(new Conjunction( new Conjunction(new Conjunction(UOUCS_available, UOUCS_invoice), new Conjunction(UOUCS_has_cloud_space, UOUCS_user)), UOUCS_notUploaded), UOUCS_Set ));
 
 		Set<EvolutionScenario> UOUCS_evo = new HashSet<>();
 		CapabilityEvolutionScenario UOUCS_evo1 = new CapabilityEvolutionScenario("UploadedOnCloud");
@@ -332,7 +333,7 @@ public class PELTLTest {
 		Set<Variable> UOPCS_Set = new HashSet<Variable>();
 		UOPCS_Set.add(doc);
 		UOPCS_Set.add(usr);
-		Condition UOPCS_pre = new Condition(new ExistsQuantifiedFormula(new Conjunction( new Conjunction(new Conjunction(UOPCS_available, UOPCS_invoice), new Conjunction(neg1, UOPCS_user)), UOPCS_notUploaded), UOPCS_Set ));
+		Condition UOPCS_pre = new FOLCondition(new ExistsQuantifiedFormula(new Conjunction( new Conjunction(new Conjunction(UOPCS_available, UOPCS_invoice), new Conjunction(neg1, UOPCS_user)), UOPCS_notUploaded), UOPCS_Set ));
 
 		Set<EvolutionScenario> UOPCS_evo = new HashSet<>();
 		CapabilityEvolutionScenario UOPCS_evo1 = new CapabilityEvolutionScenario("UploadedOnCloud");
@@ -359,7 +360,7 @@ public class PELTLTest {
 		Set<Variable> SFL_Set = new HashSet<Variable>();
 		SFL_Set.add(doc);
 		SFL_Set.add(usr);
-		Condition SFL_pre = new Condition(new ExistsQuantifiedFormula(new Conjunction( new Conjunction(new Conjunction(SFL_uploaded_on_cloud, SFL_invoice), new Conjunction(neg2, SFL_user)), SFL_notMailed), SFL_Set ));
+		Condition SFL_pre = new FOLCondition(new ExistsQuantifiedFormula(new Conjunction( new Conjunction(new Conjunction(SFL_uploaded_on_cloud, SFL_invoice), new Conjunction(neg2, SFL_user)), SFL_notMailed), SFL_Set ));
 
 		
 		Set<EvolutionScenario> SFL_evo = new HashSet<>();
@@ -386,7 +387,7 @@ public class PELTLTest {
 		NSM_sent.addArgument(doc);
 		NSM_sent.addArgument(usr);
 		Negation NSM_notSent = new Negation(NSM_sent);
-		Condition NSM_pre = new Condition(new ExistsQuantifiedFormula( new Conjunction(new Conjunction(NSM_notified, NSM_notSent), new Conjunction(NSM_invoice, NSM_user)), NSM_Set ));
+		Condition NSM_pre = new FOLCondition(new ExistsQuantifiedFormula( new Conjunction(new Conjunction(NSM_notified, NSM_notSent), new Conjunction(NSM_invoice, NSM_user)), NSM_Set ));
 
 		Set<EvolutionScenario> NSM_evo = new HashSet<>();
 		CapabilityEvolutionScenario NSM_evo1 = new CapabilityEvolutionScenario("SentDeliveryOrderToStorehouseManager");
@@ -418,11 +419,11 @@ public class PELTLTest {
 		  wStart.addFact_asString("user_data(the_user_data).");
 		} catch (ParseException e) {
 		  e.printStackTrace();
-		} catch (exception.NotAllowedInAStateOfWorld e) {
+		} catch (org.icar.musa.exception.NotAllowedInAStateOfWorld e) {
 		  e.printStackTrace();
 		}
 		
-		startingTokens = new TokensConfiguration(new PNHierarchy(treeModel));
+		startingTokens = new TokenConf(new PNHierarchy(treeModel));
 		
 		System.out.println("- Starting Tokens");
 		for( String net : startingTokens.getNetsState().keySet() )

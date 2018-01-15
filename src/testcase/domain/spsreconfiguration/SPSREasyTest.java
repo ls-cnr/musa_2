@@ -4,24 +4,24 @@ import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 
+import org.icar.musa.core.Requirements;
+import org.icar.musa.core.domain.StateOfWorld;
+import org.icar.musa.core.runtime_entity.AbstractCapability;
+import org.icar.musa.core.runtime_entity.AssumptionSet;
+import org.icar.musa.core.runtime_entity.ProblemSpecification;
+import org.icar.musa.exception.ProblemDefinitionException;
+import org.icar.musa.proactive_means_end_reasoning.ExtendedNode;
+import org.icar.musa.proactive_means_end_reasoning.GraphExpansion;
+import org.icar.musa.proactive_means_end_reasoning.ProblemExploration;
+import org.icar.musa.proactive_means_end_reasoning.SolutionGraph;
+import org.icar.musa.proactive_means_end_reasoning.wts.WorldNode;
+import org.icar.specification.linear_temporal_logic.formulamodel.LTLGoal;
+import org.icar.specification.linear_temporal_logic.net.PNHierarchy;
+import org.icar.specification.linear_temporal_logic.net.TokenConf;
 import org.junit.Before;
 import org.junit.Test;
 
-import datalayer.awareness.AbstractCapability;
-import datalayer.awareness.AssumptionSet;
-import datalayer.awareness.ProblemSpecification;
-import datalayer.awareness.Requirements;
-import datalayer.awareness.LTL.formulamodel.LTLGoal;
-import datalayer.awareness.LTL.net.PNHierarchy;
-import datalayer.awareness.LTL.net.TokensConfiguration;
-import datalayer.world.StateOfWorld;
-import datalayer.world.wts.WorldNode;
-import exception.ProblemDefinitionException;
 import jason.stdlib.perceive;
-import reasoner.SolutionGraph;
-import reasoner.probexp.ExtendedNode;
-import reasoner.probexp.GraphExpansion;
-import reasoner.probexp.ProblemExploration;
 
 public class SPSREasyTest {
 
@@ -59,7 +59,7 @@ public class SPSREasyTest {
 		} catch (ProblemDefinitionException e) {
 			System.out.println("I goal devono essere specificati in LTL");
 		}
-		pe.addToVisit(new WorldNode(first), new TokensConfiguration(new PNHierarchy((LTLGoal) requirements)), 10);
+		pe.addToVisit(new WorldNode(first), new TokenConf(new PNHierarchy((LTLGoal) requirements)), 10);
 		
 		int k = 0;
 		// simula il ciclo di espansione di un WTS

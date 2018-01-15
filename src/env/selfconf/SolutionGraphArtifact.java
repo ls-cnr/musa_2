@@ -2,16 +2,17 @@
 
 package selfconf;
 
+import org.icar.musa.agent_communication.translator.JasonExpansionNode;
+import org.icar.musa.agent_communication.translator.JasonExtNode;
+import org.icar.musa.agent_communication.translator.JasonStateOfWorld;
+import org.icar.musa.agent_communication.translator.TranslateError;
+import org.icar.musa.core.domain.StateOfWorld;
+import org.icar.musa.proactive_means_end_reasoning.ExtendedNode;
+import org.icar.musa.proactive_means_end_reasoning.GraphExpansion;
+import org.icar.musa.proactive_means_end_reasoning.SolutionGraph;
+
 import cartago.*;
-import communication.translator.JasonExtNode;
-import communication.translator.JasonExpansionNode;
-import communication.translator.JasonStateOfWorld;
-import communication.translator.TranslateError;
-import datalayer.world.StateOfWorld;
 import jason.asSyntax.Term;
-import reasoner.SolutionGraph;
-import reasoner.probexp.ExtendedNode;
-import reasoner.probexp.GraphExpansion;
 
 public class SolutionGraphArtifact extends Artifact {
 	

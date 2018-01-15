@@ -13,11 +13,11 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
-import datalayer.awareness.*;
-import datalayer.awareness.legacy.GS_Goal;
-import datalayer.awareness.legacy.goalmodel.GoalTreeModel;
-import datalayer.awareness.legacy.net.Net;
-import datalayer.world.Condition;
+import org.icar.musa.core.fol_reasoner.FOLCondition;
+import org.icar.musa.core.runtime_entity.*;
+import org.icar.specification.goalspec.GS_Goal;
+import org.icar.specification.goalspec.goalmodel.GoalTreeModel;
+import org.icar.specification.goalspec.net.Net;
 
 /**
  * This test is used to show an instance of PetriNet
@@ -101,11 +101,11 @@ public class TestGui {
 		Set<Variable> THO_var = new HashSet<Variable>();
 		THO_var.add(doc);
 		THO_var.add(usr);
-		Condition THO_tc = new Condition( new ExistsQuantifiedFormula(new Conjunction(THO_received, new Conjunction(THO_order,THO_user)), THO_var ) );
+		FOLCondition THO_tc = new FOLCondition( new ExistsQuantifiedFormula(new Conjunction(THO_received, new Conjunction(THO_order,THO_user)), THO_var ) );
 		
 		FOLAtom THO_processed = new FOLAtom( new Predicate("processed", 1) );
 		THO_processed.addArgument(doc);
-		Condition THO_fs = new Condition( new ExistsQuantifiedFormula(new Conjunction(THO_processed, THO_order), doc));
+		FOLCondition THO_fs = new FOLCondition( new ExistsQuantifiedFormula(new Conjunction(THO_processed, THO_order), doc));
 		
 		GS_Goal THO = new GS_Goal("to_handle_order", THO_tc, THO_fs);
 		
@@ -120,11 +120,11 @@ public class TestGui {
 		Set<Variable> TWO_var = new HashSet<Variable>();
 		TWO_var.add(doc);
 		TWO_var.add(usr);
-		Condition TWO_tc = new Condition( new ExistsQuantifiedFormula(new Conjunction(TWO_received, new Conjunction(TWO_order,TWO_user)), TWO_var ) );
+		FOLCondition TWO_tc = new FOLCondition( new ExistsQuantifiedFormula(new Conjunction(TWO_received, new Conjunction(TWO_order,TWO_user)), TWO_var ) );
 		
 		FOLAtom TWO_available = new FOLAtom( new Predicate("available",1));
 		TWO_available.addArgument(doc);
-		Condition TWO_fs = new Condition( new ExistsQuantifiedFormula(new Conjunction(TWO_available, TWO_order), doc ) );
+		FOLCondition TWO_fs = new FOLCondition( new ExistsQuantifiedFormula(new Conjunction(TWO_available, TWO_order), doc ) );
 		
 		GS_Goal TWO = new GS_Goal("to_wait_order", TWO_tc, TWO_fs);
 		
@@ -140,11 +140,11 @@ public class TestGui {
 		Set<Variable> TPO_var = new HashSet<Variable>();
 		TPO_var.add(doc);
 		TPO_var.add(usr);
-		Condition TPO_tc = new Condition( new ExistsQuantifiedFormula(new Conjunction(new Conjunction(TPO_available,TPO_order), new Conjunction(TPO_registered,TPO_user)), TPO_var ) );
+		FOLCondition TPO_tc = new FOLCondition( new ExistsQuantifiedFormula(new Conjunction(new Conjunction(TPO_available,TPO_order), new Conjunction(TPO_registered,TPO_user)), TPO_var ) );
 		
 		FOLAtom TPO_processed = new FOLAtom( new Predicate("processed", 1) );
 		TPO_processed.addArgument(doc);
-		Condition TPO_fs = new Condition( new ExistsQuantifiedFormula(new Conjunction(TPO_processed, TPO_order), doc ) );
+		FOLCondition TPO_fs = new FOLCondition( new ExistsQuantifiedFormula(new Conjunction(TPO_processed, TPO_order), doc ) );
 		
 		GS_Goal TPO = new GS_Goal("to_process_order", TPO_tc, TPO_fs);
 		
@@ -153,7 +153,7 @@ public class TestGui {
 		TPAO_accepted.addArgument(doc);
 		FOLAtom TPAO_order = new FOLAtom( new Predicate("order",1));
 		TPAO_order.addArgument(doc);
-		Condition TPAO_tc = new Condition( new ExistsQuantifiedFormula(new Conjunction(TPAO_accepted, TPAO_order), doc) );
+		FOLCondition TPAO_tc = new FOLCondition( new ExistsQuantifiedFormula(new Conjunction(TPAO_accepted, TPAO_order), doc) );
 		
 		FOLAtom TPAO_send = new FOLAtom( new Predicate("send",2));
 		TPAO_send.addArgument(doc);
@@ -165,7 +165,7 @@ public class TestGui {
 		Set<Variable> TPAO_var = new HashSet<Variable>();
 		TPAO_var.add(doc);
 		TPAO_var.add(mng);
-		Condition TPAO_fs = new Condition( new ExistsQuantifiedFormula(new Conjunction(TPAO_send, new Conjunction(TPAO_delivery, TPAO_manager)), TPAO_var) );
+		FOLCondition TPAO_fs = new FOLCondition( new ExistsQuantifiedFormula(new Conjunction(TPAO_send, new Conjunction(TPAO_delivery, TPAO_manager)), TPAO_var) );
 		
 		GS_Goal TPAO = new GS_Goal("to_process_accepted_order", TPAO_tc, TPAO_fs);
 		
@@ -181,7 +181,7 @@ public class TestGui {
 		Set<Variable> TNI_var1 = new HashSet<Variable>();
 		TNI_var1.add(usr);
 		TNI_var1.add(doc);
-		Condition TNI_tc = new Condition( new ExistsQuantifiedFormula(new Conjunction(new Conjunction(TNI_registered, TNI_user), new Conjunction(TNI_available, TNI_invoice)), TNI_var1) );
+		FOLCondition TNI_tc = new FOLCondition( new ExistsQuantifiedFormula(new Conjunction(new Conjunction(TNI_registered, TNI_user), new Conjunction(TNI_available, TNI_invoice)), TNI_var1) );
 		
 		FOLAtom TNI_send = new FOLAtom( new Predicate("send",2));
 		TNI_send.addArgument(doc);
@@ -189,7 +189,7 @@ public class TestGui {
 		Set<Variable> TNI_var2 = new HashSet<Variable>();
 		TNI_var2.add(doc);
 		TNI_var2.add(usr);		
-		Condition TNI_fs = new Condition( new ExistsQuantifiedFormula(new Conjunction(TNI_send, new Conjunction(TNI_invoice, TNI_user)), TNI_var2) );
+		FOLCondition TNI_fs = new FOLCondition( new ExistsQuantifiedFormula(new Conjunction(TNI_send, new Conjunction(TNI_invoice, TNI_user)), TNI_var2) );
 		
 		GS_Goal TNI = new GS_Goal("to_notify_invoice", TNI_tc, TNI_fs);
 		
@@ -204,7 +204,7 @@ public class TestGui {
 		Set<Variable> TDO_var1 = new HashSet<Variable>();
 		TDO_var1.add(doc);
 		TDO_var1.add(usr);
-		Condition TDO_tc = new Condition( new ExistsQuantifiedFormula(new Conjunction(TDO_send, new Conjunction(TDO_invoice, TDO_user)), TDO_var1) );
+		FOLCondition TDO_tc = new FOLCondition( new ExistsQuantifiedFormula(new Conjunction(TDO_send, new Conjunction(TDO_invoice, TDO_user)), TDO_var1) );
 		
 		FOLAtom TDO_delivery = new FOLAtom( new Predicate("delivery_order", 1));
 		TDO_delivery.addArgument(doc);
@@ -213,7 +213,7 @@ public class TestGui {
 		Set<Variable> TDO_var2 = new HashSet<Variable>();
 		TDO_var2.add(doc);
 		TDO_var2.add(mng);
-		Condition TDO_fs = new Condition( new ExistsQuantifiedFormula(new Conjunction(TDO_send, new Conjunction(TDO_delivery, TDO_manager)), TDO_var2) );
+		FOLCondition TDO_fs = new FOLCondition( new ExistsQuantifiedFormula(new Conjunction(TDO_send, new Conjunction(TDO_delivery, TDO_manager)), TDO_var2) );
 		
 		GS_Goal TDO = new GS_Goal("to_delivery_order", TDO_tc, TDO_fs);
 		
@@ -229,12 +229,12 @@ public class TestGui {
 		Set<Variable> TNF_var1 = new HashSet<Variable>();
 		TNF_var1.add(doc);
 		TNF_var1.add(usr);
-		Condition TNF_tc = new Condition( new ExistsQuantifiedFormula(new Conjunction(new Conjunction(TNF_refused, TNF_order), new Conjunction(TNF_registered, TNF_user)), TNF_var1) );
+		FOLCondition TNF_tc = new FOLCondition( new ExistsQuantifiedFormula(new Conjunction(new Conjunction(TNF_refused, TNF_order), new Conjunction(TNF_registered, TNF_user)), TNF_var1) );
 		
 		FOLAtom TNF_send = new FOLAtom( new Predicate("send",2));
 		TNF_send.addArgument(new Constant("failure_order"));
 		TNF_send.addArgument(usr);	
-		Condition TNF_fs = new Condition( new ExistsQuantifiedFormula(new Conjunction(TNF_send, TNF_user), usr) );
+		FOLCondition TNF_fs = new FOLCondition( new ExistsQuantifiedFormula(new Conjunction(TNF_send, TNF_user), usr) );
 		
 		GS_Goal TNF = new GS_Goal("to_notify_failure", TNF_tc, TNF_fs);
 		/*************/

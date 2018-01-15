@@ -3,10 +3,9 @@ package configurationtest;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import org.icar.musa.solution_extractor.distributed.Sequences;
+import org.icar.musa.solution_extractor.distributed.Solution;
 import org.junit.Test;
-
-import datalayer.world.configuration.distributed.Sequences;
-import datalayer.world.configuration.distributed.Solution;
 
 /**
  * 

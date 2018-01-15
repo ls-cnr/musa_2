@@ -7,44 +7,45 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.icar.musa.agent_communication.translator.ExtDLPHead;
+import org.icar.musa.core.Condition;
+import org.icar.musa.core.domain.StateOfWorld;
+import org.icar.musa.core.domain.evolution.AddStatement;
+import org.icar.musa.core.domain.evolution.CapabilityEvolutionScenario;
+import org.icar.musa.core.domain.evolution.EvolutionScenario;
+import org.icar.musa.core.domain.evolution.RemoveStatement;
+import org.icar.musa.core.fol_reasoner.FOLCondition;
+import org.icar.musa.core.fol_reasoner.EntailOperator;
+import org.icar.musa.core.runtime_entity.AbstractCapability;
+import org.icar.musa.core.runtime_entity.AssumptionSet;
+import org.icar.musa.core.runtime_entity.ProblemSpecification;
+import org.icar.musa.exception.ProblemDefinitionException;
+import org.icar.musa.proactive_means_end_reasoning.ExtendedNode;
+import org.icar.musa.proactive_means_end_reasoning.GraphExpansion;
+import org.icar.musa.proactive_means_end_reasoning.MultipleExpansion;
+import org.icar.musa.proactive_means_end_reasoning.NormalExpansion;
+import org.icar.musa.proactive_means_end_reasoning.ProblemExploration;
+import org.icar.musa.proactive_means_end_reasoning.wts.WorldNode;
+import org.icar.specification.linear_temporal_logic.formulamodel.FormulaBTConstruction;
+import org.icar.specification.linear_temporal_logic.formulamodel.LTLGoal;
+import org.icar.specification.linear_temporal_logic.net.PNHierarchy;
+import org.icar.specification.linear_temporal_logic.net.TokenConf;
+import org.icar.specification.linear_temporal_logic.net.netmodels.GloballyPN;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import communication.translator.ExtDLPHead;
-import datalayer.awareness.AbstractCapability;
-import datalayer.awareness.AssumptionSet;
-import datalayer.awareness.ProblemSpecification;
-import datalayer.awareness.LTL.formulamodel.LTLGoal;
-import datalayer.awareness.LTL.formulamodel.FormulaBTConstruction;
-import datalayer.awareness.LTL.net.PNHierarchy;
-import datalayer.awareness.LTL.net.TokensConfiguration;
-import datalayer.awareness.LTL.net.netmodels.GloballyPN;
-import datalayer.world.Condition;
-import datalayer.world.StateOfWorld;
-import datalayer.world.evolution.AddStatement;
-import datalayer.world.evolution.CapabilityEvolutionScenario;
-import datalayer.world.evolution.EvolutionScenario;
-import datalayer.world.evolution.RemoveStatement;
-import datalayer.world.wts.WorldNode;
-import exception.ProblemDefinitionException;
 import net.sf.tweety.logics.commons.syntax.Constant;
 import net.sf.tweety.logics.commons.syntax.Predicate;
 import net.sf.tweety.logics.fol.syntax.FOLAtom;
 import net.sf.tweety.lp.asp.parser.ParseException;
 import net.sf.tweety.lp.asp.syntax.DLPAtom;
-import reasoner.EntailOperator;
-import reasoner.probexp.ExtendedNode;
-import reasoner.probexp.GraphExpansion;
-import reasoner.probexp.MultipleExpansion;
-import reasoner.probexp.NormalExpansion;
-import reasoner.probexp.ProblemExploration;
 
 public class NECSSetup {
 
 	private AssumptionSet domain;
 	private ProblemExploration problem;	
-	private TokensConfiguration startingTokens;
+	private TokenConf startingTokens;
 
 	private AssumptionSet configureAssumptions() {
 		AssumptionSet domain = new AssumptionSet();	 
@@ -114,7 +115,7 @@ public class NECSSetup {
 		
 		} catch (ParseException e) {
 			e.printStackTrace();
-		} catch (exception.NotAllowedInAnAssumptionSet e) {
+		} catch (org.icar.musa.exception.NotAllowedInAnAssumptionSet e) {
 			e.printStackTrace();
 		}
 		
@@ -127,7 +128,7 @@ public class NECSSetup {
 
 		/*main_generator_on*/
 		AbstractCapability main_on;
-		Condition main_on_pre = new Condition(new DLPAtom("off", main));
+		Condition main_on_pre = new FOLCondition(new DLPAtom("off", main));
 		Set<EvolutionScenario> main_on_evo = new HashSet<>();
 		CapabilityEvolutionScenario main_on_evo1 = new CapabilityEvolutionScenario("mainOn");
 		main_on_evo1.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("on", main)) ) );
@@ -138,7 +139,7 @@ public class NECSSetup {
 		
 		/*main_generator_off*/
 		AbstractCapability main_off;
-		Condition main_off_pre = new Condition(new DLPAtom("on", main));
+		Condition main_off_pre = new FOLCondition(new DLPAtom("on", main));
 		Set<EvolutionScenario> main_off_evo = new HashSet<>();
 		CapabilityEvolutionScenario main_off_evo1 = new CapabilityEvolutionScenario("mainOff");
 		main_off_evo1.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("off", main)) ) );
@@ -149,7 +150,7 @@ public class NECSSetup {
 
 		/*main_generator_fault*/
 		AbstractCapability main_fault;
-		Condition main_fault_pre = new Condition(new DLPAtom("on", main));
+		Condition main_fault_pre = new FOLCondition(new DLPAtom("on", main));
 		Set<EvolutionScenario> main_fault_evo = new HashSet<>();
 		CapabilityEvolutionScenario main_fault_evo1 = new CapabilityEvolutionScenario("mainFault");
 		main_fault_evo1.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("fault", main)) ) );
@@ -161,7 +162,7 @@ public class NECSSetup {
 		/*aux_generator_on*/
 		AbstractCapability aux_on;
 		Constant aux = new Constant("aux");
-		Condition aux_on_pre = new Condition(new DLPAtom("off", aux));
+		Condition aux_on_pre = new FOLCondition(new DLPAtom("off", aux));
 		Set<EvolutionScenario> aux_on_evo = new HashSet<>();
 		CapabilityEvolutionScenario aux_on_evo1 = new CapabilityEvolutionScenario("auxOn");
 		aux_on_evo1.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("on", aux)) ) );
@@ -172,7 +173,7 @@ public class NECSSetup {
 
 		/*aux_generator_off*/
 		AbstractCapability aux_off;
-		Condition aux_off_pre = new Condition(new DLPAtom("on", aux));
+		Condition aux_off_pre = new FOLCondition(new DLPAtom("on", aux));
 		Set<EvolutionScenario> aux_off_evo = new HashSet<>();
 		CapabilityEvolutionScenario aux_off_evo1 = new CapabilityEvolutionScenario("auxOff");
 		aux_off_evo1.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("off", aux)) ) );
@@ -183,7 +184,7 @@ public class NECSSetup {
 
 		/*aux_generator_fault*/
 		AbstractCapability aux_fault;
-		Condition aux_fault_pre = new Condition(new DLPAtom("on", aux));
+		Condition aux_fault_pre = new FOLCondition(new DLPAtom("on", aux));
 		Set<EvolutionScenario> aux_fault_evo = new HashSet<>();
 		CapabilityEvolutionScenario aux_fault_evo1 = new CapabilityEvolutionScenario("auxFault");
 		aux_fault_evo1.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("fault", aux)) ) );
@@ -195,7 +196,7 @@ public class NECSSetup {
 		/*catch_fire*/
 		AbstractCapability catch_fire;
 		Constant a_fire = new Constant("a_fire");
-		Condition catch_fire_pre = new Condition(new DLPAtom("fire", a_fire));
+		Condition catch_fire_pre = new FOLCondition(new DLPAtom("fire", a_fire));
 		Set<EvolutionScenario> catch_fire_evo = new HashSet<>();
 		CapabilityEvolutionScenario catch_fire_evo1 = new CapabilityEvolutionScenario("catchFire");
 		catch_fire_evo1.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("verified", a_fire)) ) );
@@ -206,7 +207,7 @@ public class NECSSetup {
 		/*the_fire_sys_on*/
 		AbstractCapability the_fire_sys_on;
 		Constant the_fire_sys = new Constant("the_fire_sys");
-		Condition the_fire_sys_on_pre = new Condition(new DLPAtom("off", the_fire_sys));
+		Condition the_fire_sys_on_pre = new FOLCondition(new DLPAtom("off", the_fire_sys));
 		Set<EvolutionScenario> the_fire_sys_on_evo = new HashSet<>();
 		CapabilityEvolutionScenario the_fire_sys_on_evo1 = new CapabilityEvolutionScenario("the_fire_sysOn");
 		the_fire_sys_on_evo1.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("on", the_fire_sys)) ) );
@@ -255,7 +256,7 @@ public class NECSSetup {
 	}
 	private AbstractCapability generate_close_capability_for_switcher(String switch_name) {
 		Constant i_const = new Constant(switch_name);
-		Condition i_pre = new Condition(new DLPAtom("open", i_const));
+		Condition i_pre = new FOLCondition(new DLPAtom("open", i_const));
 		Set<EvolutionScenario> i_evo = new HashSet<>();
 		CapabilityEvolutionScenario i_evo_scenario = new CapabilityEvolutionScenario("i1Closed");
 		i_evo_scenario.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("closed", i_const)) ) );
@@ -266,7 +267,7 @@ public class NECSSetup {
 
 	private AbstractCapability generate_open_capability_for_switcher(String switch_name) {
 		Constant i_const = new Constant(switch_name);
-		Condition i_pre = new Condition(new DLPAtom("closed", i_const));
+		Condition i_pre = new FOLCondition(new DLPAtom("closed", i_const));
 		Set<EvolutionScenario> i_evo = new HashSet<>();
 		CapabilityEvolutionScenario i_evo_scenario = new CapabilityEvolutionScenario("i1Open");
 		i_evo_scenario.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("open", i_const)) ) );
@@ -302,7 +303,7 @@ public class NECSSetup {
 			  //wStart.addFact_asString("closed(i15).");
 			} catch (ParseException e) {
 			  e.printStackTrace();
-			} catch (exception.NotAllowedInAStateOfWorld e) {
+			} catch (org.icar.musa.exception.NotAllowedInAStateOfWorld e) {
 			  e.printStackTrace();
 		}
 		return wStart;
@@ -311,7 +312,7 @@ public class NECSSetup {
 	private void modelConstruction( LTLGoal treeModel ) throws ProblemDefinitionException {
 		ProblemSpecification ps = new ProblemSpecification(domain,treeModel,null);
 		problem = new ProblemExploration(ps, new ArrayList<AbstractCapability>());
-		startingTokens = new TokensConfiguration(new PNHierarchy(treeModel));
+		startingTokens = new TokenConf(new PNHierarchy(treeModel));
 
 //		System.out.println("\n- Formulas Tree");
 //		treeModel.print(treeModel.getRoot());
@@ -355,7 +356,7 @@ public class NECSSetup {
 			  wStart.addFact_asString("closed(i17).");
 			} catch (ParseException e) {
 			  e.printStackTrace();
-			} catch (exception.NotAllowedInAStateOfWorld e) {
+			} catch (org.icar.musa.exception.NotAllowedInAStateOfWorld e) {
 			  e.printStackTrace();
 			}
 		
@@ -408,8 +409,8 @@ public class NECSSetup {
 		
 		// DOMANDA: USA LE DOMAIN ASSUMPTIONS?
 		// PER OGNI NODO: motor_2 is ON o OFF?
-		Condition c1 = new Condition(new DLPAtom("on",new Constant("motor_2") ));
-		Condition c2 = new Condition(new DLPAtom("on",new Constant("l2") ));
+		FOLCondition c1 = new FOLCondition(new DLPAtom("on",new Constant("motor_2") ));
+		Condition c2 = new FOLCondition(new DLPAtom("on",new Constant("l2") ));
 		
 		// NOTA DI LUCA: se metto il goal "G(on(l2) U (on(motor_2)))" mi da line 1:23 no viable alternative at input 'on(motor_2))'
 		modelConstruction( FormulaBTConstruction.construct("G(on(l2) U (!on(motor_2)))"));

@@ -2,18 +2,18 @@ package pmrtest.graph;
 
 import static org.junit.Assert.*;
 
+import org.icar.musa.core.domain.StateOfWorld;
+import org.icar.musa.core.runtime_entity.AbstractCapability;
+import org.icar.musa.proactive_means_end_reasoning.wts.Edge;
+import org.icar.musa.proactive_means_end_reasoning.wts.EvolutionEdge;
+import org.icar.musa.proactive_means_end_reasoning.wts.Node;
+import org.icar.musa.proactive_means_end_reasoning.wts.NormalEdge;
+import org.icar.musa.proactive_means_end_reasoning.wts.OPNode;
+import org.icar.musa.proactive_means_end_reasoning.wts.WorldNode;
+import org.icar.musa.proactive_means_end_reasoning.wts.XORNode;
 import org.junit.Before;
 import org.junit.Test;
 
-import datalayer.awareness.AbstractCapability;
-import datalayer.world.StateOfWorld;
-import datalayer.world.wts.Edge;
-import datalayer.world.wts.EvolutionEdge;
-import datalayer.world.wts.Node;
-import datalayer.world.wts.NormalEdge;
-import datalayer.world.wts.OPNode;
-import datalayer.world.wts.WorldNode;
-import datalayer.world.wts.XORNode;
 import net.sf.tweety.lp.asp.parser.ParseException;
 
 public class EdgeTest {
@@ -51,7 +51,7 @@ public class EdgeTest {
 			w1.addFact_asString("penguin(tweety).");
 		} catch (ParseException e) {
 			e.printStackTrace();
-		} catch (exception.NotAllowedInAStateOfWorld e) {
+		} catch (org.icar.musa.exception.NotAllowedInAStateOfWorld e) {
 			e.printStackTrace();
 		}
 		this.w2 = new StateOfWorld();
@@ -60,7 +60,7 @@ public class EdgeTest {
 			w2.addFact_asString("penguin(tweety).");
 		} catch (ParseException e) {
 			e.printStackTrace();
-		} catch (exception.NotAllowedInAStateOfWorld e) {
+		} catch (org.icar.musa.exception.NotAllowedInAStateOfWorld e) {
 			e.printStackTrace();
 		}
 		this.w3 = new StateOfWorld();
@@ -69,7 +69,7 @@ public class EdgeTest {
 			w3.addFact_asString("parrot(polly).");
 		} catch (ParseException e) {
 			e.printStackTrace();
-		} catch (exception.NotAllowedInAStateOfWorld e) {
+		} catch (org.icar.musa.exception.NotAllowedInAStateOfWorld e) {
 			e.printStackTrace();
 		}
 		this.w4 = new StateOfWorld();
@@ -78,7 +78,7 @@ public class EdgeTest {
 			w4.addFact_asString("broken_wing(sid).");
 		} catch (ParseException e) {
 			e.printStackTrace();
-		} catch (exception.NotAllowedInAStateOfWorld e) {
+		} catch (org.icar.musa.exception.NotAllowedInAStateOfWorld e) {
 			e.printStackTrace();
 		}
 		

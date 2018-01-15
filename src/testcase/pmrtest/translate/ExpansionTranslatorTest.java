@@ -4,25 +4,25 @@ import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 
+import org.icar.musa.agent_communication.translator.JasonDLPHead;
+import org.icar.musa.agent_communication.translator.JasonExpansionNode;
+import org.icar.musa.agent_communication.translator.JasonStateOfWorld;
+import org.icar.musa.agent_communication.translator.TranslateError;
+import org.icar.musa.core.domain.StateOfWorld;
+import org.icar.musa.core.runtime_entity.AbstractCapability;
+import org.icar.musa.proactive_means_end_reasoning.ExtendedNode;
+import org.icar.musa.proactive_means_end_reasoning.GraphExpansion;
+import org.icar.musa.proactive_means_end_reasoning.MultipleExpansion;
+import org.icar.musa.proactive_means_end_reasoning.NormalExpansion;
+import org.icar.musa.proactive_means_end_reasoning.SolutionGraph;
+import org.icar.musa.proactive_means_end_reasoning.wts.WorldNode;
 import org.junit.Before;
 import org.junit.Test;
 
-import communication.translator.JasonDLPHead;
-import communication.translator.JasonExpansionNode;
-import communication.translator.JasonStateOfWorld;
-import communication.translator.TranslateError;
-import datalayer.awareness.AbstractCapability;
-import datalayer.world.StateOfWorld;
-import datalayer.world.wts.WorldNode;
 import jason.asSyntax.Term;
 import net.sf.tweety.lp.asp.parser.ParseException;
 import net.sf.tweety.lp.asp.syntax.DLPHead;
 import net.sf.tweety.lp.asp.syntax.DLPLiteral;
-import reasoner.SolutionGraph;
-import reasoner.probexp.ExtendedNode;
-import reasoner.probexp.GraphExpansion;
-import reasoner.probexp.MultipleExpansion;
-import reasoner.probexp.NormalExpansion;
 
 public class ExpansionTranslatorTest {
 		
@@ -75,7 +75,7 @@ public class ExpansionTranslatorTest {
 			w1.addFact_asString("penguin2(tweety).");
 		} catch (ParseException e) {
 			e.printStackTrace();
-		} catch (exception.NotAllowedInAStateOfWorld e) {
+		} catch (org.icar.musa.exception.NotAllowedInAStateOfWorld e) {
 			e.printStackTrace();
 		}
 		this.w2 = new StateOfWorld();
@@ -84,7 +84,7 @@ public class ExpansionTranslatorTest {
 			w2.addFact_asString("penguin(tweety).");
 		} catch (ParseException e) {
 			e.printStackTrace();
-		} catch (exception.NotAllowedInAStateOfWorld e) {
+		} catch (org.icar.musa.exception.NotAllowedInAStateOfWorld e) {
 			e.printStackTrace();
 		}
 		this.w3 = new StateOfWorld();
@@ -93,7 +93,7 @@ public class ExpansionTranslatorTest {
 			w3.addFact_asString("parrot(polly).");
 		} catch (ParseException e) {
 			e.printStackTrace();
-		} catch (exception.NotAllowedInAStateOfWorld e) {
+		} catch (org.icar.musa.exception.NotAllowedInAStateOfWorld e) {
 			e.printStackTrace();
 		}
 		this.w4 = new StateOfWorld();
@@ -102,7 +102,7 @@ public class ExpansionTranslatorTest {
 			w4.addFact_asString("broken_wing(sid).");
 		} catch (ParseException e) {
 			e.printStackTrace();
-		} catch (exception.NotAllowedInAStateOfWorld e) {
+		} catch (org.icar.musa.exception.NotAllowedInAStateOfWorld e) {
 			e.printStackTrace();
 		}
 		this.w5 = new StateOfWorld();
@@ -111,7 +111,7 @@ public class ExpansionTranslatorTest {
 			w5.addFact_asString("can_fly(berry).");
 		} catch (ParseException e) {
 			e.printStackTrace();
-		} catch (exception.NotAllowedInAStateOfWorld e) {
+		} catch (org.icar.musa.exception.NotAllowedInAStateOfWorld e) {
 			e.printStackTrace();
 		}
 		this.w6 = new StateOfWorld();
@@ -120,7 +120,7 @@ public class ExpansionTranslatorTest {
 			w6.addFact_asString("broken_wing(sid).");
 		} catch (ParseException e) {
 			e.printStackTrace();
-		} catch (exception.NotAllowedInAStateOfWorld e) {
+		} catch (org.icar.musa.exception.NotAllowedInAStateOfWorld e) {
 			e.printStackTrace();
 		}
 		this.w7 = new StateOfWorld();
@@ -129,7 +129,7 @@ public class ExpansionTranslatorTest {
 			w7.addFact_asString("can_fly(claire).");
 		} catch (ParseException e) {
 			e.printStackTrace();
-		} catch (exception.NotAllowedInAStateOfWorld e) {
+		} catch (org.icar.musa.exception.NotAllowedInAStateOfWorld e) {
 			e.printStackTrace();
 		}
 		
