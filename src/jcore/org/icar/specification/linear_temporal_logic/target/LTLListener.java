@@ -1,7 +1,8 @@
-// Generated from LTL.g4 by ANTLR 4.7
+// Generated from LTL.g4 by ANTLR 4.7.1
 
-	package org.icar.specification.linear_temporal_logic.target;
-	import java.util.*;
+package org.icar.specification.linear_temporal_logic.target;
+
+import java.util.*;
 	/** Class auto-generated using ANTLR */
 
 import org.antlr.v4.runtime.tree.ParseTreeListener;

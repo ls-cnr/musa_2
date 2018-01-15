@@ -1,7 +1,8 @@
-// Generated from LTL.g4 by ANTLR 4.7
+// Generated from LTL.g4 by ANTLR 4.7.1
 
-	package org.icar.specification.linear_temporal_logic.target;
-	import java.util.*;
+package org.icar.specification.linear_temporal_logic.target;
+
+import java.util.*;
 	/** Class auto-generated using ANTLR */
 
 import org.antlr.v4.runtime.Lexer;
@@ -15,7 +16,7 @@ import org.antlr.v4.runtime.misc.*;
 
 @SuppressWarnings({"all", "warnings", "unchecked", "unused", "cast"})
 public class LTLLexer extends Lexer {
-	static { RuntimeMetaData.checkVersion("4.7", RuntimeMetaData.VERSION); }
+	static { RuntimeMetaData.checkVersion("4.7.1", RuntimeMetaData.VERSION); }
 
 	protected static final DFA[] _decisionToDFA;
 	protected static final PredictionContextCache _sharedContextCache =

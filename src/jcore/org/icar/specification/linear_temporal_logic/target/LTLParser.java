@@ -1,7 +1,8 @@
-// Generated from LTL.g4 by ANTLR 4.7
+// Generated from LTL.g4 by ANTLR 4.7.1
 
-	package org.icar.specification.linear_temporal_logic.target;
-	import java.util.*;
+package org.icar.specification.linear_temporal_logic.target;
+
+import java.util.*;
 	/** Class auto-generated using ANTLR */
 
 import org.antlr.v4.runtime.atn.*;
@@ -15,7 +16,7 @@ import java.util.ArrayList;
 
 @SuppressWarnings({"all", "warnings", "unchecked", "unused", "cast"})
 public class LTLParser extends Parser {
-	static { RuntimeMetaData.checkVersion("4.7", RuntimeMetaData.VERSION); }
+	static { RuntimeMetaData.checkVersion("4.7.1", RuntimeMetaData.VERSION); }
 
 	protected static final DFA[] _decisionToDFA;
 	protected static final PredictionContextCache _sharedContextCache =
@@ -127,11 +128,6 @@ public class LTLParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof LTLListener ) ((LTLListener)listener).exitStart(this);
 		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof LTLVisitor ) return ((LTLVisitor<? extends T>)visitor).visitStart(this);
-			else return visitor.visitChildren(this);
-		}
 	}
 
 	public final StartContext start() throws RecognitionException {
@@ -193,11 +189,6 @@ public class LTLParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof LTLListener ) ((LTLListener)listener).exitFolfor(this);
-		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof LTLVisitor ) return ((LTLVisitor<? extends T>)visitor).visitFolfor(this);
-			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -272,11 +263,6 @@ public class LTLParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof LTLListener ) ((LTLListener)listener).exitArg(this);
 		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof LTLVisitor ) return ((LTLVisitor<? extends T>)visitor).visitArg(this);
-			else return visitor.visitChildren(this);
-		}
 	}
 
 	public final ArgContext arg() throws RecognitionException {
@@ -337,11 +323,6 @@ public class LTLParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof LTLListener ) ((LTLListener)listener).exitExpr(this);
-		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof LTLVisitor ) return ((LTLVisitor<? extends T>)visitor).visitExpr(this);
-			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -404,11 +385,6 @@ public class LTLParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof LTLListener ) ((LTLListener)listener).exitUnaOper(this);
-		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof LTLVisitor ) return ((LTLVisitor<? extends T>)visitor).visitUnaOper(this);
-			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -498,11 +474,6 @@ public class LTLParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof LTLListener ) ((LTLListener)listener).exitBinOper(this);
-		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof LTLVisitor ) return ((LTLVisitor<? extends T>)visitor).visitBinOper(this);
-			else return visitor.visitChildren(this);
 		}
 	}
 
