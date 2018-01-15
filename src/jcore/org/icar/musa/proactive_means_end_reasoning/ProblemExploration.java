@@ -10,6 +10,7 @@ import org.icar.musa.core.domain.StateOfWorld;
 import org.icar.musa.core.domain.evolution.EvolutionScenario;
 import org.icar.musa.core.domain.evolution.WorldEvolution;
 import org.icar.musa.core.fol_reasoner.EntailOperator;
+import org.icar.musa.core.fol_reasoner.FOLCondition;
 import org.icar.musa.core.runtime_entity.AbstractCapability;
 import org.icar.musa.core.runtime_entity.AssumptionSet;
 import org.icar.musa.core.runtime_entity.ProblemSpecification;
@@ -160,7 +161,7 @@ public class ProblemExploration {
 		
 		for( int i = 0; i < capabilities.size(); i++ ){
 			AbstractCapability capability = capabilities.get(i);
-			if(EntailOperator.getInstance().entailsCondition(enode.getWorldState(), this.assumptions, capability.getPreCondition()) == true){
+			if(EntailOperator.getInstance().entailsCondition(enode.getWorldState(), this.assumptions, (FOLCondition) capability.getPreCondition()) == true){
 				//Starts the expansion
 				if(verbose) System.out.println("\n-----------------------------------------------------------------");
 				if(verbose) System.out.println("Applying capability " + capability.getId() );
@@ -385,7 +386,7 @@ public class ProblemExploration {
 				//Atomic Proposition 
 				else if( tCond instanceof SimpleCondition ){
 					//System.out.println("-Net:("+net+")\nStarting checking "+ tCond.getTerm() + " [S] ");
-					if( EntailOperator.getInstance().entailsCondition(state, assumptions, ((SimpleCondition) tCond).getCondition()) )
+					if( EntailOperator.getInstance().entailsCondition(state, assumptions, (FOLCondition) ((SimpleCondition) tCond).getCondition()) )
 						fire(t, tokens, net);
 					//System.out.println("Finished checking "+ tCond.getTerm() + " [S] in Net:("+net+")");
 				}
@@ -410,7 +411,7 @@ public class ProblemExploration {
 						//Atomic Proposition 
 						else if( tCCond instanceof SimpleCondition ){
 							//System.out.println("Starting checking "+ tCCond.getTerm() + " [CS] ");
-							if( EntailOperator.getInstance().entailsCondition(state, assumptions, ((SimpleCondition) tCCond).getCondition()) ){
+							if( EntailOperator.getInstance().entailsCondition(state, assumptions, (FOLCondition) ((SimpleCondition) tCCond).getCondition()) ){
 								tmpArr[count++] = 1.0;
 								//System.out.println(tCCond.getTerm() + " is true");
 							}
