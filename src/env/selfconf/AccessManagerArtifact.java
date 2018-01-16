@@ -2,9 +2,13 @@
 
 package selfconf;
 
+import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.icar.ltlpetrinet.hierarchical_model.NetHierarchy;
+import org.icar.ltlpetrinet.hierarchical_model.NetHierarchyBuilder;
+import org.icar.ltlpetrinet.supervisor.TokenConf;
 import org.icar.musa.agent_communication.auction.Bid;
 import org.icar.musa.agent_communication.translator.JasonExpansionNode;
 import org.icar.musa.agent_communication.translator.JasonExtNode;
@@ -13,11 +17,9 @@ import org.icar.musa.agent_communication.translator.TranslateError;
 import org.icar.musa.core.domain.StateOfWorld;
 import org.icar.musa.proactive_means_end_reasoning.ExtendedNode;
 import org.icar.musa.proactive_means_end_reasoning.GraphExpansion;
-import org.icar.musa.proactive_means_end_reasoning.wts.WorldNode;
-import org.icar.specification.linear_temporal_logic.formulamodel.FormulaBTConstruction;
-import org.icar.specification.linear_temporal_logic.formulamodel.LTLGoal;
-import org.icar.specification.linear_temporal_logic.net.PNHierarchy;
-import org.icar.specification.linear_temporal_logic.net.TokenConf;
+import org.icar.specification.LTLgoal.LTLGoalModelBuilder;
+import org.icar.specification.LTLgoal.model.GoalModel;
+import org.icar.specification.LTLgoal.model.LTLGoal;
 
 import cartago.*;
 import jason.asSyntax.Term;
@@ -55,8 +57,11 @@ public class AccessManagerArtifact extends Artifact {
 			StateOfWorld w = JasonStateOfWorld.term_string_to_object(node_string);
 			
 			// TODO recuperare i goal dal DB per settare gli initial tokens
-			LTLGoal treeModel = FormulaBTConstruction.construct("G on(l1)");
-			TokenConf startingTokens = new TokenConf(new PNHierarchy(treeModel));
+			GoalModel model = LTLGoalModelBuilder.parse("G on(l1)");
+			
+			LTLGoal goal = model.getGoals().iterator().next();
+			NetHierarchy nets = NetHierarchyBuilder.build(goal);
+			TokenConf startingTokens = nets.getInitialTokenConfiguration();
 			
 			ExtendedNode enode = new ExtendedNode(w, startingTokens, 0, false, false);
 			enode.setExit(false);
@@ -64,6 +69,8 @@ public class AccessManagerArtifact extends Artifact {
 			signal("announcement_new_node",spec_id_string,term);
 			
 		} catch (OperationException | TranslateError e) {
+			e.printStackTrace();
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}

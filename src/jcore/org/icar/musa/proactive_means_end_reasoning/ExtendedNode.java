@@ -2,10 +2,10 @@ package org.icar.musa.proactive_means_end_reasoning;
 
 import java.util.Comparator;
 
+import org.icar.ltlpetrinet.annotated_pn.PNStateEnum;
+import org.icar.ltlpetrinet.supervisor.TokenConf;
 import org.icar.musa.core.domain.StateOfWorld;
 import org.icar.musa.proactive_means_end_reasoning.wts.Node;
-import org.icar.specification.linear_temporal_logic.net.PNStateEnum;
-import org.icar.specification.linear_temporal_logic.net.TokenConf;
 
 /**
  * The Class ENode.

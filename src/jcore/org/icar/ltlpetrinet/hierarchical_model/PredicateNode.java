@@ -58,4 +58,9 @@ public class PredicateNode extends HierarchyNode {
 	public PNStateEnum getNetState() {
 		return null;
 	}
+
+	@Override
+	public int calculate_partial_satisfaction() {
+		return 0;
+	}
 }

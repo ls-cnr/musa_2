@@ -46,4 +46,6 @@ public abstract class HierarchyNode {
 	protected abstract boolean retrieveTransitionDependency(StateOfWorld w, AssumptionSet assumptions, boolean normal);
 
 	public abstract PNStateEnum getNetState();
+
+	public abstract int calculate_partial_satisfaction();
 }

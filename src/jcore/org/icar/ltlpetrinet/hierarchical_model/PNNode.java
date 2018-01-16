@@ -95,4 +95,23 @@ public abstract class PNNode extends HierarchyNode {
 		return pessimistic;
 	}
 
+	@Override
+	public int calculate_partial_satisfaction() {
+		int subscore = 0;
+		
+//		for (HierarchyNode sub : getDependencies().values()) {
+//			subscore = subscore+sub.calculate_partial_satisfaction();
+//		}
+//		subscore = subscore/2;
+		
+		PNStateEnum state = getNetState();
+		if (state==PNStateEnum.ACCEPTED) 
+			return 10+subscore;
+		if (state==PNStateEnum.WAIT_BUT_ACCEPTED) 
+			return 5+subscore;
+		if (state==PNStateEnum.WAIT_BUT_ERROR) 
+			return 1+subscore;
+		return 0;
+	}
+
 }

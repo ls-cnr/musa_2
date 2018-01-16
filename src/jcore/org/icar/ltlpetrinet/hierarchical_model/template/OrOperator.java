@@ -59,4 +59,11 @@ public class OrOperator extends LogicNode {
 		return state_truth.get(new Pair(op1, op2));
 	}
 
+	@Override
+	public int calculate_partial_satisfaction() {
+		int leftscore = getLeft().calculate_partial_satisfaction();
+		int rightscore = getRight().calculate_partial_satisfaction();
+		return Math.max(leftscore, rightscore);
+	}
+
 }

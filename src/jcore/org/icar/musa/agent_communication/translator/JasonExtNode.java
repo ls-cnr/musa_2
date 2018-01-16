@@ -1,8 +1,8 @@
 package org.icar.musa.agent_communication.translator;
 
+import org.icar.ltlpetrinet.supervisor.TokenConf;
 import org.icar.musa.core.domain.StateOfWorld;
 import org.icar.musa.proactive_means_end_reasoning.ExtendedNode;
-import org.icar.specification.linear_temporal_logic.net.TokenConf;
 
 import jason.asSyntax.NumberTermImpl;
 import jason.asSyntax.StringTermImpl;

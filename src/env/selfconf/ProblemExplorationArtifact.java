@@ -3,44 +3,25 @@
 package selfconf;
 
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
 
-import org.icar.musa.agent_communication.translator.ExtDLPHead;
 import org.icar.musa.agent_communication.translator.JasonExpansionNode;
 import org.icar.musa.agent_communication.translator.JasonExtNode;
 import org.icar.musa.agent_communication.translator.TranslateError;
-import org.icar.musa.core.domain.StateOfWorld;
-import org.icar.musa.core.domain.evolution.AddStatement;
-import org.icar.musa.core.domain.evolution.CapabilityEvolutionScenario;
-import org.icar.musa.core.domain.evolution.EvolutionScenario;
-import org.icar.musa.core.domain.evolution.RemoveStatement;
-import org.icar.musa.core.fol_reasoner.FOLCondition;
 import org.icar.musa.core.runtime_entity.AbstractCapability;
 import org.icar.musa.core.runtime_entity.AssumptionSet;
 import org.icar.musa.core.runtime_entity.ProblemSpecification;
+import org.icar.musa.domain.spsreconfiguration.SPSReconfigurationEasy;
 import org.icar.musa.exception.ProblemDefinitionException;
 import org.icar.musa.proactive_means_end_reasoning.ExtendedNode;
 import org.icar.musa.proactive_means_end_reasoning.GraphExpansion;
 import org.icar.musa.proactive_means_end_reasoning.ProblemExploration;
 import org.icar.musa.proactive_means_end_reasoning.wts.WorldNode;
-import org.icar.specification.goalspec.GS_Goal;
-import org.icar.specification.goalspec.goalmodel.GoalTreeModel;
-import org.icar.specification.goalspec.net.Token;
-import org.icar.specification.linear_temporal_logic.formulamodel.LTLGoal;
+import org.icar.specification.LTLgoal.model.LTLGoal;
 
-import cartago.*;
-import domain.spsreconfiguration.SPSReconfigurationEasy;
+import cartago.Artifact;
+import cartago.OPERATION;
+import cartago.OpFeedbackParam;
 import jason.asSyntax.Term;
-import net.sf.tweety.logics.commons.syntax.Constant;
-import net.sf.tweety.logics.commons.syntax.Predicate;
-import net.sf.tweety.logics.commons.syntax.Variable;
-import net.sf.tweety.logics.fol.syntax.Conjunction;
-import net.sf.tweety.logics.fol.syntax.ExistsQuantifiedFormula;
-import net.sf.tweety.logics.fol.syntax.FOLAtom;
-import net.sf.tweety.logics.fol.syntax.Negation;
-import net.sf.tweety.lp.asp.parser.ParseException;
-import net.sf.tweety.lp.asp.syntax.DLPAtom;
 
 
 //@ARTIFACT_INFO(

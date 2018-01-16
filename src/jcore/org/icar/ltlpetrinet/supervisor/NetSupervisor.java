@@ -40,7 +40,7 @@ public class NetSupervisor {
 	
 	public boolean isExit() {
 		PNStateEnum state = netmodel.getRoot().getNetState();
-		return false;
+		return (state == PNStateEnum.ACCEPTED);
 	}
 
 	private void set_all_tokens(HierarchyNode root) {
@@ -83,6 +83,13 @@ public class NetSupervisor {
 
 	public TokenConf getTokenConfiguration() {
 		return token_conf;
+	}
+
+	/* this method uses the distance (hop number) between petri nets places
+	 * for calculating the distance to the total satisfaction
+	 */
+	public int calculate_partial_satisfaction() {	
+		return netmodel.getRoot().calculate_partial_satisfaction();
 	}
 
 

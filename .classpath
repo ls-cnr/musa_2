@@ -13,12 +13,13 @@
 	<classpathentry kind="src" path="src/jcore"/>
 	<classpathentry kind="src" path="src/org"/>
 	<classpathentry kind="src" path="src/agt"/>
-	<classpathentry kind="src" path="src/testcase"/>
 	<classpathentry kind="src" path="src/env"/>
 	<classpathentry kind="src" path=".apt_generated">
 		<attributes>
 			<attribute name="optional" value="true"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="src" path="src/testcase/example"/>
+	<classpathentry kind="src" path="src/testcase/junit"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>

@@ -3,12 +3,12 @@ package org.icar.musa.proactive_means_end_reasoning;
 import java.util.HashMap;
 import java.util.Iterator;
 
+import org.icar.ltlpetrinet.supervisor.TokenConf;
 import org.icar.musa.proactive_means_end_reasoning.wts.EvolutionEdge;
 import org.icar.musa.proactive_means_end_reasoning.wts.NormalEdge;
 import org.icar.musa.proactive_means_end_reasoning.wts.OPNode;
 import org.icar.musa.proactive_means_end_reasoning.wts.WTS;
 import org.icar.musa.proactive_means_end_reasoning.wts.WorldNode;
-import org.icar.specification.linear_temporal_logic.net.TokenConf;
 
 /**
  * The SolutionGraph Artifact. It contains the graph of solutions, the score map for each World node, the map of solution WorldNodes
