@@ -24,6 +24,7 @@ public class NetHierarchyBuilder {
 	
 	public static NetHierarchy build(LTLGoal goal) {
 		HierarchyNode root = build_from_formula(goal.getFormula());
+		root.init();
 		NetHierarchy h = new NetHierarchy(root);
 		return h;
 	}

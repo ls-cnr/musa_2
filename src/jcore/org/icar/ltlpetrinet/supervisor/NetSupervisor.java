@@ -22,6 +22,10 @@ public class NetSupervisor {
 		this.token_conf = tokens;
 	}
 	
+	public void setToken(TokenConf tk) {
+		token_conf = tk;
+	}
+	
 	public void prepareTokens() {
 		set_all_tokens(netmodel.getRoot());
 	}
@@ -49,6 +53,7 @@ public class NetSupervisor {
 		}
 		
 		if (root instanceof PNNode) {
+			//System.out.println(root.getName());
 			PNNode petrinet_node = (PNNode) root;
 			for (Place p : petrinet_node.getPN().getPlaces()) {
 				boolean markable = token_conf.contain_a_token(root.getName(),p.getName());

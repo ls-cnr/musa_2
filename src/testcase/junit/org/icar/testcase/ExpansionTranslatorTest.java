@@ -187,8 +187,6 @@ public class ExpansionTranslatorTest {
 	public void test() throws TranslateError{
 		Term term = JasonExpansionNode.object_to_term(this.ex1);
 		GraphExpansion temp = JasonExpansionNode.term_to_object(term);
-		System.out.println(this.ex1.getSource().getWorldState());
-		System.out.println(temp.getSource().getWorldState());
 		assertEquals(temp.getScore(), this.ex1.getScore());
 		assertEquals(temp.getDestination().size(), this.ex1.getDestination().size());
 		assertEquals(temp.getSource().getWorldState().toString(), this.ex1.getSource().getWorldState().toString());
@@ -198,8 +196,6 @@ public class ExpansionTranslatorTest {
 	public void testSOW() throws TranslateError{
 		Term term = JasonStateOfWorld.object_to_term(w1);
 		StateOfWorld temp = JasonStateOfWorld.term_to_object(term);
-		System.out.println(temp);
-		System.out.println(w1);
 		boolean flag = temp.equals(w1);
 		assertEquals(true, flag);
 		}

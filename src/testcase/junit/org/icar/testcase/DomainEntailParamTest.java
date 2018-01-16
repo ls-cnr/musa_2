@@ -29,7 +29,7 @@ public class DomainEntailParamTest {
 	@Parameters
     public static Collection<String[]> data() {
         return Arrays.asList(new String[][] {     
-                 { "tweety", "can_fly"}, { "polly", "can_fly" }, {"sid", "can_fly"}, {"olga", "cannot_fly"}  
+                 { "tweety", "cannot_fly"}, { "polly", "can_fly" }, {"sid", "cannot_fly"}, {"olga", "cannot_fly"}  
            });
     }
 	

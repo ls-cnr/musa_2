@@ -318,8 +318,7 @@ public class ProblemExploration {
 		//System.out.println("\n|||||||||||||||||||||||\n Expanded World State:\n" + enode.getWorldState());
 		StateOfWorld state = enode.getWorldState();
 		//TokenConf tokens = new TokenConf(startingTokens);
-		
-		HashSet<String> visitedNets = new HashSet<>();
+		supervisor.setToken(startingTokens);
 		
 		//Prepares the net with tokens
 		supervisor.prepareTokens();
@@ -329,9 +328,6 @@ public class ProblemExploration {
 		//superviseNet(tokens, nets.getStartingNet(), state, visitedNets);
 		
 		//Fills up ENode
-		TokenConf tokens = supervisor.getTokenConfiguration();
-		enode.setTokens(tokens);
-		
 		//Checking if it's an exit node
 		
 		enode.checkNodeType( supervisor.getState() );
@@ -344,6 +340,9 @@ public class ProblemExploration {
 		
 		//Cleans the net from tokens
 		supervisor.cleanTokens();
+		TokenConf tokens = supervisor.getTokenConfiguration();
+		enode.setTokens(tokens);
+		
 	}
 	
 //	/**
@@ -594,6 +593,11 @@ public class ProblemExploration {
 					System.out.println(n.getWorldState().toString()+"=>\t"+ex.hashCode()+" [score("+ex.getScore()+")]");
 			}
 		}
+	}
+
+
+	public TokenConf getInitialTokenConfiguration() {
+		return nets.getInitialTokenConfiguration();
 	}
 	
 }

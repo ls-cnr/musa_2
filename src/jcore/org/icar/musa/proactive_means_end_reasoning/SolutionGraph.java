@@ -20,10 +20,10 @@ public class SolutionGraph {
 	private WTS wts;
 	
 	/** The token map. */
-	private HashMap<String, TokenConf> tokenMap;
+	//private HashMap<String, TokenConf> tokenMap;
 	
 	/** The score map. */
-	private HashMap<String, Integer> scoreMapping;
+	//private HashMap<String, Integer> scoreMapping;
 	
 	/** The exit node map. */
 	private HashMap<String, WorldNode> exitNodeMap;
@@ -33,8 +33,8 @@ public class SolutionGraph {
 	 */
 	public SolutionGraph(){
 		this.wts = new WTS();
-		this.tokenMap = new HashMap<>();
-		this.scoreMapping = new HashMap<>();
+		//this.tokenMap = new HashMap<>();
+		//this.scoreMapping = new HashMap<>();
 		this.exitNodeMap = new HashMap<>();
 	}
 	
@@ -51,23 +51,23 @@ public class SolutionGraph {
 		return wts;
 	}
 	
-	/**
-	 * Gets the token map.
-	 *
-	 * @return the token map
-	 */
-	public HashMap<String, TokenConf> getTokenMap(){
-		return this.tokenMap;
-	}
+//	/**
+//	 * Gets the token map.
+//	 *
+//	 * @return the token map
+//	 */
+//	public HashMap<String, TokenConf> getTokenMap(){
+//		return this.tokenMap;
+//	}
 	
-	/**
-	 * Gets the score mapping.
-	 *
-	 * @return the score mapping
-	 */
-	public HashMap<String, Integer> getScoreMapping(){
-		return this.scoreMapping;
-	}
+//	/**
+//	 * Gets the score mapping.
+//	 *
+//	 * @return the score mapping
+//	 */
+//	public HashMap<String, Integer> getScoreMapping(){
+//		return this.scoreMapping;
+//	}
 	
 	/**
 	 * Gets the exit node map.
@@ -86,7 +86,7 @@ public class SolutionGraph {
 	 */
 	public void addNode(GraphExpansion node){
 		this.wts.addExpansionNode(node);
-		this.updateTokenMap(node);
+		//this.updateTokenMap(node);
 		this.updateExitNodeMap(node);
 	}
 	
@@ -98,24 +98,24 @@ public class SolutionGraph {
 	 */
 	public void removeNode(WorldNode node){
 		this.wts.removeNode(node);
-		this.scoreMapping.remove(node);
+		//this.scoreMapping.remove(node);
 		this.exitNodeMap.remove(node);
 	}
 	
-	/**
-	 * Update the token map.
-	 *
-	 * @param node
-	 *            the node
-	 */
-	public void updateTokenMap(GraphExpansion node){
-		this.tokenMap.put(node.getSource().getWorldState().toString(),node.getSource().getTokens());
-		Iterator<ExtendedNode> i = node.getDestination().iterator();
-		while (i.hasNext()){
-			ExtendedNode temp = i.next();
-			this.tokenMap.put(temp.getWorldState().toString(),temp.getTokens());
-		}
-	}
+//	/**
+//	 * Update the token map.
+//	 *
+//	 * @param node
+//	 *            the node
+//	 */
+//	public void updateTokenMap(GraphExpansion node){
+//		this.tokenMap.put(node.getSource().getWorldState().toString(),node.getSource().getTokens());
+//		Iterator<ExtendedNode> i = node.getDestination().iterator();
+//		while (i.hasNext()){
+//			ExtendedNode temp = i.next();
+//			this.tokenMap.put(temp.getWorldState().toString(),temp.getTokens());
+//		}
+//	}
 	
 	/**
 	 * Update exit node list.
@@ -133,29 +133,29 @@ public class SolutionGraph {
 		}
 	}
 	
-	public void updateScoreMapping(GraphExpansion node){
-		Iterator i = node.getDestination().iterator();
-		
-		this.scoreMapping.put(node.getSource().getWorldState().toString(), node.getSource().getScore());
-		
-		NormalExpansion nodeToAdd;
-		MultipleExpansion listToAdd;
-		while(i.hasNext()){
-			GraphExpansion temp =(GraphExpansion) i.next();
-			if(temp instanceof NormalExpansion){
-				nodeToAdd =(NormalExpansion) temp;
-				this.scoreMapping.put(nodeToAdd.getDestination().get(0).getWorldState().toString(), nodeToAdd.getDestination().get(0).getScore());
-			}
-			else{
-				listToAdd = (MultipleExpansion) temp;
-				Iterator<ExtendedNode> j = node.getDestination().iterator();
-				while (j.hasNext()){
-					ExtendedNode Etemp = j.next();
-					this.scoreMapping.put(Etemp.getWorldState().toString(), Etemp.getScore());
-				}
-			}
-		}
-	}
+//	public void updateScoreMapping(GraphExpansion node){
+//		Iterator i = node.getDestination().iterator();
+//		
+//		this.scoreMapping.put(node.getSource().getWorldState().toString(), node.getSource().getScore());
+//		
+//		NormalExpansion nodeToAdd;
+//		MultipleExpansion listToAdd;
+//		while(i.hasNext()){
+//			GraphExpansion temp =(GraphExpansion) i.next();
+//			if(temp instanceof NormalExpansion){
+//				nodeToAdd =(NormalExpansion) temp;
+//				this.scoreMapping.put(nodeToAdd.getDestination().get(0).getWorldState().toString(), nodeToAdd.getDestination().get(0).getScore());
+//			}
+//			else{
+//				listToAdd = (MultipleExpansion) temp;
+//				Iterator<ExtendedNode> j = node.getDestination().iterator();
+//				while (j.hasNext()){
+//					ExtendedNode Etemp = j.next();
+//					this.scoreMapping.put(Etemp.getWorldState().toString(), Etemp.getScore());
+//				}
+//			}
+//		}
+//	}
 
 	
 	

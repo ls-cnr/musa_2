@@ -66,6 +66,10 @@ public class JasonTokensConfiguration {
 		else{
 			Structure s = (Structure) term;
 			
+			if (s.getFunctor().equals("start_tokens")) {
+				return new TokenConf("");
+			}
+			
 			StringTermImpl myNetTerm = (StringTermImpl) s.getTerm(0);
 			List<Term> confList = ((ListTermImpl) s.getTerm(1)).getAsList();
 			

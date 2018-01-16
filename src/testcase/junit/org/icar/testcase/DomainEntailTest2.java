@@ -98,7 +98,7 @@ public class DomainEntailTest2 {
 		EntailOperator env = EntailOperator.getInstance();
 		
 		Constant tweety = new Constant("tweety");
-		DLPAtom q3 = new DLPAtom("can_fly", tweety);
+		DLPAtom q3 = new DLPAtom("cannot_fly", tweety);
 		FOLCondition cond_q3 = new FOLCondition(q3);
 		
 		assertTrue( env.entailsCondition(w, domain, cond_q3) );

@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 import org.icar.ltlpetrinet.hierarchical_model.NetHierarchy;
 import org.icar.ltlpetrinet.hierarchical_model.NetHierarchyBuilder;
+import org.icar.ltlpetrinet.supervisor.TokenConf;
 import org.icar.musa.core.Requirements;
 import org.icar.musa.core.domain.StateOfWorld;
 import org.icar.musa.core.runtime_entity.AbstractCapability;
@@ -58,15 +59,16 @@ public class SPSREasyTest {
 		} catch (ProblemDefinitionException e) {
 			System.out.println("I goal devono essere specificati in LTL");
 		}
-		NetHierarchy net = NetHierarchyBuilder.build((LTLGoal) requirements);
-		pe.addToVisit(new WorldNode(first), net.getInitialTokenConfiguration(), 10);
+		//NetHierarchy net = NetHierarchyBuilder.build((LTLGoal) requirements);
+		TokenConf tokens = pe.getInitialTokenConfiguration();
+		pe.addToVisit(new WorldNode(first), tokens, 1);
 		
 		int k = 0;
 		// simula il ciclo di espansione di un WTS
 		while( !pe.terminated() && k++ < 100) {
 			//System.out.println("ciclo "+k);
 			pe.expandNode();
-			pe.log_current_state();
+			//pe.log_current_state();
 			
 			
 			GraphExpansion exp = pe.getHighestExpansion();
