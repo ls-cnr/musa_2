@@ -1,0 +1,5 @@
+goalmodel {
+	goal g1 = G f1(x) [1].
+	goal g2 = F f2(x) [4].
+	goal g3 = G( a(x) -> F b(x) ) [6].
+}
