@@ -65,7 +65,8 @@ public class SPSREasyTest {
 		
 		int k = 0;
 		// simula il ciclo di espansione di un WTS
-		while( !pe.terminated() && k++ < 100) {
+		
+		while( !pe.terminated() && k++ < 10) {
 			//System.out.println("ciclo "+k);
 			pe.expandNode();
 			//pe.log_current_state();
@@ -82,11 +83,12 @@ public class SPSREasyTest {
 			//update problem exploration with new nodes
 			for(ExtendedNode node : exp.getDestination()){
 				//System.out.println("new "+node.getWorldState());
-				pe.addToVisit(new WorldNode(node.getWorldState()), node.getTokens(), node.getScore() );
+				if (!node.isExitNode())
+					pe.addToVisit(new WorldNode(node.getWorldState()), node.getTokens(), node.getScore() );
 			}
 		}
-		
-		graph.printForGraphviz();
+		//graph.printForGraphviz();
+		assertTrue( graph.getGraphvizDot(true).equals("digraph G {\"[closed(i3),on(main),open(i1),open(i2),open(i4)]\"[color=green]\"[closed(i1),closed(i3),closed(i4),on(main),open(i2)]\"[color=red]\"[closed(i2),closed(i3),closed(i4),on(main),open(i1)]\"[color=red]\"[closed(i2),closed(i4),on(main),open(i1),open(i3)]\"[color=red]\"[closed(i1),closed(i3),on(main),open(i2),open(i4)]\"[color=red]\"[closed(i3),closed(i4),on(main),open(i1),open(i2)]\" -> \"[closed(i2),closed(i3),closed(i4),on(main),open(i1)]\"[label=\"close_switch_i2_cap\"]\"[closed(i3),closed(i4),on(main),open(i1),open(i2)]\" -> \"[closed(i1),closed(i3),closed(i4),on(main),open(i2)]\"[label=\"close_switch_i1_cap\"]\"[closed(i3),closed(i4),on(main),open(i1),open(i2)]\" -> \"[closed(i3),on(main),open(i1),open(i2),open(i4)]\"[label=\"open_switch_i4_cap\"]\"[closed(i3),closed(i4),on(main),open(i1),open(i2)]\" -> \"[closed(i4),on(main),open(i1),open(i2),open(i3)]\"[label=\"open_switch_i3_cap\"]\"[closed(i4),on(main),open(i1),open(i2),open(i3)]\" -> \"[closed(i2),closed(i4),on(main),open(i1),open(i3)]\"[label=\"close_switch_i2_cap\"]\"[closed(i4),on(main),open(i1),open(i2),open(i3)]\" -> \"[on(main),open(i1),open(i2),open(i3),open(i4)]\"[label=\"open_switch_i4_cap\"]\"[on(main),open(i1),open(i2),open(i3),open(i4)]\" -> \"[closed(i4),on(main),open(i1),open(i2),open(i3)]\"[label=\"close_switch_i4_cap\"]\"[on(main),open(i1),open(i2),open(i3),open(i4)]\" -> \"[closed(i3),on(main),open(i1),open(i2),open(i4)]\"[label=\"close_switch_i3_cap\"]\"[closed(i3),on(main),open(i1),open(i2),open(i4)]\" -> \"[closed(i1),closed(i3),on(main),open(i2),open(i4)]\"[label=\"close_switch_i1_cap\"]\"[closed(i3),on(main),open(i1),open(i2),open(i4)]\" -> \"[closed(i3),closed(i4),on(main),open(i1),open(i2)]\"[label=\"close_switch_i4_cap\"]}"));
 	}
 
 }

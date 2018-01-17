@@ -170,37 +170,71 @@ public class SolutionGraph {
 	
 	
 	public void printForGraphviz(){
+//		//this.wts.printForGraphviz();
+//		System.out.println("digraph G {");
+//
+//		// set the initial state as green
+//		System.out.println("\""+wts.getInitialState().getWorldState().toString()+"\"[color=green]");
+//		for (String node : exitNodeMap.keySet()) {
+//			System.out.println("\""+node+"\"[color=red]");
+//		}
+//
+//		
+//		Iterator<String> i = wts.getGraphNodeIterator();
+//		while(i.hasNext()){
+//			String temp = (String) i.next();
+//			
+//			WorldNode w = wts.getGraph().get(temp);
+//			
+//			
+//			// draw all outgoing arcs from node to neighbours
+//			for( NormalEdge e : w.getOutcomingEdgeList()){
+//				System.out.println("\""+w.getWorldState().toString()+"\" -> \""+e.getDestination().getWorldState().toString()+"\"[label=\""+ e.getCapability()+ "\"]");
+//			}
+//			
+//			for( OPNode opNode : w.getOPNodeList()){
+//				for( EvolutionEdge ee : opNode.getOutcomingEdge()){
+//					//ee.getDestination().
+//					System.out.println("\""+w.getWorldState().toString() + "\" -> \"" + ee.getDestination().getWorldState().toString()+"\" [label=\""+ ee.getScenario()+ "\"][style=bold][color=red]");
+//				}
+//			}
+//
+//		}
+//		System.out.println("}");
+		System.out.println(getGraphvizDot(false));
+	}
+
+	public String getGraphvizDot(boolean compact) {
+		String dot ="";
 		//this.wts.printForGraphviz();
-		System.out.println("digraph G {");
+		dot += "digraph G {"; if (!compact) dot+="\n";
 
 		// set the initial state as green
-		System.out.println("\""+wts.getInitialState().getWorldState().toString()+"\"[color=green]");
+		dot += "\""+wts.getInitialState().getWorldState().toString()+"\"[color=green]";if (!compact) dot+="\n";
 		for (String node : exitNodeMap.keySet()) {
-			System.out.println("\""+node+"\"[color=red]");
+			dot += "\""+node+"\"[color=red]";if (!compact) dot+="\n";
 		}
-
 		
 		Iterator<String> i = wts.getGraphNodeIterator();
 		while(i.hasNext()){
-			String temp = (String) i.next();
-			
+			String temp = (String) i.next();			
 			WorldNode w = wts.getGraph().get(temp);
-			
 			
 			// draw all outgoing arcs from node to neighbours
 			for( NormalEdge e : w.getOutcomingEdgeList()){
-				System.out.println("\""+w.getWorldState().toString()+"\" -> \""+e.getDestination().getWorldState().toString()+"\"[label=\""+ e.getCapability()+ "\"]");
+				dot += "\""+w.getWorldState().toString()+"\" -> \""+e.getDestination().getWorldState().toString()+"\"[label=\""+ e.getCapability()+ "\"]";if (!compact) dot+="\n";
 			}
 			
 			for( OPNode opNode : w.getOPNodeList()){
 				for( EvolutionEdge ee : opNode.getOutcomingEdge()){
 					//ee.getDestination().
-					System.out.println("\""+w.getWorldState().toString() + "\" -> \"" + ee.getDestination().getWorldState().toString()+"\" [label=\""+ ee.getScenario()+ "\"][style=bold][color=red]");
+					dot += "\""+w.getWorldState().toString() + "\" -> \"" + ee.getDestination().getWorldState().toString()+"\" [label=\""+ ee.getScenario()+ "\"][style=bold][color=red]";if (!compact) dot+="\n";
 				}
 			}
 
 		}
-		System.out.println("}");
+		dot += "}";if (!compact) dot+="\n";
+		return dot;
 	}
 
 }

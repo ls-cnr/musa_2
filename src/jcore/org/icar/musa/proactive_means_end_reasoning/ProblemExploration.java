@@ -574,23 +574,23 @@ public class ProblemExploration {
 		for (StateOfWorld w : visited) {
 			System.out.println(w.toString());
 		}
-		System.out.println("------------to visited states---------------");
-		for (ExtendedNode n : toVisit) {
-			System.out.print(n.getWorldState().toString());
-			if (n.isExitNode())
-				System.out.print(" Exit ");
-			if (n.isErrorNode())
-				System.out.print(" Error ");
-			System.out.println("");
-		}
+//		System.out.println("------------to visite states---------------");
+//		for (ExtendedNode n : toVisit) {
+//			System.out.print(n.getWorldState().toString());
+//			if (n.isExitNode())
+//				System.out.print(" Exit ");
+//			if (n.isErrorNode())
+//				System.out.print(" Error ");
+//			System.out.println("");
+//		}
 		System.out.println("--------------expanded---------------");
 		for (GraphExpansion ex : expandedList) {
 			for (ExtendedNode n : ex.getDestination() ) {
-				System.out.print(ex.getSource().getWorldState().toString()+"->"+ex.getCapability()+"->\t");
+				System.out.print(ex.getSource().getWorldState().toString()+"->"+ex.getCapability()+"\t->"+n.getWorldState().toString());
 				if (n.isExitNode())
-					System.out.println(n.getWorldState().toString()+" EXIT =>\t"+ex.hashCode()+" [score("+ex.getScore()+")]");
-				else
-					System.out.println(n.getWorldState().toString()+"=>\t"+ex.hashCode()+" [score("+ex.getScore()+")]");
+					System.out.print(" is EXIT =>\t");
+				
+				System.out.println(" [score("+n.getScore()+") -"+n.getTokens() +"]");
 			}
 		}
 	}

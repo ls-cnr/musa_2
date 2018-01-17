@@ -244,10 +244,10 @@ public class Sequences {
 			}
 		int start_i = number_of_shown_solutions;
 		for (int i=start_i; i<solutionsSoFar.getSize(); i++) {
-			System.out.println("Solution " + i);
+			//System.out.println("Solution " + i);
 			Solution s = solutionsSoFar.getSolutions().get(i);
 			Tree<AbstractWorkflowNode> t = convertToAbstractWorkflow(s.getRoot());
-			printCapTree(t,0);
+			//printCapTree(t,0);
 			number_of_shown_solutions++;
 		}
 //		for (Solution s : this.solutionsSoFar) {

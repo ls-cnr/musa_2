@@ -167,7 +167,7 @@ public abstract class GraphExpansion implements Node{
 		Comparator<GraphExpansion> comp = new Comparator<GraphExpansion>(){
 			@Override
 			public int compare(GraphExpansion e1, GraphExpansion e2){
-				return e2.score - e1.score;
+				return e1.score - e2.score;
 			}
 		};
 		return comp;
