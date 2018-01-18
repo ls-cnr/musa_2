@@ -84,12 +84,14 @@ num_nodi(0).
 	-+num_nodi(N);
 
 	?iterazioni(I);
-	if (I<200) {
+	if (I<50) {
 		?auction_loop_delay(SpecIdString,AuctionDelay);
 		-+iterazioni(I+1);
 		.wait(AuctionDelay);
 		!!auction_loop(SpecId);
 	} else {
+		?solution_configuration_info(SpecId,AccessManagerId,ConfManagerId);
 		print_graph[artifact_id(AccessManagerId)];
+		getSolution[artifact_id(ConfManagerId)]
 	}
 .
