@@ -64,13 +64,15 @@ public class ProblemExplorationArtifact extends Artifact {
 	}
 	
 	@OPERATION
-	public void addToVisit( String term_string ) {
+	public void addToVisit(String term_string) {
 		ExtendedNode node;
-		try{
+		try {
 			node = JasonExtNode.term_string_to_object(term_string);
-		}catch(TranslateError t){return;}
-		if (!node.isExitNode()) {
-			pe.addToVisit(new WorldNode(node.getWorldState()), node.getTokens(), node.getScore() );
+			if (!node.isExitNode()) {
+				pe.addToVisit(new WorldNode(node.getWorldState()), node.getTokens(), node.getScore());
+			}
+		} catch (TranslateError t) {
+			return;
 		}
 	}
 	

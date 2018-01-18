@@ -20,16 +20,16 @@ import org.icar.specification.LTLgoal.model.UnaryFormula;
 
 
 public class NetHierarchyBuilder {
-	private static int suff = 0;
+	private int suff = 0;
 	
-	public static NetHierarchy build(LTLGoal goal) {
+	public NetHierarchy build(LTLGoal goal) {
 		HierarchyNode root = build_from_formula(goal.getFormula());
 		root.init();
 		NetHierarchy h = new NetHierarchy(root);
 		return h;
 	}
 
-	private static HierarchyNode build_from_formula(LTLFormula formula) {
+	private HierarchyNode build_from_formula(LTLFormula formula) {
 		if (formula instanceof LTLPredicate) {
 			return build_from_predicate_node((LTLPredicate) formula);
 		} else if (formula instanceof UnaryFormula) {
@@ -41,7 +41,7 @@ public class NetHierarchyBuilder {
 		return null;
 	}
 
-	private static HierarchyNode build_from_binary_operator_node(BinaryFormula formula) {
+	private HierarchyNode build_from_binary_operator_node(BinaryFormula formula) {
 		if (formula.isAnd()) {
 			HierarchyNode left = build_from_formula(formula.getLeft());
 			HierarchyNode right = build_from_formula(formula.getRight());
@@ -55,7 +55,7 @@ public class NetHierarchyBuilder {
 		return null;
 	}
 
-	private static HierarchyNode build_from_unary_operator_node(UnaryFormula formula) {
+	private HierarchyNode build_from_unary_operator_node(UnaryFormula formula) {
 		if (formula.isGlobally()) {
 			HierarchyNode sub = build_from_formula(formula.getSubformula());
 			return new GloballyPN("g"+suff(), sub);
@@ -66,22 +66,14 @@ public class NetHierarchyBuilder {
 		return null;
 	}
 
-	private static HierarchyNode build_from_predicate_node(LTLPredicate formula) {
+	private HierarchyNode build_from_predicate_node(LTLPredicate formula) {
 		String pred = formula.getPredicate();
 		return new PredicateNode("pn"+suff(), new FOLCondition( pred ));
 	}
 	
-	private static String suff() {
+	private String suff() {
 		return ""+suff++;
 	}
 
-	public static void main(String[] args) throws IOException {
-		File file = new File("./src/testcase/example/goal/goal.txt");
-		FileInputStream fis = new FileInputStream(file);
-
-		GoalModel model = LTLGoalModelBuilder.parse(fis);
-		NetHierarchy net = build(model.getGoals().iterator().next());
-		System.out.println(net);
-	}
 
 }

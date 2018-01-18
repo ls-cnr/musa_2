@@ -15,6 +15,7 @@ import org.icar.musa.agent_communication.translator.JasonExtNode;
 import org.icar.musa.agent_communication.translator.JasonStateOfWorld;
 import org.icar.musa.agent_communication.translator.TranslateError;
 import org.icar.musa.core.domain.StateOfWorld;
+import org.icar.musa.domain.spsreconfiguration.SPSReconfigurationEasy;
 import org.icar.musa.proactive_means_end_reasoning.ExtendedNode;
 import org.icar.musa.proactive_means_end_reasoning.GraphExpansion;
 import org.icar.specification.LTLgoal.LTLGoalModelBuilder;
@@ -57,10 +58,10 @@ public class AccessManagerArtifact extends Artifact {
 			StateOfWorld w = JasonStateOfWorld.term_string_to_object(node_string);
 			
 			// TODO recuperare i goal dal DB per settare gli initial tokens
-			GoalModel model = LTLGoalModelBuilder.parse("G on(l1)");
-			
-			LTLGoal goal = model.getGoals().iterator().next();
-			NetHierarchy nets = NetHierarchyBuilder.build(goal);
+			LTLGoal goal = init_SPS_problem_domain();
+
+			NetHierarchyBuilder builder = new NetHierarchyBuilder();
+			NetHierarchy nets = builder.build(goal);
 			TokenConf startingTokens = nets.getInitialTokenConfiguration();
 			
 			ExtendedNode enode = new ExtendedNode(w, startingTokens, 0, false, false);
@@ -70,9 +71,16 @@ public class AccessManagerArtifact extends Artifact {
 			
 		} catch (OperationException | TranslateError e) {
 			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		} 
+	}
+
+	/**
+	 * @return
+	 */
+	private LTLGoal init_SPS_problem_domain() {
+		SPSReconfigurationEasy problem_domain = new SPSReconfigurationEasy();
+		LTLGoal goal = (LTLGoal) problem_domain.getRequirements();
+		return goal;
 	}
 	
 	@OPERATION
@@ -80,7 +88,6 @@ public class AccessManagerArtifact extends Artifact {
 		try {
 			execLinkedOp("mygraph","get_node_number",num);
 		} catch (OperationException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

@@ -38,7 +38,8 @@ public class ExtendedNodeTranslation_Test {
 		}
 		GoalModel goalModel = LTLGoalModelBuilder.parse("goalmodel { goal g1 = G on(l1). }");
 		LTLGoal goal = goalModel.getGoals().iterator().next();
-		NetHierarchy net = NetHierarchyBuilder.build(goal);
+		NetHierarchyBuilder builder = new NetHierarchyBuilder();
+		NetHierarchy net = builder.build(goal);
 		TokenConf startingTokens = net.getInitialTokenConfiguration();
 		//NetSupervisor s = new NetSupervisor(net, net.getInitialTokenConfiguration());
 		

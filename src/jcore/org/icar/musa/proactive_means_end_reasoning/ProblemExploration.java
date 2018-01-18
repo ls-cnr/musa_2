@@ -95,7 +95,8 @@ public class ProblemExploration {
 			throw new ProblemDefinitionException();
 		} else {
 			LTLGoal mygoal = (LTLGoal) ps.getGoal_specification();
-			nets = NetHierarchyBuilder.build(mygoal);
+			NetHierarchyBuilder builder = new NetHierarchyBuilder();
+			nets = builder.build(mygoal);
 			supervisor = new NetSupervisor(nets, nets.getInitialTokenConfiguration());
 		}
 	}
