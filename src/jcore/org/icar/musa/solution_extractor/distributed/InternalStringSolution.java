@@ -7,15 +7,15 @@ package org.icar.musa.solution_extractor.distributed;
  * @author Mirko Avantaggiato
  *
  */
-public class Solution {
+public class InternalStringSolution {
 	private static int counter = 0;
 	private final int ID;
 	private Tree<String> root;
 
 	/* Which solutionSet am I in? */
-	private SolutionSet solutionSet;
+	private InternalStringSolutionSet solutionSet;
 
-	public Solution(Tree<String> s, SolutionSet solutionSet) {
+	public InternalStringSolution(Tree<String> s, InternalStringSolutionSet solutionSet) {
 		this.ID = counter++;
 		this.root = s;
 		this.solutionSet = solutionSet;
@@ -38,7 +38,7 @@ public class Solution {
 	}
 
 	public boolean containsLoop() {
-		return Solution.containsLoop(this.root);
+		return InternalStringSolution.containsLoop(this.root);
 	}
 
 	private static boolean containsLoop(Tree<String> currentNode) {
@@ -49,7 +49,7 @@ public class Solution {
 				return false;
 		} else
 			for (Tree<String> child : currentNode.getChildren()) {
-				boolean flag = Solution.containsLoop(child);
+				boolean flag = InternalStringSolution.containsLoop(child);
 				if (flag == true)
 					return true;
 			}
@@ -60,7 +60,7 @@ public class Solution {
 		return this.checkLoop(this.root, this.solutionSet);
 	}
 
-	private boolean checkLoop(Tree<String> currentNode, SolutionSet st) {
+	private boolean checkLoop(Tree<String> currentNode, InternalStringSolutionSet st) {
 		if (currentNode.isLeaf()) {
 			if (currentNode.getNodeType() == Tree.LOOP_CODE)
 				if (this.solutionSet.getSeq().getTreeSafeNodes().contains(currentNode.getValue().split("\\*")[0]))
@@ -81,7 +81,7 @@ public class Solution {
 	}
 
 	public int howManyLoops() {
-		return Solution.howManyLoops(this.root);
+		return InternalStringSolution.howManyLoops(this.root);
 	}
 
 	private static int howManyLoops(Tree<String> currentNode) {
@@ -93,7 +93,7 @@ public class Solution {
 		else {
 			int sum = 0;
 			for (Tree<String> child : currentNode.getChildren())
-				sum += Solution.howManyLoops(child);
+				sum += InternalStringSolution.howManyLoops(child);
 			return sum;
 		}
 	}
@@ -119,13 +119,13 @@ public class Solution {
 		else {
 			long sum = 7;
 			for (Tree<String> child : currentNode.getChildren())
-				sum *= Solution.cumulativeHashCode(child) % Long.MAX_VALUE;
+				sum *= InternalStringSolution.cumulativeHashCode(child) % Long.MAX_VALUE;
 			return sum;
 		}
 	}
 
 	@Override
 	public boolean equals(Object obj) {
-		return Solution.cumulativeHashCode(this.getRoot()) == Solution.cumulativeHashCode(((Solution) obj).getRoot());
+		return InternalStringSolution.cumulativeHashCode(this.getRoot()) == InternalStringSolution.cumulativeHashCode(((InternalStringSolution) obj).getRoot());
 	}
 }

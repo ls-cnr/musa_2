@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 import org.icar.musa.solution_extractor.distributed.Sequences;
-import org.icar.musa.solution_extractor.distributed.Solution;
+import org.icar.musa.solution_extractor.distributed.InternalStringSolution;
 import org.junit.Test;
 
 /**

@@ -4,9 +4,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 
 import org.icar.musa.core.runtime_entity.AbstractCapability;
 import org.icar.musa.core.runtime_entity.AbstractWorkflowNode;
+import org.icar.musa.solution_extractor.Solution;
 
 /**
  * 
@@ -23,7 +26,7 @@ public class Sequences {
 	/**/
 	private HashSet<String> successNodes;
 	private HashSet<String> treeSafeNodes;
-	private SolutionSet solutionsSoFar;
+	private InternalStringSolutionSet solutionsSoFar;
 
 	private ArrayList<CapInfo> capabilities;
 	
@@ -36,7 +39,7 @@ public class Sequences {
 		this.allPaths = new ArrayList<>();
 		this.successNodes = new HashSet<>();
 		this.treeSafeNodes = new HashSet<>();
-		this.solutionsSoFar = new SolutionSet(this);
+		this.solutionsSoFar = new InternalStringSolutionSet(this);
 		this.capabilities = new ArrayList<CapInfo>();
 	}
 
@@ -215,14 +218,14 @@ public class Sequences {
 		if (tmp != null)
 			if (tmp != null) {
 				for (Tree<String> sol : tmp) {
-					Solution _sol = new Solution(sol, this.solutionsSoFar);
+					InternalStringSolution _sol = new InternalStringSolution(sol, this.solutionsSoFar);
 					if (!this.solutionsSoFar.containsSolution(_sol)) {
 						this.solutionsSoFar.addSolution(_sol);
 					}
 				}
-				Iterator<Solution> i = this.solutionsSoFar.iterator();
+				Iterator<InternalStringSolution> i = this.solutionsSoFar.iterator();
 				while (i.hasNext()) {
-					Solution s = i.next();
+					InternalStringSolution s = i.next();
 					this.makeTreeSafe(s.getRoot());
 					/*
 					 * removing a solutions if it has got a loop which does not
@@ -245,7 +248,7 @@ public class Sequences {
 		int start_i = number_of_shown_solutions;
 		for (int i=start_i; i<solutionsSoFar.getSize(); i++) {
 			//System.out.println("Solution " + i);
-			Solution s = solutionsSoFar.getSolutions().get(i);
+			InternalStringSolution s = solutionsSoFar.getSolutions().get(i);
 			Tree<AbstractWorkflowNode> t = convertToAbstractWorkflow(s.getRoot());
 			//printCapTree(t,0);
 			number_of_shown_solutions++;
@@ -364,7 +367,7 @@ public class Sequences {
 		}
 	}
 
-	public static void printCapTree(Tree<AbstractWorkflowNode> node, int depth) {
+	private static void printCapTree(Tree<AbstractWorkflowNode> node, int depth) {
 		if (node != null) {
 			String tab = String.join("", Collections.nCopies(depth, "  "));
 			System.out.println(tab + node.getValue().getAbstract_cap_name()+"/" + node.getValue().getAgent());
@@ -546,12 +549,23 @@ public class Sequences {
 		}
 	}
 
-	public SolutionSet getSolutionsSoFar() {
+	private InternalStringSolutionSet getSolutionsSoFar() {
 		return solutionsSoFar;
 	}
 
-	public void setSolutionsSoFar(SolutionSet solutionsSoFar) {
+	public void setSolutionsSoFar(InternalStringSolutionSet solutionsSoFar) {
 		this.solutionsSoFar = solutionsSoFar;
+	}
+	
+	public List<Solution> getAbstractWorkflowSolutions() {
+		List<Solution> solutions = new LinkedList<Solution>();
+		
+		for (InternalStringSolution string_sol : solutionsSoFar) {
+			Tree<AbstractWorkflowNode> tree = convertToAbstractWorkflow(string_sol.getRoot());
+			solutions.add(new Solution(tree));
+		}
+		
+		return solutions;
 	}
 
 	public ArrayList<CapInfo> getCapabilities() {

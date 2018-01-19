@@ -11,7 +11,8 @@ import org.icar.musa.core.runtime_entity.AbstractWorkflowNode;
 import org.icar.musa.proactive_means_end_reasoning.ExtendedNode;
 import org.icar.musa.proactive_means_end_reasoning.GraphExpansion;
 import org.icar.musa.solution_extractor.distributed.Sequences;
-import org.icar.musa.solution_extractor.distributed.Solution;
+import org.icar.musa.solution_extractor.Solution;
+import org.icar.musa.solution_extractor.distributed.InternalStringSolution;
 import org.icar.musa.solution_extractor.distributed.Tree;
 
 import cartago.*;
@@ -31,26 +32,16 @@ public class ConfigSelectorArtifact extends Artifact {
 
 	@OPERATION
 	void getSolution() {
+	}
+	
+	@OPERATION
+	void printSolutions() {
 		System.out.println("SOLUTIONS");
-//		for (Solution x : this.sc.getSolutionsSoFar())
-//			Sequences.printTree(x.getRoot(), 0);
-		// System.out.println("SUCCESS STATES");
-		// for (String x : this.sc.getSuccessNodes())
-		// System.out.println(x);
-		// System.out.println("SEQUENCES");
-		// for (ArrayList<String> s : this.sc.getSeqs())
-		// System.out.println(s);
-		// System.out.println("CAPABILITIES USED");
-		// for (Sequences.Triple t : this.sc.getCapabilities())
-		// System.out.println(t.toString().replaceAll("\n", ""));
-
 		int i = 1;
-		for (Solution s : sc.getSolutionsSoFar()) {
+		for (Solution s : sc.getAbstractWorkflowSolutions() ) {
 			System.out.println("Solution " + i++);
-			Tree<AbstractWorkflowNode> t = sc.convertToAbstractWorkflow(s.getRoot());
-			Sequences.printCapTree(t, 0);
+			s.print();
 		}
-
 	}
 
 	@LINK @OPERATION

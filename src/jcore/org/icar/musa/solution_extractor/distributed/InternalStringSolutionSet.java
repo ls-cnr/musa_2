@@ -3,26 +3,26 @@ package org.icar.musa.solution_extractor.distributed;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-public class SolutionSet implements Iterable<Solution> {
-	private ArrayList<Solution> solutions;
+public class InternalStringSolutionSet implements Iterable<InternalStringSolution> {
+	private ArrayList<InternalStringSolution> solutions;
 	private Sequences seq;
 
-	public SolutionSet(Sequences seq) {
+	public InternalStringSolutionSet(Sequences seq) {
 		this.solutions = new ArrayList<>();
 		this.seq = seq;
 	}
 
 	@Override
-	public Iterator<Solution> iterator() {
+	public Iterator<InternalStringSolution> iterator() {
 		return this.solutions.iterator();
 	}
 
-	public void addSolution(Solution s) {
+	public void addSolution(InternalStringSolution s) {
 		this.solutions.add(s);
 
 	}
 
-	public ArrayList<Solution> getSolutions() {
+	public ArrayList<InternalStringSolution> getSolutions() {
 		return this.solutions;
 	}
 
@@ -34,7 +34,7 @@ public class SolutionSet implements Iterable<Solution> {
 		return this.solutions.size() == 0;
 	}
 
-	public void remove(Solution s) {
+	public void remove(InternalStringSolution s) {
 		this.solutions.remove(s);
 	}
 
@@ -46,7 +46,7 @@ public class SolutionSet implements Iterable<Solution> {
 		this.seq = seq;
 	}
 
-	public boolean containsSolution(Solution s) {
+	public boolean containsSolution(InternalStringSolution s) {
 		return this.solutions.contains(s);
 	}
 
