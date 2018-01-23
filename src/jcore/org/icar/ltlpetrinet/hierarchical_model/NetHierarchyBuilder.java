@@ -9,6 +9,7 @@ import org.icar.ltlpetrinet.hierarchical_model.template.AndOperator;
 import org.icar.ltlpetrinet.hierarchical_model.template.FinallyPN;
 import org.icar.ltlpetrinet.hierarchical_model.template.GloballyPN;
 import org.icar.ltlpetrinet.hierarchical_model.template.OrOperator;
+import org.icar.ltlpetrinet.hierarchical_model.template.UntilPN;
 import org.icar.musa.core.fol_reasoner.FOLCondition;
 import org.icar.specification.LTLgoal.LTLGoalModelBuilder;
 import org.icar.specification.LTLgoal.model.BinaryFormula;
@@ -50,6 +51,10 @@ public class NetHierarchyBuilder {
 			HierarchyNode left = build_from_formula(formula.getLeft());
 			HierarchyNode right = build_from_formula(formula.getRight());
 			return new OrOperator("o"+suff(), left, right);
+		} else if (formula.isUntil()) {
+			HierarchyNode left = build_from_formula(formula.getLeft());
+			HierarchyNode right = build_from_formula(formula.getRight());
+			return new UntilPN("u"+suff(), left, right);
 		}  
 		
 		return null;

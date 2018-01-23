@@ -53,9 +53,7 @@ public abstract class PNNode extends HierarchyNode {
 						ut.fire();
 					}
 				}
-				
-			} else if (t instanceof BinaryTransition) {
-				//TODO
+	
 			}
 		}
 	}

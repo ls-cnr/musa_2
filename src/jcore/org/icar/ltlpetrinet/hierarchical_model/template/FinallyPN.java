@@ -18,7 +18,7 @@ public class FinallyPN extends PNNode {
 		super(name);
 
 		dependency = subnode;
-		add_dependency("one"+dependency.getName(), dependency);
+		add_dependency(dependency.getName(), dependency);
 	}
 
 	@Override
@@ -26,7 +26,7 @@ public class FinallyPN extends PNNode {
 		AnnotatedPlace start = new AnnotatedPlace("start", PNStateEnum.WAIT_BUT_ERROR);
 		AnnotatedPlace end = new AnnotatedPlace("end", PNStateEnum.ACCEPTED);
 		
-		AnnotatedTransition t1 = new UnaryTransition("start_to_end", "one"+dependency.getName(),AnnotatedTransition.NORMAL);
+		AnnotatedTransition t1 = new UnaryTransition("start_to_end", dependency.getName(),AnnotatedTransition.NORMAL);
 
 		pn.add(start);
 		pn.add(end);

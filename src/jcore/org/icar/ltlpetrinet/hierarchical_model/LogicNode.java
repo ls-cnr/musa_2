@@ -45,10 +45,10 @@ public abstract class LogicNode extends HierarchyNode {
 		boolean right_dep = right.retrieveTransitionDependency(w,assumptions,normal);
 		normal_test = fireable_truth_table(left_dep,right_dep);
 		
-		if (normal)
+		//if (normal)
 			return normal_test;
-		else
-			return !normal_test;
+		//else
+		//	return !normal_test;
 	}
 
 	protected abstract boolean fireable_truth_table(boolean op1, boolean op2);

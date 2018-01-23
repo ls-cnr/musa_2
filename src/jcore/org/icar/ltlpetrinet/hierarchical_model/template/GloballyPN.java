@@ -16,7 +16,7 @@ public class GloballyPN extends PNNode {
 	public GloballyPN(String name, HierarchyNode subnode) {
 		super(name);
 		dependency = subnode;
-		add_dependency("one"+dependency.getName(), dependency);
+		add_dependency(dependency.getName(), dependency);
 	}
 
 	@Override
@@ -24,13 +24,12 @@ public class GloballyPN extends PNNode {
 		AnnotatedPlace start = new AnnotatedPlace("start", PNStateEnum.WAIT_BUT_ACCEPTED);
 		AnnotatedPlace end = new AnnotatedPlace("end", PNStateEnum.ERROR);
 		
-		AnnotatedTransition t1 = new UnaryTransition("start_to_end", "one"+dependency.getName(),AnnotatedTransition.INVERSE);
+		AnnotatedTransition t1 = new UnaryTransition("start_to_end", dependency.getName(),AnnotatedTransition.INVERSE);
 		pn.add(start);
 		pn.add(end);
 		pn.add(t1);
 		pn.arc("a1", start, t1);
 		pn.arc("a2", t1,end);
-		
 	}
 	
 	@Override

@@ -19,7 +19,7 @@ import org.junit.Test;
 
 import net.sf.tweety.lp.asp.parser.ParseException;
 
-public class NetSupervisor_Test {
+public class LTL_Globally_Finally_Test {
 	private NetSupervisor supervisor;
 	
 	@Before
@@ -60,20 +60,15 @@ public class NetSupervisor_Test {
 		supervisor.prepareTokens();
 		supervisor.update(w1,assumptions);
 		assertEquals(supervisor.getState(),PNStateEnum.WAIT_BUT_ERROR);
-		
-//		System.out.println(supervisor.getState());
+
 		supervisor.update(w2,assumptions);
 		assertEquals(supervisor.getState(),PNStateEnum.WAIT_BUT_ERROR);
 
-//		System.out.println(supervisor.getState());
 		supervisor.update(w3,assumptions);
 		assertEquals(supervisor.getState(),PNStateEnum.ACCEPTED);
 
-//		System.out.println(supervisor.getState());
-
 		supervisor.cleanTokens();
-		//TokenConf tokens3 = supervisor.getTokenConfiguration();
-		//System.out.println(tokens3.toString());
+
 	}
 
 	@Test
