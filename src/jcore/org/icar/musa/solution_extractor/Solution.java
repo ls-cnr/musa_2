@@ -5,8 +5,6 @@ import java.util.Collections;
 import org.icar.musa.core.runtime_entity.AbstractWorkflowNode;
 import org.icar.musa.solution_extractor.distributed.Tree;
 
-import com.sun.xml.internal.bind.v2.runtime.RuntimeUtil.ToStringAdapter;
-
 public class Solution  {
 	private Tree<AbstractWorkflowNode> tree;
 	
