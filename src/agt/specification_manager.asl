@@ -92,6 +92,6 @@ num_nodi(0).
 	} else {
 		?solution_configuration_info(SpecId,AccessManagerId,ConfManagerId);
 		print_graph[artifact_id(AccessManagerId)];
-		getSolution[artifact_id(ConfManagerId)]
+		printSolutions[artifact_id(ConfManagerId)]
 	}
 .
