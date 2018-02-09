@@ -6,7 +6,7 @@ import java.util.Set;
 import org.icar.ltlpetrinet.annotated_pn.PNStateEnum;
 import org.icar.ltlpetrinet.supervisor.Token;
 import org.icar.musa.core.Condition;
-import org.icar.musa.core.domain.StateOfWorld;
+import org.icar.musa.core.context.StateOfWorld;
 import org.icar.musa.core.fol_reasoner.EntailOperator;
 import org.icar.musa.core.fol_reasoner.FOLCondition;
 import org.icar.musa.core.runtime_entity.AssumptionSet;

@@ -8,7 +8,7 @@ import org.icar.ltlpetrinet.hierarchical_model.NetHierarchy;
 import org.icar.ltlpetrinet.hierarchical_model.NetHierarchyBuilder;
 import org.icar.ltlpetrinet.supervisor.TokenConf;
 import org.icar.musa.core.Requirements;
-import org.icar.musa.core.domain.StateOfWorld;
+import org.icar.musa.core.context.StateOfWorld;
 import org.icar.musa.core.runtime_entity.AbstractCapability;
 import org.icar.musa.core.runtime_entity.AssumptionSet;
 import org.icar.musa.core.runtime_entity.ProblemSpecification;
@@ -87,7 +87,7 @@ public class SPSREasyTest {
 					pe.addToVisit(new WorldNode(node.getWorldState()), node.getTokens(), node.getScore() );
 			}
 		}
-		//graph.printForGraphviz();
+		graph.printForGraphviz();
 		assertTrue( graph.getGraphvizDot(true).equals("digraph G {\"[closed(i3),on(main),open(i1),open(i2),open(i4)]\"[color=green]\"[closed(i1),closed(i3),closed(i4),on(main),open(i2)]\"[color=red]\"[closed(i2),closed(i3),closed(i4),on(main),open(i1)]\"[color=red]\"[closed(i2),closed(i4),on(main),open(i1),open(i3)]\"[color=red]\"[closed(i1),closed(i3),on(main),open(i2),open(i4)]\"[color=red]\"[closed(i3),closed(i4),on(main),open(i1),open(i2)]\" -> \"[closed(i2),closed(i3),closed(i4),on(main),open(i1)]\"[label=\"close_switch_i2_cap\"]\"[closed(i3),closed(i4),on(main),open(i1),open(i2)]\" -> \"[closed(i1),closed(i3),closed(i4),on(main),open(i2)]\"[label=\"close_switch_i1_cap\"]\"[closed(i3),closed(i4),on(main),open(i1),open(i2)]\" -> \"[closed(i3),on(main),open(i1),open(i2),open(i4)]\"[label=\"open_switch_i4_cap\"]\"[closed(i3),closed(i4),on(main),open(i1),open(i2)]\" -> \"[closed(i4),on(main),open(i1),open(i2),open(i3)]\"[label=\"open_switch_i3_cap\"]\"[closed(i4),on(main),open(i1),open(i2),open(i3)]\" -> \"[closed(i2),closed(i4),on(main),open(i1),open(i3)]\"[label=\"close_switch_i2_cap\"]\"[closed(i4),on(main),open(i1),open(i2),open(i3)]\" -> \"[on(main),open(i1),open(i2),open(i3),open(i4)]\"[label=\"open_switch_i4_cap\"]\"[on(main),open(i1),open(i2),open(i3),open(i4)]\" -> \"[closed(i4),on(main),open(i1),open(i2),open(i3)]\"[label=\"close_switch_i4_cap\"]\"[on(main),open(i1),open(i2),open(i3),open(i4)]\" -> \"[closed(i3),on(main),open(i1),open(i2),open(i4)]\"[label=\"close_switch_i3_cap\"]\"[closed(i3),on(main),open(i1),open(i2),open(i4)]\" -> \"[closed(i1),closed(i3),on(main),open(i2),open(i4)]\"[label=\"close_switch_i1_cap\"]\"[closed(i3),on(main),open(i1),open(i2),open(i4)]\" -> \"[closed(i3),closed(i4),on(main),open(i1),open(i2)]\"[label=\"close_switch_i4_cap\"]}"));
 	}
 

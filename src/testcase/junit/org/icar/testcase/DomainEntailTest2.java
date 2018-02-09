@@ -2,8 +2,8 @@ package org.icar.testcase;
 
 import static org.junit.Assert.*;
 
-import org.icar.musa.core.domain.StateOfWorld;
 import org.icar.musa.core.fol_reasoner.FOLCondition;
+import org.icar.musa.core.context.StateOfWorld;
 import org.icar.musa.core.fol_reasoner.EntailOperator;
 import org.icar.musa.core.runtime_entity.AssumptionSet;
 import org.junit.Before;

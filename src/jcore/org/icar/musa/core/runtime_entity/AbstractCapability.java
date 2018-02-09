@@ -1,12 +1,10 @@
 package org.icar.musa.core.runtime_entity;
 
-import java.util.Set;
+import java.util.List;
 
 import org.icar.musa.core.Condition;
 import org.icar.musa.core.RunTimeEntity;
-import org.icar.musa.core.domain.evolution.AddStatement;
-import org.icar.musa.core.domain.evolution.CapabilityEvoScenario;
-import org.icar.musa.core.domain.evolution.EvolutionScenario;
+import org.icar.musa.core.context.evolution.EvolutionScenario;
 
 /**
  * The Class AbstractCapability encapsulate a capability. A capability is an atomic and self-contained action the system may
@@ -21,7 +19,7 @@ public class AbstractCapability implements RunTimeEntity {
 	private String unique_id;
 	
 	/** The evolution set are the differences between a state of the world and his next, generated after executing the capability . */
-	private Set<EvolutionScenario> evolution_set;
+	private List<EvolutionScenario> evolution_set;
 	
 	/** The pre is the pre-condition that needs to be true to execute the capability */
 	private Condition pre;
@@ -41,7 +39,7 @@ public class AbstractCapability implements RunTimeEntity {
 	 * @param post
 	 *            the post
 	 */
-	public AbstractCapability(String unique_id, Set<EvolutionScenario> evolution_set, Condition pre, Condition post) {
+	public AbstractCapability(String unique_id, List<EvolutionScenario> evolution_set, Condition pre, Condition post) {
 		super();
 		this.unique_id = unique_id;
 		this.evolution_set = evolution_set;
@@ -54,7 +52,7 @@ public class AbstractCapability implements RunTimeEntity {
 	 * 
 	 * @return the evolution_set of this capability.
 	 */
-	public Set<EvolutionScenario> getScenarioSet(){
+	public List<EvolutionScenario> getScenarioSet(){
 		return this.evolution_set;
 	}
 	

@@ -14,7 +14,7 @@ import org.icar.musa.agent_communication.translator.JasonExpansionNode;
 import org.icar.musa.agent_communication.translator.JasonExtNode;
 import org.icar.musa.agent_communication.translator.JasonStateOfWorld;
 import org.icar.musa.agent_communication.translator.TranslateError;
-import org.icar.musa.core.domain.StateOfWorld;
+import org.icar.musa.core.context.StateOfWorld;
 import org.icar.musa.domain.spsreconfiguration.SPSReconfigurationEasy;
 import org.icar.musa.proactive_means_end_reasoning.ExtendedNode;
 import org.icar.musa.proactive_means_end_reasoning.GraphExpansion;

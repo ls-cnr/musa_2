@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 
-import org.icar.musa.core.domain.StateOfWorld;
+import org.icar.musa.core.context.StateOfWorld;
 import org.icar.musa.core.runtime_entity.AbstractCapability;
 import org.icar.musa.proactive_means_end_reasoning.ExtendedNode;
 import org.icar.musa.proactive_means_end_reasoning.GraphExpansion;

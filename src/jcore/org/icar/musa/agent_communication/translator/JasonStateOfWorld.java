@@ -1,6 +1,6 @@
 package org.icar.musa.agent_communication.translator;
 
-import org.icar.musa.core.domain.StateOfWorld;
+import org.icar.musa.core.context.StateOfWorld;
 import org.icar.musa.exception.NotAllowedInAStateOfWorld;
 
 import jason.asSyntax.ListTermImpl;

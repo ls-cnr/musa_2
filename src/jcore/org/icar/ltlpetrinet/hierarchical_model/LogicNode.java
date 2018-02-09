@@ -4,7 +4,8 @@ import org.icar.ltlpetrinet.annotated_pn.AnnotatedPlace;
 import org.icar.ltlpetrinet.annotated_pn.PNStateEnum;
 
 import petrinet.logic.Place;
-import org.icar.musa.core.domain.StateOfWorld;
+
+import org.icar.musa.core.context.StateOfWorld;
 import org.icar.musa.core.runtime_entity.AssumptionSet;
 
 public abstract class LogicNode extends HierarchyNode {

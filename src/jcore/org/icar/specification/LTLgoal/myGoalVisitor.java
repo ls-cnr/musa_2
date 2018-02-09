@@ -3,13 +3,23 @@ package org.icar.specification.LTLgoal;
 import org.icar.specification.LTLgoal.goalParser.APredicateContext;
 import org.icar.specification.LTLgoal.goalParser.AlwaysFalseContext;
 import org.icar.specification.LTLgoal.goalParser.AlwaysTrueContext;
+import org.icar.specification.LTLgoal.goalParser.AndBinaryOperatorContext;
 import org.icar.specification.LTLgoal.goalParser.Binary_operatorContext;
 import org.icar.specification.LTLgoal.goalParser.BracketedContext;
+import org.icar.specification.LTLgoal.goalParser.FinallyUnaryOperatorContext;
+import org.icar.specification.LTLgoal.goalParser.GloballyUnaryOperatorContext;
 import org.icar.specification.LTLgoal.goalParser.Goal_modelContext;
 import org.icar.specification.LTLgoal.goalParser.GoalpriorityContext;
+import org.icar.specification.LTLgoal.goalParser.IfBinaryOperatorContext;
+import org.icar.specification.LTLgoal.goalParser.IffBinaryOperatorContext;
 import org.icar.specification.LTLgoal.goalParser.Ltl_extended_listContext;
+import org.icar.specification.LTLgoal.goalParser.NextUnaryOperatorContext;
+import org.icar.specification.LTLgoal.goalParser.NotUnaryOperatorContext;
+import org.icar.specification.LTLgoal.goalParser.OrBinaryOperatorContext;
+import org.icar.specification.LTLgoal.goalParser.ReleaseBinaryOperatorContext;
 import org.icar.specification.LTLgoal.goalParser.Single_goalContext;
 import org.icar.specification.LTLgoal.goalParser.Unary_operatorContext;
+import org.icar.specification.LTLgoal.goalParser.UntilBinaryOperatorContext;
 import org.icar.specification.LTLgoal.model.BinaryFormula;
 import org.icar.specification.LTLgoal.model.GoalModel;
 import org.icar.specification.LTLgoal.model.LTLFormula;
@@ -46,7 +56,7 @@ public class myGoalVisitor extends goalBaseVisitor<GoalModelEntity>  {
 		if (ctx.goalpriority() != null)
 			priority = (LTLPriority) visit(ctx.goalpriority());
 		
-		LTLGoal goal = new LTLGoal(ctx.smallatom().getText(), formula, priority);
+		LTLGoal goal = new LTLGoal(ctx.atom().getText(), formula, priority);
 		return goal;
 	}
 	
@@ -83,49 +93,84 @@ public class myGoalVisitor extends goalBaseVisitor<GoalModelEntity>  {
 		return visit(ctx.binary_operator());
 	}
 
+	
+
 	@Override
-	public GoalModelEntity visitUnary_operator(Unary_operatorContext ctx) {
-		UnaryFormula formula = null;
-		
+	public GoalModelEntity visitNextUnaryOperator(NextUnaryOperatorContext ctx) {
 		LTLFormula subformula  = (LTLFormula) visit(ctx.formula());
 		
-		if (ctx.GLOBALLY() != null) {
-			formula = new UnaryFormula(UnaryFormula.GLOBALLY, subformula);
-		} else if (ctx.FINALLY() != null) {
-			formula = new UnaryFormula(UnaryFormula.FINALLY, subformula);
-		} else if (ctx.NEXT() != null) {
-			formula = new UnaryFormula(UnaryFormula.NEXT, subformula);
-		} else if (ctx.NOT() != null) {
-			formula = new UnaryFormula(UnaryFormula.NOT, subformula);
-		}
-
-		return formula;
+		return new UnaryFormula(UnaryFormula.NEXT, subformula);
 	}
 
 	@Override
-	public GoalModelEntity visitBinary_operator(Binary_operatorContext ctx) {
-		BinaryFormula formula = null;
+	public GoalModelEntity visitGloballyUnaryOperator(GloballyUnaryOperatorContext ctx) {
+		LTLFormula subformula  = (LTLFormula) visit(ctx.formula());
 		
+		return new UnaryFormula(UnaryFormula.GLOBALLY, subformula);
+	}
+
+	@Override
+	public GoalModelEntity visitFinallyUnaryOperator(FinallyUnaryOperatorContext ctx) {
+		LTLFormula subformula  = (LTLFormula) visit(ctx.formula());
+		
+		return new UnaryFormula(UnaryFormula.FINALLY, subformula);
+	}
+
+	@Override
+	public GoalModelEntity visitNotUnaryOperator(NotUnaryOperatorContext ctx) {
+		LTLFormula subformula  = (LTLFormula) visit(ctx.formula());
+		
+		return new UnaryFormula(UnaryFormula.NOT, subformula);
+	}
+
+
+	
+	@Override
+	public GoalModelEntity visitAndBinaryOperator(AndBinaryOperatorContext ctx) {
 		LTLFormula left  = (LTLFormula) visit(ctx.formula(0));
 		LTLFormula right  = (LTLFormula) visit(ctx.formula(1));
-		
-		if (ctx.UNTIL() != null) {
-			formula = new BinaryFormula(BinaryFormula.UNTIL, left,right);
-		} else if (ctx.RELEASE() != null) {
-			formula = new BinaryFormula(BinaryFormula.RELEASE,  left,right);
-		} else if (ctx.AND() != null) {
-			formula = new BinaryFormula(BinaryFormula.AND,  left,right);
-		} else if (ctx.OR() != null) {
-			formula = new BinaryFormula(BinaryFormula.OR,  left,right);
-		} else if (ctx.IF() != null) {
-			formula = new BinaryFormula(BinaryFormula.IF,  left,right);
-		} else if (ctx.IFF() != null) {
-			formula = new BinaryFormula(BinaryFormula.IFF,  left,right);
-		}
-
-		return formula;
+			
+		return new BinaryFormula(BinaryFormula.AND,  left,right);
 	}
-	
-	
 
+	@Override
+	public GoalModelEntity visitOrBinaryOperator(OrBinaryOperatorContext ctx) {
+		LTLFormula left  = (LTLFormula) visit(ctx.formula(0));
+		LTLFormula right  = (LTLFormula) visit(ctx.formula(1));
+			
+		return new BinaryFormula(BinaryFormula.OR,  left,right);
+	}
+
+	@Override
+	public GoalModelEntity visitIfBinaryOperator(IfBinaryOperatorContext ctx) {
+		LTLFormula left  = (LTLFormula) visit(ctx.formula(0));
+		LTLFormula right  = (LTLFormula) visit(ctx.formula(1));
+			
+		return new BinaryFormula(BinaryFormula.IF,  left,right);
+	}
+
+	@Override
+	public GoalModelEntity visitIffBinaryOperator(IffBinaryOperatorContext ctx) {
+		LTLFormula left  = (LTLFormula) visit(ctx.formula(0));
+		LTLFormula right  = (LTLFormula) visit(ctx.formula(1));
+			
+		return new BinaryFormula(BinaryFormula.IFF,  left,right);
+	}
+
+	@Override
+	public GoalModelEntity visitUntilBinaryOperator(UntilBinaryOperatorContext ctx) {
+		LTLFormula left  = (LTLFormula) visit(ctx.formula(0));
+		LTLFormula right  = (LTLFormula) visit(ctx.formula(1));
+			
+		return new BinaryFormula(BinaryFormula.UNTIL,  left,right);
+	}
+
+	@Override
+	public GoalModelEntity visitReleaseBinaryOperator(ReleaseBinaryOperatorContext ctx) {
+		LTLFormula left  = (LTLFormula) visit(ctx.formula(0));
+		LTLFormula right  = (LTLFormula) visit(ctx.formula(1));
+			
+		return new BinaryFormula(BinaryFormula.RELEASE,  left,right);
+	}
+		
 }

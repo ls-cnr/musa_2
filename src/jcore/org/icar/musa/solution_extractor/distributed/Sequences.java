@@ -9,6 +9,8 @@ import java.util.List;
 
 import org.icar.musa.core.runtime_entity.AbstractCapability;
 import org.icar.musa.core.runtime_entity.AbstractWorkflowNode;
+import org.icar.musa.proactive_means_end_reasoning.ExtendedNode;
+import org.icar.musa.proactive_means_end_reasoning.GraphExpansion;
 import org.icar.musa.solution_extractor.Solution;
 
 /**
@@ -41,6 +43,47 @@ public class Sequences {
 		this.treeSafeNodes = new HashSet<>();
 		this.solutionsSoFar = new InternalStringSolutionSet(this);
 		this.capabilities = new ArrayList<CapInfo>();
+	}
+	
+	public void processGraphExpansion(GraphExpansion expNode) {
+		String src = expNode.getSource().getWorldState().toString();
+		if (expNode.getDestination().size() > 1) {
+			/*
+			 * Nodo XOR. "Estraggo" il nodo XOR dal nodo vero e proprio e lo
+			 * chiamo "X" + hashCode() dei fatti del mondo dello stato del
+			 * mondo di provenienza (devono avere nomi univoci).
+			 * 
+			 * Aggiungo ogni destinazione. X -> 1, X -> 2, ecc. . Nel caso
+			 * in cui qualcuna di queste destinazioni sia un nodo di
+			 * successo, viene processato successivamente.
+			 */
+			processEdge(src, "X" + src.hashCode(), expNode.getCapability(), expNode.getAgent());
+			HashSet<String> tmp = new HashSet<>();
+			for (ExtendedNode d : expNode.getDestination()) {
+				String dest = d.getWorldState().toString();
+				if (dest.equals(""))
+					dest = "w0";
+				processEdge("X" + src.hashCode(), dest, "", expNode.getAgent());
+				if (d.isExitNode())
+					tmp.add(d.getWorldState().toString());
+			}
+			for (String s : tmp) {
+				processSolution(s);
+			}
+			tmp.clear();
+		} else if (expNode.getDestination().size() == 1) {
+			/*
+			 * ExpansionNode semplice. Aggiungo dest e se � soluzione ne
+			 * tengo conto.
+			 */
+			String dest = expNode.getDestination().get(0).getWorldState().toString();
+			if (dest.equals(""))
+				dest = "w0";
+			processEdge(src, dest, expNode.getCapability(), expNode.getAgent());
+			if (expNode.getDestination().get(0).isExitNode())
+				processSolution(dest);
+		}
+		
 	}
 
 	public void processEdge(String src, String dest, String capability, String agent) {
@@ -389,10 +432,15 @@ public class Sequences {
 				CapInfo cap_info = get_cap_from_src_dest(node_w.getValue(),node_w.getChildren().get(0).getValue());
 				AbstractWorkflowNode cap_tree = new AbstractWorkflowNode();
 				
-				cap_tree.setAbstract_cap_name(cap_info.getCap());
-				cap_tree.setAgent(cap_info.getAgent());
-	//			cap_tree.setSrc(node_w.getValue());
-	//			cap_tree.setDest(succ.getValue());
+				if (cap_info != null) {
+					cap_tree.setAbstract_cap_name(cap_info.getCap());
+					cap_tree.setAgent(cap_info.getAgent());
+					//			cap_tree.setSrc(node_w.getValue());
+					//			cap_tree.setDest(succ.getValue());
+				} else {
+					cap_tree.setAbstract_cap_name("unknwon");
+					cap_tree.setAgent("unknwon");
+				}
 				node_c = new Tree<AbstractWorkflowNode>(cap_tree);
 	
 				for (Tree<String> succ : node_w.getChildren()) {

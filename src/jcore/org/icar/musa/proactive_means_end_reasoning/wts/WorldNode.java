@@ -3,7 +3,7 @@ package org.icar.musa.proactive_means_end_reasoning.wts;
 import java.util.ArrayList;
 
 import org.icar.musa.agent_communication.translator.ExtDLPHead;
-import org.icar.musa.core.domain.StateOfWorld;
+import org.icar.musa.core.context.StateOfWorld;
 
 /**
  * The Class WorldNode. It's the standard node of the graph of the solutions. It implements the Node Interface

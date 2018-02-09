@@ -5,7 +5,7 @@ import java.util.Set;
 
 import org.icar.ltlpetrinet.annotated_pn.PNStateEnum;
 import org.icar.ltlpetrinet.supervisor.Token;
-import org.icar.musa.core.domain.StateOfWorld;
+import org.icar.musa.core.context.StateOfWorld;
 import org.icar.musa.core.runtime_entity.AssumptionSet;
 
 public abstract class HierarchyNode {

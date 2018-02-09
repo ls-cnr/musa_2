@@ -7,8 +7,7 @@ import org.icar.ltlpetrinet.annotated_pn.PNStateEnum;
 import org.icar.ltlpetrinet.hierarchical_model.HierarchyNode;
 import org.icar.ltlpetrinet.hierarchical_model.NetHierarchy;
 import org.icar.ltlpetrinet.hierarchical_model.PNNode;
-
-import org.icar.musa.core.domain.StateOfWorld;
+import org.icar.musa.core.context.StateOfWorld;
 import org.icar.musa.core.runtime_entity.AssumptionSet;
 import petrinet.logic.Place;
 
@@ -88,6 +87,10 @@ public class NetSupervisor {
 
 	public TokenConf getTokenConfiguration() {
 		return token_conf;
+	}
+	
+	public NetHierarchy getNetModel() {
+		return netmodel;
 	}
 
 	/* this method uses the distance (hop number) between petri nets places

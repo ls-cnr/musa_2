@@ -4,7 +4,7 @@ import java.util.Comparator;
 
 import org.icar.ltlpetrinet.annotated_pn.PNStateEnum;
 import org.icar.ltlpetrinet.supervisor.TokenConf;
-import org.icar.musa.core.domain.StateOfWorld;
+import org.icar.musa.core.context.StateOfWorld;
 import org.icar.musa.proactive_means_end_reasoning.wts.Node;
 
 /**

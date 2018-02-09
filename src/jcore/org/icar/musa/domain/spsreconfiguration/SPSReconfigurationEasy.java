@@ -3,16 +3,18 @@ package org.icar.musa.domain.spsreconfiguration;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
 
 import org.icar.musa.agent_communication.translator.ExtDLPHead;
 import org.icar.musa.core.Condition;
 import org.icar.musa.core.Requirements;
-import org.icar.musa.core.domain.StateOfWorld;
-import org.icar.musa.core.domain.evolution.AddStatement;
-import org.icar.musa.core.domain.evolution.CapabilityEvolutionScenario;
-import org.icar.musa.core.domain.evolution.EvolutionScenario;
-import org.icar.musa.core.domain.evolution.RemoveStatement;
+import org.icar.musa.core.context.StateOfWorld;
+import org.icar.musa.core.context.evolution.AddStatement;
+import org.icar.musa.core.context.evolution.CapabilityEvolutionScenario;
+import org.icar.musa.core.context.evolution.EvolutionScenario;
+import org.icar.musa.core.context.evolution.RemoveStatement;
 import org.icar.musa.core.fol_reasoner.FOLCondition;
 import org.icar.musa.core.runtime_entity.AbstractCapability;
 import org.icar.musa.core.runtime_entity.AssumptionSet;
@@ -162,7 +164,7 @@ public class SPSReconfigurationEasy implements Scenario {
 		 * SCENARIO mainOn: remove {off(main)}, add {on(main)}
 		*/
 		Condition main_on_pre = new FOLCondition(new DLPAtom("off", new Constant("main")));
-		Set<EvolutionScenario> main_on_evo = new HashSet<>();
+		List<EvolutionScenario> main_on_evo = new LinkedList<>();
 		CapabilityEvolutionScenario main_on_evo1 = new CapabilityEvolutionScenario("mainOn");
 		main_on_evo1.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("on", new Constant("main"))) ) );
 		main_on_evo1.addOperator(new RemoveStatement(new ExtDLPHead(new DLPAtom("off", new Constant("main")))));
@@ -176,7 +178,7 @@ public class SPSReconfigurationEasy implements Scenario {
 		 * SCENARIO mainOff: remove {on(main)}, add {off(main)}
 		*/
 		Condition main_on_pre = new FOLCondition(new DLPAtom("on", new Constant("main")));
-		Set<EvolutionScenario> main_on_evo = new HashSet<>();
+		List<EvolutionScenario> main_on_evo = new LinkedList<>();
 		CapabilityEvolutionScenario main_on_evo1 = new CapabilityEvolutionScenario("mainOff");
 		main_on_evo1.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("off", new Constant("main"))) ) );
 		main_on_evo1.addOperator(new RemoveStatement(new ExtDLPHead(new DLPAtom("on", new Constant("main")))));
@@ -191,12 +193,12 @@ public class SPSReconfigurationEasy implements Scenario {
 		*/
 		Constant i_const = new Constant(switch_name);
 		Condition i_pre = new FOLCondition(new DLPAtom("open", i_const));
-		Set<EvolutionScenario> i_evo = new HashSet<>();
+		List<EvolutionScenario> main_on_evo = new LinkedList<>();
 		CapabilityEvolutionScenario i_evo_scenario = new CapabilityEvolutionScenario("iClosed");
 		i_evo_scenario.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("closed", i_const)) ) );
 		i_evo_scenario.addOperator(new RemoveStatement(new ExtDLPHead(new DLPAtom("open", i_const))));
-		i_evo.add(i_evo_scenario);
-		return new AbstractCapability("close_switch_"+switch_name+"_cap", i_evo, i_pre, null);
+		main_on_evo.add(i_evo_scenario);
+		return new AbstractCapability("close_switch_"+switch_name+"_cap", main_on_evo, i_pre, null);
 	}
 
 	private AbstractCapability generate_open_capability_for_switcher(String switch_name) {
@@ -206,12 +208,12 @@ public class SPSReconfigurationEasy implements Scenario {
 		*/
 		Constant i_const = new Constant(switch_name);
 		Condition i_pre = new FOLCondition(new DLPAtom("closed", i_const));
-		Set<EvolutionScenario> i_evo = new HashSet<>();
+		List<EvolutionScenario> main_on_evo = new LinkedList<>();
 		CapabilityEvolutionScenario i_evo_scenario = new CapabilityEvolutionScenario("iOpen");
 		i_evo_scenario.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("open", i_const)) ) );
 		i_evo_scenario.addOperator(new RemoveStatement(new ExtDLPHead(new DLPAtom("closed", i_const))));
-		i_evo.add(i_evo_scenario);
-		return new AbstractCapability("open_switch_"+switch_name+"_cap", i_evo, i_pre, null);
+		main_on_evo.add(i_evo_scenario);
+		return new AbstractCapability("open_switch_"+switch_name+"_cap", main_on_evo, i_pre, null);
 	}
 
 //	ALTRE CAPABILITY RIMOSSE	

@@ -9,7 +9,7 @@ import org.icar.ltlpetrinet.annotated_pn.AnnotatedTransition;
 import org.icar.ltlpetrinet.annotated_pn.BinaryTransition;
 import org.icar.ltlpetrinet.annotated_pn.PNStateEnum;
 import org.icar.ltlpetrinet.annotated_pn.UnaryTransition;
-import org.icar.musa.core.domain.StateOfWorld;
+import org.icar.musa.core.context.StateOfWorld;
 import org.icar.musa.core.runtime_entity.AssumptionSet;
 
 import petrinet.logic.Petrinet;

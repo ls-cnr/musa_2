@@ -228,7 +228,7 @@ public class SolutionGraph {
 			for( OPNode opNode : w.getOPNodeList()){
 				for( EvolutionEdge ee : opNode.getOutcomingEdge()){
 					//ee.getDestination().
-					dot += "\""+w.getWorldState().toString() + "\" -> \"" + ee.getDestination().getWorldState().toString()+"\" [label=\""+ ee.getScenario()+ "\"][style=bold][color=red]";if (!compact) dot+="\n";
+					dot += "\""+w.getWorldState().toString() + "\" -> \"" + ee.getDestination().getWorldState().toString()+"\" [label=\""+ opNode.getCapability()+"/"+ee.getScenario()+ "\"][style=bold][color=red]";if (!compact) dot+="\n";
 				}
 			}
 

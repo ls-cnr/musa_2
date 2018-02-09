@@ -10,7 +10,7 @@ import org.icar.ltlpetrinet.hierarchical_model.template.FinallyPN;
 import org.icar.ltlpetrinet.hierarchical_model.template.GloballyPN;
 import org.icar.ltlpetrinet.supervisor.NetSupervisor;
 import org.icar.ltlpetrinet.supervisor.TokenConf;
-import org.icar.musa.core.domain.StateOfWorld;
+import org.icar.musa.core.context.StateOfWorld;
 import org.icar.musa.core.fol_reasoner.FOLCondition;
 import org.icar.musa.core.runtime_entity.AssumptionSet;
 import org.icar.musa.exception.NotAllowedInAStateOfWorld;

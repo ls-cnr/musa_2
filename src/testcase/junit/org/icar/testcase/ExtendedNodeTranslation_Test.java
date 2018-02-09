@@ -10,7 +10,7 @@ import org.icar.ltlpetrinet.hierarchical_model.NetHierarchyBuilder;
 import org.icar.ltlpetrinet.supervisor.TokenConf;
 import org.icar.musa.agent_communication.translator.JasonExtNode;
 import org.icar.musa.agent_communication.translator.TranslateError;
-import org.icar.musa.core.domain.StateOfWorld;
+import org.icar.musa.core.context.StateOfWorld;
 import org.icar.musa.proactive_means_end_reasoning.ExtendedNode;
 import org.icar.specification.LTLgoal.LTLGoalModelBuilder;
 import org.icar.specification.LTLgoal.model.GoalModel;
