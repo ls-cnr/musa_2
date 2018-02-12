@@ -1,4 +1,4 @@
-// Generated from goal.g4 by ANTLR 4.7.1
+// Generated from goal.g4 by ANTLR 4.7
 
 package org.icar.specification.LTLgoal;
 
@@ -13,7 +13,7 @@ import java.util.ArrayList;
 
 @SuppressWarnings({"all", "warnings", "unchecked", "unused", "cast"})
 public class goalParser extends Parser {
-	static { RuntimeMetaData.checkVersion("4.7.1", RuntimeMetaData.VERSION); }
+	static { RuntimeMetaData.checkVersion("4.7", RuntimeMetaData.VERSION); }
 
 	protected static final DFA[] _decisionToDFA;
 	protected static final PredictionContextCache _sharedContextCache =
@@ -105,6 +105,14 @@ public class goalParser extends Parser {
 		}
 		@Override public int getRuleIndex() { return RULE_goal_model; }
 		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof goalListener ) ((goalListener)listener).enterGoal_model(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof goalListener ) ((goalListener)listener).exitGoal_model(this);
+		}
+		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof goalVisitor ) return ((goalVisitor<? extends T>)visitor).visitGoal_model(this);
 			else return visitor.visitChildren(this);
@@ -149,6 +157,14 @@ public class goalParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_ltl_extended_list; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof goalListener ) ((goalListener)listener).enterLtl_extended_list(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof goalListener ) ((goalListener)listener).exitLtl_extended_list(this);
+		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof goalVisitor ) return ((goalVisitor<? extends T>)visitor).visitLtl_extended_list(this);
@@ -211,6 +227,14 @@ public class goalParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_single_goal; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof goalListener ) ((goalListener)listener).enterSingle_goal(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof goalListener ) ((goalListener)listener).exitSingle_goal(this);
+		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof goalVisitor ) return ((goalVisitor<? extends T>)visitor).visitSingle_goal(this);
@@ -279,6 +303,14 @@ public class goalParser extends Parser {
 		}
 		@Override public int getRuleIndex() { return RULE_goalpriority; }
 		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof goalListener ) ((goalListener)listener).enterGoalpriority(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof goalListener ) ((goalListener)listener).exitGoalpriority(this);
+		}
+		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof goalVisitor ) return ((goalVisitor<? extends T>)visitor).visitGoalpriority(this);
 			else return visitor.visitChildren(this);
@@ -321,6 +353,14 @@ public class goalParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_ltl_extended; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof goalListener ) ((goalListener)listener).enterLtl_extended(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof goalListener ) ((goalListener)listener).exitLtl_extended(this);
+		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof goalVisitor ) return ((goalVisitor<? extends T>)visitor).visitLtl_extended(this);
@@ -392,6 +432,14 @@ public class goalParser extends Parser {
 		}
 		public UniversalQuantifierContext(Quantified_formulaContext ctx) { copyFrom(ctx); }
 		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof goalListener ) ((goalListener)listener).enterUniversalQuantifier(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof goalListener ) ((goalListener)listener).exitUniversalQuantifier(this);
+		}
+		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof goalVisitor ) return ((goalVisitor<? extends T>)visitor).visitUniversalQuantifier(this);
 			else return visitor.visitChildren(this);
@@ -405,6 +453,14 @@ public class goalParser extends Parser {
 			return getRuleContext(FormulaContext.class,0);
 		}
 		public ExistentialQuantifierContext(Quantified_formulaContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof goalListener ) ((goalListener)listener).enterExistentialQuantifier(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof goalListener ) ((goalListener)listener).exitExistentialQuantifier(this);
+		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof goalVisitor ) return ((goalVisitor<? extends T>)visitor).visitExistentialQuantifier(this);
@@ -479,6 +535,14 @@ public class goalParser extends Parser {
 		}
 		public FormulaWithBracketContext(FormulaContext ctx) { copyFrom(ctx); }
 		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof goalListener ) ((goalListener)listener).enterFormulaWithBracket(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof goalListener ) ((goalListener)listener).exitFormulaWithBracket(this);
+		}
+		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof goalVisitor ) return ((goalVisitor<? extends T>)visitor).visitFormulaWithBracket(this);
 			else return visitor.visitChildren(this);
@@ -486,6 +550,14 @@ public class goalParser extends Parser {
 	}
 	public static class AlwaysFalseContext extends FormulaContext {
 		public AlwaysFalseContext(FormulaContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof goalListener ) ((goalListener)listener).enterAlwaysFalse(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof goalListener ) ((goalListener)listener).exitAlwaysFalse(this);
+		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof goalVisitor ) return ((goalVisitor<? extends T>)visitor).visitAlwaysFalse(this);
@@ -498,6 +570,14 @@ public class goalParser extends Parser {
 		}
 		public APredicateContext(FormulaContext ctx) { copyFrom(ctx); }
 		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof goalListener ) ((goalListener)listener).enterAPredicate(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof goalListener ) ((goalListener)listener).exitAPredicate(this);
+		}
+		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof goalVisitor ) return ((goalVisitor<? extends T>)visitor).visitAPredicate(this);
 			else return visitor.visitChildren(this);
@@ -509,6 +589,14 @@ public class goalParser extends Parser {
 		}
 		public UnaryOperatorContext(FormulaContext ctx) { copyFrom(ctx); }
 		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof goalListener ) ((goalListener)listener).enterUnaryOperator(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof goalListener ) ((goalListener)listener).exitUnaryOperator(this);
+		}
+		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof goalVisitor ) return ((goalVisitor<? extends T>)visitor).visitUnaryOperator(this);
 			else return visitor.visitChildren(this);
@@ -516,6 +604,14 @@ public class goalParser extends Parser {
 	}
 	public static class AlwaysTrueContext extends FormulaContext {
 		public AlwaysTrueContext(FormulaContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof goalListener ) ((goalListener)listener).enterAlwaysTrue(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof goalListener ) ((goalListener)listener).exitAlwaysTrue(this);
+		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof goalVisitor ) return ((goalVisitor<? extends T>)visitor).visitAlwaysTrue(this);
@@ -600,6 +696,14 @@ public class goalParser extends Parser {
 		}
 		@Override public int getRuleIndex() { return RULE_bracketed; }
 		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof goalListener ) ((goalListener)listener).enterBracketed(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof goalListener ) ((goalListener)listener).exitBracketed(this);
+		}
+		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof goalVisitor ) return ((goalVisitor<? extends T>)visitor).visitBracketed(this);
 			else return visitor.visitChildren(this);
@@ -665,6 +769,14 @@ public class goalParser extends Parser {
 		}
 		public NotUnaryOperatorContext(Unary_operatorContext ctx) { copyFrom(ctx); }
 		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof goalListener ) ((goalListener)listener).enterNotUnaryOperator(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof goalListener ) ((goalListener)listener).exitNotUnaryOperator(this);
+		}
+		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof goalVisitor ) return ((goalVisitor<? extends T>)visitor).visitNotUnaryOperator(this);
 			else return visitor.visitChildren(this);
@@ -675,6 +787,14 @@ public class goalParser extends Parser {
 			return getRuleContext(FormulaContext.class,0);
 		}
 		public GloballyUnaryOperatorContext(Unary_operatorContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof goalListener ) ((goalListener)listener).enterGloballyUnaryOperator(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof goalListener ) ((goalListener)listener).exitGloballyUnaryOperator(this);
+		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof goalVisitor ) return ((goalVisitor<? extends T>)visitor).visitGloballyUnaryOperator(this);
@@ -687,6 +807,14 @@ public class goalParser extends Parser {
 		}
 		public NextUnaryOperatorContext(Unary_operatorContext ctx) { copyFrom(ctx); }
 		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof goalListener ) ((goalListener)listener).enterNextUnaryOperator(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof goalListener ) ((goalListener)listener).exitNextUnaryOperator(this);
+		}
+		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof goalVisitor ) return ((goalVisitor<? extends T>)visitor).visitNextUnaryOperator(this);
 			else return visitor.visitChildren(this);
@@ -697,6 +825,14 @@ public class goalParser extends Parser {
 			return getRuleContext(FormulaContext.class,0);
 		}
 		public FinallyUnaryOperatorContext(Unary_operatorContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof goalListener ) ((goalListener)listener).enterFinallyUnaryOperator(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof goalListener ) ((goalListener)listener).exitFinallyUnaryOperator(this);
+		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof goalVisitor ) return ((goalVisitor<? extends T>)visitor).visitFinallyUnaryOperator(this);
@@ -786,6 +922,14 @@ public class goalParser extends Parser {
 		}
 		public AndBinaryOperatorContext(Binary_operatorContext ctx) { copyFrom(ctx); }
 		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof goalListener ) ((goalListener)listener).enterAndBinaryOperator(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof goalListener ) ((goalListener)listener).exitAndBinaryOperator(this);
+		}
+		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof goalVisitor ) return ((goalVisitor<? extends T>)visitor).visitAndBinaryOperator(this);
 			else return visitor.visitChildren(this);
@@ -799,6 +943,14 @@ public class goalParser extends Parser {
 			return getRuleContext(FormulaContext.class,i);
 		}
 		public OrBinaryOperatorContext(Binary_operatorContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof goalListener ) ((goalListener)listener).enterOrBinaryOperator(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof goalListener ) ((goalListener)listener).exitOrBinaryOperator(this);
+		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof goalVisitor ) return ((goalVisitor<? extends T>)visitor).visitOrBinaryOperator(this);
@@ -814,6 +966,14 @@ public class goalParser extends Parser {
 		}
 		public IffBinaryOperatorContext(Binary_operatorContext ctx) { copyFrom(ctx); }
 		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof goalListener ) ((goalListener)listener).enterIffBinaryOperator(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof goalListener ) ((goalListener)listener).exitIffBinaryOperator(this);
+		}
+		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof goalVisitor ) return ((goalVisitor<? extends T>)visitor).visitIffBinaryOperator(this);
 			else return visitor.visitChildren(this);
@@ -827,6 +987,14 @@ public class goalParser extends Parser {
 			return getRuleContext(FormulaContext.class,i);
 		}
 		public ReleaseBinaryOperatorContext(Binary_operatorContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof goalListener ) ((goalListener)listener).enterReleaseBinaryOperator(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof goalListener ) ((goalListener)listener).exitReleaseBinaryOperator(this);
+		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof goalVisitor ) return ((goalVisitor<? extends T>)visitor).visitReleaseBinaryOperator(this);
@@ -842,6 +1010,14 @@ public class goalParser extends Parser {
 		}
 		public UntilBinaryOperatorContext(Binary_operatorContext ctx) { copyFrom(ctx); }
 		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof goalListener ) ((goalListener)listener).enterUntilBinaryOperator(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof goalListener ) ((goalListener)listener).exitUntilBinaryOperator(this);
+		}
+		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof goalVisitor ) return ((goalVisitor<? extends T>)visitor).visitUntilBinaryOperator(this);
 			else return visitor.visitChildren(this);
@@ -855,6 +1031,14 @@ public class goalParser extends Parser {
 			return getRuleContext(FormulaContext.class,i);
 		}
 		public IfBinaryOperatorContext(Binary_operatorContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof goalListener ) ((goalListener)listener).enterIfBinaryOperator(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof goalListener ) ((goalListener)listener).exitIfBinaryOperator(this);
+		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof goalVisitor ) return ((goalVisitor<? extends T>)visitor).visitIfBinaryOperator(this);
@@ -966,6 +1150,14 @@ public class goalParser extends Parser {
 		}
 		@Override public int getRuleIndex() { return RULE_predicate; }
 		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof goalListener ) ((goalListener)listener).enterPredicate(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof goalListener ) ((goalListener)listener).exitPredicate(this);
+		}
+		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof goalVisitor ) return ((goalVisitor<? extends T>)visitor).visitPredicate(this);
 			else return visitor.visitChildren(this);
@@ -1023,6 +1215,14 @@ public class goalParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_termlist; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof goalListener ) ((goalListener)listener).enterTermlist(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof goalListener ) ((goalListener)listener).exitTermlist(this);
+		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof goalVisitor ) return ((goalVisitor<? extends T>)visitor).visitTermlist(this);
@@ -1113,6 +1313,14 @@ public class goalParser extends Parser {
 		}
 		@Override public int getRuleIndex() { return RULE_term; }
 		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof goalListener ) ((goalListener)listener).enterTerm(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof goalListener ) ((goalListener)listener).exitTerm(this);
+		}
+		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof goalVisitor ) return ((goalVisitor<? extends T>)visitor).visitTerm(this);
 			else return visitor.visitChildren(this);
@@ -1176,6 +1384,14 @@ public class goalParser extends Parser {
 		}
 		@Override public int getRuleIndex() { return RULE_atom; }
 		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof goalListener ) ((goalListener)listener).enterAtom(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof goalListener ) ((goalListener)listener).exitAtom(this);
+		}
+		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof goalVisitor ) return ((goalVisitor<? extends T>)visitor).visitAtom(this);
 			else return visitor.visitChildren(this);
@@ -1214,6 +1430,14 @@ public class goalParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_var_list; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof goalListener ) ((goalListener)listener).enterVar_list(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof goalListener ) ((goalListener)listener).exitVar_list(this);
+		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof goalVisitor ) return ((goalVisitor<? extends T>)visitor).visitVar_list(this);
@@ -1266,6 +1490,14 @@ public class goalParser extends Parser {
 		}
 		@Override public int getRuleIndex() { return RULE_variable; }
 		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof goalListener ) ((goalListener)listener).enterVariable(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof goalListener ) ((goalListener)listener).exitVariable(this);
+		}
+		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof goalVisitor ) return ((goalVisitor<? extends T>)visitor).visitVariable(this);
 			else return visitor.visitChildren(this);
@@ -1299,6 +1531,14 @@ public class goalParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_numeral; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof goalListener ) ((goalListener)listener).enterNumeral(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof goalListener ) ((goalListener)listener).exitNumeral(this);
+		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof goalVisitor ) return ((goalVisitor<? extends T>)visitor).visitNumeral(this);

@@ -6,4 +6,10 @@ public class XorNode extends WTSNode {
 		super(0);
 	}
 
+	@Override
+	public String toString() {
+		return "X";
+	}
+
+	
 }

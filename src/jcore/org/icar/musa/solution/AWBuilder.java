@@ -1,40 +1,68 @@
 package org.icar.musa.solution;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
+import org.icar.musa.pmr.problem_exploration.WTSEdge;
 import org.icar.musa.pmr.problem_exploration.CapabilityEdge;
 import org.icar.musa.pmr.problem_exploration.ScenarioEdge;
 import org.icar.musa.pmr.problem_exploration.StateNode;
+import org.icar.musa.pmr.problem_exploration.WTSNode;
 import org.icar.musa.pmr.problem_exploration.XorNode;
 
+
 public class AWBuilder {
-	private ArrayList<AWSequence> sequences;
+	private ArrayList<TreeBrick> bricks;
+	private HashMap<NodeCouple,WTSEdge> seq;
 	
 	public AWBuilder() {
 		super();
-		sequences = new ArrayList<>();
+		bricks = new ArrayList<>();
+		seq = new HashMap<>();
+	}
+	
+	public int size() {
+		return bricks.size();
+	}
+	
+	public ArrayList<TreeBrick> getBricks() {
+		return bricks;
 	}
 
 	public void addFirstNode(StateNode node) {
-		sequences.clear();
+		bricks.clear();
 		
-		AWEvent event = new AWEvent(node, AWEvent.START);
-		sequences.add(new AWSequence(event));
+		bricks.add(new TreeBrick(node));
 	}
 	
 	public void addEvolutionEdge(StateNode source,StateNode dest, CapabilityEdge edge) {
-		for (AWSequence s : sequences) {
-			
-		}
+		seq.put(new NodeCouple(source, dest), edge);
+		tryExtendTrees(source, dest);
 	}
-	
+
 	public void addChoiceEdge(StateNode source,XorNode dest, CapabilityEdge edge) {
-		
+		seq.put(new NodeCouple(source, dest), edge);
+		tryExtendTrees(source, dest);
 	}
 	
 	public void addScenarioEdge(XorNode source,StateNode dest, ScenarioEdge edge) {
-		
+		seq.put(new NodeCouple(source, dest), edge);
+		tryExtendTrees(source, dest);
 	}
 
+	private void tryExtendTrees(WTSNode source, WTSNode dest) {
+		ArrayList<TreeBrick> new_bricks = new ArrayList<>();
+		for (TreeBrick s : bricks) {
+			boolean appended = s.appendSequence(source, dest);
+			if (!appended) {
+				TreeBrick clone = s.clone_if_attach(source, dest);
+				if (clone != null) {
+					new_bricks.add(clone);
+				}
+			}
+		}
+		bricks.addAll(new_bricks);
+	}
+	
 	
 }
