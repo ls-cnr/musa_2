@@ -7,7 +7,6 @@ import org.icar.musa.exception.NotAllowedInAStateOfWorld;
 import org.icar.musa.pmr.problem_exploration.CapabilityEdge;
 import org.icar.musa.pmr.problem_exploration.ScenarioEdge;
 import org.icar.musa.pmr.problem_exploration.StateNode;
-import org.icar.musa.pmr.problem_exploration.WTSNode;
 import org.icar.musa.pmr.problem_exploration.XorNode;
 import org.icar.musa.solution.AWBuilder;
 import org.icar.musa.solution.TreeBrick;
@@ -18,112 +17,80 @@ import org.junit.Test;
 import net.sf.tweety.lp.asp.parser.ParseException;
 
 public class AWBuilder_test {
-	private StateNode initial_node;
-	private StateNode second_node;
-	private StateNode third_node;
+	private StateNode nodeA;
+	private StateNode nodeB;
+	private StateNode nodeC;
 	private XorNode first_xor;
 	private XorNode second_xor;
-	private StateNode first_childnode;
-	private StateNode second_childnode;
+	private StateNode nodeD;
+	private StateNode nodeE;
 	private StateNode not_included;
 	
 	@Before
 	public void init() throws ParseException, NotAllowedInAStateOfWorld {
-		StateOfWorld initial_state = new StateOfWorld();
-		StateOfWorld second_state = new StateOfWorld();
-		StateOfWorld third_state = new StateOfWorld();
+		StateOfWorld a = new StateOfWorld();
+		StateOfWorld b = new StateOfWorld();
+		StateOfWorld c = new StateOfWorld();
 
-		initial_state.addFact_asString("on(main).");
-		initial_state.addFact_asString("open(i1).");
+		a.addFact_asString("p(a).");
 		
-		second_state.addFact_asString("off(main).");
-		second_state.addFact_asString("open(i1).");
+		b.addFact_asString("p(b).");
 		
-		third_state.addFact_asString("off(main).");
-		third_state.addFact_asString("closed(i1).");
+		c.addFact_asString("p(c).");
 		
-		initial_node = new StateNode(initial_state);
-		second_node = new StateNode(second_state);
-		third_node = new StateNode(third_state);
+		nodeA = new StateNode(a);
+		nodeB = new StateNode(b);
+		nodeC = new StateNode(c);
 		
 		first_xor = new XorNode();
 		second_xor = new XorNode();
 		
-		StateOfWorld first_childstate = new StateOfWorld();
-		StateOfWorld second_childstate = new StateOfWorld();
+		StateOfWorld d = new StateOfWorld();
+		StateOfWorld e = new StateOfWorld();
 		
-		first_childstate.addFact_asString("on(main1).");
-		first_childstate.addFact_asString("open(i11).");
+		d.addFact_asString("p(d).");
 		
-		second_childstate.addFact_asString("off(main2).");
-		second_childstate.addFact_asString("open(i12).");
+		e.addFact_asString("p(e).");
+		e.addFact_asString("open(i12).");
 		
-		first_childnode = new StateNode(first_childstate);
-		second_childnode = new StateNode(second_childstate);
+		nodeD = new StateNode(d);
+		nodeE = new StateNode(e);
 		
 		StateOfWorld not_state = new StateOfWorld();
-		first_childstate.addFact_asString("necer(main1).");
+		d.addFact_asString("never(p).");
 		not_included = new StateNode(not_state);
 	}
 
-	@Ignore
 	@Test
-	public void test() {
+	public void test_sequenza() {
 		AWBuilder builder = new AWBuilder();
 		
-		builder.addFirstNode(initial_node);
-		builder.addEvolutionEdge(initial_node, second_node, new CapabilityEdge());
-		builder.addEvolutionEdge(second_node, third_node, new CapabilityEdge());
+		builder.addFirstNode(nodeA);
+		builder.addEvolutionEdge(nodeA, nodeB, new CapabilityEdge());
+		builder.addEvolutionEdge(nodeB, nodeC, new CapabilityEdge());
 		
 		assertTrue(builder.size()==1);
 		
-		builder.addChoiceEdge(third_node, first_xor, new CapabilityEdge() );
-		builder.addScenarioEdge(first_xor, first_childnode, new ScenarioEdge("first"));
-		builder.addScenarioEdge(first_xor, second_childnode, new ScenarioEdge("second"));
+		builder.addChoiceEdge(nodeC, first_xor, new CapabilityEdge() );
+		builder.addScenarioEdge(first_xor, nodeD, new ScenarioEdge("first"));
+		builder.addScenarioEdge(first_xor, nodeE, new ScenarioEdge("second"));
 		
 		assertTrue(builder.size()==1);
-		
-	}
-
-	@Ignore
-	@Test
-	public void test2() {
-		TreeBrick brick = new TreeBrick(initial_node);
-		brick.appendSequence(initial_node, first_xor);
-		brick.appendSequence(first_xor, first_childnode);
-		brick.appendSequence(first_xor, second_childnode);
-		brick.appendSequence(second_childnode, second_xor);
-		brick.appendSequence(second_xor, second_node);
-		brick.appendSequence(second_xor, third_node);
-		
-		assertTrue(!brick.appendSequence(initial_node, second_childnode));
-		
-		brick.log(0);
-		
-		TreeBrick brick2 = brick.clone_if_attach(initial_node, second_childnode);
-		
-		brick2.log(0);
 	}
 
 	@Test
-	public void test3() {
-		TreeBrick brick = new TreeBrick(initial_node);
-		brick.appendSequence(initial_node, first_xor);
-		brick.appendSequence(first_xor, first_childnode);
-		brick.appendSequence(first_xor, second_childnode);
-		brick.appendSequence(second_childnode, second_xor);
-		brick.appendSequence(second_xor, second_node);
-		brick.appendSequence(second_xor, third_node);
+	public void test_albero() {
+		TreeBrick brick = new TreeBrick(nodeA);
+		brick.appendSequence(nodeA, first_xor);
+		brick.appendSequence(first_xor, nodeB);
+		brick.appendSequence(first_xor, nodeC);
+		brick.appendSequence(nodeC, second_xor);
+		brick.appendSequence(second_xor, nodeD);
+		brick.appendSequence(second_xor, nodeE);
+		brick.appendSequence(nodeB, nodeE);		
+		//brick.log(0);
 		
-		brick.log(0);
-				
-		TreeBrick brick2 = brick.clone_if_attach(second_childnode, third_node);
-		
-		brick2.log(0);
-		
-		TreeBrick brick3 = brick.clone_if_attach(second_childnode, not_included);
-		brick3.log(0);
-		assertTrue(brick3 == null);
-		
+		TreeBrick brick2 = brick.clone_if_attach(nodeC, nodeE);
+		//brick2.log(0);
 	}
 }

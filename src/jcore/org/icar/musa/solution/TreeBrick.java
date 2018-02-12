@@ -54,18 +54,29 @@ public class TreeBrick {
 		}
 	}
 	
-	public ArrayList<TreeBrick> clone_root_to_node(WTSNode node) {
-		ArrayList<TreeBrick> res = new ArrayList<>();
+	public TreeBrick clone_root_to_node(WTSNode n) {
 		
+		if (node.equals(n)) {
+			
+			
+		}
+		for (TreeBrick s : children) {
+			
+		}
 		
-		
-		return res;
+		return null;
 	}
 	
-	public ArrayList<TreeBrick> clone_node_to_leaves(WTSNode node) {
+	public ArrayList<TreeBrick> clone_node_to_leaves(WTSNode n) {
 		ArrayList<TreeBrick> res = new ArrayList<>();
 		
-		
+		if (node.equals(n)) {
+			res.add( cloneBrick() );
+		} else {
+			for (TreeBrick s : children) {
+				res.addAll( s.clone_node_to_leaves(n));
+			}
+		}
 		
 		return res;
 	}
@@ -80,23 +91,26 @@ public class TreeBrick {
 			return clone_node;
 			
 		} else {
+			if (isLeaf()) {
+				return null;
+			}
+			
 			if (!isLeaf()) {
-				TreeBrick clone_node = new TreeBrick(node);
-				
-				boolean result = false;
+				TreeBrick manual_clone = new TreeBrick(node);
+				boolean contain_src = false;
 				for (TreeBrick sub : children) {
 					TreeBrick new_sub = sub.clone_if_attach(src,dst);
 					if (new_sub!=null) {
-						clone_node.attachChild(new_sub);
-						result = true;
+						manual_clone.attachChild(new_sub);
+						contain_src = true;
 					} else {
-						clone_node.attachChild(sub.cloneBrick());
+						manual_clone.attachChild(sub.cloneBrick());
 					}
 				}
-				
-				if (result==true)
-					return clone_node;
-
+				if (contain_src==true)
+					return manual_clone;
+				else
+					return null;
 			}
 		}		
 		
@@ -112,7 +126,6 @@ public class TreeBrick {
 		} else {
 			
 			/* provo a cercare tra i figli */
-			/* ASSUNZIONE: non considero che piu' figli potrebbero avere lo stesso nodo */
 			if (!isLeaf()) {
 				TreeBrick result = null;
 				for (TreeBrick sub : children) {
