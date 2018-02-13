@@ -24,6 +24,7 @@ public class AWBuilder_test {
 	private XorNode second_xor;
 	private StateNode nodeD;
 	private StateNode nodeE;
+	private StateNode nodeF;
 	private StateNode not_included;
 	
 	@Before
@@ -47,14 +48,17 @@ public class AWBuilder_test {
 		
 		StateOfWorld d = new StateOfWorld();
 		StateOfWorld e = new StateOfWorld();
+		StateOfWorld f = new StateOfWorld();
 		
 		d.addFact_asString("p(d).");
 		
 		e.addFact_asString("p(e).");
-		e.addFact_asString("open(i12).");
+		
+		f.addFact_asString("p(f).");
 		
 		nodeD = new StateNode(d);
 		nodeE = new StateNode(e);
+		nodeF = new StateNode(f);
 		
 		StateOfWorld not_state = new StateOfWorld();
 		d.addFact_asString("never(p).");
@@ -79,18 +83,61 @@ public class AWBuilder_test {
 	}
 
 	@Test
-	public void test_albero() {
+	public void test_loop() {
+		AWBuilder builder = new AWBuilder();
+		
+		builder.addFirstNode(nodeA);
+		builder.addEvolutionEdge(nodeA, nodeB, new CapabilityEdge());
+		builder.addEvolutionEdge(nodeB, nodeC, new CapabilityEdge());
+		builder.addEvolutionEdge(nodeC, nodeA, new CapabilityEdge());
+		
+		//builder.getBricks().get(0).log(0);
+	}
+
+	@Test
+	public void test_clone_albero() {
 		TreeBrick brick = new TreeBrick(nodeA);
-		brick.appendSequence(nodeA, first_xor);
-		brick.appendSequence(first_xor, nodeB);
-		brick.appendSequence(first_xor, nodeC);
-		brick.appendSequence(nodeC, second_xor);
-		brick.appendSequence(second_xor, nodeD);
-		brick.appendSequence(second_xor, nodeE);
-		brick.appendSequence(nodeB, nodeE);		
+		brick.appendSequence(nodeA, first_xor,false);
+		brick.appendSequence(first_xor, nodeB,false);
+		brick.appendSequence(first_xor, nodeC,false);
+		brick.appendSequence(nodeC, second_xor,false);
+		brick.appendSequence(second_xor, nodeD,false);
+		brick.appendSequence(second_xor, nodeE,false);
+		brick.appendSequence(nodeB, nodeE,false);		
 		//brick.log(0);
 		
-		TreeBrick brick2 = brick.clone_if_attach(nodeC, nodeE);
+		TreeBrick brick2 = brick.clone_if_attach(nodeC, nodeE,false);
 		//brick2.log(0);
+	}
+
+	@Test
+	public void test_loop_in_albero() {
+		TreeBrick brick = new TreeBrick(nodeA);
+		brick.appendSequence(nodeA, nodeB,false);
+		brick.appendSequence(nodeB, first_xor,false);
+		brick.appendSequence(first_xor, nodeC,false);
+		brick.appendSequence(first_xor, nodeD,false);
+		brick.appendSequence(nodeD, nodeA,false);
+		//brick.log(0);
+		
+		TreeBrick brick2 = brick.clone_if_attach(nodeB, nodeE,false);
+		//brick2.log(0);
+	}
+
+	@Test
+	public void test_flags_in_albero() {
+		TreeBrick brick = new TreeBrick(nodeA);
+		brick.appendSequence(nodeA, nodeB,false);
+		brick.appendSequence(nodeB, first_xor,false);
+		brick.appendSequence(first_xor, nodeC,false);
+		brick.appendSequence(first_xor, nodeD,false);
+		brick.appendSequence(nodeD, second_xor,false);
+		brick.appendSequence(second_xor, nodeB,false);
+		brick.appendSequence(second_xor, nodeE,false);
+		nodeF.setExitNode(true);
+		brick.appendSequence(nodeE, nodeF,false);
+		brick.update_metadata();
+		
+		brick.log(0);		
 	}
 }
