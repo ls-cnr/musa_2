@@ -67,8 +67,8 @@ public class WTSLocalBuilder {
 		return wts;
 	}
 
-	public void register(WTSEventLogger logger) {
-		listeners.add(logger);
+	public void register(WTSEventListener listener) {
+		listeners.add(listener);
 	}
  
 	

@@ -2,6 +2,7 @@ package org.icar.musa.solution;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -17,6 +18,8 @@ public class TreeBrick {
 	private boolean leads_to_exit;
 	private boolean leads_to_loop;
 	Set<StateNode> loops;
+	
+	private boolean solution;
 
 	public TreeBrick(WTSNode root) {
 		node = root;
@@ -26,13 +29,21 @@ public class TreeBrick {
 		leads_to_exit = false;
 		leads_to_loop = false;
 	}
-	
+		
+	public boolean isSolution() {
+		return solution;
+	}
+
+	public void setSolution(boolean solution) {
+		this.solution = solution;
+	}
+
 	public WTSNode getNode() {
 		return node;
 	}
 	
 	public boolean isLoop() {	
-		return node instanceof WTSLoop;
+		return node instanceof AWLoop;
 	}
 	
 	public Set<StateNode> getLoops() {
@@ -56,7 +67,7 @@ public class TreeBrick {
 	}
 	
 	public void update_metadata() {
-		loops.clear();
+		
 		
 		for (TreeBrick sub : children) {		// update in detph
 			sub.update_metadata();
@@ -67,7 +78,7 @@ public class TreeBrick {
 				leads_to_loop = true;			// set loop flag
 				leads_to_exit = false;
 				
-				WTSLoop n = (WTSLoop) node;
+				AWLoop n = (AWLoop) node;
 				loops.add(n.getLoop());			// set loop reference
 				
 			} else {										// IF leaf-normal node
@@ -81,23 +92,43 @@ public class TreeBrick {
 		} 
 		
 		if (!isLeaf()) {									// IF intermediate node
-			leads_to_loop = false;
-			leads_to_exit = true;
-			for (TreeBrick sub : children) {
-				if (!sub.leads_to_exit)
-					leads_to_exit = false;			// set leads_to_exit flag
-				if (sub.leads_to_loop)
-					loops.addAll(sub.getLoops());		// search for sub-loops
-			}
-			loops.remove(getNode()); 					// remove self from loop
-			if (!loops.isEmpty())
-				leads_to_loop = true;					// set loop flag
+			leads_to_exit = true_if_at_least_an_exit_and_no_normal_nodes();
+			leads_to_loop = true_if_at_least_one_loop();			
 		}
 	}
 
+	private boolean true_if_at_least_one_loop() {
+		boolean flag = false;
+		loops.clear();
+		for (TreeBrick sub : children) {
+			if (sub.leads_to_loop)
+				loops.addAll(sub.getLoops());
+		}
+		loops.remove(getNode()); 					// remove self from loop
+		if (!loops.isEmpty())
+			flag = true;					// set loop flag
+		return flag;
+	}
+
+	private boolean true_if_at_least_an_exit_and_no_normal_nodes() {
+		boolean one_exit = false;
+		boolean no_normal = true;
+		
+		for (TreeBrick sub : children) {
+			if (sub.leads_to_exit)
+				one_exit = true;
+			else if (!sub.leads_to_loop)
+				no_normal = false;
+		}
+		
+		return (one_exit & no_normal);
+	}
+
 	/* tries to append the sequence at the end */
-	public boolean appendSequence(WTSNode src, WTSNode dst, boolean loop) {
-		return append(src, dst, loop);
+	public boolean appendSequence(WTSNode src, WTSNode dst) {
+		if (!solution)
+			return append(src, dst, false);
+		return false;
 	}
 
 	/**
@@ -125,7 +156,7 @@ public class TreeBrick {
 			if (!isLeaf()) {
 				boolean append = false;
 				for (TreeBrick sub : children) {
-					if (sub.appendSequence(src,dst,loop))
+					if (sub.append(src,dst,loop))
 						append = true;
 				}
 				return append;
@@ -223,7 +254,7 @@ public class TreeBrick {
 	
 	private void addChild(WTSNode child_node,boolean loop) {
 		if (loop) {
-			TreeBrick sub = new TreeBrick(new WTSLoop((StateNode) child_node));
+			TreeBrick sub = new TreeBrick(new AWLoop((StateNode) child_node));
 			children.add(sub);
 		} else {
 			TreeBrick sub = new TreeBrick(child_node);
@@ -246,8 +277,8 @@ public class TreeBrick {
 		}
 		//if (node instanceof XorNode) 
 		tab++;
-		if (node instanceof WTSLoop) {
-			WTSLoop loop = (WTSLoop) node;
+		if (node instanceof AWLoop) {
+			AWLoop loop = (AWLoop) node;
 			System.out.print(loop.getLoop().toString()+"(L)");
 		} else {
 			System.out.print(node.toString());
@@ -260,6 +291,64 @@ public class TreeBrick {
 		for (TreeBrick sub : children) {
 			sub.log(tab);
 		}
+	}
+
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		
+		TreeBrick other = (TreeBrick) obj;
+		if (!node_equals(this,other) )
+			return false;
+		return true;
+	}
+	
+	public boolean node_equals(TreeBrick node1,TreeBrick node2) {
+		if (node1==null & node2!=null)
+			return false;
+		if (node2==null & node1!=null)
+			return false;
+		if (node1.getNode()==null & node2.getNode()!=null)
+			return false;
+		if (node2.getNode()==null & node1.getNode()!=null)
+			return false;
+		
+		if (!node1.getNode().equals(node2.getNode()))
+			return false;
+		
+		if (node1.getChilds().size()!=node2.getChilds().size())
+			return false;
+		
+		for (TreeBrick s1 : node1.getChilds()) {
+			TreeBrick s2 = exist_subnode_in_tree(node2,s1.getNode());
+			if (s1 == null)
+				return false;
+			
+			boolean compare = node_equals(s1,s2);
+			if (compare==false)
+				return false;
+		}
+		
+		return true;
+	}
+
+	private TreeBrick exist_subnode_in_tree(TreeBrick tree, WTSNode node) {
+		Iterator<TreeBrick> it = tree.getChilds().iterator();
+		TreeBrick subnode = null;
+		
+		while (it.hasNext() & subnode==null) {
+			TreeBrick s = it.next();
+			if (s.getNode().equals(node))
+				subnode = s;
+		}
+		
+		return subnode;
 	}
 
 

@@ -2,11 +2,20 @@ package org.icar.testcase.pmr;
 
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
+
+import org.icar.musa.core.Requirements;
 import org.icar.musa.core.context.StateOfWorld;
+import org.icar.musa.core.runtime_entity.AbstractCapability;
+import org.icar.musa.core.runtime_entity.AssumptionSet;
+import org.icar.musa.core.runtime_entity.ProblemSpecification;
+import org.icar.musa.domain.spsreconfiguration.SPSReconfigurationEasy;
 import org.icar.musa.exception.NotAllowedInAStateOfWorld;
+import org.icar.musa.exception.ProblemDefinitionException;
 import org.icar.musa.pmr.problem_exploration.CapabilityEdge;
 import org.icar.musa.pmr.problem_exploration.ScenarioEdge;
 import org.icar.musa.pmr.problem_exploration.StateNode;
+import org.icar.musa.pmr.problem_exploration.WTSLocalBuilder;
 import org.icar.musa.pmr.problem_exploration.XorNode;
 import org.icar.musa.solution.AWBuilder;
 import org.icar.musa.solution.TreeBrick;
@@ -66,30 +75,30 @@ public class AWBuilder_test {
 	}
 
 	@Test
-	public void test_sequenza() {
+	public void test_builder() {
 		AWBuilder builder = new AWBuilder();
 		
-		builder.addFirstNode(nodeA);
-		builder.addEvolutionEdge(nodeA, nodeB, new CapabilityEdge());
-		builder.addEvolutionEdge(nodeB, nodeC, new CapabilityEdge());
+		builder.notifyFirstNode(nodeA);
+		builder.notifyEvolutionEdge(nodeA, nodeB, new CapabilityEdge());
+		builder.notifyEvolutionEdge(nodeB, nodeC, new CapabilityEdge());
 		
 		assertTrue(builder.size()==1);
 		
-		builder.addChoiceEdge(nodeC, first_xor, new CapabilityEdge() );
-		builder.addScenarioEdge(first_xor, nodeD, new ScenarioEdge("first"));
-		builder.addScenarioEdge(first_xor, nodeE, new ScenarioEdge("second"));
+		builder.notifyChoiceEdge(nodeC, first_xor, new CapabilityEdge() );
+		builder.notifyScenarioEdge(first_xor, nodeD, new ScenarioEdge("first"));
+		builder.notifyScenarioEdge(first_xor, nodeE, new ScenarioEdge("second"));
 		
 		assertTrue(builder.size()==1);
 	}
 
 	@Test
-	public void test_loop() {
+	public void test_builder_with_loop() {
 		AWBuilder builder = new AWBuilder();
 		
-		builder.addFirstNode(nodeA);
-		builder.addEvolutionEdge(nodeA, nodeB, new CapabilityEdge());
-		builder.addEvolutionEdge(nodeB, nodeC, new CapabilityEdge());
-		builder.addEvolutionEdge(nodeC, nodeA, new CapabilityEdge());
+		builder.notifyFirstNode(nodeA);
+		builder.notifyEvolutionEdge(nodeA, nodeB, new CapabilityEdge());
+		builder.notifyEvolutionEdge(nodeB, nodeC, new CapabilityEdge());
+		builder.notifyEvolutionEdge(nodeC, nodeA, new CapabilityEdge());
 		
 		//builder.getBricks().get(0).log(0);
 	}
@@ -97,13 +106,13 @@ public class AWBuilder_test {
 	@Test
 	public void test_clone_albero() {
 		TreeBrick brick = new TreeBrick(nodeA);
-		brick.appendSequence(nodeA, first_xor,false);
-		brick.appendSequence(first_xor, nodeB,false);
-		brick.appendSequence(first_xor, nodeC,false);
-		brick.appendSequence(nodeC, second_xor,false);
-		brick.appendSequence(second_xor, nodeD,false);
-		brick.appendSequence(second_xor, nodeE,false);
-		brick.appendSequence(nodeB, nodeE,false);		
+		brick.appendSequence(nodeA, first_xor);
+		brick.appendSequence(first_xor, nodeB);
+		brick.appendSequence(first_xor, nodeC);
+		brick.appendSequence(nodeC, second_xor);
+		brick.appendSequence(second_xor, nodeD);
+		brick.appendSequence(second_xor, nodeE);
+		brick.appendSequence(nodeB, nodeE);		
 		//brick.log(0);
 		
 		TreeBrick brick2 = brick.clone_if_attach(nodeC, nodeE,false);
@@ -113,11 +122,11 @@ public class AWBuilder_test {
 	@Test
 	public void test_loop_in_albero() {
 		TreeBrick brick = new TreeBrick(nodeA);
-		brick.appendSequence(nodeA, nodeB,false);
-		brick.appendSequence(nodeB, first_xor,false);
-		brick.appendSequence(first_xor, nodeC,false);
-		brick.appendSequence(first_xor, nodeD,false);
-		brick.appendSequence(nodeD, nodeA,false);
+		brick.appendSequence(nodeA, nodeB);
+		brick.appendSequence(nodeB, first_xor);
+		brick.appendSequence(first_xor, nodeC);
+		brick.appendSequence(first_xor, nodeD);
+		brick.appendSequence(nodeD, nodeA);
 		//brick.log(0);
 		
 		TreeBrick brick2 = brick.clone_if_attach(nodeB, nodeE,false);
@@ -127,17 +136,39 @@ public class AWBuilder_test {
 	@Test
 	public void test_flags_in_albero() {
 		TreeBrick brick = new TreeBrick(nodeA);
-		brick.appendSequence(nodeA, nodeB,false);
-		brick.appendSequence(nodeB, first_xor,false);
-		brick.appendSequence(first_xor, nodeC,false);
-		brick.appendSequence(first_xor, nodeD,false);
-		brick.appendSequence(nodeD, second_xor,false);
-		brick.appendSequence(second_xor, nodeB,false);
-		brick.appendSequence(second_xor, nodeE,false);
+		brick.appendSequence(nodeA, nodeB);
+		brick.appendSequence(nodeB, first_xor);
+		nodeC.setExitNode(true);
+		brick.appendSequence(first_xor, nodeC);
+		brick.appendSequence(first_xor, nodeD);
+		brick.appendSequence(nodeD, second_xor);
+		brick.appendSequence(second_xor, nodeB);
+		brick.appendSequence(second_xor, nodeE);
 		nodeF.setExitNode(true);
-		brick.appendSequence(nodeE, nodeF,false);
-		brick.update_metadata();
+		brick.appendSequence(nodeE, nodeF);
 		
-		brick.log(0);		
+		brick.update_metadata();
+		assertTrue( brick.leadsToExit() );
+		//brick.log(0);		
+	}
+	
+	@Test
+	public void explore_SPS() throws ProblemDefinitionException {
+		SPSReconfigurationEasy s = new SPSReconfigurationEasy();
+		AssumptionSet assumptionsSPS = s.getDomainAssumptions();
+		Requirements requirementsSPS = s.getRequirements();
+		ArrayList<AbstractCapability> allCapSPS = s.getCapabilitySet();
+		ProblemSpecification ps_SPS = new ProblemSpecification(assumptionsSPS, requirementsSPS, null);
+		
+		WTSLocalBuilder wts_builder = new WTSLocalBuilder(ps_SPS, allCapSPS);
+		AWBuilder aw_builder = new AWBuilder();
+		wts_builder.register(aw_builder);
+		
+		wts_builder.build_solution_space(s.getInitialState());
+		aw_builder.log_solutions();
+//		for (TreeBrick tb : aw_builder.getSolutions() ) {
+//			System.out.println("-----");
+//			tb.log(0);
+//		}
 	}
 }
