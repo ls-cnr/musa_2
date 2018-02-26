@@ -43,7 +43,9 @@ public class WTSLocalBuilder {
 		
 		int it_counter = 0;
 		while (terminated==false & it_counter<max_iteration) {
+			//System.out.println("it: "+it_counter);
 			pe.generate_expansion();
+			//pe.log_current_state();
 			
 			WTSExpansion exp = pe.getHighestExpansion();
 			pe.pickExpansion(exp);
@@ -81,6 +83,7 @@ public class WTSLocalBuilder {
 		} else {
 			StateNode src = exp.getRoot();
 			XorNode xonode = exp.getXorNode();
+			xonode.setCases(exp.getEvolutionNodes().size());
 			CapabilityEdge edge = (CapabilityEdge) exp.getEdge(src, xonode);
 			notifyChoiceEdge(src,xonode,edge);
 			

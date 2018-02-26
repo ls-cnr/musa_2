@@ -1,7 +1,5 @@
 package org.icar.ltlpetrinet.hierarchical_model;
 
-import java.util.HashMap;
-
 import org.icar.ltlpetrinet.supervisor.TokenConf;
 
 public class NetHierarchy {
@@ -25,4 +23,20 @@ public class NetHierarchy {
 		return root;
 	}
 	
+	public String toString() {
+		return root.toString();
+	}
+
+	public String toStringWithScore() {
+		return root.toStringWithScore();
+	}
+
+//	public String toStringWithNet() {
+//		return root.toStringWithNet();
+//	}
+
+//	public String toStringWithScore(StateOfWorld w, AssumptionSet assumptions) {
+//		return root.toStringWithScore(w,assumptions);
+//	}
+
 }

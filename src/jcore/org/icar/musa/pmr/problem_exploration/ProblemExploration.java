@@ -60,10 +60,6 @@ public class ProblemExploration {
 		this.capabilities = new ArrayList<>(capabilities);
 		this.assumptions = ps.getAssumptions();
 		
-//		toVisit = new ArrayList<>();
-//		visited = new HashSet<>();
-//		generated_expansions = new ArrayList<>();
-		
 		if (!(ps.getGoal_specification() instanceof LTLGoal)) {
 			throw new ProblemDefinitionException();
 		} else {
@@ -80,6 +76,7 @@ public class ProblemExploration {
 		toVisit = new ArrayList<>();
 		visited = new HashSet<>();
 		generated_expansions = new ArrayList<>();
+		
 		node.setStartNode(true);
 		node.setTokens(supervisor.getNetModel().getInitialTokenConfiguration());
 		node.setGoal_satisfaction_degree(0);
@@ -98,11 +95,9 @@ public class ProblemExploration {
 	
 	public int getIterationCounter() {
 		return iteration_counter;
-	}
+	}	
 	
-	
-	
-	/* THE MOST IMPORTANT METHOD */
+	/* THE CENTRAL METHOD */
 	public void generate_expansion() {
 		iteration_counter++;
 		
@@ -113,6 +108,7 @@ public class ProblemExploration {
 			for (AbstractCapability cap : capabilities) {
 				boolean cap_applies = entail.entailsCondition(node.getState(), this.assumptions,(FOLCondition) cap.getPreCondition());
 				if (cap_applies) {
+					//System.out.println("cap: "+cap.getId());
 					WTSExpansion exp = generate_cap_evolution(node, cap);
 					if (exp!= null) {
 						generated_expansions.add(exp);
@@ -176,7 +172,7 @@ public class ProblemExploration {
 			}
 			
 			StateNode dest_node = new StateNode(dest_w);
-			if (!dest_node.equals(node)) {
+			//if (!dest_node.equals(node)) {
 				dest_node = update_node_metadata(node,dest_node);
 				
 				if (!multi_exp_mode) {
@@ -187,7 +183,7 @@ public class ProblemExploration {
 					ScenarioEdge secondary_edge = new ScenarioEdge(scen.getName());
 					exp.addEdge(multi_exp_xor_node, dest_node,secondary_edge);
 				}
-			}
+			//}
 		
 		}
 		
@@ -242,7 +238,7 @@ public class ProblemExploration {
 		else if (updated_state==PNStateEnum.ERROR )
 			dest_node.setForbidden(true);
 
-		int score = supervisor.calculate_partial_satisfaction(); 
+		double score = supervisor.calculate_partial_satisfaction(); 
 		dest_node.setGoal_satisfaction_degree(score);
 		
 		supervisor.cleanTokens();
@@ -256,7 +252,13 @@ public class ProblemExploration {
 		System.out.println("========iteration ("+iteration_counter+")========");
 		System.out.println("------------visited states---------------");
 		for (StateNode s : visited) {
-			System.out.println(s.getState().toString());
+			if (s != null)
+				if (s.getState() != null)
+					System.out.println(s.getState().toString());
+				else
+					System.out.println("node without state");
+			else
+				System.out.println("null node");
 		}
 //		System.out.println("------------to visite states---------------");
 //		for (ExtendedNode n : toVisit) {

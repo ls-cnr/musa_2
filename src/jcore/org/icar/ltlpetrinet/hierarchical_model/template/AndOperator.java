@@ -8,6 +8,10 @@ import org.icar.ltlpetrinet.hierarchical_model.HierarchyNode;
 import org.icar.ltlpetrinet.hierarchical_model.LogicNode;
 import org.icar.ltlpetrinet.hierarchical_model.PNNode;
 import org.icar.ltlpetrinet.supervisor.Token;
+import org.icar.musa.core.context.StateOfWorld;
+import org.icar.musa.core.fol_reasoner.EntailOperator;
+import org.icar.musa.core.fol_reasoner.FOLCondition;
+import org.icar.musa.core.runtime_entity.AssumptionSet;
 
 public class AndOperator extends LogicNode {
 	private HashMap<Pair,PNStateEnum> state_truth;
@@ -60,12 +64,86 @@ public class AndOperator extends LogicNode {
 	}
 
 	@Override
-	public int calculate_partial_satisfaction() {
-		int leftscore = getLeft().calculate_partial_satisfaction();
-		int rightscore = getRight().calculate_partial_satisfaction();
-		return Math.min(leftscore, rightscore);
+	public void updateResistance(StateOfWorld w, AssumptionSet assumptions) {
+		getLeft().updateResistance(w, assumptions);
+		getRight().updateResistance(w, assumptions);
+		
+		setResistance(getLeft().getResistance()+getRight().getResistance());
 	}
 
+	
+//	@Override
+//	public double calculate_partial_satisfaction() {
+//		double leftscore = getLeft().calculate_partial_satisfaction();
+//		double rightscore = getRight().calculate_partial_satisfaction();
+//		return  (leftscore+rightscore)/2;
+//		//return Math.min(leftscore, rightscore);
+//	}
+
+	public String toString() {
+		return "[ AND " + getLeft().toString() + "," + getRight().toString() + " ] ";
+	}
+	
+	public String toStringWithScore() {
+		return "[ AND (r="+getResistance()+") " + getLeft().toStringWithScore() + "," + getRight().toStringWithScore() + " ] ";
+	}
+
+
+//	public String toStringWithNet() {
+//		return "[ AND("+getName()+") " + getLeft().toStringWithNet() + "," + getRight().toStringWithNet() + " ] ";
+//	}
+//
+//	@Override
+//	public int count_slots() {
+//		int left_slots=0;
+//		int right_slots=0;
+//		
+//		if (getLeft() instanceof LogicNode) {
+//			LogicNode left_node = (LogicNode) getLeft();
+//			left_slots = left_node.count_slots();
+//		} else {
+//			return -1;
+//		}
+//		 
+//		if (getRight() instanceof LogicNode) {
+//			LogicNode right_node = (LogicNode) getRight();
+//			right_slots = right_node.count_slots();
+//		} else {
+//			return -1;
+//		}
+//		
+//		return left_slots+right_slots;
+//	}
+
+
+//	public String toStringWithScore(StateOfWorld w, AssumptionSet assumptions) {
+//		return "[ AND("+calculate_partial_satisfaction()+") " + getLeft().toStringWithScore(w,assumptions) + "," + getRight().toStringWithScore(w,assumptions) + " ] ";
+//	}
+//
+//	@Override
+//	public double calculate_partial_satisfaction_degree(boolean contribute_positively, StateOfWorld w, AssumptionSet assumptions) {
+//		double left_degree = getLeft().calculate_partial_satisfaction_degree(true, w, assumptions);
+//		double right_degree = getRight().calculate_partial_satisfaction_degree(true, w, assumptions);
+//		if (contribute_positively) {
+//			if (left_degree+right_degree==2)
+//				return 1;
+//			else if (left_degree+right_degree==0)
+//				return 0;
+//			else 
+//				return 0.5;
+//		}
+//		
+//		if (!contribute_positively) {
+//			if (left_degree+right_degree==2)
+//				return 0;
+//			else if (left_degree+right_degree==0)
+//				return 1;
+//			else 
+//				return 0.5;
+//		}
+//		
+//		return 0;
+//	}
 
 	
 }

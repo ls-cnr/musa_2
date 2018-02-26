@@ -68,7 +68,6 @@ public class TreeBrick {
 	
 	public void update_metadata() {
 		
-		
 		for (TreeBrick sub : children) {		// update in detph
 			sub.update_metadata();
 		}
@@ -113,7 +112,13 @@ public class TreeBrick {
 	private boolean true_if_at_least_an_exit_and_no_normal_nodes() {
 		boolean one_exit = false;
 		boolean no_normal = true;
-		
+
+		if (node instanceof XorNode) {
+			XorNode n = (XorNode) node;
+			if (children.size() < n.getCases())
+				return false;
+		}
+
 		for (TreeBrick sub : children) {
 			if (sub.leads_to_exit)
 				one_exit = true;
@@ -293,6 +298,7 @@ public class TreeBrick {
 		}
 	}
 
+	
 
 	@Override
 	public boolean equals(Object obj) {
@@ -309,6 +315,14 @@ public class TreeBrick {
 		return true;
 	}
 	
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((children == null) ? 0 : children.hashCode());
+		return result;
+	}
+
 	public boolean node_equals(TreeBrick node1,TreeBrick node2) {
 		if (node1==null & node2!=null)
 			return false;
@@ -349,6 +363,13 @@ public class TreeBrick {
 		}
 		
 		return subnode;
+	}
+
+	public void print_as_inline() {
+		System.out.print(node.toString()+" ");
+		for (TreeBrick sub : children) {
+			sub.print_as_inline();
+		}
 	}
 
 

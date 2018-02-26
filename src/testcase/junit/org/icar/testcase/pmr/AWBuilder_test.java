@@ -3,18 +3,23 @@ package org.icar.testcase.pmr;
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 import org.icar.musa.core.Requirements;
 import org.icar.musa.core.context.StateOfWorld;
 import org.icar.musa.core.runtime_entity.AbstractCapability;
 import org.icar.musa.core.runtime_entity.AssumptionSet;
 import org.icar.musa.core.runtime_entity.ProblemSpecification;
+import org.icar.musa.domain.monitoring_workflow.WakeUp;
 import org.icar.musa.domain.spsreconfiguration.SPSReconfigurationEasy;
+import org.icar.musa.domain.spsreconfiguration.SPSReconfigurationFull;
 import org.icar.musa.exception.NotAllowedInAStateOfWorld;
 import org.icar.musa.exception.ProblemDefinitionException;
 import org.icar.musa.pmr.problem_exploration.CapabilityEdge;
 import org.icar.musa.pmr.problem_exploration.ScenarioEdge;
 import org.icar.musa.pmr.problem_exploration.StateNode;
+import org.icar.musa.pmr.problem_exploration.WTS;
+import org.icar.musa.pmr.problem_exploration.WTSEventLogger;
 import org.icar.musa.pmr.problem_exploration.WTSLocalBuilder;
 import org.icar.musa.pmr.problem_exploration.XorNode;
 import org.icar.musa.solution.AWBuilder;
@@ -70,7 +75,7 @@ public class AWBuilder_test {
 		nodeF = new StateNode(f);
 		
 		StateOfWorld not_state = new StateOfWorld();
-		d.addFact_asString("never(p).");
+		not_state.addFact_asString("never(p).");
 		not_included = new StateNode(not_state);
 	}
 
@@ -153,22 +158,34 @@ public class AWBuilder_test {
 	}
 	
 	@Test
-	public void explore_SPS() throws ProblemDefinitionException {
-		SPSReconfigurationEasy s = new SPSReconfigurationEasy();
-		AssumptionSet assumptionsSPS = s.getDomainAssumptions();
-		Requirements requirementsSPS = s.getRequirements();
-		ArrayList<AbstractCapability> allCapSPS = s.getCapabilitySet();
-		ProblemSpecification ps_SPS = new ProblemSpecification(assumptionsSPS, requirementsSPS, null);
+	public void test_doppio_clone_seq() {
+		TreeBrick brick = new TreeBrick(nodeA);
+		brick.appendSequence(nodeA, nodeB);
+		brick.appendSequence(nodeB, nodeC);
+		brick.appendSequence(nodeC, nodeD);
+		brick.log(0);
 		
-		WTSLocalBuilder wts_builder = new WTSLocalBuilder(ps_SPS, allCapSPS);
-		AWBuilder aw_builder = new AWBuilder();
-		wts_builder.register(aw_builder);
+		TreeBrick brick2 = brick.clone_if_attach(nodeB, nodeE,false);
+		brick2.log(0);
+
+		TreeBrick brick3 = brick.clone_if_attach(nodeA, nodeF,false);
+		brick3.log(0);
+
+		TreeBrick brick4 = brick3.clone_if_attach(nodeA, nodeF,false);
+		brick4.log(0);
 		
-		wts_builder.build_solution_space(s.getInitialState());
-		aw_builder.log_solutions();
-//		for (TreeBrick tb : aw_builder.getSolutions() ) {
-//			System.out.println("-----");
-//			tb.log(0);
-//		}
+		boolean eq = brick3.equals(brick4);
+		//System.out.println("Eq: "+eq);
+		assertTrue(eq);
+
+		HashSet<TreeBrick> set = new HashSet<>();
+		set.add(brick);
+		set.add(brick2);
+		set.add(brick3);
+		set.add(brick4);
+		
+		//System.out.println("Size: "+set.size());
+		assertTrue(set.size()==3);
 	}
+
 }

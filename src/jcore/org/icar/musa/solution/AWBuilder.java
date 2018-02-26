@@ -2,6 +2,7 @@ package org.icar.musa.solution;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 
 import org.icar.musa.pmr.problem_exploration.WTSEdge;
 import org.icar.musa.pmr.problem_exploration.WTSEventListener;
@@ -11,25 +12,24 @@ import org.icar.musa.pmr.problem_exploration.StateNode;
 import org.icar.musa.pmr.problem_exploration.WTSNode;
 import org.icar.musa.pmr.problem_exploration.XorNode;
 
-
 public class AWBuilder implements WTSEventListener {
-	private ArrayList<TreeBrick> bricks;
-	private ArrayList<TreeBrick> solutions;
+	private HashSet<TreeBrick> bricks;
+	private HashSet<TreeBrick> solutions;
 	private HashMap<NodeCouple,WTSEdge> seq;
 	
 	public AWBuilder() {
 		super();
-		bricks = new ArrayList<>();
-		solutions = new ArrayList<>();
+		bricks = new HashSet<TreeBrick>();
+		solutions = new HashSet<TreeBrick>();
 		
-		seq = new HashMap<>();
+		seq = new HashMap<NodeCouple,WTSEdge>();
 	}
 	
 	public int size() {
 		return bricks.size();
 	}
 	
-	public ArrayList<TreeBrick> getBricks() {
+	public HashSet<TreeBrick> getBricks() {
 		return bricks;
 	}
 
@@ -41,16 +41,19 @@ public class AWBuilder implements WTSEventListener {
 	@Override
 	public void notifyEvolutionEdge(StateNode source, StateNode dest, CapabilityEdge edge) {
 		addEvolutionEdge(source,dest,edge);
+		//internal_report();
 	}
 
 	@Override
 	public void notifyChoiceEdge(StateNode source, XorNode dest, CapabilityEdge edge) {
 		addChoiceEdge(source, dest, edge);
+		//internal_report();
 	}
 
 	@Override
 	public void notifyScenarioEdge(XorNode source, StateNode dest, ScenarioEdge edge) {
 		addScenarioEdge(source, dest, edge);
+		//internal_report();
 	}
 
 	
@@ -100,6 +103,7 @@ public class AWBuilder implements WTSEventListener {
 
 	private void tryExtendTrees(WTSNode source, WTSNode dest) {
 		ArrayList<TreeBrick> new_bricks = new ArrayList<>();
+		ArrayList<TreeBrick> new_original_bricks = new ArrayList<>();
 		for (TreeBrick s : bricks) {
 			boolean appended = false;
 			if (!s.isSolution())
@@ -112,10 +116,21 @@ public class AWBuilder implements WTSEventListener {
 				}
 			}
 		}
-		bricks.addAll(new_bricks);
+		for (TreeBrick n : new_bricks) {
+			boolean original = true;
+			for (TreeBrick s : bricks) {
+				if (n.equals(s)) {
+					original = false;
+				}
+			}
+			if (original)
+				new_original_bricks.add(n);
+		}
+		
+		bricks.addAll(new_original_bricks);
 	}
 
-	public ArrayList<TreeBrick> getSolutions() {
+	public HashSet<TreeBrick> getSolutions() {
 		return solutions;
 	}
 
@@ -124,8 +139,25 @@ public class AWBuilder implements WTSEventListener {
 		for (TreeBrick t : solutions) {
 			System.out.println("-----");
 			log_solution_with_capability(t,0);
+			//t.log(0);
+			//log_solution_with_capability(t,0);
 		}
+		if (solutions.size()==0)
+			for (TreeBrick t : bricks) {
+				t.log(0);
+			}
 	}
+	
+	private void internal_report() {
+		System.out.println("n. bricks: "+bricks.size());
+		for (TreeBrick tb : bricks) {
+			tb.print_as_inline(); System.out.println("");
+		}
+		System.out.println("n. solutions: "+solutions.size());
+		for (TreeBrick s : solutions) {
+			s.print_as_inline(); System.out.println("");
+		}
+}
 
 	private void log_solution_with_capability(TreeBrick t, int tabs) {
 		WTSNode start = t.getNode();

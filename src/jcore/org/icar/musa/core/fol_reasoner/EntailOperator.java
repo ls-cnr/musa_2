@@ -6,7 +6,6 @@ import org.icar.musa.agent_communication.translator.ExtDLPHead;
 import org.icar.musa.core.context.StateOfWorld;
 import org.icar.musa.core.runtime_entity.AssumptionSet;
 
-import net.sf.tweety.lp.asp.syntax.Rule;
 import net.sf.tweety.lp.asp.util.AnswerSet;
 import net.sf.tweety.lp.asp.util.AnswerSetList;
 import net.sf.tweety.logics.fol.semantics.HerbrandInterpretation;
@@ -15,8 +14,6 @@ import net.sf.tweety.logics.fol.syntax.FolFormula;
 import net.sf.tweety.logics.translators.aspfol.AspFolTranslator;
 import net.sf.tweety.lp.asp.solver.DLV;
 import net.sf.tweety.lp.asp.solver.SolverException;
-import net.sf.tweety.lp.asp.syntax.DLPElement;
-import net.sf.tweety.lp.asp.syntax.DLPHead;
 import net.sf.tweety.lp.asp.syntax.DLPLiteral;
 import net.sf.tweety.lp.asp.syntax.Program;
 

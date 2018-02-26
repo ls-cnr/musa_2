@@ -10,9 +10,11 @@ import org.icar.musa.core.context.StateOfWorld;
 import org.icar.musa.core.fol_reasoner.EntailOperator;
 import org.icar.musa.core.fol_reasoner.FOLCondition;
 import org.icar.musa.core.runtime_entity.AssumptionSet;
+import org.icar.musa.persistence.entity.DomainAssumption;
 
 public class PredicateNode extends HierarchyNode {
 	private Condition cond;
+	private boolean direct;
 	
 	public PredicateNode(String name, Condition condition) {
 		super(name);
@@ -38,20 +40,32 @@ public class PredicateNode extends HierarchyNode {
 
 	@Override
 	public void updateNet(StateOfWorld w,AssumptionSet assumptions) {
-		
+		updateResistance(w,assumptions);
+	}
+	@Override
+	public void updateResistance(StateOfWorld w, AssumptionSet assumptions) {
+//		EntailOperator entail = EntailOperator.getInstance();
+//		boolean normal_test =  entail.entailsCondition(w, assumptions, (FOLCondition) this.getCondition());
+//		
 	}
 
-	protected boolean retrieveTransitionDependency(StateOfWorld w, AssumptionSet assumptions, boolean normal) {
+	protected boolean retrieveTransitionDependency(StateOfWorld w, AssumptionSet assumptions, boolean direct_dependency) {
 		boolean normal_test = false;
 		Condition cond = this.getCondition();
 		
 		EntailOperator entail = EntailOperator.getInstance();
 		normal_test =  entail.entailsCondition(w, assumptions, (FOLCondition) cond);
-
-		if (normal)
-			return normal_test;
+		
+		direct = direct_dependency;
+		
+		setResistance(RMAX);
+		if (normal_test==direct)
+			setResistance(0);		
+		
+		if (direct_dependency)
+			return normal_test;		
 		else
-			return !normal_test;
+			return !normal_test;		
 	}
 
 	@Override
@@ -59,8 +73,39 @@ public class PredicateNode extends HierarchyNode {
 		return null;
 	}
 
-	@Override
-	public int calculate_partial_satisfaction() {
-		return 0;
+	
+//	@Override
+//	public double calculate_partial_satisfaction() {
+//		return 0;
+//	}
+//
+	public String toString() {
+		return "[ " + cond.toString() + " ] ";
 	}
+
+	public String toStringWithScore() {
+		if (direct)
+			return "[ "+cond.toString() +": r=" + getResistance() + " ] ";
+		else
+			return "[ "+cond.toString() +": r=" + getResistance() + "* ] ";
+	}
+
+//	@Override
+//	public String toStringWithNet() {
+//		return toString();
+//	}
+//	
+//	public String toStringWithScore() {
+//		return "[  ]";
+//	}
+//
+//	@Override
+//	public double calculate_partial_satisfaction_degree(boolean contribute_positively, StateOfWorld w, AssumptionSet assumptions) {
+//		EntailOperator op = EntailOperator.getInstance();
+//		boolean resp = op.entailsCondition(w, assumptions, (FOLCondition) cond);
+//		if (resp == contribute_positively)
+//				return 1;
+//		return 0;
+//	}
+	
 }

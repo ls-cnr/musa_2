@@ -34,7 +34,8 @@ public class NetSupervisor {
 	}
 
 	public void update(StateOfWorld w,AssumptionSet assumptions) {	
-		netmodel.getRoot().updateNet(w,assumptions);		
+		netmodel.getRoot().updateNet(w,assumptions);
+		netmodel.getRoot().updateResistance(w, assumptions);
 	}
 	
 	public PNStateEnum getState() {
@@ -93,17 +94,25 @@ public class NetSupervisor {
 		return netmodel;
 	}
 
+	public int calculate_partial_satisfaction() {
+//		System.out.println(HierarchyNode.RINF-netmodel.getRoot().getResistance());
+//		System.out.println((HierarchyNode.RINF-netmodel.getRoot().getResistance())/HierarchyNode.RINF);
+		return (int) Math.round( (HierarchyNode.RINF-netmodel.getRoot().getResistance())  );
+	}
+
+	public String toStringWithScore() {
+		return netmodel.toStringWithScore();
+	}
+
 	/* this method uses the distance (hop number) between petri nets places
 	 * for calculating the distance to the total satisfaction
 	 */
-	public int calculate_partial_satisfaction() {	
-		return netmodel.getRoot().calculate_partial_satisfaction();
-	}
+//	public double calculate_partial_satisfaction() {	
+//		return netmodel.getRoot().calculate_partial_satisfaction();
+//	}
 
-
-
-
-
-
+//	public String toStringWithScore(StateOfWorld w, AssumptionSet assumptions) {
+//		return netmodel.toStringWithScore(w, assumptions);
+//	}
 
 }

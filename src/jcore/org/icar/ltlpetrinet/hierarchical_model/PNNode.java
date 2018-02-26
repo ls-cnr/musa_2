@@ -1,12 +1,10 @@
 package org.icar.ltlpetrinet.hierarchical_model;
 
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
 import org.icar.ltlpetrinet.annotated_pn.AnnotatedPlace;
 import org.icar.ltlpetrinet.annotated_pn.AnnotatedTransition;
-import org.icar.ltlpetrinet.annotated_pn.BinaryTransition;
 import org.icar.ltlpetrinet.annotated_pn.PNStateEnum;
 import org.icar.ltlpetrinet.annotated_pn.UnaryTransition;
 import org.icar.musa.core.context.StateOfWorld;
@@ -53,11 +51,20 @@ public abstract class PNNode extends HierarchyNode {
 						ut.fire();
 					}
 				}
-	
 			}
 		}
 	}
-	
+
+	protected boolean retrieveTransitionDependency(StateOfWorld w, AssumptionSet assumptions, boolean normal) {
+		boolean normal_test = false;
+		normal_test = ( getNetState() == PNStateEnum.ACCEPTED );
+		
+		if (normal)
+			return normal_test;
+		else
+			return !normal_test;
+	}
+
 	private Set<AnnotatedTransition> identify_fireable_transitions_in_a_petrinet() {
 		Set<AnnotatedTransition> transitions = new HashSet<AnnotatedTransition>();
 		for (Transition t : pn.getTransitionsAbleToFire()) {
@@ -68,15 +75,6 @@ public abstract class PNNode extends HierarchyNode {
 		return transitions;
 	}
 
-	protected boolean retrieveTransitionDependency(StateOfWorld w, AssumptionSet assumptions, boolean normal) {
-		boolean normal_test = false;
-		normal_test = ( getNetState() == PNStateEnum.ACCEPTED);
-		
-		if (normal)
-			return normal_test;
-		else
-			return !normal_test;
-	}
 
 	@Override
 	public PNStateEnum getNetState() {
@@ -93,23 +91,23 @@ public abstract class PNNode extends HierarchyNode {
 		return pessimistic;
 	}
 
-	@Override
-	public int calculate_partial_satisfaction() {
-		int subscore = 0;
-		
-//		for (HierarchyNode sub : getDependencies().values()) {
-//			subscore = subscore+sub.calculate_partial_satisfaction();
-//		}
-//		subscore = subscore/2;
-		
-		PNStateEnum state = getNetState();
-		if (state==PNStateEnum.ACCEPTED) 
-			return 10+subscore;
-		if (state==PNStateEnum.WAIT_BUT_ACCEPTED) 
-			return 5+subscore;
-		if (state==PNStateEnum.WAIT_BUT_ERROR) 
-			return 1+subscore;
-		return 0;
-	}
-
+//	@Override
+//	public double calculate_partial_satisfaction() {
+//		int subscore = 0;
+//		
+////		for (HierarchyNode sub : getDependencies().values()) {
+////			subscore = subscore+sub.calculate_partial_satisfaction();
+////		}
+////		subscore = subscore/2;
+//		
+//		PNStateEnum state = getNetState();
+//		if (state==PNStateEnum.ACCEPTED) 
+//			return 10+subscore;
+//		if (state==PNStateEnum.WAIT_BUT_ACCEPTED) 
+//			return 5+subscore;
+//		if (state==PNStateEnum.WAIT_BUT_ERROR) 
+//			return 1+subscore;
+//		return 0;
+//	}
+	
 }

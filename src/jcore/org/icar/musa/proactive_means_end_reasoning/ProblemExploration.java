@@ -334,7 +334,7 @@ public class ProblemExploration {
 		enode.checkNodeType( supervisor.getState() );
 		
 		//Calculating Hops
-		int score = supervisor.calculate_partial_satisfaction(); 
+		int score = (int) supervisor.calculate_partial_satisfaction(); 
 		
 		//Elaborating score
 		enode.setScore(score);
