@@ -1,4 +1,4 @@
-package org.icar.musa.solution;
+package org.icar.musa.pmr.solution;
 
 public class AWItem {
 	private String name;

@@ -1,4 +1,4 @@
-package org.icar.musa.domain.spsreconfiguration;
+package org.icar.musa.domain_app.spsreconfiguration;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -10,13 +10,13 @@ import org.icar.musa.core.Condition;
 import org.icar.musa.core.Requirements;
 import org.icar.musa.core.context.StateOfWorld;
 import org.icar.musa.core.context.evolution.AddStatement;
-import org.icar.musa.core.context.evolution.CapabilityEvolutionScenario;
 import org.icar.musa.core.context.evolution.EvolutionScenario;
 import org.icar.musa.core.context.evolution.RemoveStatement;
 import org.icar.musa.core.fol_reasoner.FOLCondition;
 import org.icar.musa.core.runtime_entity.AbstractCapability;
 import org.icar.musa.core.runtime_entity.AssumptionSet;
-import org.icar.musa.domain.Scenario;
+import org.icar.musa.core.runtime_entity.CapabilityEvolutionScenario;
+import org.icar.musa.domain_app.Scenario;
 import org.icar.specification.LTLgoal.LTLGoalModelBuilder;
 import org.icar.specification.LTLgoal.model.GoalModel;
 import org.icar.specification.LTLgoal.model.LTLGoal;

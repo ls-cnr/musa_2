@@ -8,14 +8,14 @@ import org.icar.musa.core.Requirements;
 import org.icar.musa.core.runtime_entity.AbstractCapability;
 import org.icar.musa.core.runtime_entity.AssumptionSet;
 import org.icar.musa.core.runtime_entity.ProblemSpecification;
-import org.icar.musa.domain.monitoring_workflow.WakeUp;
-import org.icar.musa.domain.spsreconfiguration.SPSReconfigurationEasy;
-import org.icar.musa.domain.spsreconfiguration.SPSReconfigurationFull;
+import org.icar.musa.domain_app.monitoring_workflow.WakeUp;
+import org.icar.musa.domain_app.spsreconfiguration.SPSReconfigurationEasy;
+import org.icar.musa.domain_app.spsreconfiguration.SPSReconfigurationFull;
 import org.icar.musa.exception.ProblemDefinitionException;
 import org.icar.musa.pmr.problem_exploration.WTS;
 import org.icar.musa.pmr.problem_exploration.WTSEventLogger;
 import org.icar.musa.pmr.problem_exploration.WTSLocalBuilder;
-import org.icar.musa.solution.AWBuilder;
+import org.icar.musa.pmr.solution.AWBuilder;
 import org.junit.Ignore;
 import org.junit.Test;
 

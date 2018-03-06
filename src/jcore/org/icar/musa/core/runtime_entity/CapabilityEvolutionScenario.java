@@ -1,9 +1,12 @@
-package org.icar.musa.core.context.evolution;
+package org.icar.musa.core.runtime_entity;
 
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+
+import org.icar.musa.core.context.evolution.EvolutionOperator;
+import org.icar.musa.core.context.evolution.EvolutionScenario;
 
 public class CapabilityEvolutionScenario implements EvolutionScenario {
 

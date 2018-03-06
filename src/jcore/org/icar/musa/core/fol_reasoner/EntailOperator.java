@@ -96,6 +96,7 @@ public class EntailOperator {
 		}
 
 		if (response != null) {
+			if (response.size()>1) System.out.println("warning: many stable models");
 			AnswerSet as = response.get(0);
 			HerbrandInterpretation interpr = new HerbrandInterpretation();
 

@@ -12,7 +12,7 @@ import org.icar.musa.core.context.StateOfWorld;
 import org.icar.musa.core.runtime_entity.AbstractCapability;
 import org.icar.musa.core.runtime_entity.AssumptionSet;
 import org.icar.musa.core.runtime_entity.ProblemSpecification;
-import org.icar.musa.domain.spsreconfiguration.SPSReconfigurationEasy;
+import org.icar.musa.domain_app.spsreconfiguration.SPSReconfigurationEasy;
 import org.icar.musa.exception.ProblemDefinitionException;
 import org.icar.musa.proactive_means_end_reasoning.ExtendedNode;
 import org.icar.musa.proactive_means_end_reasoning.GraphExpansion;

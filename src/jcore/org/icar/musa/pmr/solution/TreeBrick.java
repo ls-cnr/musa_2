@@ -1,4 +1,4 @@
-package org.icar.musa.solution;
+package org.icar.musa.pmr.solution;
 
 import java.util.ArrayList;
 import java.util.HashSet;

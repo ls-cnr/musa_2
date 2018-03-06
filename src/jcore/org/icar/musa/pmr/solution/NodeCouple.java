@@ -1,4 +1,4 @@
-package org.icar.musa.solution;
+package org.icar.musa.pmr.solution;
 
 import org.icar.musa.pmr.problem_exploration.WTSNode;
 

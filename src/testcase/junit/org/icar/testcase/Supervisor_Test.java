@@ -8,7 +8,7 @@ import org.icar.ltlpetrinet.supervisor.NetSupervisor;
 import org.icar.ltlpetrinet.supervisor.TokenConf;
 import org.icar.musa.core.Requirements;
 import org.icar.musa.core.context.StateOfWorld;
-import org.icar.musa.domain.spsreconfiguration.SPSReconfigurationFull;
+import org.icar.musa.domain_app.spsreconfiguration.SPSReconfigurationFull;
 import org.icar.specification.LTLgoal.model.LTLGoal;
 import org.junit.Test;
 

@@ -1,4 +1,4 @@
-package org.icar.musa.domain;
+package org.icar.musa.domain_app;
 
 import java.util.ArrayList;
 
