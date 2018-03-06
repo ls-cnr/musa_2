@@ -19,6 +19,8 @@ import org.icar.musa.core.fol_reasoner.FOLCondition;
 import org.icar.musa.core.runtime_entity.AbstractCapability;
 import org.icar.musa.core.runtime_entity.AssumptionSet;
 import org.icar.musa.domain.Scenario;
+import org.icar.specification.ACLanguage.CapabilityBuilder;
+import org.icar.specification.ACLanguage.model.Capability;
 import org.icar.specification.LTLgoal.LTLGoalModelBuilder;
 import org.icar.specification.LTLgoal.model.GoalModel;
 import org.icar.specification.LTLgoal.model.LTLGoal;
@@ -113,8 +115,8 @@ public class SPSReconfigurationEasy implements Scenario {
 	
 	public ArrayList<AbstractCapability> getSubCapabilitySet1() {
 		ArrayList<AbstractCapability> capabilities = new ArrayList<AbstractCapability>();
-		capabilities.add(generate_switch_on_main_generator());
-		capabilities.add(generate_switch_off_main_generator());
+		capabilities.add(generate_start_generator_capability("main"));
+		capabilities.add(generate_stop_generator_capability("main"));
 		return capabilities;		
 	}
 	public ArrayList<AbstractCapability> getSubCapabilitySet2() {
@@ -141,8 +143,8 @@ public class SPSReconfigurationEasy implements Scenario {
 		ArrayList<AbstractCapability> capabilities = new ArrayList<AbstractCapability>();
 	
 		/*generator*/
-		capabilities.add(generate_switch_on_main_generator());
-		capabilities.add(generate_switch_off_main_generator());
+		capabilities.add(generate_start_generator_capability("main"));
+		capabilities.add(generate_stop_generator_capability("main"));
 		
 		/*switch*/
 		capabilities.add(generate_open_capability_for_switcher("i1"));
@@ -157,48 +159,65 @@ public class SPSReconfigurationEasy implements Scenario {
 		return capabilities;
 	}
 	
-
-	private AbstractCapability generate_switch_on_main_generator() {
-		/* switch_ON_main_generator_cap
-		 * PRE: off(main)
-		 * SCENARIO mainOn: remove {off(main)}, add {on(main)}
-		*/
-		Condition main_on_pre = new FOLCondition(new DLPAtom("off", new Constant("main")));
-		List<EvolutionScenario> main_on_evo = new LinkedList<>();
-		CapabilityEvolutionScenario main_on_evo1 = new CapabilityEvolutionScenario("mainOn");
-		main_on_evo1.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("on", new Constant("main"))) ) );
-		main_on_evo1.addOperator(new RemoveStatement(new ExtDLPHead(new DLPAtom("off", new Constant("main")))));
-		main_on_evo.add(main_on_evo1);		
-		return new AbstractCapability("switch_ON_main_generator_cap", main_on_evo, main_on_pre, null);
+	private AbstractCapability generate_start_generator_capability(String name) {
+		AbstractCapability ac = null;
+		
+		String capname = "switch_ON_"+name+"_generator_cap";
+		String pre = "off("+name+")";
+		String post = "on("+name+")";
+		String evo1 = "scenario "+name+"_on ( add on("+name+"), remove off("+name+") )";
+		String c = "capability "+ capname +" { pre: " + pre +" post: " + post + " " + evo1 +" }";
+		
+		try {
+			Capability cap = CapabilityBuilder.parse(c);
+			ac = CapabilityBuilder.convertToAbstract(cap);
+		} catch (IOException e) {
+			System.out.println(c);
+			e.printStackTrace();
+		}
+		return ac;
 	}
-
-	private AbstractCapability generate_switch_off_main_generator() {
-		/* switch_OFF_main_generator_cap
-		 * PRE: on(main)
-		 * SCENARIO mainOff: remove {on(main)}, add {off(main)}
-		*/
-		Condition main_on_pre = new FOLCondition(new DLPAtom("on", new Constant("main")));
-		List<EvolutionScenario> main_on_evo = new LinkedList<>();
-		CapabilityEvolutionScenario main_on_evo1 = new CapabilityEvolutionScenario("mainOff");
-		main_on_evo1.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("off", new Constant("main"))) ) );
-		main_on_evo1.addOperator(new RemoveStatement(new ExtDLPHead(new DLPAtom("on", new Constant("main")))));
-		main_on_evo.add(main_on_evo1);		
-		return new AbstractCapability("switch_OFF_main_generator_cap", main_on_evo, main_on_pre, null);
+	
+	private AbstractCapability generate_stop_generator_capability(String name) {
+		AbstractCapability ac = null;
+		
+		String capname = "switch_OFF_"+name+"_generator_cap";
+		String pre = "on("+name+")";
+		String post = "off("+name+")";
+		String evo1 = "scenario "+name+"_on ( add off("+name+"), remove on("+name+") )";
+		String c = "capability "+ capname +" { pre: " + pre +" post: " + post + " " + evo1 +" }";
+		
+		try {
+			Capability cap = CapabilityBuilder.parse(c);
+			ac = CapabilityBuilder.convertToAbstract(cap);
+		} catch (IOException e) {
+			System.out.println(c);
+			e.printStackTrace();
+		}
+		return ac;
 	}
-
+	
 	private AbstractCapability generate_close_capability_for_switcher(String switch_name) {
 		/* close_switch_<name>_cap
 		 * PRE: open(<name>)
 		 * SCENARIO iClosed: remove {open(<name>)}, add {closed(<name>)}
 		*/
-		Constant i_const = new Constant(switch_name);
-		Condition i_pre = new FOLCondition(new DLPAtom("open", i_const));
-		List<EvolutionScenario> main_on_evo = new LinkedList<>();
-		CapabilityEvolutionScenario i_evo_scenario = new CapabilityEvolutionScenario("iClosed");
-		i_evo_scenario.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("closed", i_const)) ) );
-		i_evo_scenario.addOperator(new RemoveStatement(new ExtDLPHead(new DLPAtom("open", i_const))));
-		main_on_evo.add(i_evo_scenario);
-		return new AbstractCapability("close_switch_"+switch_name+"_cap", main_on_evo, i_pre, null);
+		AbstractCapability ac = null;
+		
+		String capname = "set_CLOSED_"+switch_name+"_switcher_cap";
+		String pre = "open("+switch_name+")";
+		String post = "closed("+switch_name+")";
+		String evo1 = "scenario "+switch_name+"_closed ( add closed("+switch_name+"), remove open("+switch_name+") )";
+		String c = "capability "+ capname +" { pre: " + pre +" post: " + post + " " + evo1 +" }";
+		
+		try {
+			Capability cap = CapabilityBuilder.parse(c);
+			ac = CapabilityBuilder.convertToAbstract(cap);
+		} catch (IOException e) {
+			System.out.println(c);
+			e.printStackTrace();
+		}
+		return ac;
 	}
 
 	private AbstractCapability generate_open_capability_for_switcher(String switch_name) {
@@ -206,83 +225,22 @@ public class SPSReconfigurationEasy implements Scenario {
 		 * PRE: closed(<name>)
 		 * SCENARIO iOpen: remove {closed(<name>)}, add {open(<name>)}
 		*/
-		Constant i_const = new Constant(switch_name);
-		Condition i_pre = new FOLCondition(new DLPAtom("closed", i_const));
-		List<EvolutionScenario> main_on_evo = new LinkedList<>();
-		CapabilityEvolutionScenario i_evo_scenario = new CapabilityEvolutionScenario("iOpen");
-		i_evo_scenario.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("open", i_const)) ) );
-		i_evo_scenario.addOperator(new RemoveStatement(new ExtDLPHead(new DLPAtom("closed", i_const))));
-		main_on_evo.add(i_evo_scenario);
-		return new AbstractCapability("open_switch_"+switch_name+"_cap", main_on_evo, i_pre, null);
+		AbstractCapability ac = null;
+		
+		String capname = "set_OPEN_"+switch_name+"_switcher_cap";
+		String pre = "closed("+switch_name+")";
+		String post = "open("+switch_name+")";
+		String evo1 = "scenario "+switch_name+"_open ( add open("+switch_name+"), remove closed("+switch_name+") )";
+		String c = "capability "+ capname +" { pre: " + pre +" post: " + post + " " + evo1 +" }";
+		
+		try {
+			Capability cap = CapabilityBuilder.parse(c);
+			ac = CapabilityBuilder.convertToAbstract(cap);
+		} catch (IOException e) {
+			System.out.println(c);
+			e.printStackTrace();
+		}
+		return ac;
 	}
-
-//	ALTRE CAPABILITY RIMOSSE	
-//	/*main_generator_fault*/
-//	AbstractCapability main_fault;
-//	Condition main_fault_pre = new Condition(new DLPAtom("on", main));
-//	Set<EvolutionScenario> main_fault_evo = new HashSet<>();
-//	CapabilityEvolutionScenario main_fault_evo1 = new CapabilityEvolutionScenario("mainFault");
-//	main_fault_evo1.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("fault", main)) ) );
-//	main_fault_evo1.addOperator(new RemoveStatement(new ExtDLPHead(new DLPAtom("on", main))));
-//	main_fault_evo.add(main_fault_evo1);
-//	main_fault = new AbstractCapability("simulate_FAILURE_main_generator_cap", main_fault_evo, main_fault_pre, null);
-//	capabilities.add(main_fault);
-//
-//	/*aux_generator_on*/
-//	AbstractCapability aux_on;
-//	Constant aux = new Constant("aux");
-//	Condition aux_on_pre = new Condition(new DLPAtom("off", aux));
-//	Set<EvolutionScenario> aux_on_evo = new HashSet<>();
-//	CapabilityEvolutionScenario aux_on_evo1 = new CapabilityEvolutionScenario("auxOn");
-//	aux_on_evo1.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("on", aux)) ) );
-//	aux_on_evo1.addOperator(new RemoveStatement(new ExtDLPHead(new DLPAtom("off", aux))));
-//	aux_on_evo.add(aux_on_evo1);
-//	aux_on = new AbstractCapability("switch_ON_aux_generator_cap", aux_on_evo, aux_on_pre, null);
-//	capabilities.add(aux_on);
-//
-//	/*aux_generator_off*/
-//	AbstractCapability aux_off;
-//	Condition aux_off_pre = new Condition(new DLPAtom("on", aux));
-//	Set<EvolutionScenario> aux_off_evo = new HashSet<>();
-//	CapabilityEvolutionScenario aux_off_evo1 = new CapabilityEvolutionScenario("auxOff");
-//	aux_off_evo1.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("off", aux)) ) );
-//	aux_off_evo1.addOperator(new RemoveStatement(new ExtDLPHead(new DLPAtom("on", aux))));
-//	aux_off_evo.add(aux_off_evo1);
-//	aux_off = new AbstractCapability("switch_OFF_aux_generator_cap", aux_off_evo, aux_off_pre, null);
-//	capabilities.add(aux_off);
-//
-//	/*aux_generator_fault*/
-//	AbstractCapability aux_fault;
-//	Condition aux_fault_pre = new Condition(new DLPAtom("on", aux));
-//	Set<EvolutionScenario> aux_fault_evo = new HashSet<>();
-//	CapabilityEvolutionScenario aux_fault_evo1 = new CapabilityEvolutionScenario("auxFault");
-//	aux_fault_evo1.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("fault", aux)) ) );
-//	aux_fault_evo1.addOperator(new RemoveStatement(new ExtDLPHead(new DLPAtom("on", aux))));
-//	aux_fault_evo.add(aux_fault_evo1);
-//	aux_fault = new AbstractCapability("simulate_FAILURE_aux_generator_cap", aux_fault_evo, aux_fault_pre, null);
-//	capabilities.add(aux_fault);
-//
-//	/*catch_fire*/
-//	AbstractCapability catch_fire;
-//	Constant a_fire = new Constant("a_fire");
-//	Condition catch_fire_pre = new Condition(new DLPAtom("fire", a_fire));
-//	Set<EvolutionScenario> catch_fire_evo = new HashSet<>();
-//	CapabilityEvolutionScenario catch_fire_evo1 = new CapabilityEvolutionScenario("catchFire");
-//	catch_fire_evo1.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("verified", a_fire)) ) );
-//	catch_fire_evo.add(catch_fire_evo1);
-//	catch_fire = new AbstractCapability("simulate_fire_cap", catch_fire_evo, catch_fire_pre, null);
-//	capabilities.add(catch_fire);
-//
-//	/*the_fire_sys_on*/
-//	AbstractCapability the_fire_sys_on;
-//	Constant the_fire_sys = new Constant("the_fire_sys");
-//	Condition the_fire_sys_on_pre = new Condition(new DLPAtom("off", the_fire_sys));
-//	Set<EvolutionScenario> the_fire_sys_on_evo = new HashSet<>();
-//	CapabilityEvolutionScenario the_fire_sys_on_evo1 = new CapabilityEvolutionScenario("the_fire_sysOn");
-//	the_fire_sys_on_evo1.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("on", the_fire_sys)) ) );
-//	the_fire_sys_on_evo1.addOperator(new RemoveStatement(new ExtDLPHead(new DLPAtom("off", the_fire_sys))));
-//	the_fire_sys_on_evo.add(the_fire_sys_on_evo1);		
-//	the_fire_sys_on = new AbstractCapability("switch_ON_the_fire_sys_cap", the_fire_sys_on_evo, the_fire_sys_on_pre, null);
-//	capabilities.add(the_fire_sys_on);
 
 }

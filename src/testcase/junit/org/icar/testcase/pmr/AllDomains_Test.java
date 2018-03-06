@@ -21,7 +21,6 @@ import org.junit.Test;
 
 public class AllDomains_Test {
 
-	@Ignore
 	@Test
 	public void explore_SPS() throws ProblemDefinitionException {
 		SPSReconfigurationEasy s = new SPSReconfigurationEasy();

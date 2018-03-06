@@ -33,4 +33,10 @@ public class RemoveAnyStatement implements  EvolutionOperator {
 		return w;
 	}
 
+	@Override
+	public String toString() {
+		return "Clear [p=" + predicate + "]";
+	}
+
+	
 }

@@ -1,0 +1,6 @@
+capability check_user {
+	pre: foreach X : (user(doc) and available(X,y)) or not ciao(p)
+	post: ready(user)
+	scenario uno ( add luca(x), remove toti(y) )
+} 
+	

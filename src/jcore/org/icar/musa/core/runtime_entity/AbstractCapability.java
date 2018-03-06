@@ -100,5 +100,12 @@ public class AbstractCapability implements RunTimeEntity {
 	public Condition getPostCondition(){
 		return this.post;
 	}
+
+	@Override
+	public String toString() {
+		return "AbstractCapability [unique_id=" + unique_id + ", evolution_set=" + evolution_set + ", pre=" + pre
+				+ ", post=" + post + "]";
+	}
+	
 	
 }

@@ -19,175 +19,287 @@ public class capabilityBaseVisitor<T> extends AbstractParseTreeVisitor<T> implem
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitCapability(capabilityParser.CapabilityContext ctx) { return visitChildren(ctx); }
+	@Override public T visitMyCapability(capabilityParser.MyCapabilityContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitCap_body(capabilityParser.Cap_bodyContext ctx) { return visitChildren(ctx); }
+	@Override public T visitMyCapBody(capabilityParser.MyCapBodyContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitPrecondition(capabilityParser.PreconditionContext ctx) { return visitChildren(ctx); }
+	@Override public T visitMyPrecondition(capabilityParser.MyPreconditionContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitPostcondition(capabilityParser.PostconditionContext ctx) { return visitChildren(ctx); }
+	@Override public T visitMyPostcondition(capabilityParser.MyPostconditionContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitEvolution(capabilityParser.EvolutionContext ctx) { return visitChildren(ctx); }
+	@Override public T visitMyEvoScenario(capabilityParser.MyEvoScenarioContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitEvo_action_list(capabilityParser.Evo_action_listContext ctx) { return visitChildren(ctx); }
+	@Override public T visitMySingleAction(capabilityParser.MySingleActionContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitAction(capabilityParser.ActionContext ctx) { return visitChildren(ctx); }
+	@Override public T visitMyMultiAction(capabilityParser.MyMultiActionContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitCondition(capabilityParser.ConditionContext ctx) { return visitChildren(ctx); }
+	@Override public T visitMyAddAction(capabilityParser.MyAddActionContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitUniversalPredQuantifier(capabilityParser.UniversalPredQuantifierContext ctx) { return visitChildren(ctx); }
+	@Override public T visitMyRemoveAction(capabilityParser.MyRemoveActionContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitExistentialPredQuantifier(capabilityParser.ExistentialPredQuantifierContext ctx) { return visitChildren(ctx); }
+	@Override public T visitMyClearAction(capabilityParser.MyClearActionContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitAlwaysTrue(capabilityParser.AlwaysTrueContext ctx) { return visitChildren(ctx); }
+	@Override public T visitMyPredicateFormula(capabilityParser.MyPredicateFormulaContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitAlwaysFalse(capabilityParser.AlwaysFalseContext ctx) { return visitChildren(ctx); }
+	@Override public T visitMyQuantPredicateFormula(capabilityParser.MyQuantPredicateFormulaContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitAPredicate(capabilityParser.APredicateContext ctx) { return visitChildren(ctx); }
+	@Override public T visitMyForAllPredicate(capabilityParser.MyForAllPredicateContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitNegPredOperator(capabilityParser.NegPredOperatorContext ctx) { return visitChildren(ctx); }
+	@Override public T visitMyExistsPredicate(capabilityParser.MyExistsPredicateContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitFormulaPredWithBracket(capabilityParser.FormulaPredWithBracketContext ctx) { return visitChildren(ctx); }
+	@Override public T visitMyNegPredicate(capabilityParser.MyNegPredicateContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitNotOperator(capabilityParser.NotOperatorContext ctx) { return visitChildren(ctx); }
+	@Override public T visitMyCompPredicate(capabilityParser.MyCompPredicateContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitNotExclOperator(capabilityParser.NotExclOperatorContext ctx) { return visitChildren(ctx); }
+	@Override public T visitMyAtomPredicate(capabilityParser.MyAtomPredicateContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitBracketed_predicate(capabilityParser.Bracketed_predicateContext ctx) { return visitChildren(ctx); }
+	@Override public T visitMyDisjunctionPredicateFormula(capabilityParser.MyDisjunctionPredicateFormulaContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitAndPredBinaryOperator(capabilityParser.AndPredBinaryOperatorContext ctx) { return visitChildren(ctx); }
+	@Override public T visitMyConjunctionPredicateFormula(capabilityParser.MyConjunctionPredicateFormulaContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitOrPredBinaryOperator(capabilityParser.OrPredBinaryOperatorContext ctx) { return visitChildren(ctx); }
+	@Override public T visitMyNotPred1(capabilityParser.MyNotPred1Context ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitIfPredBinaryOperator(capabilityParser.IfPredBinaryOperatorContext ctx) { return visitChildren(ctx); }
+	@Override public T visitMyNotPred2(capabilityParser.MyNotPred2Context ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitIffPredBinaryOperator(capabilityParser.IffPredBinaryOperatorContext ctx) { return visitChildren(ctx); }
+	@Override public T visitMyBracketedPredicate(capabilityParser.MyBracketedPredicateContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitPredicate(capabilityParser.PredicateContext ctx) { return visitChildren(ctx); }
+	@Override public T visitMyAtom(capabilityParser.MyAtomContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitTermlist(capabilityParser.TermlistContext ctx) { return visitChildren(ctx); }
+	@Override public T visitMyStructure(capabilityParser.MyStructureContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitTerm(capabilityParser.TermContext ctx) { return visitChildren(ctx); }
+	@Override public T visitMyEmptyTerm(capabilityParser.MyEmptyTermContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
+	@Override public T visitMyMultiTerm(capabilityParser.MyMultiTermContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
+	@Override public T visitMySimpleTerm(capabilityParser.MySimpleTermContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
+	@Override public T visitMyTrueFalseTerm(capabilityParser.MyTrueFalseTermContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
+	@Override public T visitMyConstantTerm(capabilityParser.MyConstantTermContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
+	@Override public T visitMyNumericTerm(capabilityParser.MyNumericTermContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
+	@Override public T visitMyVariableTerm(capabilityParser.MyVariableTermContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
+	@Override public T visitMyFunctionTerm(capabilityParser.MyFunctionTermContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
+	@Override public T visitMyStringTerm(capabilityParser.MyStringTermContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
+	@Override public T visitMyTrueConstant(capabilityParser.MyTrueConstantContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
+	@Override public T visitMyFalseConstant(capabilityParser.MyFalseConstantContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
+	@Override public T visitMyAtomConstantTerm(capabilityParser.MyAtomConstantTermContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
+	@Override public T visitMyAtomFunctionalTerm(capabilityParser.MyAtomFunctionalTermContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
+	@Override public T visitMyStructureFunctionalTerm(capabilityParser.MyStructureFunctionalTermContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
+	@Override public T visitVariable_term(capabilityParser.Variable_termContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
+	@Override public T visitNumeral_term(capabilityParser.Numeral_termContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
+	@Override public T visitString_term(capabilityParser.String_termContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -201,19 +313,12 @@ public class capabilityBaseVisitor<T> extends AbstractParseTreeVisitor<T> implem
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitVar_list(capabilityParser.Var_listContext ctx) { return visitChildren(ctx); }
+	@Override public T visitMySingleVariable(capabilityParser.MySingleVariableContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitVariable(capabilityParser.VariableContext ctx) { return visitChildren(ctx); }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation returns the result of calling
-	 * {@link #visitChildren} on {@code ctx}.</p>
-	 */
-	@Override public T visitNumeral(capabilityParser.NumeralContext ctx) { return visitChildren(ctx); }
+	@Override public T visitMyMultiVariable(capabilityParser.MyMultiVariableContext ctx) { return visitChildren(ctx); }
 }

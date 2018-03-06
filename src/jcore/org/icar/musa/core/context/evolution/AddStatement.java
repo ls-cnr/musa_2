@@ -38,4 +38,10 @@ public class AddStatement implements  EvolutionOperator {
 		return w;
 	}
 
+	@Override
+	public String toString() {
+		return "Add [s=" + new_statement + "]";
+	}
+
+	
 }

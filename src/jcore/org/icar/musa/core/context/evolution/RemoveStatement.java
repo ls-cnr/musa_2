@@ -39,4 +39,10 @@ public class RemoveStatement implements EvolutionOperator {
 		return w;
 	}
 
+	@Override
+	public String toString() {
+		return "Rmv [s=" + new_statement + "]";
+	}
+
+	
 }

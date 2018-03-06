@@ -34,4 +34,11 @@ public class CapabilityEvolutionScenario implements EvolutionScenario {
 		return operators;
 	}
 
+	@Override
+	public String toString() {
+		return "CapabilityEvolutionScenario [name=" + name + ", operators=" + operators + "]";
+	}
+	
+	
+
 }
