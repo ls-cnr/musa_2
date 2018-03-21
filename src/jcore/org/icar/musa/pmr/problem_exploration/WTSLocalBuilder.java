@@ -8,7 +8,6 @@ import org.icar.ltlpetrinet.hierarchical_model.NetHierarchy;
 import org.icar.ltlpetrinet.hierarchical_model.NetHierarchyBuilder;
 import org.icar.musa.core.context.StateOfWorld;
 import org.icar.musa.core.runtime_entity.AbstractCapability;
-import org.icar.musa.core.runtime_entity.ProblemSpecification;
 import org.icar.musa.exception.ProblemDefinitionException;
 import org.icar.specification.LTLgoal.model.LTLGoal;
 
