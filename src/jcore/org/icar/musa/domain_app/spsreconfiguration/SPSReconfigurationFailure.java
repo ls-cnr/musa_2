@@ -26,11 +26,10 @@ import net.sf.tweety.logics.commons.syntax.Constant;
 import net.sf.tweety.lp.asp.parser.ParseException;
 import net.sf.tweety.lp.asp.syntax.DLPAtom;
 
-public class SPSReconfigurationFull implements Scenario {
-
+public class SPSReconfigurationFailure implements Scenario {
 	@Override
 	public String getName() {
-		return "Circuito Logico Esteso";
+		return "Circuito Logico Esteso con Failures";
 	}
 
 	@Override
@@ -87,6 +86,9 @@ public class SPSReconfigurationFull implements Scenario {
 			domain.addAssumption_asString("node(n15).");
 			domain.addAssumption_asString("node(n810).");
 			domain.addAssumption_asString("node(n17).");
+			
+			domain.addAssumption_asString("node(n45).");
+			
 			domain.addAssumption_asString("switch(i1).");
 			domain.addAssumption_asString("switch(i2).");
 			domain.addAssumption_asString("switch(i3).");
@@ -114,20 +116,20 @@ public class SPSReconfigurationFull implements Scenario {
 			domain.addAssumption_asString("switch(i26).");
 			domain.addAssumption_asString("switch(i27).");
 			
-//			domain.addAssumption_asString("vital(i2)");
-//			domain.addAssumption_asString("vital(i6)");
-//			domain.addAssumption_asString("vital(i9)");
-//			domain.addAssumption_asString("vital(i12)");
-//			domain.addAssumption_asString("vital(i16)");
-//			domain.addAssumption_asString("vital(i19)");
-//			domain.addAssumption_asString("vital(i22)");
-//			
-//			
-		
+			//questi ultimi tre switch sono i tre guasti sul bus superiore
+			domain.addAssumption_asString("switch(i28).");
+			domain.addAssumption_asString("switch(i29).");
+			domain.addAssumption_asString("switch(i30).");
+
 			/* electrical topology */
 			domain.addAssumption_asString("up(n13) :- closed(i4), on(aux1).");
 			domain.addAssumption_asString("up(n13) :- closed(i1), up(n5).");
-			domain.addAssumption_asString("up(n13) :- up(n35).");
+			domain.addAssumption_asString("up(n13) :- up(n45), closed(i28).");
+			
+			domain.addAssumption_asString("up(n45) :- up(n13), closed(i28).");
+			domain.addAssumption_asString("up(n45) :- up(n35), closed(i29).");
+			domain.addAssumption_asString("up(n45) :- up(n7), closed(i5).");
+
 			domain.addAssumption_asString("up(n24) :- closed(i8), on(aux1).");
 			domain.addAssumption_asString("up(n24) :- closed(i2), up(n5).");
 			domain.addAssumption_asString("up(n24) :- up(n46).");
@@ -152,9 +154,11 @@ public class SPSReconfigurationFull implements Scenario {
 			domain.addAssumption_asString("up(n46) :- closed(i26), on(main1).");
 			domain.addAssumption_asString("up(n46) :- up(n68).");
 			domain.addAssumption_asString("up(n46) :- up(n24).");
-			domain.addAssumption_asString("up(n35) :- up(n13).");
-			domain.addAssumption_asString("up(n35) :- up(n57).");
+			
+			domain.addAssumption_asString("up(n35) :- up(n45), closed(i29).");
+			domain.addAssumption_asString("up(n35) :- up(n57), closed(i30).");
 			domain.addAssumption_asString("up(n35) :- closed(i9), up(n9).");
+			
 			domain.addAssumption_asString("on(l9) :- closed(i9), up(n35).");
 			domain.addAssumption_asString("on(l9) :- up(n9).");
 			domain.addAssumption_asString("on(l10) :- closed(i11), up(n9).");
@@ -174,9 +178,11 @@ public class SPSReconfigurationFull implements Scenario {
 			domain.addAssumption_asString("up(n11) :- closed(i12), up(n57).");
 			domain.addAssumption_asString("up(n11) :- closed(i13), up(n46).");
 			domain.addAssumption_asString("up(n11) :- closed(i13), up(n68).");
+			
 			domain.addAssumption_asString("up(n57) :- closed(i15), on(aux2).");
-			domain.addAssumption_asString("up(n57) :- up(n35).");
+			domain.addAssumption_asString("up(n57) :- up(n35), closed(i30).");
 			domain.addAssumption_asString("up(n57) :- up(n79).");
+			
 			domain.addAssumption_asString("up(n68) :- closed(i16), on(aux2).");
 			domain.addAssumption_asString("up(n68) :- up(n46).");
 			domain.addAssumption_asString("up(n68) :- up(n810).");
@@ -221,16 +227,10 @@ public class SPSReconfigurationFull implements Scenario {
 	@Override
 	public Requirements getRequirements() {
 		
-		String p1 = "G (  on(main1) and on(main2)  )";
-		String p2 = "( on(l2) and on(l6)  )";
-		String p3 = "( on(l9) and on(l12)  )";
-		String p4 = "( on(l16) and on(l19)  )";
-		String p5 = "(" +p2 + " and " + p3 + ")";
-		String p6 = "(" +p4 + " and on(l22) )";
-		String p7 = "F (" +p5+ " and " + p6 +")" ;
-		String p8 = "(" + p1 + " and " + p7 + ")" ;
+		String p1 = "F((((on(l1) and on(l4)) and (on(l5) and on(l8))) and ((on(l11) and on(l14)) and (on(l15) and on(l18)))) and ( on(l21) and on(l24) ))" ;
+		String g1 =  "goalmodel { goal g1 = "+p1+". }";
 		
-		String g1 =  "goalmodel { goal g1 = "+p8+". }";
+		System.out.println(g1);
 		
 		GoalModel model=null;
 		LTLGoal goal = null;
@@ -252,33 +252,39 @@ public class SPSReconfigurationFull implements Scenario {
 			w.addFact_asString("on(main2).");
 			w.addFact_asString("off(aux1).");
 			w.addFact_asString("off(aux2).");
-			w.addFact_asString("open(i1).");
-			w.addFact_asString("open(i2).");
-			w.addFact_asString("open(i3).");
+			w.addFact_asString("closed(i1).");
+			w.addFact_asString("closed(i2).");
+			w.addFact_asString("closed(i3).");
 			w.addFact_asString("open(i4).");
-			w.addFact_asString("open(i5).");
-			w.addFact_asString("open(i6).");
-			w.addFact_asString("open(i7).");
+			w.addFact_asString("closed(i5).");
+			w.addFact_asString("closed(i6).");
+			w.addFact_asString("closed(i7).");
 			w.addFact_asString("open(i8).");
-			w.addFact_asString("open(i9).");
-			w.addFact_asString("open(i10).");
-			w.addFact_asString("open(i11).");
-			w.addFact_asString("open(i12).");
-			w.addFact_asString("open(i13).");
-			w.addFact_asString("open(i14).");
+			w.addFact_asString("closed(i9).");
+			w.addFact_asString("closed(i10).");
+			w.addFact_asString("closed(i11).");
+			w.addFact_asString("closed(i12).");
+			w.addFact_asString("closed(i13).");
+			w.addFact_asString("closed(i14).");
 			w.addFact_asString("open(i15).");
 			w.addFact_asString("open(i16).");
-			w.addFact_asString("open(i17).");
-			w.addFact_asString("open(i18).");
-			w.addFact_asString("open(i19).");
-			w.addFact_asString("open(i20).");
+			w.addFact_asString("closed(i17).");
+			w.addFact_asString("closed(i18).");
+			w.addFact_asString("closed(i19).");
+			w.addFact_asString("closed(i20).");
 			w.addFact_asString("open(i21).");
-			w.addFact_asString("open(i22).");
-			w.addFact_asString("open(i23).");
-			w.addFact_asString("open(i24).");
-			w.addFact_asString("open(i25).");
+			w.addFact_asString("closed(i22).");
+			w.addFact_asString("closed(i23).");
+			w.addFact_asString("closed(i24).");
+			w.addFact_asString("closed(i25).");
 			w.addFact_asString("open(i26).");
-			w.addFact_asString("open(i27).");
+			w.addFact_asString("closed(i27).");
+
+			//guasti sempre aperti
+			w.addFact_asString("open(i28).");
+			w.addFact_asString("open(i29).");
+			w.addFact_asString("open(i30).");
+
 		} catch (ParseException e) {
 			e.printStackTrace();
 		} catch (org.icar.musa.exception.NotAllowedInAStateOfWorld e) {
@@ -291,7 +297,7 @@ public class SPSReconfigurationFull implements Scenario {
 	public ArrayList<AbstractCapability> getCapabilitySet() {
 		ArrayList<AbstractCapability> capabilities = new ArrayList<AbstractCapability>();
 	
-		/*generator*/
+		/*generators*/
 		capabilities.add(generate_switch_on_generator("main1"));
 		capabilities.add(generate_switch_off_generator("main1"));
 		capabilities.add(generate_switch_on_generator("main2"));
@@ -301,7 +307,7 @@ public class SPSReconfigurationFull implements Scenario {
 		capabilities.add(generate_switch_on_generator("aux2"));
 		capabilities.add(generate_switch_off_generator("aux2"));
 		
-		/*switch*/
+		/*switchers*/
 		for (int i=0; i<27; i++) {
 			capabilities.add(generate_open_capability_for_switcher("i"+(i+1)));
 			capabilities.add(generate_close_capability_for_switcher("i"+(i+1)));			
@@ -375,5 +381,4 @@ public class SPSReconfigurationFull implements Scenario {
 		return null;
 	}
 
-	
 }

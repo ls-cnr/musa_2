@@ -61,11 +61,11 @@ public abstract class LogicNode extends HierarchyNode {
 		right.updateNet(w,assumptions);
 	}
 	
-	protected boolean retrieveTransitionDependency(StateOfWorld w, AssumptionSet assumptions, boolean normal) {
+	protected boolean retrieveState_forFatherTransitionDependency(StateOfWorld w, AssumptionSet assumptions, boolean normal) {
 		boolean normal_test = false;
 		
-		boolean left_dep = left.retrieveTransitionDependency(w,assumptions,normal);
-		boolean right_dep = right.retrieveTransitionDependency(w,assumptions,normal);
+		boolean left_dep = left.retrieveState_forFatherTransitionDependency(w,assumptions,normal);
+		boolean right_dep = right.retrieveState_forFatherTransitionDependency(w,assumptions,normal);
 		normal_test = fireable_truth_table(left_dep,right_dep);
 
 		return normal_test;

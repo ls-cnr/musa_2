@@ -40,16 +40,16 @@ public class PredicateNode extends HierarchyNode {
 
 	@Override
 	public void updateNet(StateOfWorld w,AssumptionSet assumptions) {
-		updateResistance(w,assumptions);
+		updateResistanceValue(w,assumptions);
 	}
 	@Override
-	public void updateResistance(StateOfWorld w, AssumptionSet assumptions) {
+	public void updateResistanceValue(StateOfWorld w, AssumptionSet assumptions) {
 //		EntailOperator entail = EntailOperator.getInstance();
 //		boolean normal_test =  entail.entailsCondition(w, assumptions, (FOLCondition) this.getCondition());
 //		
 	}
 
-	protected boolean retrieveTransitionDependency(StateOfWorld w, AssumptionSet assumptions, boolean direct_dependency) {
+	protected boolean retrieveState_forFatherTransitionDependency(StateOfWorld w, AssumptionSet assumptions, boolean direct_dependency) {
 		boolean normal_test = false;
 		Condition cond = this.getCondition();
 		
@@ -85,9 +85,9 @@ public class PredicateNode extends HierarchyNode {
 
 	public String toStringWithScore() {
 		if (direct)
-			return "[ "+cond.toString() +": r=" + getResistance() + " ] ";
+			return "[ "+cond.toString() +": r=" + getResistanceToFullAchievement() + " ] ";
 		else
-			return "[ "+cond.toString() +": r=" + getResistance() + "* ] ";
+			return "[ "+cond.toString() +": r=" + getResistanceToFullAchievement() + "* ] ";
 	}
 
 //	@Override

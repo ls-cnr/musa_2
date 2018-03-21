@@ -62,12 +62,12 @@ public class OrOperator extends LogicNode {
 	}
 	
 	@Override
-	public void updateResistance(StateOfWorld w, AssumptionSet assumptions) {
-		getLeft().updateResistance(w, assumptions);
-		getRight().updateResistance(w, assumptions);
+	public void updateResistanceValue(StateOfWorld w, AssumptionSet assumptions) {
+		getLeft().updateResistanceValue(w, assumptions);
+		getRight().updateResistanceValue(w, assumptions);
 
-		double leftR = getLeft().getResistance();
-		double rightR = getRight().getResistance();
+		double leftR = getLeft().getResistanceToFullAchievement();
+		double rightR = getRight().getResistanceToFullAchievement();
 		
 		if (leftR>=RINF)
 			setResistance(rightR);
@@ -79,75 +79,12 @@ public class OrOperator extends LogicNode {
 			setResistance((leftR*rightR)/(leftR+rightR));
 	}
 
-
-//	@Override
-//	public double calculate_partial_satisfaction() {
-//		double leftscore = getLeft().calculate_partial_satisfaction();
-//		double rightscore = getRight().calculate_partial_satisfaction();
-//		return Math.max(leftscore, rightscore);
-//	}
-//
-//	@Override
-//	public int count_slots() {
-//		int left_slots=0;
-//		int right_slots=0;
-//		
-//		if (getLeft() instanceof LogicNode) {
-//			LogicNode left_node = (LogicNode) getLeft();
-//			left_slots = left_node.count_slots();
-//		} else {
-//			return -1;
-//		}
-//		 
-//		if (getRight() instanceof LogicNode) {
-//			LogicNode right_node = (LogicNode) getRight();
-//			right_slots = right_node.count_slots();
-//		} else {
-//			return -1;
-//		}
-//		
-//		return Math.min(left_slots, right_slots);
-//	}
-
 	public String toString() {
 		return "[ OR " + getLeft().toString() + "," + getRight().toString() + " ] ";
 	}
 
 	public String toStringWithScore() {
-		return "[ OR (r="+getResistance()+") " + getLeft().toStringWithScore() + "," + getRight().toStringWithScore() + " ] ";
+		return "[ OR (r="+getResistanceToFullAchievement()+") " + getLeft().toStringWithScore() + "," + getRight().toStringWithScore() + " ] ";
 	}
-
-//	public String toStringWithNet() {
-//		return "[ OR("+getName()+") " + getLeft().toStringWithNet() + "," + getRight().toStringWithNet() + " ] ";
-//	}
-
-//	public String toStringWithScore(StateOfWorld w, AssumptionSet assumptions) {
-//		return "[ OR("+calculate_partial_satisfaction()+") " + getLeft().toStringWithScore(w,assumptions) + "," + getRight().toStringWithScore(w,assumptions) + " ] ";
-//	}
-//
-//	@Override
-//	public double calculate_partial_satisfaction_degree(boolean contribute_positively, StateOfWorld w, AssumptionSet assumptions) {
-//		double left_degree = getLeft().calculate_partial_satisfaction_degree(true, w, assumptions);
-//		double right_degree = getRight().calculate_partial_satisfaction_degree(true, w, assumptions);
-//		if (contribute_positively) {
-//			if (left_degree+right_degree >= 1)
-//				return 1;
-//			else if (left_degree+right_degree==0)
-//				return 0;
-//			else 
-//				return 0.5;
-//		}
-//		
-//		if (!contribute_positively) {
-//			if (left_degree+right_degree >= 1)
-//				return 0;
-//			else if (left_degree+right_degree==0)
-//				return 1;
-//			else 
-//				return 0.5;
-//		}
-//		
-//		return 0;
-//	}
 
 }

@@ -46,7 +46,7 @@ public abstract class PNNode extends HierarchyNode {
 				if (sub!=null) {
 					sub.updateNet(w,assumptions);
 					
-					boolean fire = sub.retrieveTransitionDependency(w,assumptions,t.isNormal());
+					boolean fire = sub.retrieveState_forFatherTransitionDependency(w,assumptions,t.isNormal());
 					if (fire) {
 						ut.fire();
 					}
@@ -55,7 +55,7 @@ public abstract class PNNode extends HierarchyNode {
 		}
 	}
 
-	protected boolean retrieveTransitionDependency(StateOfWorld w, AssumptionSet assumptions, boolean normal) {
+	protected boolean retrieveState_forFatherTransitionDependency(StateOfWorld w, AssumptionSet assumptions, boolean normal) {
 		boolean normal_test = false;
 		normal_test = ( getNetState() == PNStateEnum.ACCEPTED );
 		
@@ -90,24 +90,5 @@ public abstract class PNNode extends HierarchyNode {
 		}	
 		return pessimistic;
 	}
-
-//	@Override
-//	public double calculate_partial_satisfaction() {
-//		int subscore = 0;
-//		
-////		for (HierarchyNode sub : getDependencies().values()) {
-////			subscore = subscore+sub.calculate_partial_satisfaction();
-////		}
-////		subscore = subscore/2;
-//		
-//		PNStateEnum state = getNetState();
-//		if (state==PNStateEnum.ACCEPTED) 
-//			return 10+subscore;
-//		if (state==PNStateEnum.WAIT_BUT_ACCEPTED) 
-//			return 5+subscore;
-//		if (state==PNStateEnum.WAIT_BUT_ERROR) 
-//			return 1+subscore;
-//		return 0;
-//	}
 	
 }

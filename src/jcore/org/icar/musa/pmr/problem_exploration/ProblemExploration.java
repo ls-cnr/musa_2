@@ -17,6 +17,7 @@ import org.icar.musa.core.fol_reasoner.FOLCondition;
 import org.icar.musa.core.runtime_entity.AbstractCapability;
 import org.icar.musa.core.runtime_entity.AssumptionSet;
 import org.icar.musa.core.runtime_entity.ProblemSpecification;
+import org.icar.musa.core.runtime_entity.QualityAsset;
 import org.icar.musa.exception.ProblemDefinitionException;
 import org.icar.musa.proactive_means_end_reasoning.ExtendedNode;
 import org.icar.musa.proactive_means_end_reasoning.GraphExpansion;
@@ -35,6 +36,7 @@ public class ProblemExploration {
 	
 	/** The Assumption Set defined globally that the Agent has to maintain */
 	private AssumptionSet assumptions;
+	private QualityAsset asset;
 	
 	/** The Capabilities List that an Agent holds */
 	private ArrayList<AbstractCapability> capabilities;
@@ -59,6 +61,7 @@ public class ProblemExploration {
 	private void initialize(ProblemSpecification ps, ArrayList<AbstractCapability> capabilities) throws ProblemDefinitionException {
 		this.capabilities = new ArrayList<>(capabilities);
 		this.assumptions = ps.getAssumptions();
+		this.asset = ps.getQuality_asset();
 		
 		if (!(ps.getGoal_specification() instanceof LTLGoal)) {
 			throw new ProblemDefinitionException();
@@ -237,8 +240,15 @@ public class ProblemExploration {
 			dest_node.setExitNode(true);
 		else if (updated_state==PNStateEnum.ERROR )
 			dest_node.setForbidden(true);
-
-		double score = supervisor.calculate_partial_satisfaction(); 
+		double score = 0;
+		
+		if (asset != null) {
+			double metrics = asset.evaluate_state(dest_node.getState());
+			score = metrics / (double) asset.max_score();
+		} else {
+			score = supervisor.calculate_partial_satisfaction(); 
+		}
+		
 		dest_node.setGoal_satisfaction_degree(score);
 		
 		supervisor.cleanTokens();
@@ -275,7 +285,8 @@ public class ProblemExploration {
 			if (!exp.isMulti_expansion()) {		
 				for (WTSNode n : exp.getEvolutionNodes() ) {
 					StateNode node = (StateNode) n;
-					System.out.print(exp.getRoot().getState().toString()+"->"+exp.getCapability()+"\t->"+node.getState().toString());
+					System.out.print("[...] ->"+exp.getCapability()+"\t-> [...]");
+					//System.out.print(exp.getRoot().getState().toString()+"->"+exp.getCapability()+"\t->"+node.getState().toString());
 					if (node.isExitNode())
 						System.out.print(" is EXIT =>\t");
 					if (node.isForbidden())
@@ -287,7 +298,8 @@ public class ProblemExploration {
 				System.out.println(exp.getRoot().getState().toString()+"->");
 				for (WTSNode n : exp.getEvolutionNodes() ) {
 					StateNode node = (StateNode) n;
-					System.out.print("\t\t->"+exp.getCapability()+"\t->"+node.getState().toString());
+					System.out.print("\t\t[...] ->"+exp.getCapability()+"\t-> [...]");
+					//System.out.print("\t\t->"+exp.getCapability()+"\t->"+node.getState().toString());
 					if (node.isExitNode())
 						System.out.print(" is EXIT =>\t");
 					if (node.isForbidden())

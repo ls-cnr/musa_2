@@ -19,6 +19,7 @@ import org.icar.musa.core.fol_reasoner.FOLCondition;
 import org.icar.musa.core.runtime_entity.AbstractCapability;
 import org.icar.musa.core.runtime_entity.AssumptionSet;
 import org.icar.musa.core.runtime_entity.CapabilityEvolutionScenario;
+import org.icar.musa.core.runtime_entity.QualityAsset;
 import org.icar.musa.domain_app.Scenario;
 import org.icar.musa.exception.NotAllowedInAnAssumptionSet;
 import org.icar.specification.LTLgoal.LTLGoalModelBuilder;
@@ -166,6 +167,12 @@ public class WakeUp implements Scenario {
 			e.printStackTrace();
 		}
 		return w;
+	}
+
+	@Override
+	public QualityAsset getQualityAsset() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

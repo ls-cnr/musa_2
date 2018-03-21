@@ -10,6 +10,8 @@ import org.icar.musa.core.runtime_entity.AssumptionSet;
 import org.icar.musa.core.runtime_entity.ProblemSpecification;
 import org.icar.musa.domain_app.monitoring_workflow.WakeUp;
 import org.icar.musa.domain_app.spsreconfiguration.SPSReconfigurationEasy;
+import org.icar.musa.domain_app.spsreconfiguration.SPSReconfigurationFailure;
+import org.icar.musa.domain_app.spsreconfiguration.SPSReconfigurationFailure2;
 import org.icar.musa.domain_app.spsreconfiguration.SPSReconfigurationFull;
 import org.icar.musa.exception.ProblemDefinitionException;
 import org.icar.musa.pmr.problem_exploration.WTS;
@@ -21,6 +23,7 @@ import org.junit.Test;
 
 public class AllDomains_Test {
 
+	@Ignore
 	@Test
 	public void explore_SPS() throws ProblemDefinitionException {
 		SPSReconfigurationEasy s = new SPSReconfigurationEasy();
@@ -48,6 +51,25 @@ public class AllDomains_Test {
 		Requirements requirementsSPS = s.getRequirements();
 		ArrayList<AbstractCapability> allCapSPS = s.getCapabilitySet();
 		ProblemSpecification ps_SPS = new ProblemSpecification(assumptionsSPS, requirementsSPS, null);
+		
+		WTSLocalBuilder wts_builder = new WTSLocalBuilder(ps_SPS, allCapSPS);
+		//WTSEventLogger logger = new WTSEventLogger();
+		AWBuilder aw_builder = new AWBuilder();
+		//wts_builder.register(logger);
+		wts_builder.register(aw_builder);
+		
+		wts_builder.build_solution_space(s.getInitialState());
+		
+		aw_builder.log_solutions();
+	}
+
+	@Test
+	public void explore_SPS_full_with_failure() throws ProblemDefinitionException {
+		SPSReconfigurationFailure2 s = new SPSReconfigurationFailure2();
+		AssumptionSet assumptionsSPS = s.getDomainAssumptions();
+		Requirements requirementsSPS = s.getRequirements();
+		ArrayList<AbstractCapability> allCapSPS = s.getCapabilitySet();
+		ProblemSpecification ps_SPS = new ProblemSpecification(assumptionsSPS, requirementsSPS, s.getQualityAsset());
 		
 		WTSLocalBuilder wts_builder = new WTSLocalBuilder(ps_SPS, allCapSPS);
 		//WTSEventLogger logger = new WTSEventLogger();

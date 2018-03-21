@@ -42,8 +42,8 @@ public class GloballyPN extends PNNode {
 	}
 	
 	@Override
-	public void updateResistance(StateOfWorld w, AssumptionSet assumptions) {
-		dependency.updateResistance(w, assumptions);
+	public void updateResistanceValue(StateOfWorld w, AssumptionSet assumptions) {
+		dependency.updateResistanceValue(w, assumptions);
 
 		PNStateEnum state = getNetState();
 		if (state==PNStateEnum.WAIT_BUT_ACCEPTED)
@@ -58,49 +58,7 @@ public class GloballyPN extends PNNode {
 	}
 
 	public String toStringWithScore() {
-		return "[ G (r="+getResistance()+") " + dependency.toStringWithScore() + " ] ";
+		return "[ G (r="+getResistanceToFullAchievement()+") " + dependency.toStringWithScore() + " ] ";
 	}
-
-//	public String toStringWithNet() {
-//		return "[ G("+getName()+") " + dependency.toStringWithNet() + " ] ";
-//	}
-//
-//	@Override
-//	protected void update_hops_to_accept_place() {
-//		PNStateEnum state = getNetState();
-//		if (state==PNStateEnum.ERROR) 
-//			setScore(-1);
-//		if (state==PNStateEnum.WAIT_BUT_ACCEPTED) 
-//			setScore(0);	
-//	}
-
-//	public String toStringWithScore() {
-//		return "[ G("+calculate_partial_satisfaction()+") " + dependency.toStringWithScore() + " ] ";
-//	}
-//
-//	@Override
-//	public double calculate_partial_satisfaction_degree(boolean contribute_positively, StateOfWorld w, AssumptionSet assumptions) {
-//		double sub_degree = dependency.calculate_partial_satisfaction_degree(true, w, assumptions);
-//
-//		if (contribute_positively) {
-//			if (sub_degree == 1)
-//				return 1;
-//			else if (sub_degree==0)
-//				return 0;
-//			else 
-//				return 0.5;
-//		}
-//		
-//		if (!contribute_positively) {
-//			if (sub_degree == 1)
-//				return 0;
-//			else if (sub_degree==0)
-//				return 1;
-//			else 
-//				return 0.5;
-//		}
-//		
-//		return 0;
-//	}
 
 }

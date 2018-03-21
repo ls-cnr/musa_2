@@ -1,7 +1,5 @@
 package org.icar.ltlpetrinet.annotated_pn;
 
-import java.util.ArrayList;
-
 import petrinet.logic.Transition;
 
 public abstract class AnnotatedTransition extends Transition {

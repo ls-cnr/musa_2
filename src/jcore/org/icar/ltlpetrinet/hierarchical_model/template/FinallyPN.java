@@ -45,12 +45,12 @@ public class FinallyPN extends PNNode {
 	}
 	
 	@Override
-	public void updateResistance(StateOfWorld w, AssumptionSet assumptions) {
-		dependency.updateResistance(w, assumptions);
+	public void updateResistanceValue(StateOfWorld w, AssumptionSet assumptions) {
+		dependency.updateResistanceValue(w, assumptions);
 		
 		PNStateEnum state = getNetState();
 		if (state==PNStateEnum.WAIT_BUT_ERROR)
-			setResistance(dependency.getResistance());
+			setResistance(dependency.getResistanceToFullAchievement());
 		else if (state==PNStateEnum.ACCEPTED)
 			setResistance(0);
 	}
@@ -71,7 +71,7 @@ public class FinallyPN extends PNNode {
 	}
 	
 	public String toStringWithScore() {
-		return "[ F (r="+getResistance()+") " + dependency.toStringWithScore() + " ] ";
+		return "[ F (r="+getResistanceToFullAchievement()+") " + dependency.toStringWithScore() + " ] ";
 	}
 
 //

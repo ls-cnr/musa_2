@@ -85,7 +85,7 @@ public class EntailOperator {
 		
 		AnswerSetList response = null;
 		try {
-			response = solver.computeModels(test, 10);
+			response = solver.computeModels(test, 1);
 		} catch (SolverException e) {
 			e.printStackTrace();
 		}
@@ -117,6 +117,54 @@ public class EntailOperator {
 			return reply;
 		}
 		return false; // no stable model
+	}
+	
+	public boolean[] entailsCondition(StateOfWorld world,  AssumptionSet assumptions, FOLCondition[] conditions) {
+		boolean[] results = new boolean[conditions.length];
+		for (int i = 0; i<conditions.length; i++ )
+			results[i]=false;
+		
+		Program test = assumptions.getASPClone();
+		Iterator<ExtDLPHead> fact_it = world.getFacts().iterator();
+		while (fact_it.hasNext()) {
+			test.addFact(fact_it.next());
+		}
+		
+		if (verbose) {
+			System.out.println("----program----");
+			System.out.println(test.toString());
+		}
+		
+		AnswerSetList response = null;
+		try {
+			response = solver.computeModels(test, 1);
+		} catch (SolverException e) {
+			e.printStackTrace();
+		}
+
+		if (verbose) {
+			System.out.println("----models----");
+			System.out.println(response.toString());
+		}
+
+		if (response != null) {
+			if (response.size()>1) System.out.println("warning: many stable models");
+			AnswerSet as = response.get(0);
+			HerbrandInterpretation interpr = new HerbrandInterpretation();
+
+			Iterator<DLPLiteral> it = as.iterator();
+			while (it.hasNext()) {
+				FolFormula f = tx.toFOL(it.next());
+				interpr.add((FOLAtom) f);
+			}
+			
+			for (int i = 0; i<conditions.length; i++ ) {
+				FOLCondition cond = conditions[i];
+				results[i] = interpr.satisfies(cond.getFOLFormula());
+			}
+		}
+		
+		return results;
 	}
 	
 	/**

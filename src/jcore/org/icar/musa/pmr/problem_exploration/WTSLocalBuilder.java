@@ -13,7 +13,7 @@ import org.icar.musa.exception.ProblemDefinitionException;
 import org.icar.specification.LTLgoal.model.LTLGoal;
 
 public class WTSLocalBuilder {
-	private static int max_iteration = 30;
+	private static int max_iteration = 4;
 	
 	private ProblemSpecification ps;	
 	private ArrayList<AbstractCapability> allCap;
@@ -43,7 +43,7 @@ public class WTSLocalBuilder {
 		
 		int it_counter = 0;
 		while (terminated==false & it_counter<max_iteration) {
-			//System.out.println("it: "+it_counter);
+			System.out.println("it: "+it_counter);
 			pe.generate_expansion();
 			//pe.log_current_state();
 			

@@ -66,5 +66,12 @@ public class AssumptionSet {
 		base.add(r);
 	}
 
+	@Override
+	public String toString() {
+		return base.toString();
+	}
+	
+	
+
 
 }

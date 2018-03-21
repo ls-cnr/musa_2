@@ -35,7 +35,7 @@ public class NetSupervisor {
 
 	public void update(StateOfWorld w,AssumptionSet assumptions) {	
 		netmodel.getRoot().updateNet(w,assumptions);
-		netmodel.getRoot().updateResistance(w, assumptions);
+		netmodel.getRoot().updateResistanceValue(w, assumptions);
 	}
 	
 	public PNStateEnum getState() {
@@ -97,7 +97,7 @@ public class NetSupervisor {
 	public int calculate_partial_satisfaction() {
 //		System.out.println(HierarchyNode.RINF-netmodel.getRoot().getResistance());
 //		System.out.println((HierarchyNode.RINF-netmodel.getRoot().getResistance())/HierarchyNode.RINF);
-		return (int) Math.round( (HierarchyNode.RINF-netmodel.getRoot().getResistance())  );
+		return (int) Math.round( (HierarchyNode.RINF-netmodel.getRoot().getResistanceToFullAchievement())  );
 	}
 
 	public String toStringWithScore() {

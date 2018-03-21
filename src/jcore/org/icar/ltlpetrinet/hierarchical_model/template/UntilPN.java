@@ -66,73 +66,25 @@ public class UntilPN extends PNNode {
 	}
 	
 	@Override
-	public void updateResistance(StateOfWorld w, AssumptionSet assumptions) {
-		left.updateResistance(w, assumptions);
-		right.updateResistance(w, assumptions);
+	public void updateResistanceValue(StateOfWorld w, AssumptionSet assumptions) {
+		left.updateResistanceValue(w, assumptions);
+		right.updateResistanceValue(w, assumptions);
 
 		PNStateEnum state = getNetState();
 		if (state==PNStateEnum.WAIT_BUT_ERROR)
-			setResistance(left.getResistance()+right.getResistance());
+			setResistance(left.getResistanceToFullAchievement()+right.getResistanceToFullAchievement());
 		else if (state==PNStateEnum.ACCEPTED)
 			setResistance(0);
 		else if (state==PNStateEnum.ERROR)
 			setResistance(RINF);
 	}
 
-
-//	@Override
-//	protected void update_hops_to_accept_place() {
-//		PNStateEnum state = getNetState();
-//		if (state==PNStateEnum.ERROR) 
-//			setScore(-1);
-//		if (state==PNStateEnum.WAIT_BUT_ERROR) 
-//			setScore(1);
-//		if (state==PNStateEnum.ACCEPTED) 
-//			setScore(0);
-//		
-//	}
-//
 	public String toString() {
 		return "[ U " + left.toString() + "," + right.toString() + " ] ";
 	}
 
 	public String toStringWithScore() {
-		return "[ U (r="+getResistance()+") " + left.toStringWithScore() + "," + right.toStringWithScore() + " ] ";
+		return "[ U (r="+getResistanceToFullAchievement()+") " + left.toStringWithScore() + "," + right.toStringWithScore() + " ] ";
 	}
-
-	//
-//	public String toStringWithNet() {
-//		return "[ U("+getName()+") " + left.toStringWithNet() + "," + right.toStringWithNet() + " ] ";
-//	}
-
-//	public String toStringWithScore(StateOfWorld w, AssumptionSet assumptions) {
-//		return "[ U("+calculate_partial_satisfaction()+") " + left.toStringWithScore(w,assumptions) + "," + right.toStringWithScore(w,assumptions) + " ] ";
-//	}
-//
-//	@Override
-//	public double calculate_partial_satisfaction_degree(boolean contribute_positively, StateOfWorld w, AssumptionSet assumptions) {
-//		double left_degree = left.calculate_partial_satisfaction_degree(true, w, assumptions);
-//		double right_degree = left.calculate_partial_satisfaction_degree(true, w, assumptions);
-//		
-//		if (contribute_positively) {
-//			if (left_degree+right_degree==0 | left_degree+right_degree==2)
-//				return 0;
-//			else if (left_degree==1 | right_degree==1)
-//				return 1;
-//			else 
-//				return 0.5;
-//		}
-//		
-//		if (!contribute_positively) {
-//			if (left_degree+right_degree==0 | left_degree+right_degree==2)
-//				return 1;
-//			else if (left_degree==1 | right_degree==1)
-//				return 0;
-//			else 
-//				return 0.5;
-//		}
-//		
-//		return 0;
-//	}
 
 }
