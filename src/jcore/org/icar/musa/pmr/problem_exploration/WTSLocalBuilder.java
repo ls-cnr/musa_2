@@ -12,7 +12,7 @@ import org.icar.musa.exception.ProblemDefinitionException;
 import org.icar.specification.LTLgoal.model.LTLGoal;
 
 public class WTSLocalBuilder {
-	private static int max_iteration = 4;
+	private static int max_iteration = 15;
 	
 	private ProblemSpecification ps;	
 	private ArrayList<AbstractCapability> allCap;
@@ -29,10 +29,12 @@ public class WTSLocalBuilder {
 	
 	public WTS build_solution_space(StateOfWorld initial_state) throws ProblemDefinitionException {
 		StateNode root = new StateNode(initial_state);
-		NetHierarchyBuilder builder = new NetHierarchyBuilder();
-		NetHierarchy nets = builder.build((LTLGoal) ps.getGoal_specification() );
-		
-		WTS wts = new WTS(root, nets);
+		NetHierarchy nets = null;
+		if (ps.getGoal_specification() != null) {
+			NetHierarchyBuilder builder = new NetHierarchyBuilder();
+			nets = builder.build((LTLGoal) ps.getGoal_specification() );
+		}
+		WTS wts = new WTS(root);
 		notifyFirstNode(root);
 		
 		ProblemExploration pe = new ProblemExploration(ps, allCap,"myagent");	

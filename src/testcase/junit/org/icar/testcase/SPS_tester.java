@@ -22,11 +22,20 @@ public class SPS_tester {
 		
 		AssumptionSet assumptions = domain.getDomainAssumptions();
 		StateOfWorld w = domain.getInitialState();
+		System.out.println(w.toString());
 		
 //		w.addFact_asString("f(b2_3).");
 //		w.addFact_asString("f(b3_4).");
 //		w.addFact_asString("f(b4_5).");
 //		w.addFact_asString("f(b21_25).");
+		for (int i=0; i<46; i++) {
+			FOLCondition cond = new FOLCondition(new DLPAtom("up",new Constant ("n"+(i+1))));
+			EntailOperator test1 = EntailOperator.getInstance();
+			boolean b1= test1.entailsCondition(w, assumptions, cond);
+			if (b1==false)
+				System.out.println("Node"+(i+1)+" is down");
+		}
+
 		
 		boolean[] results = new boolean[24];
 		for (int i=0; i<24; i++) {

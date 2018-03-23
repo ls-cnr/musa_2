@@ -12,7 +12,6 @@ public class ProblemSpecification {
 	private TerminationEnum termination_type;
 	private long ms_maxtime=0;
 	private int num_iterations=0;
-	private double threshold_metrics;
 	
 	public ProblemSpecification(AssumptionSet assumptions, Requirements goal_specification,
 			QualityAsset quality_asset) {
@@ -61,13 +60,6 @@ public class ProblemSpecification {
 		this.num_iterations = num_iterations;
 	}
 
-	public double getThreshold_metrics() {
-		return threshold_metrics;
-	}
-
-	public void setThreshold_metrics(double threshold_metrics) {
-		this.threshold_metrics = threshold_metrics;
-	}
 	
 	
 	

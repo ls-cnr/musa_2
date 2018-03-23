@@ -14,21 +14,21 @@ import org.jgrapht.graph.DirectedMultigraph;
 public class WTS extends DirectedMultigraph<WTSNode, WTSEdge> {
 	private static final long serialVersionUID = 1L;
 
-	private NetHierarchy pnmodel;
+	//private NetHierarchy pnmodel;
 	private StateNode root;
 	
-	public WTS(StateNode root,NetHierarchy pnmodel) {
+	public WTS(StateNode root) {
 		super(WTSEdge.class);
 		
 		this.root = root;
-		this.pnmodel = pnmodel;
+		//this.pnmodel = pnmodel;
 		
 		addVertex(root);
 	}
 
-	public NetHierarchy getPnmodel() {
-		return pnmodel;
-	}
+//	public NetHierarchy getPnmodel() {
+//		return pnmodel;
+//	}
 
 	public StateNode getRoot() {
 		return root;

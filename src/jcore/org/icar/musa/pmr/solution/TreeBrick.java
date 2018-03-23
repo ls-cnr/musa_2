@@ -372,6 +372,25 @@ public class TreeBrick {
 		}
 	}
 
+	public double calculate_partial_score() {
+		double score = 0;
+		if (getChilds().size()==0) {
+			if (getNode() instanceof StateNode) {
+			StateNode start = (StateNode) getNode();
+			score = start.getGoal_satisfaction_degree();
+			} else if (getNode() instanceof AWLoop) {
+				AWLoop start = (AWLoop) getNode();
+				score = -1;
+			}
+		} else {
+			for (TreeBrick sub : getChilds()) {
+				score += sub.calculate_partial_score();
+			}
+			score = score / getChilds().size();
+		}
+		return score;
+	}
+
 
 	
 	

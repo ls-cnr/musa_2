@@ -54,7 +54,7 @@ public class SPSReconfigurationFailure2 implements Scenario {
 			for (int i=1; i<=24; i++) 
 				domain.addAssumption_asString("load(l"+i+").");
 			
-			for (int i=1; i<=27; i++) 
+			for (int i=1; i<=25; i++) 
 				domain.addAssumption_asString("switch(sw"+i+").");			
 			
 			/* electrical topology */
@@ -79,7 +79,7 @@ public class SPSReconfigurationFailure2 implements Scenario {
 			domain.addAssumption_asString( "up(n7) :- up(n33), not f(b7_33)."  );
 			domain.addAssumption_asString( "up(n7) :- up(n8), not f(b7_8)."  );
 			domain.addAssumption_asString( "up(n8) :- up(n7), not f(b7_8)."  );
-			domain.addAssumption_asString( "up(n8) :- up(n38), closed(sw27)."  );
+			domain.addAssumption_asString( "up(n8) :- up(n38)."  );
 			domain.addAssumption_asString( "up(n8) :- up(n9), not f(b8_9)."  );
 			domain.addAssumption_asString( "up(n9) :- up(n8), not f(b8_9)."  );
 			domain.addAssumption_asString( "up(n9) :- up(n42), not f(b9_42)."  );
@@ -126,9 +126,9 @@ public class SPSReconfigurationFailure2 implements Scenario {
 			domain.addAssumption_asString( "on(l10) :- up(n23), closed(sw11)."  );
 			domain.addAssumption_asString( "up(n24) :- up(n23), closed(sw10)."  );
 			domain.addAssumption_asString( "up(n24) :- on(mg1)."  );
-			domain.addAssumption_asString( "up(n24) :- up(n26), closed(sw26)."  );
+			domain.addAssumption_asString( "up(n24) :- up(n25)."  );
 			domain.addAssumption_asString( "up(n25) :- up(n21), not f(b21_25)."  );
-			domain.addAssumption_asString( "up(n25) :- up(n24), closed(sw26)."  );
+			domain.addAssumption_asString( "up(n25) :- up(n24)."  );
 			domain.addAssumption_asString( "up(n25) :- up(n30), not f(b25_30)."  );
 			domain.addAssumption_asString( "up(n26) :- up(n5), not f(b5_26)."  );
 			domain.addAssumption_asString( "up(n26) :- up(n27), closed(sw12)."  );
@@ -166,10 +166,10 @@ public class SPSReconfigurationFailure2 implements Scenario {
 			domain.addAssumption_asString( "up(n37) :- up(n36), not f(b36_37)."  );
 			domain.addAssumption_asString( "up(n37) :- up(n32), not f(b32_37)."  );
 			domain.addAssumption_asString( "up(n37) :- up(n41), not f(b37_41)."  );
-			domain.addAssumption_asString( "up(n38) :- up(n8), closed(sw27)."  );
+			domain.addAssumption_asString( "up(n38) :- up(n8)."  );
 			domain.addAssumption_asString( "up(n38) :- on(mg2)."  );
-			domain.addAssumption_asString( "up(n38) :- up(n39), closed(sw20)."  );
-			domain.addAssumption_asString( "up(n39) :- up(n38), closed(sw20)."  );
+			domain.addAssumption_asString( "up(n38) :- up(n39)."  );
+			domain.addAssumption_asString( "up(n39) :- up(n38)."  );
 			domain.addAssumption_asString( "up(n39) :- up(n40), not f(b39_40)."  );
 			domain.addAssumption_asString( "on(l19) :- up(n39)."  );
 			domain.addAssumption_asString( "up(n40) :- up(n39), not f(b39_40)."  );
@@ -193,7 +193,6 @@ public class SPSReconfigurationFailure2 implements Scenario {
 			domain.addAssumption_asString( "up(n46) :- up(n45), not f(b45_46)."  );
 			domain.addAssumption_asString( "up(n46) :- up(n41), not f(b41_46)."  );
 
-
 		
 		} catch (ParseException e) {
 			e.printStackTrace();
@@ -205,22 +204,22 @@ public class SPSReconfigurationFailure2 implements Scenario {
 
 	@Override
 	public Requirements getRequirements() {
-		
-		String p1 = "F((((on(l1) and on(l4)) and (on(l5) and on(l8))) and ((on(l11) and on(l14)) and (on(l15) and on(l18)))) and ( on(l21) and on(l24) ))" ;
-		String g1 =  "goalmodel { goal g1 = "+p1+". }";
-		
-		System.out.println(g1);
-		
-		GoalModel model=null;
-		LTLGoal goal = null;
-		try {
-			model = LTLGoalModelBuilder.parse(g1);
-			goal = model.getGoals().iterator().next();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
-		return goal;
+		return null;
+//		String p1 = "F( (((on(l2) and on(l6)) and (on(l9) and on(l12))) and ((on(l16) and on(l19)) and on(l22))) )" ;
+//		String g1 =  "goalmodel { goal g1 = "+p1+". }";
+//		
+//		System.out.println(g1);
+//		
+//		GoalModel model=null;
+//		LTLGoal goal = null;
+//		try {
+//			model = LTLGoalModelBuilder.parse(g1);
+//			goal = model.getGoals().iterator().next();
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
+//		
+//		return goal;
 	}
 	
 	@Override
@@ -233,42 +232,42 @@ public class SPSReconfigurationFailure2 implements Scenario {
 	public StateOfWorld getInitialState() {
 		StateOfWorld w = new StateOfWorld();
 		try {
-			w.addFact_asString("on(mg1).");
-			w.addFact_asString("off(mg2).");
+			w.addFact_asString("off(mg1).");
+			w.addFact_asString("on(mg2).");
 			w.addFact_asString("off(aux1).");
 			w.addFact_asString("off(aux2).");
 			
 			w.addFact_asString("closed(sw1).");
-			w.addFact_asString("closed(sw2).");
+			w.addFact_asString("open(sw2).");
 			w.addFact_asString("closed(sw3).");
-			w.addFact_asString("open(sw4).");
+			w.addFact_asString("closed(sw4).");
 			w.addFact_asString("closed(sw5).");
-			w.addFact_asString("closed(sw6).");
+			w.addFact_asString("open(sw6).");
 			w.addFact_asString("closed(sw7).");
-			w.addFact_asString("open(sw8).");
+			w.addFact_asString("closed(sw8).");
 			w.addFact_asString("closed(sw9).");
-			w.addFact_asString("closed(sw10).");
-			w.addFact_asString("closed(sw11).");
+			w.addFact_asString("open(sw10).");
+			w.addFact_asString("open(sw11).");
 			w.addFact_asString("closed(sw12).");
-			w.addFact_asString("closed(sw13).");
+			w.addFact_asString("open(sw13).");
 			w.addFact_asString("closed(sw14).");
-			w.addFact_asString("open(sw15).");
-			w.addFact_asString("open(sw16).");
+			w.addFact_asString("closed(sw15).");
+			w.addFact_asString("closed(sw16).");
 			w.addFact_asString("closed(sw17).");
-			w.addFact_asString("closed(sw18).");
+			w.addFact_asString("open(sw18).");
 			w.addFact_asString("closed(sw19).");
 			w.addFact_asString("closed(sw20).");
 			w.addFact_asString("open(sw21).");
-			w.addFact_asString("closed(sw22).");
+			w.addFact_asString("open(sw22).");
 			w.addFact_asString("closed(sw23).");
 			w.addFact_asString("closed(sw24).");
-			w.addFact_asString("closed(sw25).");
-			w.addFact_asString("open(sw26).");
-			w.addFact_asString("closed(sw27).");
+			w.addFact_asString("open(sw25).");
 
 			//guasti sempre aperti
-			w.addFact_asString("f(b4_5).");
-			w.addFact_asString("f(b25_30).");
+//			w.addFact_asString("f(b3_4).");
+//			w.addFact_asString("f(b4_5).");
+//			w.addFact_asString("f(b16_21).");
+//			w.addFact_asString("f(b32_37).");
 
 		} catch (ParseException e) {
 			e.printStackTrace();
@@ -283,23 +282,41 @@ public class SPSReconfigurationFailure2 implements Scenario {
 		ArrayList<AbstractCapability> capabilities = new ArrayList<AbstractCapability>();
 	
 		/*generators*/
-		capabilities.add(generate_switch_on_generator("mg1"));
-		capabilities.add(generate_switch_off_generator("mg1"));
-		//capabilities.add(generate_switch_on_generator("mg2"));
-		//capabilities.add(generate_switch_off_generator("mg2"));
+		//capabilities.add(generate_switch_on_generator("mg1"));
+		//capabilities.add(generate_switch_off_generator("mg1"));
+		capabilities.add(generate_switch_on_generator("mg2"));
+		capabilities.add(generate_switch_off_generator("mg2"));
 		capabilities.add(generate_switch_on_generator("aux1"));
 		capabilities.add(generate_switch_off_generator("aux1"));
-		//capabilities.add(generate_switch_on_generator("aux2"));
-		capabilities.add(generate_switch_on_aux2());
-		capabilities.add(generate_switch_on_aux2_alt());
-		capabilities.add(generate_switch_on_aux2_alt2());
+		capabilities.add(generate_switch_on_generator("aux2"));
 		capabilities.add(generate_switch_off_generator("aux2"));
 		
-		/*switchers*/
-		for (int i=0; i<27; i++) {
-			capabilities.add(generate_open_capability_for_switcher("sw"+(i+1)));
-			capabilities.add(generate_close_capability_for_switcher("sw"+(i+1)));			
-		}	
+		capabilities.add(generate_open_capability_for_switcher("sw3"));
+		capabilities.add(generate_open_capability_for_switcher("sw7"));
+		capabilities.add(generate_open_capability_for_switcher("sw14"));
+		capabilities.add(generate_open_capability_for_switcher("sw19"));
+		capabilities.add(generate_open_capability_for_switcher("sw24"));
+
+		capabilities.add(generate_close_capability_for_switcher("sw3"));
+		capabilities.add(generate_close_capability_for_switcher("sw7"));
+		capabilities.add(generate_close_capability_for_switcher("sw14"));
+		capabilities.add(generate_close_capability_for_switcher("sw19"));
+		capabilities.add(generate_close_capability_for_switcher("sw24"));
+
+		capabilities.add(generate_capability_for_open_close("sw1","sw2"));
+		capabilities.add(generate_capability_for_open_close("sw2","sw1"));
+		capabilities.add(generate_capability_for_open_close("sw5","sw6"));
+		capabilities.add(generate_capability_for_open_close("sw6","sw5"));
+		capabilities.add(generate_capability_for_open_close("sw9","sw10"));
+		capabilities.add(generate_capability_for_open_close("sw10","sw9"));
+		capabilities.add(generate_capability_for_open_close("sw12","sw13"));
+		capabilities.add(generate_capability_for_open_close("sw13","sw12"));
+		capabilities.add(generate_capability_for_open_close("sw17","sw18"));
+		capabilities.add(generate_capability_for_open_close("sw18","sw17"));
+		capabilities.add(generate_capability_for_open_close("sw20","sw21"));
+		capabilities.add(generate_capability_for_open_close("sw21","sw20"));
+		capabilities.add(generate_capability_for_open_close("sw23","sw25"));
+		capabilities.add(generate_capability_for_open_close("sw25","sw23"));
 		
 		return capabilities;
 	}
@@ -413,7 +430,20 @@ public class SPSReconfigurationFailure2 implements Scenario {
 		return new AbstractCapability("open_switch_"+switch_name+"_cap", main_on_evo, i_pre, null);
 	}
 
-
+	private AbstractCapability generate_capability_for_open_close(String switch_name1,String switch_name2) {
+		Constant i_const1 = new Constant(switch_name1);
+		Constant i_const2 = new Constant(switch_name2);
+		
+		Condition i_pre = new FOLCondition(new DLPAtom("closed", i_const1));
+		List<EvolutionScenario> main_on_evo = new LinkedList<>();
+		CapabilityEvolutionScenario i_evo_scenario = new CapabilityEvolutionScenario("iOpen");
+		i_evo_scenario.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("open", i_const1)) ) );
+		i_evo_scenario.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("closed", i_const2)) ) );
+		i_evo_scenario.addOperator(new RemoveStatement(new ExtDLPHead(new DLPAtom("closed", i_const1))));
+		i_evo_scenario.addOperator(new RemoveStatement(new ExtDLPHead(new DLPAtom("open", i_const2))));
+		main_on_evo.add(i_evo_scenario);
+		return new AbstractCapability("open_switch_"+switch_name1+"close_switch_"+switch_name2+"_cap", main_on_evo, i_pre, null);
+	}
 	
 	
 	public class SPSloadmetrics extends QualityAsset {
@@ -425,6 +455,7 @@ public class SPSReconfigurationFailure2 implements Scenario {
 		private int[] gen_pow=null;
 		
 		private long max_score = -1;
+		private double threshold = -1;
 		
 		public SPSloadmetrics(AssumptionSet myAssumptions) {
 			super();
@@ -436,32 +467,32 @@ public class SPSReconfigurationFailure2 implements Scenario {
 		private void init_metrics() {
 			load_conditions = new FOLCondition[24];
 			
-			load_conditions[0] = new FOLCondition(new DLPAtom("on",new Constant ("l1")));
-			load_conditions[1] = new FOLCondition(new DLPAtom("on",new Constant ("l4")));
-			load_conditions[2] = new FOLCondition(new DLPAtom("on",new Constant ("l5")));
-			load_conditions[3] = new FOLCondition(new DLPAtom("on",new Constant ("l8")));
-			load_conditions[4] = new FOLCondition(new DLPAtom("on",new Constant ("l11")));
-			load_conditions[5] = new FOLCondition(new DLPAtom("on",new Constant ("l14")));
-			load_conditions[6] = new FOLCondition(new DLPAtom("on",new Constant ("l15")));
-			load_conditions[7] = new FOLCondition(new DLPAtom("on",new Constant ("l18")));
-			load_conditions[8] = new FOLCondition(new DLPAtom("on",new Constant ("l21")));
-			load_conditions[9] = new FOLCondition(new DLPAtom("on",new Constant ("l24")));
+			load_conditions[0] = new FOLCondition(new DLPAtom("on",new Constant ("l2")));
+			load_conditions[1] = new FOLCondition(new DLPAtom("on",new Constant ("l6")));
+			load_conditions[2] = new FOLCondition(new DLPAtom("on",new Constant ("l9")));
+			load_conditions[3] = new FOLCondition(new DLPAtom("on",new Constant ("l12")));
+			load_conditions[4] = new FOLCondition(new DLPAtom("on",new Constant ("l16")));
+			load_conditions[5] = new FOLCondition(new DLPAtom("on",new Constant ("l19")));
+			load_conditions[6] = new FOLCondition(new DLPAtom("on",new Constant ("l22")));
 			
-			load_conditions[10] = new FOLCondition(new DLPAtom("on",new Constant ("l2")));
-			load_conditions[11] = new FOLCondition(new DLPAtom("on",new Constant ("l6")));
-			load_conditions[12] = new FOLCondition(new DLPAtom("on",new Constant ("l9")));
-			load_conditions[13] = new FOLCondition(new DLPAtom("on",new Constant ("l12")));
-			load_conditions[14] = new FOLCondition(new DLPAtom("on",new Constant ("l16")));
-			load_conditions[15] = new FOLCondition(new DLPAtom("on",new Constant ("l19")));
-			load_conditions[16] = new FOLCondition(new DLPAtom("on",new Constant ("l11")));
+			load_conditions[7] = new FOLCondition(new DLPAtom("on",new Constant ("l3")));
+			load_conditions[8] = new FOLCondition(new DLPAtom("on",new Constant ("l7")));
+			load_conditions[9] = new FOLCondition(new DLPAtom("on",new Constant ("l10")));	
+			load_conditions[10] = new FOLCondition(new DLPAtom("on",new Constant ("l13")));
+			load_conditions[11] = new FOLCondition(new DLPAtom("on",new Constant ("l17")));
+			load_conditions[12] = new FOLCondition(new DLPAtom("on",new Constant ("l20")));
+			load_conditions[13] = new FOLCondition(new DLPAtom("on",new Constant ("l23")));
 			
-			load_conditions[17] = new FOLCondition(new DLPAtom("on",new Constant ("l3")));
-			load_conditions[18] = new FOLCondition(new DLPAtom("on",new Constant ("l7")));
-			load_conditions[19] = new FOLCondition(new DLPAtom("on",new Constant ("l10")));
-			load_conditions[20] = new FOLCondition(new DLPAtom("on",new Constant ("l13")));
-			load_conditions[21] = new FOLCondition(new DLPAtom("on",new Constant ("l17")));
-			load_conditions[22] = new FOLCondition(new DLPAtom("on",new Constant ("l20")));
-			load_conditions[23] = new FOLCondition(new DLPAtom("on",new Constant ("l23")));
+			load_conditions[14] = new FOLCondition(new DLPAtom("on",new Constant ("l1")));
+			load_conditions[15] = new FOLCondition(new DLPAtom("on",new Constant ("l4")));
+			load_conditions[16] = new FOLCondition(new DLPAtom("on",new Constant ("l5")));		
+			load_conditions[17] = new FOLCondition(new DLPAtom("on",new Constant ("l8")));
+			load_conditions[18] = new FOLCondition(new DLPAtom("on",new Constant ("l11")));
+			load_conditions[19] = new FOLCondition(new DLPAtom("on",new Constant ("l14")));
+			load_conditions[20] = new FOLCondition(new DLPAtom("on",new Constant ("l15")));
+			load_conditions[21] = new FOLCondition(new DLPAtom("on",new Constant ("l18")));
+			load_conditions[22] = new FOLCondition(new DLPAtom("on",new Constant ("l21")));
+			load_conditions[23] = new FOLCondition(new DLPAtom("on",new Constant ("l24")));
 			
 			gen_conditions = new FOLCondition[4];
 			gen_conditions[0] = new FOLCondition(new DLPAtom("on",new Constant ("mg1")));
@@ -470,19 +501,33 @@ public class SPSReconfigurationFailure2 implements Scenario {
 			gen_conditions[3] = new FOLCondition(new DLPAtom("on",new Constant ("aux2")));
 
 			load_pow = new int[24];
-			for (int i=0; i<10; i++)
-				load_pow[i] = 2;
-			for (int i=10; i<17; i++)
-				load_pow[i] = 1;
-			for (int i=17; i<24; i++)
-				load_pow[i] = 2;
+			for (int i=0; i<7; i++)
+				load_pow[i] = 5;
+			for (int i=7; i<14; i++)
+				load_pow[i] = 5;
+			for (int i=14; i<24; i++)
+				load_pow[i] = 5;
 					
 			gen_pow = new int[4];
-			gen_pow[0] = 10;
-			gen_pow[1] = 10;
-			gen_pow[2] = 15;
-			gen_pow[3] = 15;
+			gen_pow[0] = 60;
+			gen_pow[1] = 60;
+			gen_pow[2] = 20;
+			gen_pow[3] = 20;
 			
+		}
+		
+		public String getShortStateRepresentation(StateOfWorld w) {
+			String value = "";
+			EntailOperator entail = EntailOperator.getInstance();
+			boolean[] results = entail.entailsCondition(w, myAssumptions, load_conditions);
+
+			for (int i=0; i<24; i++) {
+				if (results[i])
+					value +="1";
+				else
+					value +="0";
+			}
+			return value;
 		}
 		
 
@@ -495,17 +540,13 @@ public class SPSReconfigurationFailure2 implements Scenario {
 			
 			String value = "";
 			for (int i=0; i<24; i++) {
-				//System.out.print(results[i]+" , ");
 				if (results[i])
 					value +="1";
 				else
 					value +="0";
 			}
-			//System.out.println();
-			//System.out.println(value);
 			
 			int score_before = Integer.parseInt(value, 2);
-			//System.out.println(score_before);
 
 			boolean[] genresults = entail.entailsCondition(w, myAssumptions, gen_conditions);
 			int pot_erogata = 0;
@@ -529,26 +570,79 @@ public class SPSReconfigurationFailure2 implements Scenario {
 					value_after +="0";
 				}
 			}
-			//System.out.println();
-			//System.out.println(value_after);
+			
+			int pot_in_eccesso = pot_erogata;
+			
 			score = Integer.parseInt(value_after, 2);
-			//System.out.println(score);		
 			
 			return score;
 		}
 
 		@Override
 		public long max_score() {
-			if (max_score>0)
-				return max_score;
+			return 1;
+//			if (max_score>0)
+//				return max_score;
+//			
+//			String value = "";
+//			for (int i=0; i<24; i++) {
+//					value +="1";
+//			}
+//			
+//			max_score = Integer.parseInt(value, 2);
+//			return max_score;
+		}
+
+		@Override
+		public double getThreshold_metrics() {
+			if (threshold>0) 
+				return threshold;
+			
+			String value = "";
+			for (int i=0; i<17; i++) {
+					value +="1";
+			}
+			for (int i=17; i<24; i++) {
+				value +="0";
+			}
+			double th = Integer.parseInt(value, 2);
+			threshold = th/(double) max_score;
+			
+			return threshold;
+		}
+
+		@Override
+		public void log_state(AssumptionSet assumptions, StateOfWorld w) {
+			
+//				for (int i=0; i<46; i++) {
+//					FOLCondition cond = new FOLCondition(new DLPAtom("up",new Constant ("n"+(i+1))));
+//					EntailOperator test1 = EntailOperator.getInstance();
+//					boolean b1= test1.entailsCondition(w, assumptions, cond);
+//					if (b1==false)
+//						System.out.println("Node"+(i+1)+" is down");
+//				}
+			
+			for (int i=0; i<24; i++) {
+				FOLCondition cond = new FOLCondition(new DLPAtom("on",new Constant ("l"+(i+1))));
+				EntailOperator test1 = EntailOperator.getInstance();
+				boolean b1= test1.entailsCondition(w, assumptions, cond);
+				if (b1==false)
+					System.out.println("Load"+(i+1)+" is down");
+			}
+			
+			EntailOperator entail = EntailOperator.getInstance();
+			boolean[] results = entail.entailsCondition(w, myAssumptions, load_conditions);
 			
 			String value = "";
 			for (int i=0; i<24; i++) {
+				if (results[i])
 					value +="1";
+				else
+					value +="0";
 			}
 			
-			max_score = Integer.parseInt(value, 2);
-			return max_score;
+			int score_before = Integer.parseInt(value, 2);
+			System.out.println("score without power balance: "+score_before);
 		}
 		
 	}

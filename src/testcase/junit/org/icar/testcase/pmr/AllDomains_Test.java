@@ -79,7 +79,8 @@ public class AllDomains_Test {
 		
 		wts_builder.build_solution_space(s.getInitialState());
 		
-		aw_builder.log_solutions();
+		//aw_builder.log_solutions(assumptionsSPS, s.getQualityAsset());
+		aw_builder.log_partial_solutions(assumptionsSPS, s.getQualityAsset());
 	}
 
 	@Ignore

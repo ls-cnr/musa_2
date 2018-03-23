@@ -15,8 +15,8 @@ public class WTSExpansion extends WTS {
 	private boolean contain_forbidden;
 	private boolean contain_exit;
 	
-	public WTSExpansion(String capability, StateNode root, NetHierarchy pnmodel) {
-		super(root, pnmodel);
+	public WTSExpansion(String capability, StateNode root) {
+		super(root);
 		this.capability = capability;
 		multi_expansion=false;
 		contain_forbidden=false;

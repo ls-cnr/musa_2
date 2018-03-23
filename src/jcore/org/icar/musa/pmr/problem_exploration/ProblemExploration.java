@@ -32,6 +32,7 @@ public class ProblemExploration {
 	
 	private static EntailOperator entail;
 
+	private ProblemSpecification ps = null;
 	
 	/** The Assumption Set defined globally that the Agent has to maintain */
 	private AssumptionSet assumptions;
@@ -53,6 +54,7 @@ public class ProblemExploration {
 
 	public ProblemExploration( ProblemSpecification ps, ArrayList<AbstractCapability> capabilities, String agent_name) throws ProblemDefinitionException {
 		initialize(ps,capabilities);
+		this.ps = ps;
 		my_agent_name = agent_name;
 		entail = EntailOperator.getInstance();
 	}
@@ -62,13 +64,20 @@ public class ProblemExploration {
 		this.assumptions = ps.getAssumptions();
 		this.asset = ps.getQuality_asset();
 		
-		if (!(ps.getGoal_specification() instanceof LTLGoal)) {
-			throw new ProblemDefinitionException();
+		if (ps.getGoal_specification() == null) {
+			// running without goals
+			supervisor = null;
 		} else {
-			LTLGoal mygoal = (LTLGoal) ps.getGoal_specification();
-			NetHierarchyBuilder builder = new NetHierarchyBuilder();
-			NetHierarchy nets = builder.build(mygoal);
-			supervisor = new NetSupervisor(nets, nets.getInitialTokenConfiguration());
+		
+			if (!(ps.getGoal_specification() instanceof LTLGoal)) {
+				throw new ProblemDefinitionException();
+			} else {
+				LTLGoal mygoal = (LTLGoal) ps.getGoal_specification();
+				NetHierarchyBuilder builder = new NetHierarchyBuilder();
+				NetHierarchy nets = builder.build(mygoal);
+				supervisor = new NetSupervisor(nets, nets.getInitialTokenConfiguration());
+			}
+			
 		}
 		
 		iteration_counter=0;
@@ -80,7 +89,9 @@ public class ProblemExploration {
 		generated_expansions = new ArrayList<>();
 		
 		node.setStartNode(true);
-		node.setTokens(supervisor.getNetModel().getInitialTokenConfiguration());
+		if (supervisor != null) {
+			node.setTokens(supervisor.getNetModel().getInitialTokenConfiguration());
+		}
 		node.setGoal_satisfaction_degree(0);
 		toVisit.add( node );
 	}
@@ -148,7 +159,7 @@ public class ProblemExploration {
 	}
 
 	private WTSExpansion generate_cap_evolution(StateNode node, AbstractCapability cap) {
-		WTSExpansion exp = new WTSExpansion(cap.getId(),node, supervisor.getNetModel());
+		WTSExpansion exp = new WTSExpansion(cap.getId(),node);
 		
 		CapabilityEdge main_edge = new CapabilityEdge();
 		main_edge.setCapabilityName(cap.getId());
@@ -229,31 +240,34 @@ public class ProblemExploration {
 
 	/* update tokens, goal_satisfaction_degree, exit state and forbidden state */ 
 	private StateNode update_node_metadata(StateNode node, StateNode dest_node) {
-		TokenConf start_tokens = node.getTokens();
-		supervisor.setToken(start_tokens);
-		supervisor.prepareTokens();
-		supervisor.update(dest_node.getState(), assumptions);
-		
-		PNStateEnum updated_state = supervisor.getState();
-		if( updated_state==PNStateEnum.ACCEPTED )
-			dest_node.setExitNode(true);
-		else if (updated_state==PNStateEnum.ERROR )
-			dest_node.setForbidden(true);
 		double score = 0;
-		
+			
+		if (supervisor != null) {
+			TokenConf start_tokens = node.getTokens();
+			supervisor.setToken(start_tokens);
+			supervisor.prepareTokens();
+			supervisor.update(dest_node.getState(), assumptions);
+			
+			PNStateEnum updated_state = supervisor.getState();
+			if( updated_state==PNStateEnum.ACCEPTED )
+				dest_node.setExitNode(true);
+			else if (updated_state==PNStateEnum.ERROR )
+				dest_node.setForbidden(true);
+			
+			score = supervisor.calculate_partial_satisfaction(); 
+			
+			supervisor.cleanTokens();
+			TokenConf updated_tokens = supervisor.getTokenConfiguration();
+			dest_node.setTokens(updated_tokens);
+		} 
+
 		if (asset != null) {
 			double metrics = asset.evaluate_state(dest_node.getState());
 			score = metrics / (double) asset.max_score();
-		} else {
-			score = supervisor.calculate_partial_satisfaction(); 
 		}
 		
 		dest_node.setGoal_satisfaction_degree(score);
-		
-		supervisor.cleanTokens();
-		TokenConf updated_tokens = supervisor.getTokenConfiguration();
-		dest_node.setTokens(updated_tokens);
-		
+				
 		return dest_node;
 	}
 	
@@ -263,7 +277,8 @@ public class ProblemExploration {
 		for (StateNode s : visited) {
 			if (s != null)
 				if (s.getState() != null)
-					System.out.println(s.getState().toString());
+					System.out.println(asset.getShortStateRepresentation(s.getState()));
+					//System.out.println(s.getState().toString());
 				else
 					System.out.println("node without state");
 			else
@@ -284,7 +299,7 @@ public class ProblemExploration {
 			if (!exp.isMulti_expansion()) {		
 				for (WTSNode n : exp.getEvolutionNodes() ) {
 					StateNode node = (StateNode) n;
-					System.out.print("[...] ->"+exp.getCapability()+"\t-> [...]");
+					System.out.print("[...] ->"+exp.getCapability()+"\t-> ["+asset.getShortStateRepresentation(node.getState())+"]");
 					//System.out.print(exp.getRoot().getState().toString()+"->"+exp.getCapability()+"\t->"+node.getState().toString());
 					if (node.isExitNode())
 						System.out.print(" is EXIT =>\t");
