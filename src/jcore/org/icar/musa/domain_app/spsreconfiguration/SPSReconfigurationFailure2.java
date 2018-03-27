@@ -204,22 +204,22 @@ public class SPSReconfigurationFailure2 implements Scenario {
 
 	@Override
 	public Requirements getRequirements() {
-		return null;
-//		String p1 = "F( (((on(l2) and on(l6)) and (on(l9) and on(l12))) and ((on(l16) and on(l19)) and on(l22))) )" ;
-//		String g1 =  "goalmodel { goal g1 = "+p1+". }";
-//		
-//		System.out.println(g1);
-//		
-//		GoalModel model=null;
-//		LTLGoal goal = null;
-//		try {
-//			model = LTLGoalModelBuilder.parse(g1);
-//			goal = model.getGoals().iterator().next();
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
-//		
-//		return goal;
+		//return null;
+		String p1 = "F( (((on(l2) and on(l6)) and (on(l9) and on(l12))) and ((on(l16) and on(l19)) and on(l22))) )" ;
+		String g1 =  "goalmodel { goal g1 = "+p1+". }";
+		
+		System.out.println(g1);
+		
+		GoalModel model=null;
+		LTLGoal goal = null;
+		try {
+			model = LTLGoalModelBuilder.parse(g1);
+			goal = model.getGoals().iterator().next();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		return goal;
 	}
 	
 	@Override
@@ -232,7 +232,7 @@ public class SPSReconfigurationFailure2 implements Scenario {
 	public StateOfWorld getInitialState() {
 		StateOfWorld w = new StateOfWorld();
 		try {
-			w.addFact_asString("off(mg1).");
+			w.addFact_asString("on(mg1).");
 			w.addFact_asString("on(mg2).");
 			w.addFact_asString("off(aux1).");
 			w.addFact_asString("off(aux2).");
@@ -264,10 +264,10 @@ public class SPSReconfigurationFailure2 implements Scenario {
 			w.addFact_asString("open(sw25).");
 
 			//guasti sempre aperti
-//			w.addFact_asString("f(b3_4).");
-//			w.addFact_asString("f(b4_5).");
-//			w.addFact_asString("f(b16_21).");
-//			w.addFact_asString("f(b32_37).");
+			w.addFact_asString("f(b3_4).");
+			w.addFact_asString("f(b4_5).");
+			w.addFact_asString("f(b16_21).");
+			w.addFact_asString("f(b32_37).");
 
 		} catch (ParseException e) {
 			e.printStackTrace();
@@ -282,8 +282,8 @@ public class SPSReconfigurationFailure2 implements Scenario {
 		ArrayList<AbstractCapability> capabilities = new ArrayList<AbstractCapability>();
 	
 		/*generators*/
-		//capabilities.add(generate_switch_on_generator("mg1"));
-		//capabilities.add(generate_switch_off_generator("mg1"));
+		capabilities.add(generate_switch_on_generator("mg1"));
+		capabilities.add(generate_switch_off_generator("mg1"));
 		capabilities.add(generate_switch_on_generator("mg2"));
 		capabilities.add(generate_switch_off_generator("mg2"));
 		capabilities.add(generate_switch_on_generator("aux1"));
@@ -442,7 +442,7 @@ public class SPSReconfigurationFailure2 implements Scenario {
 		i_evo_scenario.addOperator(new RemoveStatement(new ExtDLPHead(new DLPAtom("closed", i_const1))));
 		i_evo_scenario.addOperator(new RemoveStatement(new ExtDLPHead(new DLPAtom("open", i_const2))));
 		main_on_evo.add(i_evo_scenario);
-		return new AbstractCapability("open_switch_"+switch_name1+"close_switch_"+switch_name2+"_cap", main_on_evo, i_pre, null);
+		return new AbstractCapability("open_switch_"+switch_name1+"_close_switch_"+switch_name2+"_cap", main_on_evo, i_pre, null);
 	}
 	
 	
@@ -504,9 +504,12 @@ public class SPSReconfigurationFailure2 implements Scenario {
 			for (int i=0; i<7; i++)
 				load_pow[i] = 5;
 			for (int i=7; i<14; i++)
-				load_pow[i] = 5;
+				load_pow[i] = 10;
 			for (int i=14; i<24; i++)
 				load_pow[i] = 5;
+			
+			load_pow[9] = 0;
+			load_pow[19] = 0;
 					
 			gen_pow = new int[4];
 			gen_pow[0] = 60;
@@ -547,13 +550,14 @@ public class SPSReconfigurationFailure2 implements Scenario {
 			}
 			
 			int score_before = Integer.parseInt(value, 2);
-
+			
 			boolean[] genresults = entail.entailsCondition(w, myAssumptions, gen_conditions);
 			int pot_erogata = 0;
 			for (int i=0; i<4; i++)
 				if (genresults[i])
 					pot_erogata+=gen_pow[i];
 			
+			String shading = "";
 			//System.out.println("POT MAX: "+pot_erogata);
 
 			String value_after = "";
@@ -563,17 +567,24 @@ public class SPSReconfigurationFailure2 implements Scenario {
 					if (load_pow[i]<pot_erogata) {
 						value_after +="1";
 						pot_erogata = pot_erogata-load_pow[i];
+						
+						shading += "0";
 					} else {
 						value_after +="0";
+
+						shading += "1";
 					}
 				} else {
 					value_after +="0";
+					
+					shading += "0";
 				}
 			}
 			
 			int pot_in_eccesso = pot_erogata;
+			int negativescore = Integer.parseInt(shading, 2);
 			
-			score = Integer.parseInt(value_after, 2);
+			score = Integer.parseInt(value_after, 2)-negativescore;
 			
 			return score;
 		}
@@ -621,17 +632,28 @@ public class SPSReconfigurationFailure2 implements Scenario {
 //					if (b1==false)
 //						System.out.println("Node"+(i+1)+" is down");
 //				}
-			
-			for (int i=0; i<24; i++) {
-				FOLCondition cond = new FOLCondition(new DLPAtom("on",new Constant ("l"+(i+1))));
-				EntailOperator test1 = EntailOperator.getInstance();
-				boolean b1= test1.entailsCondition(w, assumptions, cond);
-				if (b1==false)
-					System.out.println("Load"+(i+1)+" is down");
-			}
-			
 			EntailOperator entail = EntailOperator.getInstance();
+			boolean[] genresults = entail.entailsCondition(w, myAssumptions, gen_conditions);
 			boolean[] results = entail.entailsCondition(w, myAssumptions, load_conditions);
+			
+			int pot_erogata = 0;
+			for (int i=0; i<4; i++)
+				if (genresults[i])
+					pot_erogata+=gen_pow[i];
+
+			int pot_richiesta = 0;
+			for (int i=0; i<24; i++) {
+				if (i!=9 & i!=19) {
+//					FOLCondition cond = new FOLCondition(new DLPAtom("on",new Constant ("l"+(i+1))));
+//					EntailOperator test1 = EntailOperator.getInstance();
+//					boolean b1= test1.entailsCondition(w, assumptions, cond);
+					if (results[i]==false)
+						System.out.println("Load"+(i+1)+" is down");
+					else
+						pot_richiesta += load_pow[i];
+					
+				}
+			}
 			
 			String value = "";
 			for (int i=0; i<24; i++) {
@@ -642,6 +664,7 @@ public class SPSReconfigurationFailure2 implements Scenario {
 			}
 			
 			int score_before = Integer.parseInt(value, 2);
+			System.out.println("pow erogata: "+pot_erogata);
 			System.out.println("score without power balance: "+score_before);
 		}
 		

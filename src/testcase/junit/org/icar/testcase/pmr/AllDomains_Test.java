@@ -73,13 +73,13 @@ public class AllDomains_Test {
 		
 		WTSLocalBuilder wts_builder = new WTSLocalBuilder(ps_SPS, allCapSPS);
 		//WTSEventLogger logger = new WTSEventLogger();
-		AWBuilder aw_builder = new AWBuilder();
+		AWBuilder aw_builder = new AWBuilder(s.getQualityAsset(),assumptionsSPS);
 		//wts_builder.register(logger);
 		wts_builder.register(aw_builder);
 		
 		wts_builder.build_solution_space(s.getInitialState());
 		
-		//aw_builder.log_solutions(assumptionsSPS, s.getQualityAsset());
+		aw_builder.log_solutions(assumptionsSPS, s.getQualityAsset());
 		aw_builder.log_partial_solutions(assumptionsSPS, s.getQualityAsset());
 	}
 

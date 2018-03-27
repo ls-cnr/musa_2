@@ -28,6 +28,9 @@ public class AWBuilder implements WTSEventListener {
 	private HashSet<TreeBrick> solutions;
 	private HashMap<NodeCouple,WTSEdge> seq;
 	
+	private QualityAsset asset = null;
+	AssumptionSet assumptions = null;
+	
 	public AWBuilder() {
 		super();
 		bricks = new HashSet<TreeBrick>();
@@ -35,7 +38,18 @@ public class AWBuilder implements WTSEventListener {
 		
 		seq = new HashMap<NodeCouple,WTSEdge>();
 	}
-	
+
+	public AWBuilder(QualityAsset asset,AssumptionSet assumptions) {
+		super();
+		bricks = new HashSet<TreeBrick>();
+		solutions = new HashSet<TreeBrick>();
+		
+		seq = new HashMap<NodeCouple,WTSEdge>();
+
+		this.asset = asset;
+		this.assumptions = assumptions;
+	}
+
 	public int size() {
 		return bricks.size();
 	}
@@ -82,6 +96,8 @@ public class AWBuilder implements WTSEventListener {
 		if (dest.isExitNode()) {
 			search_solutions();
 		}
+		
+		//internal_report();
 	}
 
 	private void addChoiceEdge(StateNode source,XorNode dest, CapabilityEdge edge) {
@@ -161,11 +177,11 @@ public class AWBuilder implements WTSEventListener {
 
 	public void log_solutions(AssumptionSet assumptions, QualityAsset asset) {
 		System.out.println("Num solutions "+solutions.size());
+		int i=1;
 		for (TreeBrick t : solutions) {
-			System.out.println("-----");
+			System.out.println("------ complete solution "+i+" -------");
 			log_solution_with_capability(t,0,assumptions,asset);
-			//t.log(0);
-			//log_solution_with_capability(t,0);
+			i++;
 		}
 		if (solutions.size()==0)
 			for (TreeBrick t : bricks) {
@@ -189,7 +205,7 @@ public class AWBuilder implements WTSEventListener {
 		while (it.hasNext() & i<10) {
 			i++;
 			PartialSolution sol = it.next();
-			System.out.println("------ sol "+i+" -------");
+			System.out.println("------ partial solution "+i+" -------");
 			log_solution_with_capability(sol.getPartial_solution(),0,assumptions,asset);
 		}
 		
@@ -199,11 +215,13 @@ public class AWBuilder implements WTSEventListener {
 	private void internal_report() {
 		System.out.println("n. bricks: "+bricks.size());
 		for (TreeBrick tb : bricks) {
-			tb.print_as_inline(); System.out.println("");
+			tb.print_as_inline(asset,assumptions); System.out.println("");
 		}
+		if (solutions.size()>0) {
 		System.out.println("n. solutions: "+solutions.size());
-		for (TreeBrick s : solutions) {
-			s.print_as_inline(); System.out.println("");
+			for (TreeBrick s : solutions) {
+				s.print_as_inline(asset,assumptions); System.out.println("");
+			}
 		}
 }
 

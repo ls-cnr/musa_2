@@ -6,6 +6,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import org.icar.musa.core.context.StateOfWorld;
+import org.icar.musa.core.runtime_entity.AssumptionSet;
+import org.icar.musa.core.runtime_entity.QualityAsset;
 import org.icar.musa.pmr.problem_exploration.StateNode;
 import org.icar.musa.pmr.problem_exploration.WTSNode;
 import org.icar.musa.pmr.problem_exploration.XorNode;
@@ -389,6 +392,25 @@ public class TreeBrick {
 			score = score / getChilds().size();
 		}
 		return score;
+	}
+
+	public void print_as_inline(QualityAsset asset, AssumptionSet assumptions) {
+		if (node == null | asset==null)
+			return;
+					
+		if (node instanceof StateNode) {
+			StateNode state = (StateNode) node;
+			StateOfWorld w = state.getState();
+			System.out.print(asset.getShortStateRepresentation(w)+" -> ");
+		}
+		if (node instanceof AWLoop) {
+			AWLoop state = (AWLoop) node;
+			System.out.print("(loop). ");
+		}
+		for (TreeBrick sub : children) {
+			sub.print_as_inline(asset,assumptions);
+		}	
+		
 	}
 
 
