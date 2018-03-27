@@ -17,9 +17,7 @@ import org.icar.musa.core.fol_reasoner.FOLCondition;
 import org.icar.musa.core.runtime_entity.AbstractCapability;
 import org.icar.musa.core.runtime_entity.AssumptionSet;
 import org.icar.musa.core.runtime_entity.QualityAsset;
-import org.icar.musa.exception.ProblemDefinitionException;
-import org.icar.musa.proactive_means_end_reasoning.ExtendedNode;
-import org.icar.musa.proactive_means_end_reasoning.GraphExpansion;
+import org.icar.musa.utils.exception.ProblemDefinitionException;
 import org.icar.specification.LTLgoal.model.LTLGoal;
 
 public class ProblemExploration {

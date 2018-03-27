@@ -6,9 +6,9 @@ import org.icar.ltlpetrinet.hierarchical_model.NetHierarchy;
 import org.icar.ltlpetrinet.hierarchical_model.NetHierarchyBuilder;
 import org.icar.ltlpetrinet.supervisor.NetSupervisor;
 import org.icar.ltlpetrinet.supervisor.TokenConf;
+import org.icar.musa.applications.spsreconfiguration.SPSReconfigurationFull;
 import org.icar.musa.core.Requirements;
 import org.icar.musa.core.context.StateOfWorld;
-import org.icar.musa.domain_app.spsreconfiguration.SPSReconfigurationFull;
 import org.icar.specification.LTLgoal.model.LTLGoal;
 import org.junit.Test;
 
@@ -68,7 +68,7 @@ public class Supervisor_Test {
 			w0.addFact_asString("open(i27).");
 		} catch (ParseException e) {
 			e.printStackTrace();
-		} catch (org.icar.musa.exception.NotAllowedInAStateOfWorld e) {
+		} catch (org.icar.musa.utils.exception.NotAllowedInAStateOfWorld e) {
 			e.printStackTrace();
 		}
 
@@ -112,7 +112,7 @@ public class Supervisor_Test {
 			w1.addFact_asString("open(i27).");
 		} catch (ParseException e) {
 			e.printStackTrace();
-		} catch (org.icar.musa.exception.NotAllowedInAStateOfWorld e) {
+		} catch (org.icar.musa.utils.exception.NotAllowedInAStateOfWorld e) {
 			e.printStackTrace();
 		}
 

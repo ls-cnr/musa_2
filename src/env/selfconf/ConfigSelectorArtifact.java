@@ -5,15 +5,9 @@ package selfconf;
 import java.util.HashMap;
 import java.util.HashSet;
 
-import org.icar.musa.agent_communication.translator.JasonExpansionNode;
-import org.icar.musa.agent_communication.translator.TranslateError;
 import org.icar.musa.core.runtime_entity.AbstractWorkflowNode;
-import org.icar.musa.proactive_means_end_reasoning.ExtendedNode;
-import org.icar.musa.proactive_means_end_reasoning.GraphExpansion;
-import org.icar.musa.solution_extractor.distributed.Sequences;
-import org.icar.musa.solution_extractor.Solution;
-import org.icar.musa.solution_extractor.distributed.InternalStringSolution;
-import org.icar.musa.solution_extractor.distributed.Tree;
+import org.icar.musa.utils.agent_communication.translator.JasonExpansionNode;
+import org.icar.musa.utils.agent_communication.translator.TranslateError;
 
 import cartago.*;
 

@@ -1,11 +1,11 @@
 package org.icar.example;
 
-import org.icar.musa.domain_app.monitoring_workflow.WakeUp;
-import org.icar.musa.exception.ProblemDefinitionException;
+import org.icar.musa.applications.monitoring_workflow.WakeUp;
 import org.icar.musa.pmr.problem_exploration.ProblemSpecification;
 import org.icar.musa.pmr.problem_exploration.WTS;
 import org.icar.musa.pmr.problem_exploration.WTSEventLogger;
 import org.icar.musa.pmr.problem_exploration.WTSLocalBuilder;
+import org.icar.musa.utils.exception.ProblemDefinitionException;
 
 public class WTSBuilderExample {
 

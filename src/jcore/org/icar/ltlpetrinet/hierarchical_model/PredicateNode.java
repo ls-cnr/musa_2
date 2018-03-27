@@ -10,7 +10,7 @@ import org.icar.musa.core.context.StateOfWorld;
 import org.icar.musa.core.fol_reasoner.EntailOperator;
 import org.icar.musa.core.fol_reasoner.FOLCondition;
 import org.icar.musa.core.runtime_entity.AssumptionSet;
-import org.icar.musa.persistence.entity.DomainAssumption;
+import org.icar.musa.utils.persistence.entity.DomainAssumption;
 
 public class PredicateNode extends HierarchyNode {
 	private Condition cond;

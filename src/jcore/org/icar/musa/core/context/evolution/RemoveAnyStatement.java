@@ -4,8 +4,8 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.icar.musa.agent_communication.translator.ExtDLPHead;
 import org.icar.musa.core.context.StateOfWorld;
+import org.icar.musa.utils.agent_communication.translator.ExtDLPHead;
 
 import net.sf.tweety.lp.asp.syntax.DLPPredicate;
 

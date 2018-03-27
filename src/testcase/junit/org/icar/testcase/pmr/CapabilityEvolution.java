@@ -6,17 +6,17 @@ import java.util.ArrayList;
 
 import org.icar.ltlpetrinet.hierarchical_model.NetHierarchy;
 import org.icar.ltlpetrinet.hierarchical_model.NetHierarchyBuilder;
+import org.icar.musa.applications.monitoring_workflow.WakeUp;
 import org.icar.musa.core.Requirements;
 import org.icar.musa.core.context.StateOfWorld;
 import org.icar.musa.core.runtime_entity.AbstractCapability;
 import org.icar.musa.core.runtime_entity.AssumptionSet;
-import org.icar.musa.domain_app.monitoring_workflow.WakeUp;
-import org.icar.musa.exception.ProblemDefinitionException;
 import org.icar.musa.pmr.problem_exploration.ProblemExploration;
 import org.icar.musa.pmr.problem_exploration.ProblemSpecification;
 import org.icar.musa.pmr.problem_exploration.StateNode;
 import org.icar.musa.pmr.problem_exploration.WTS;
 import org.icar.musa.pmr.problem_exploration.WTSExpansion;
+import org.icar.musa.utils.exception.ProblemDefinitionException;
 import org.icar.specification.LTLgoal.model.LTLGoal;
 import org.junit.Before;
 import org.junit.Test;
@@ -50,7 +50,7 @@ public class CapabilityEvolution {
 		LTLGoal mygoal = (LTLGoal) ps_WU.getGoal_specification();
 		NetHierarchyBuilder builder = new NetHierarchyBuilder();
 		NetHierarchy nets = builder.build(mygoal);
-		WTS wts = new WTS(root, nets);
+		WTS wts = new WTS(root);
 
 		pe = new ProblemExploration(ps_WU, allCapWU,"myagent");	
 		

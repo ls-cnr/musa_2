@@ -2,10 +2,10 @@ package org.icar.testcase;
 
 import static org.junit.Assert.*;
 
-import org.icar.musa.agent_communication.translator.ExtDLPHead;
 import org.icar.musa.core.context.StateOfWorld;
 import org.icar.musa.core.context.evolution.AddStatement;
 import org.icar.musa.core.context.evolution.RemoveAnyStatement;
+import org.icar.musa.utils.agent_communication.translator.ExtDLPHead;
 import org.junit.Test;
 
 import net.sf.tweety.logics.commons.syntax.Constant;
@@ -35,7 +35,7 @@ public class RemoveAnyPredicate_test {
 
 		} catch (ParseException e) {
 			e.printStackTrace();
-		} catch (org.icar.musa.exception.NotAllowedInAStateOfWorld e) {
+		} catch (org.icar.musa.utils.exception.NotAllowedInAStateOfWorld e) {
 			e.printStackTrace();
 		}
 	}

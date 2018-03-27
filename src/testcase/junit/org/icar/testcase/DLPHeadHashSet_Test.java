@@ -37,7 +37,7 @@ public class DLPHeadHashSet_Test {
 		catch (ParseException e) {
 			e.printStackTrace();
 		} 
-		catch (org.icar.musa.exception.NotAllowedInAStateOfWorld e) {
+		catch (org.icar.musa.utils.exception.NotAllowedInAStateOfWorld e) {
 			e.printStackTrace();
 		}
 	}

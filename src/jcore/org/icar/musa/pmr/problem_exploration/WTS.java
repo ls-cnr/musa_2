@@ -4,11 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 
-import org.icar.ltlpetrinet.hierarchical_model.NetHierarchy;
-import org.icar.musa.proactive_means_end_reasoning.wts.EvolutionEdge;
-import org.icar.musa.proactive_means_end_reasoning.wts.NormalEdge;
-import org.icar.musa.proactive_means_end_reasoning.wts.OPNode;
-import org.icar.musa.proactive_means_end_reasoning.wts.WorldNode;
 import org.jgrapht.graph.DirectedMultigraph;
 
 public class WTS extends DirectedMultigraph<WTSNode, WTSEdge> {

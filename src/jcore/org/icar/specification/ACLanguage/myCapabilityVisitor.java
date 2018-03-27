@@ -2,10 +2,10 @@ package org.icar.specification.ACLanguage;
 
 import java.util.Collection;
 
-import org.icar.musa.agent_communication.translator.ExtDLPHead;
 import org.icar.musa.core.context.evolution.AddStatement;
 import org.icar.musa.core.context.evolution.RemoveAnyStatement;
 import org.icar.musa.core.context.evolution.RemoveStatement;
+import org.icar.musa.utils.agent_communication.translator.ExtDLPHead;
 import org.icar.specification.ACLanguage.capabilityParser.AtomContext;
 import org.icar.specification.ACLanguage.capabilityParser.EvolutionContext;
 import org.icar.specification.ACLanguage.capabilityParser.MyAddActionContext;

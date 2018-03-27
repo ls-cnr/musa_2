@@ -2,12 +2,12 @@ package org.icar.testcase;
 
 import static org.junit.Assert.*;
 
+import org.icar.musa.applications.spsreconfiguration.SPSReconfigurationFailure2;
 import org.icar.musa.core.context.StateOfWorld;
 import org.icar.musa.core.fol_reasoner.EntailOperator;
 import org.icar.musa.core.fol_reasoner.FOLCondition;
 import org.icar.musa.core.runtime_entity.AssumptionSet;
-import org.icar.musa.domain_app.spsreconfiguration.SPSReconfigurationFailure2;
-import org.icar.musa.exception.NotAllowedInAStateOfWorld;
+import org.icar.musa.utils.exception.NotAllowedInAStateOfWorld;
 import org.junit.Test;
 
 import net.sf.tweety.logics.commons.syntax.Constant;

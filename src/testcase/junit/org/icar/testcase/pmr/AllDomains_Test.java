@@ -4,20 +4,20 @@ import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 
+import org.icar.musa.applications.monitoring_workflow.WakeUp;
+import org.icar.musa.applications.spsreconfiguration.SPSReconfigurationEasy;
+import org.icar.musa.applications.spsreconfiguration.SPSReconfigurationFailure;
+import org.icar.musa.applications.spsreconfiguration.SPSReconfigurationFailure2;
+import org.icar.musa.applications.spsreconfiguration.SPSReconfigurationFull;
 import org.icar.musa.core.Requirements;
 import org.icar.musa.core.runtime_entity.AbstractCapability;
 import org.icar.musa.core.runtime_entity.AssumptionSet;
-import org.icar.musa.domain_app.monitoring_workflow.WakeUp;
-import org.icar.musa.domain_app.spsreconfiguration.SPSReconfigurationEasy;
-import org.icar.musa.domain_app.spsreconfiguration.SPSReconfigurationFailure;
-import org.icar.musa.domain_app.spsreconfiguration.SPSReconfigurationFailure2;
-import org.icar.musa.domain_app.spsreconfiguration.SPSReconfigurationFull;
-import org.icar.musa.exception.ProblemDefinitionException;
 import org.icar.musa.pmr.problem_exploration.ProblemSpecification;
 import org.icar.musa.pmr.problem_exploration.WTS;
 import org.icar.musa.pmr.problem_exploration.WTSEventLogger;
 import org.icar.musa.pmr.problem_exploration.WTSLocalBuilder;
 import org.icar.musa.pmr.solution.AWBuilder;
+import org.icar.musa.utils.exception.ProblemDefinitionException;
 import org.junit.Ignore;
 import org.junit.Test;
 

@@ -4,18 +4,15 @@ package selfconf;
 
 import java.util.ArrayList;
 
-import org.icar.musa.agent_communication.translator.JasonExpansionNode;
-import org.icar.musa.agent_communication.translator.JasonExtNode;
-import org.icar.musa.agent_communication.translator.TranslateError;
+import org.icar.musa.applications.spsreconfiguration.SPSReconfigurationEasy;
 import org.icar.musa.core.runtime_entity.AbstractCapability;
 import org.icar.musa.core.runtime_entity.AssumptionSet;
-import org.icar.musa.domain_app.spsreconfiguration.SPSReconfigurationEasy;
-import org.icar.musa.exception.ProblemDefinitionException;
 import org.icar.musa.pmr.problem_exploration.ProblemSpecification;
-import org.icar.musa.proactive_means_end_reasoning.ExtendedNode;
-import org.icar.musa.proactive_means_end_reasoning.GraphExpansion;
-import org.icar.musa.proactive_means_end_reasoning.ProblemExploration;
-import org.icar.musa.proactive_means_end_reasoning.wts.WorldNode;
+
+import org.icar.musa.utils.agent_communication.translator.JasonExpansionNode;
+import org.icar.musa.utils.agent_communication.translator.JasonExtNode;
+import org.icar.musa.utils.agent_communication.translator.TranslateError;
+import org.icar.musa.utils.exception.ProblemDefinitionException;
 import org.icar.specification.LTLgoal.model.LTLGoal;
 
 import cartago.Artifact;

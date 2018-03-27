@@ -3,7 +3,7 @@ package org.icar.musa.core.runtime_entity;
 import java.util.HashSet;
 import java.util.Iterator;
 
-import org.icar.musa.exception.*;
+import org.icar.musa.utils.exception.*;
 
 import net.sf.tweety.lp.asp.parser.ASPParser;
 import net.sf.tweety.lp.asp.parser.ParseException;

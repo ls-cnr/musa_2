@@ -11,7 +11,7 @@ import org.icar.ltlpetrinet.supervisor.TokenConf;
 import org.icar.musa.core.context.StateOfWorld;
 import org.icar.musa.core.fol_reasoner.FOLCondition;
 import org.icar.musa.core.runtime_entity.AssumptionSet;
-import org.icar.musa.exception.NotAllowedInAStateOfWorld;
+import org.icar.musa.utils.exception.NotAllowedInAStateOfWorld;
 import org.junit.Before;
 import org.junit.Test;
 

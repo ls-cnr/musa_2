@@ -61,7 +61,7 @@ public class WTS_test {
 			initial_state.addFact_asString("open(i4).");
 		} catch (ParseException e) {
 			e.printStackTrace();
-		} catch (org.icar.musa.exception.NotAllowedInAStateOfWorld e) {
+		} catch (org.icar.musa.utils.exception.NotAllowedInAStateOfWorld e) {
 			e.printStackTrace();
 		}
 
@@ -72,7 +72,7 @@ public class WTS_test {
 			second_state.addFact_asString("open(i2).");
 		} catch (ParseException e) {
 			e.printStackTrace();
-		} catch (org.icar.musa.exception.NotAllowedInAStateOfWorld e) {
+		} catch (org.icar.musa.utils.exception.NotAllowedInAStateOfWorld e) {
 			e.printStackTrace();
 		}
 
@@ -83,7 +83,7 @@ public class WTS_test {
 			third_state.addFact_asString("closed(i2).");
 		} catch (ParseException e) {
 			e.printStackTrace();
-		} catch (org.icar.musa.exception.NotAllowedInAStateOfWorld e) {
+		} catch (org.icar.musa.utils.exception.NotAllowedInAStateOfWorld e) {
 			e.printStackTrace();
 		}
 }
@@ -91,7 +91,7 @@ public class WTS_test {
 	@Test
 	public void create_WTS_by_hand() {
 		StateNode node = new StateNode(initial_state);
-		WTS wts = new WTS(node,net_hierarchy);
+		WTS wts = new WTS(node);
 		assertTrue(wts.vertexSet().size()==1);
 		
 		WTSNode again_initial_node = new StateNode(initial_state);
@@ -117,7 +117,7 @@ public class WTS_test {
 		StateNode node = new StateNode(initial_state);
 		StateNode second_node = new StateNode(second_state);
 		
-		WTSExpansion exp = new WTSExpansion("cap1", node, net_hierarchy);
+		WTSExpansion exp = new WTSExpansion("cap1", node);
 		exp.safelyAddGenericNode(second_node);
 		CapabilityEdge edge1 = new CapabilityEdge();
 		edge1.setCapabilityName("cap1");
@@ -126,7 +126,7 @@ public class WTS_test {
 		exp.setScore(5);		
 		assertTrue(exp.getEvolutionNodes().size()==1);
 		
-		WTSExpansion exp2 = new WTSExpansion("cap1", node, net_hierarchy);
+		WTSExpansion exp2 = new WTSExpansion("cap1", node);
 		exp2.safelyAddGenericNode(second_node);
 		CapabilityEdge edge2 = new CapabilityEdge();
 		edge2.setCapabilityName("cap1");
@@ -143,12 +143,12 @@ public class WTS_test {
 	@Test
 	public void wts_update_via_expansion() {
 		StateNode node = new StateNode(initial_state);
-		WTS wts = new WTS(node,net_hierarchy);
+		WTS wts = new WTS(node);
 
 		StateNode first_node = new StateNode(initial_state);
 		StateNode second_node = new StateNode(second_state);
 		
-		WTSExpansion exp = new WTSExpansion("cap1", first_node, net_hierarchy);
+		WTSExpansion exp = new WTSExpansion("cap1", first_node);
 		exp.safelyAddGenericNode(second_node);
 		CapabilityEdge edge1 = new CapabilityEdge();
 		edge1.setCapabilityName("cap1");
@@ -164,7 +164,7 @@ public class WTS_test {
 	@Test
 	public void wts_update_via_multi_expansion() {
 		StateNode node = new StateNode(initial_state);
-		WTS wts = new WTS(node,net_hierarchy);
+		WTS wts = new WTS(node);
 
 		StateNode first_node = new StateNode(initial_state);
 		XorNode xornode = new XorNode();
@@ -172,7 +172,7 @@ public class WTS_test {
 		StateNode third_node = new StateNode(third_state);
 		
 		
-		WTSExpansion exp = new WTSExpansion("cap1", first_node, net_hierarchy);
+		WTSExpansion exp = new WTSExpansion("cap1", first_node);
 		exp.setMulti_expansion(true);
 
 		exp.safelyAddGenericNode(xornode);

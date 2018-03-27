@@ -89,7 +89,7 @@ public class ProvaSPSDomain_Test {
 		
 		} catch (ParseException e) {
 			e.printStackTrace();
-		} catch (org.icar.musa.exception.NotAllowedInAnAssumptionSet e) {
+		} catch (org.icar.musa.utils.exception.NotAllowedInAnAssumptionSet e) {
 			e.printStackTrace();
 		}
 		
@@ -118,7 +118,7 @@ public class ProvaSPSDomain_Test {
 			  wStart.addFact_asString("closed(i17).");
 			} catch (ParseException e) {
 			  e.printStackTrace();
-			} catch (org.icar.musa.exception.NotAllowedInAStateOfWorld e) {
+			} catch (org.icar.musa.utils.exception.NotAllowedInAStateOfWorld e) {
 			  e.printStackTrace();
 			}
 

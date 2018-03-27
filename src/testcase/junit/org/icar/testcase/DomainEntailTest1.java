@@ -61,7 +61,7 @@ public class DomainEntailTest1 {
 		catch (ParseException e) {
 			e.printStackTrace();
 		} 
-		catch (org.icar.musa.exception.NotAllowedInAStateOfWorld e) {
+		catch (org.icar.musa.utils.exception.NotAllowedInAStateOfWorld e) {
 			e.printStackTrace();
 		}
 	
@@ -79,7 +79,7 @@ public class DomainEntailTest1 {
 		catch (ParseException e) {
 			e.printStackTrace();
 		} 
-		catch (org.icar.musa.exception.NotAllowedInAnAssumptionSet e) {
+		catch (org.icar.musa.utils.exception.NotAllowedInAnAssumptionSet e) {
 			e.printStackTrace();
 		}
 		

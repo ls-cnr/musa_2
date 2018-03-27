@@ -1,7 +1,7 @@
 package org.icar.example;
 
-import org.icar.musa.agent_communication.translator.ExtDLPHead;
 import org.icar.musa.core.context.StateOfWorld;
+import org.icar.musa.utils.agent_communication.translator.ExtDLPHead;
 
 import net.sf.tweety.logics.commons.syntax.interfaces.Term;
 import net.sf.tweety.lp.asp.parser.ParseException;
@@ -16,7 +16,7 @@ public class StateOfWorldExample {
 
 		} catch (ParseException e) {
 			e.printStackTrace();
-		} catch (org.icar.musa.exception.NotAllowedInAStateOfWorld e) {
+		} catch (org.icar.musa.utils.exception.NotAllowedInAStateOfWorld e) {
 			e.printStackTrace();
 		}
 		for (ExtDLPHead f : w3.getFacts()) {
