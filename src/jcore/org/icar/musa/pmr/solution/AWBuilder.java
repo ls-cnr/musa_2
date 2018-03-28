@@ -260,7 +260,7 @@ public class AWBuilder implements WTSEventListener {
 			System.out.println("final state: "+asset.getShortStateRepresentation(w));
 			long long_score = asset.evaluate_state(w);
 			System.out.println("l score: "+long_score);
-			System.out.println("score: "+score);
+			//System.out.println("score: "+score);
 			asset.log_state(assumptions,w);
 		}
 

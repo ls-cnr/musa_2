@@ -4,9 +4,10 @@ import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 
+import org.icar.musa.applications.Scenario;
 import org.icar.musa.applications.monitoring_workflow.WakeUp;
+import org.icar.musa.applications.spsreconfiguration.SPSReconfigCircuito3;
 import org.icar.musa.applications.spsreconfiguration.SPSReconfigurationEasy;
-import org.icar.musa.applications.spsreconfiguration.SPSReconfigurationFailure;
 import org.icar.musa.applications.spsreconfiguration.SPSReconfigurationFailure2;
 import org.icar.musa.applications.spsreconfiguration.SPSReconfigurationFull;
 import org.icar.musa.core.Requirements;
@@ -63,9 +64,30 @@ public class AllDomains_Test {
 		aw_builder.log_solutions();
 	}
 
+	@Ignore
 	@Test
 	public void explore_SPS_full_with_failure() throws ProblemDefinitionException {
 		SPSReconfigurationFailure2 s = new SPSReconfigurationFailure2();
+		AssumptionSet assumptionsSPS = s.getDomainAssumptions();
+		Requirements requirementsSPS = s.getRequirements();
+		ArrayList<AbstractCapability> allCapSPS = s.getCapabilitySet();
+		ProblemSpecification ps_SPS = new ProblemSpecification(assumptionsSPS, requirementsSPS, s.getQualityAsset());
+		
+		WTSLocalBuilder wts_builder = new WTSLocalBuilder(ps_SPS, allCapSPS);
+		//WTSEventLogger logger = new WTSEventLogger();
+		AWBuilder aw_builder = new AWBuilder(s.getQualityAsset(),assumptionsSPS);
+		//wts_builder.register(logger);
+		wts_builder.register(aw_builder);
+		
+		wts_builder.build_solution_space(s.getInitialState());
+		
+		aw_builder.log_solutions(assumptionsSPS, s.getQualityAsset());
+		aw_builder.log_partial_solutions(assumptionsSPS, s.getQualityAsset());
+	}
+
+	@Test
+	public void explore_SPS_circuito3() throws ProblemDefinitionException {
+		Scenario s = new SPSReconfigCircuito3();
 		AssumptionSet assumptionsSPS = s.getDomainAssumptions();
 		Requirements requirementsSPS = s.getRequirements();
 		ArrayList<AbstractCapability> allCapSPS = s.getCapabilitySet();
