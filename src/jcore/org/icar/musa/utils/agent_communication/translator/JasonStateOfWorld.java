@@ -2,6 +2,7 @@ package org.icar.musa.utils.agent_communication.translator;
 
 import org.icar.musa.core.context.StateOfWorld;
 import org.icar.musa.utils.exception.NotAllowedInAStateOfWorld;
+import org.icar.musa.utils.exception.TranslateError;
 
 import jason.asSyntax.ListTermImpl;
 import jason.asSyntax.Structure;

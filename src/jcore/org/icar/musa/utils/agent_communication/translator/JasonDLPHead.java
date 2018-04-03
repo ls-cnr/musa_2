@@ -2,6 +2,8 @@ package org.icar.musa.utils.agent_communication.translator;
 
 import java.util.Set;
 
+import org.icar.musa.utils.exception.TranslateError;
+
 import jason.asSyntax.Structure;
 import jason.asSyntax.Term;
 import net.sf.tweety.logics.commons.syntax.Constant;

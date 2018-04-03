@@ -11,11 +11,14 @@ import org.icar.ltlpetrinet.hierarchical_model.NetHierarchyBuilder;
 import org.icar.ltlpetrinet.supervisor.TokenConf;
 import org.icar.musa.applications.spsreconfiguration.SPSReconfigurationEasy;
 import org.icar.musa.core.context.StateOfWorld;
+import org.icar.musa.pmr.problem_exploration.StateNode;
+import org.icar.musa.pmr.problem_exploration.WTSExpansion;
+import org.icar.musa.pmr.problem_exploration.WTSNode;
 import org.icar.musa.utils.agent_communication.auction.Bid;
 import org.icar.musa.utils.agent_communication.translator.JasonExpansionNode;
 import org.icar.musa.utils.agent_communication.translator.JasonExtNode;
 import org.icar.musa.utils.agent_communication.translator.JasonStateOfWorld;
-import org.icar.musa.utils.agent_communication.translator.TranslateError;
+import org.icar.musa.utils.exception.TranslateError;
 import org.icar.specification.LTLgoal.LTLGoalModelBuilder;
 import org.icar.specification.LTLgoal.model.GoalModel;
 import org.icar.specification.LTLgoal.model.LTLGoal;
@@ -62,8 +65,13 @@ public class AccessManagerArtifact extends Artifact {
 			NetHierarchy nets = builder.build(goal);
 			TokenConf startingTokens = nets.getInitialTokenConfiguration();
 			
-			ExtendedNode enode = new ExtendedNode(w, startingTokens, 0, false, false);
-			enode.setExit(false);
+			StateNode enode = new StateNode(w);
+			enode.setTokens(startingTokens);
+			enode.setGoal_satisfaction_degree(0);
+			enode.setStartNode(true);
+			enode.setExitNode(false);
+			enode.setForbidden(false);
+
 			Term term=JasonExtNode.object_to_term(enode);
 			signal("announcement_new_node",spec_id_string,term);
 			
@@ -129,7 +137,7 @@ public class AccessManagerArtifact extends Artifact {
 	/* interface: GRANT ACCESS */
 	@OPERATION
 	void apply_changes(String expansion) {
-		GraphExpansion exp;
+		WTSExpansion exp = null;
 		try {
 			
 			//System.out.println("EXP:"+expansion);
@@ -137,7 +145,7 @@ public class AccessManagerArtifact extends Artifact {
 			
 			execLinkedOp("mygraph","expand",expansion, spec_id_string);
 			exp = JasonExpansionNode.term_string_to_object(expansion);
-			for(ExtendedNode temp : exp.getDestination()){
+			for(WTSNode temp : exp.getEvolutionNodes()){
 				//System.out.println("Auction: added "+exp.getSource().getWorldState().toSortedString()+"->"+exp.getCapability()+"->"+temp.getWorldState().toSortedString());
 				Term term=JasonExtNode.object_to_term(temp);
 				signal("announcement_new_node",spec_id_string,term);

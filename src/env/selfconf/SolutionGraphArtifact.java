@@ -11,7 +11,7 @@ import org.icar.musa.pmr.problem_exploration.WTSExpansion;
 import org.icar.musa.utils.agent_communication.translator.JasonExpansionNode;
 import org.icar.musa.utils.agent_communication.translator.JasonExtNode;
 import org.icar.musa.utils.agent_communication.translator.JasonStateOfWorld;
-import org.icar.musa.utils.agent_communication.translator.TranslateError;
+import org.icar.musa.utils.exception.TranslateError;
 import org.icar.specification.LTLgoal.model.LTLGoal;
 
 import cartago.*;

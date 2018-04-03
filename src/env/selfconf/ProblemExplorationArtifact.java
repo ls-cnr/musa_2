@@ -7,12 +7,15 @@ import java.util.ArrayList;
 import org.icar.musa.applications.spsreconfiguration.SPSReconfigurationEasy;
 import org.icar.musa.core.runtime_entity.AbstractCapability;
 import org.icar.musa.core.runtime_entity.AssumptionSet;
+import org.icar.musa.pmr.problem_exploration.ProblemExploration;
 import org.icar.musa.pmr.problem_exploration.ProblemSpecification;
-
+import org.icar.musa.pmr.problem_exploration.StateNode;
+import org.icar.musa.pmr.problem_exploration.WTSExpansion;
+import org.icar.musa.pmr.problem_exploration.WTSNode;
 import org.icar.musa.utils.agent_communication.translator.JasonExpansionNode;
 import org.icar.musa.utils.agent_communication.translator.JasonExtNode;
-import org.icar.musa.utils.agent_communication.translator.TranslateError;
 import org.icar.musa.utils.exception.ProblemDefinitionException;
+import org.icar.musa.utils.exception.TranslateError;
 import org.icar.specification.LTLgoal.model.LTLGoal;
 
 import cartago.Artifact;
@@ -61,12 +64,12 @@ public class ProblemExplorationArtifact extends Artifact {
 	}
 	
 	@OPERATION
-	public void addToVisit(String term_string) {
-		ExtendedNode node;
+	public void addToVisit(String term_string) {		
+		StateNode node;
 		try {
-			node = JasonExtNode.term_string_to_object(term_string);
+			node = (StateNode) JasonExtNode.term_string_to_object(term_string);
 			if (!node.isExitNode()) {
-				pe.addToVisit(new WorldNode(node.getWorldState()), node.getTokens(), node.getScore());
+				pe.add_new_node(node);
 			}
 		} catch (TranslateError t) {
 			return;
@@ -75,30 +78,30 @@ public class ProblemExplorationArtifact extends Artifact {
 	
 	@OPERATION
 	void expand_local_graph() {
-		pe.expandNode();
+		pe.generate_expansion();
 	}
 	
 	@OPERATION
 	void getMostPromisingExpansion(OpFeedbackParam<Term> expansion) {
-		GraphExpansion exp = pe.getHighestExpansion();
+		WTSExpansion exp = pe.getHighestExpansion();
 		expansion.set( JasonExpansionNode.object_to_term(exp) );
 	}
 	
 	@OPERATION
 	void removeWinnerNode(String node){
-		GraphExpansion exp = null;
-		try{
+		WTSExpansion exp;
+		try {
 			exp = JasonExpansionNode.term_string_to_object(node);
-			//System.out.println("rimuovo: "+node);
-		}catch(TranslateError t){}
+			this.pe.pickExpansion(exp);
+		} catch (TranslateError e) {
+			e.printStackTrace();
+		}
 		
-		this.pe.removeExpandedNode(exp);
 	}
 	
 	@OPERATION
 	void log_current_state() {
-		//if (pe.isTerminated()==false)
-			pe.log_current_state();
+		pe.log_current_state();
 	}
 	
 }

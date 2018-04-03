@@ -5,6 +5,7 @@ import org.icar.musa.core.context.StateOfWorld;
 import org.icar.musa.pmr.problem_exploration.StateNode;
 import org.icar.musa.pmr.problem_exploration.WTSNode;
 import org.icar.musa.pmr.problem_exploration.XorNode;
+import org.icar.musa.utils.exception.TranslateError;
 
 import jason.asSyntax.NumberTermImpl;
 import jason.asSyntax.StringTermImpl;

@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.icar.ltlpetrinet.supervisor.Token;
 import org.icar.ltlpetrinet.supervisor.TokenConf;
+import org.icar.musa.utils.exception.TranslateError;
 
 import jason.asSyntax.ListTermImpl;
 import jason.asSyntax.StringTermImpl;
