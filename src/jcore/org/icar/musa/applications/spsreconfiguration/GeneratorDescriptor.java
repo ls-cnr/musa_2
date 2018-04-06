@@ -28,6 +28,10 @@ public class GeneratorDescriptor {
 		this.name = name;
 	}
 
+	public int getSourceId() {
+		return source;
+	}
+
 	public String getSourceName() {
 		return "n"+source;
 	}

@@ -25,6 +25,10 @@ public class LoadDescriptor {
 		return "l"+id;
 	}
 
+	public int getSourceId() {
+		return source;
+	}
+
 	public String getSourceName() {
 		return "n"+source;
 	}

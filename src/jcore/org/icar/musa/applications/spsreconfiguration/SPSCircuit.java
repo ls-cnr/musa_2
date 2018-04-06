@@ -3,10 +3,17 @@ package org.icar.musa.applications.spsreconfiguration;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.icar.musa.core.Condition;
 import org.icar.musa.core.context.StateOfWorld;
+import org.icar.musa.core.context.evolution.AddStatement;
+import org.icar.musa.core.context.evolution.EvolutionScenario;
+import org.icar.musa.core.context.evolution.RemoveStatement;
 import org.icar.musa.core.fol_reasoner.EntailOperator;
 import org.icar.musa.core.fol_reasoner.FOLCondition;
+import org.icar.musa.core.runtime_entity.AbstractCapability;
 import org.icar.musa.core.runtime_entity.AssumptionSet;
+import org.icar.musa.core.runtime_entity.CapabilityEvolutionScenario;
+import org.icar.musa.utils.agent_communication.translator.ExtDLPHead;
 import org.icar.musa.utils.exception.NotAllowedInAStateOfWorld;
 import org.icar.musa.utils.exception.NotAllowedInAnAssumptionSet;
 
@@ -28,6 +35,119 @@ public class SPSCircuit {
 		failures = new LinkedList<FailureDescription>();
 	}
 	
+	public void log_graph() {
+		System.out.println("digraph G {");
+
+		for (ConnDescriptor conn : connections) {
+			System.out.print("\""+conn.getSource()+"\"");
+			System.out.print("->");
+			System.out.print("\""+conn.getDest()+"\"");
+			if (conn.getSwitcher()!=null)
+				System.out.println("[label=\""+ conn.getSwitcher()+ "\"]");
+			else
+				System.out.println("[label=\""+ conn.getFailureName()+ "\"]");	
+		}
+		
+		for (LoadDescriptor load : loads) {
+			System.out.print("\""+load.getName()+"\"");
+			if (load.getType()==LoadDescriptor.VITAL)
+				System.out.println("[shape=invtriangle,style=bold,color=black];");
+			else if (load.getType()==LoadDescriptor.SEMIVITAL)
+				System.out.println("[shape=invtriangle,style=bold,color=blue];");
+			else
+				System.out.println("[shape=invtriangle,style=bold,color=yellow];");
+			
+			System.out.print("\""+load.getSourceId()+"\"");
+			System.out.print("->");
+			System.out.print("\""+load.getName()+"\"");
+			System.out.println("[label=\""+ load.getSwitcher()+ "\"]");
+		}
+		
+		for (GeneratorDescriptor gen : generators) {
+			System.out.print("\""+gen.getName()+"\"");
+			System.out.println("[shape=box,style=bold,color=black];");
+			
+			System.out.print("\""+gen.getSourceId()+"\"");
+			System.out.print("->");
+			System.out.print("\""+gen.getName()+"\"");
+		}
+		
+		System.out.println("}");		
+	}
+
+	public void log_current_state_graph(AssumptionSet assumptions,StateOfWorld w) {
+		
+		FOLCondition[] load_conditions = getLoadConditions();
+		FOLCondition[] gen_conditions = getGenConditions();
+		FOLCondition[] node_conditions = getNodeConditions();
+		
+		EntailOperator entail = EntailOperator.getInstance();
+		boolean[] noderesults = entail.entailsCondition(w, assumptions, node_conditions);
+		boolean[] results = entail.entailsCondition(w, assumptions, load_conditions);
+		boolean[] genresults = entail.entailsCondition(w, assumptions, gen_conditions);
+		
+		System.out.println("digraph G {");
+		
+		for (int i=0; i<node_conditions.length; i++) {
+			System.out.print("\""+(i+1)+"\"");
+			if (noderesults[i]==true)
+				System.out.println("[color=black]");
+			if (noderesults[i]==false) 
+				System.out.println("[color=red]");
+		}
+
+		for (ConnDescriptor conn : connections) {
+			System.out.print("\""+conn.getSource()+"\"");
+			System.out.print("->");
+			System.out.print("\""+conn.getDest()+"\"");
+			if (conn.getSwitcher()!=null)
+				System.out.println("[label=\""+ conn.getSwitcher()+ "\"]");
+			else
+				System.out.println("[label=\""+ conn.getFailureName()+ "\"]");	
+		}
+		
+		int i_load=0;
+		for (LoadDescriptor load : loads) {
+			
+			System.out.print("\""+load.getName()+"\"");
+//			if (load.getType()==LoadDescriptor.VITAL)
+//				System.out.println("[shape=invtriangle,style=bold,color=black];");
+//			else if (load.getType()==LoadDescriptor.SEMIVITAL)
+//				System.out.println("[shape=invtriangle,style=bold,color=blue];");
+//			else
+//				System.out.println("[shape=invtriangle,style=bold,color=yellow];");
+			if (results[i_load]==true) 
+				System.out.println("[shape=invtriangle,color=black];");
+			else 
+				System.out.println("[shape=invtriangle,color=red];");
+			
+			System.out.print("\""+load.getSourceId()+"\"");
+			System.out.print("->");
+			System.out.print("\""+load.getName()+"\"");
+			System.out.println("[label=\""+ load.getSwitcher()+ "\"]");
+			
+			i_load++;
+		}
+		
+		int i_gen=0;
+		for (GeneratorDescriptor gen : generators) {
+			
+			System.out.print("\""+gen.getName()+"\"");
+			if (genresults[i_gen]==true)
+				System.out.println("[shape=box,style=bold,color=black];");
+			else 
+				System.out.println("[shape=box,style=bold,color=red];");
+			
+			System.out.print("\""+gen.getSourceId()+"\"");
+			System.out.print("->");
+			System.out.print("\""+gen.getName()+"\"");
+			
+			i_gen++;
+		}
+		
+		System.out.println("}");		
+	}
+
 	public void add_connection(int node1, int node2) {
 		connections.add(new ConnDescriptor(node1,node2));
 	}
@@ -262,4 +382,128 @@ public class SPSCircuit {
 //			if (results[i]==false) System.out.println("load "+(i+1)+" is off");
 //		}
 	}
+	
+	public AbstractCapability generate_switch_on_generator(String name) {
+		/* switch_ON_main_generator_cap
+		 * PRE: off(main)
+		 * SCENARIO mainOn: remove {off(main)}, add {on(main)}
+		*/
+		Condition main_on_pre = new FOLCondition(new DLPAtom("off", new Constant(name)));
+		List<EvolutionScenario> main_on_evo = new LinkedList<>();
+		CapabilityEvolutionScenario main_on_evo1 = new CapabilityEvolutionScenario("gen_on");
+		main_on_evo1.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("on", new Constant(name))) ) );
+		main_on_evo1.addOperator(new RemoveStatement(new ExtDLPHead(new DLPAtom("off", new Constant(name)))));
+		main_on_evo.add(main_on_evo1);		
+		return new AbstractCapability("switch_ON_"+name+"_generator_cap", main_on_evo, main_on_pre, null);
+	}
+
+	public AbstractCapability generate_switch_off_generator(String name) {
+		/* switch_OFF_main_generator_cap
+		 * PRE: on(main)
+		 * SCENARIO mainOff: remove {on(main)}, add {off(main)}
+		*/
+		Condition main_on_pre = new FOLCondition(new DLPAtom("on", new Constant(name)));
+		List<EvolutionScenario> main_on_evo = new LinkedList<>();
+		CapabilityEvolutionScenario main_on_evo1 = new CapabilityEvolutionScenario("gen_off");
+		main_on_evo1.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("off", new Constant(name))) ) );
+		main_on_evo1.addOperator(new RemoveStatement(new ExtDLPHead(new DLPAtom("on", new Constant(name)))));
+		main_on_evo.add(main_on_evo1);		
+		return new AbstractCapability("switch_OFF_"+name+"_generator_cap", main_on_evo, main_on_pre, null);
+	}
+	
+	public AbstractCapability generate_switch_on_aux2() {
+		/* switch_ON_main_generator_cap
+		 * PRE: off(main)
+		 * SCENARIO mainOn: remove {off(main)}, add {on(main)}
+		*/
+		Condition main_on_pre = new FOLCondition(new DLPAtom("off", new Constant("aux2")));
+		List<EvolutionScenario> main_on_evo = new LinkedList<>();
+		CapabilityEvolutionScenario main_on_evo1 = new CapabilityEvolutionScenario("gen_on");
+		main_on_evo1.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("on", new Constant("aux2"))) ) );
+		main_on_evo1.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("closed", new Constant("sw15"))) ) );
+		main_on_evo1.addOperator(new RemoveStatement(new ExtDLPHead(new DLPAtom("off", new Constant("aux2")))));
+		main_on_evo1.addOperator(new RemoveStatement(new ExtDLPHead(new DLPAtom("open", new Constant("sw15")))));
+		main_on_evo.add(main_on_evo1);		
+		return new AbstractCapability("switch_ON_aux2_and_sw15_generator_cap", main_on_evo, main_on_pre, null);
+	}
+
+	public AbstractCapability generate_switch_on_aux2_alt() {
+		/* switch_ON_main_generator_cap
+		 * PRE: off(main)
+		 * SCENARIO mainOn: remove {off(main)}, add {on(main)}
+		*/
+		Condition main_on_pre = new FOLCondition(new DLPAtom("off", new Constant("aux2")));
+		List<EvolutionScenario> main_on_evo = new LinkedList<>();
+		CapabilityEvolutionScenario main_on_evo1 = new CapabilityEvolutionScenario("gen_on");
+		main_on_evo1.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("on", new Constant("aux2"))) ) );
+		main_on_evo1.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("closed", new Constant("sw16"))) ) );
+		main_on_evo1.addOperator(new RemoveStatement(new ExtDLPHead(new DLPAtom("off", new Constant("aux2")))));
+		main_on_evo1.addOperator(new RemoveStatement(new ExtDLPHead(new DLPAtom("open", new Constant("sw16")))));
+		main_on_evo.add(main_on_evo1);		
+		return new AbstractCapability("switch_ON_aux2_and_sw16_generator_cap", main_on_evo, main_on_pre, null);
+	}
+
+	public AbstractCapability generate_switch_on_aux2_alt2() {
+		/* switch_ON_main_generator_cap
+		 * PRE: off(main)
+		 * SCENARIO mainOn: remove {off(main)}, add {on(main)}
+		*/
+		Condition main_on_pre = new FOLCondition(new DLPAtom("off", new Constant("aux2")));
+		List<EvolutionScenario> main_on_evo = new LinkedList<>();
+		CapabilityEvolutionScenario main_on_evo1 = new CapabilityEvolutionScenario("gen_on");
+		main_on_evo1.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("on", new Constant("aux2"))) ) );
+		main_on_evo1.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("closed", new Constant("sw15"))) ) );
+		main_on_evo1.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("closed", new Constant("sw16"))) ) );
+		main_on_evo1.addOperator(new RemoveStatement(new ExtDLPHead(new DLPAtom("off", new Constant("aux2")))));
+		main_on_evo1.addOperator(new RemoveStatement(new ExtDLPHead(new DLPAtom("open", new Constant("sw15")))));
+		main_on_evo1.addOperator(new RemoveStatement(new ExtDLPHead(new DLPAtom("open", new Constant("sw16")))));
+		main_on_evo.add(main_on_evo1);		
+		return new AbstractCapability("switch_ON_aux2_and_sw15_16_generator_cap", main_on_evo, main_on_pre, null);
+	}
+	
+	public AbstractCapability generate_close_capability_for_switcher(String switch_name) {
+		/* close_switch_<name>_cap
+		 * PRE: open(<name>)
+		 * SCENARIO iClosed: remove {open(<name>)}, add {closed(<name>)}
+		*/
+		Constant i_const = new Constant(switch_name);
+		Condition i_pre = new FOLCondition(new DLPAtom("open", i_const));
+		List<EvolutionScenario> main_on_evo = new LinkedList<>();
+		CapabilityEvolutionScenario i_evo_scenario = new CapabilityEvolutionScenario("iClosed");
+		i_evo_scenario.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("closed", i_const)) ) );
+		i_evo_scenario.addOperator(new RemoveStatement(new ExtDLPHead(new DLPAtom("open", i_const))));
+		main_on_evo.add(i_evo_scenario);
+		return new AbstractCapability("close_switch_"+switch_name+"_cap", main_on_evo, i_pre, null);
+	}
+
+	public AbstractCapability generate_open_capability_for_switcher(String switch_name) {
+		/* open_switch_<name>_cap
+		 * PRE: closed(<name>)
+		 * SCENARIO iOpen: remove {closed(<name>)}, add {open(<name>)}
+		*/
+		Constant i_const = new Constant(switch_name);
+		Condition i_pre = new FOLCondition(new DLPAtom("closed", i_const));
+		List<EvolutionScenario> main_on_evo = new LinkedList<>();
+		CapabilityEvolutionScenario i_evo_scenario = new CapabilityEvolutionScenario("iOpen");
+		i_evo_scenario.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("open", i_const)) ) );
+		i_evo_scenario.addOperator(new RemoveStatement(new ExtDLPHead(new DLPAtom("closed", i_const))));
+		main_on_evo.add(i_evo_scenario);
+		return new AbstractCapability("open_switch_"+switch_name+"_cap", main_on_evo, i_pre, null);
+	}
+
+	public AbstractCapability generate_capability_for_open_close(String switch_name1,String switch_name2) {
+		Constant i_const1 = new Constant(switch_name1);
+		Constant i_const2 = new Constant(switch_name2);
+		
+		Condition i_pre = new FOLCondition(new DLPAtom("closed", i_const1));
+		List<EvolutionScenario> main_on_evo = new LinkedList<>();
+		CapabilityEvolutionScenario i_evo_scenario = new CapabilityEvolutionScenario("iOpen");
+		i_evo_scenario.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("open", i_const1)) ) );
+		i_evo_scenario.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("closed", i_const2)) ) );
+		i_evo_scenario.addOperator(new RemoveStatement(new ExtDLPHead(new DLPAtom("closed", i_const1))));
+		i_evo_scenario.addOperator(new RemoveStatement(new ExtDLPHead(new DLPAtom("open", i_const2))));
+		main_on_evo.add(i_evo_scenario);
+		return new AbstractCapability("open_switch_"+switch_name1+"_close_switch_"+switch_name2+"_cap", main_on_evo, i_pre, null);
+	}
+	
 }

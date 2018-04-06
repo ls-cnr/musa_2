@@ -201,6 +201,17 @@ public class StateOfWorld {
 		return res;
 	}
 	
+	public String toExtendedString() {
+		String res = new String();
+		
+		List<String> al = new ArrayList<String>();
+		for (ExtDLPHead f : facts) {
+			res+= f.toString()+".\n" ;
+		}
+
+		return res;
+	}
+
 	/* metodo aggiunto solo per lo scenario SPSReconfigurationEasy (da rimuovere in futuro) */
 	public String toSortedString_SPSreconfig() {
 		String res = new String("[");

@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 import org.icar.musa.applications.Scenario;
 import org.icar.musa.applications.monitoring_workflow.WakeUp;
-import org.icar.musa.applications.spsreconfiguration.SPSReconfigCircuito3;
+import org.icar.musa.applications.spsreconfiguration.SPSReconfigcirc3_std_4guasti_0;
 import org.icar.musa.applications.spsreconfiguration.SPSReconfigurationEasy;
 import org.icar.musa.applications.spsreconfiguration.SPSReconfigurationFailure2;
 import org.icar.musa.applications.spsreconfiguration.SPSReconfigurationFull;
@@ -87,11 +87,17 @@ public class AllDomains_Test {
 
 	@Test
 	public void explore_SPS_circuito3() throws ProblemDefinitionException {
-		Scenario s = new SPSReconfigCircuito3();
+		Scenario s = new SPSReconfigcirc3_std_4guasti_0();
 		AssumptionSet assumptionsSPS = s.getDomainAssumptions();
 		Requirements requirementsSPS = s.getRequirements();
 		ArrayList<AbstractCapability> allCapSPS = s.getCapabilitySet();
 		ProblemSpecification ps_SPS = new ProblemSpecification(assumptionsSPS, requirementsSPS, s.getQualityAsset());
+		
+//		System.out.println("---assumptions---");
+//		System.out.println(assumptionsSPS.toString());
+//		System.out.println("---state---");
+//		System.out.println(s.getInitialState().toExtendedString());
+		
 		
 		WTSLocalBuilder wts_builder = new WTSLocalBuilder(ps_SPS, allCapSPS);
 		//WTSEventLogger logger = new WTSEventLogger();

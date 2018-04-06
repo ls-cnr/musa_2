@@ -30,10 +30,10 @@ import net.sf.tweety.logics.commons.syntax.Constant;
 import net.sf.tweety.lp.asp.parser.ParseException;
 import net.sf.tweety.lp.asp.syntax.DLPAtom;
 
-public class SPSReconfigCircuito3 implements Scenario {
+public class SPSReconfigcirc3_std_4guasti_0 implements Scenario {
 	private SPSCircuit circuito;
 	
-	public SPSReconfigCircuito3() {
+	public SPSReconfigcirc3_std_4guasti_0() {
 		super();
 		init_experiment();
 	}
@@ -55,7 +55,7 @@ public class SPSReconfigCircuito3 implements Scenario {
 		circuito.add_switcher(12, 13, "sws1",true);
 		circuito.add_connection(13, 14);
 		circuito.add_switcher(2, 15, "swaux1p");
-		circuito.add_switcher(15, 16, "swaux1s");
+		circuito.add_switcher(15, 16, "swaux1s",true);
 		circuito.add_connection(3, 17);
 		circuito.add_switcher(17, 18, "swp2");
 		circuito.add_connection(18, 19);
@@ -70,7 +70,7 @@ public class SPSReconfigCircuito3 implements Scenario {
 		circuito.add_switcher(28, 29, "sws4",true);
 		circuito.add_connection(29, 30);
 		circuito.add_switcher(6, 31, "swaux2p");
-		circuito.add_switcher(31, 32, "swaux2s");	
+		circuito.add_switcher(31, 32, "swaux2s",true);	
 		circuito.add_connection(7, 33);
 		circuito.add_switcher(33, 34, "swp5");
 		circuito.add_connection(34, 35);
@@ -110,7 +110,7 @@ public class SPSReconfigCircuito3 implements Scenario {
 		circuito.add_load(10, 1, 5, LoadDescriptor.NONVITAL, 1);
 		circuito.add_load(13, 4, 5, LoadDescriptor.NONVITAL, 1);
 		circuito.add_load(17, 5, 5, LoadDescriptor.NONVITAL, 1);
-		circuito.add_load(13, 8, 5, LoadDescriptor.NONVITAL, 1);
+		circuito.add_load(20, 8, 5, LoadDescriptor.NONVITAL, 1);
 		circuito.add_load(26, 11, 5, LoadDescriptor.NONVITAL, 1);
 		circuito.add_load(29, 14, 5, LoadDescriptor.NONVITAL, 1);
 		circuito.add_load(33, 15, 5, LoadDescriptor.NONVITAL, 1);
@@ -122,11 +122,17 @@ public class SPSReconfigCircuito3 implements Scenario {
 		circuito.add_generator(24, "mg1", 60,true);
 		circuito.add_generator(31, "aux2", 20,true);
 		circuito.add_generator(38, "mg2", 60);
+		
+		
+		circuito.add_failure(3, 4);
+		circuito.add_failure(4, 5);
+		circuito.add_failure(16, 21);
+		circuito.add_failure(32, 37);
 	}
 
 	@Override
 	public String getName() {
-		return "Circuito Logico Esteso con Failures";
+		return "circ3-std-4guasti-0";
 	}
 
 	@Override
@@ -134,10 +140,8 @@ public class SPSReconfigCircuito3 implements Scenario {
 		try {
 			return circuito.getAssumptions();
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (NotAllowedInAnAssumptionSet e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null;
@@ -174,10 +178,8 @@ public class SPSReconfigCircuito3 implements Scenario {
 		try {
 			return circuito.getInitialState();
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (NotAllowedInAStateOfWorld e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null;
@@ -188,151 +190,29 @@ public class SPSReconfigCircuito3 implements Scenario {
 		ArrayList<AbstractCapability> capabilities = new ArrayList<AbstractCapability>();
 	
 		/*generators*/
-//		capabilities.add(generate_switch_on_generator("mg1"));
-//		capabilities.add(generate_switch_off_generator("mg1"));
-		capabilities.add(generate_switch_on_generator("mg2"));
-		capabilities.add(generate_switch_off_generator("mg2"));
-		capabilities.add(generate_switch_on_generator("aux1"));
-		capabilities.add(generate_switch_off_generator("aux1"));
-		capabilities.add(generate_switch_on_generator("aux2"));
-		capabilities.add(generate_switch_off_generator("aux2"));
+//		capabilities.add(circuito.generate_switch_on_generator("mg1"));
+//		capabilities.add(circuito.generate_switch_off_generator("mg1"));
+		capabilities.add(circuito.generate_switch_on_generator("mg2"));
+		capabilities.add(circuito.generate_switch_off_generator("mg2"));
+		capabilities.add(circuito.generate_switch_on_generator("aux1"));
+		capabilities.add(circuito.generate_switch_off_generator("aux1"));
+		capabilities.add(circuito.generate_switch_on_generator("aux2"));
+		capabilities.add(circuito.generate_switch_off_generator("aux2"));
 
 		for (int i=1; i<= 24; i++) {
-			capabilities.add(generate_open_capability_for_switcher("sw_"+i));
-			capabilities.add(generate_close_capability_for_switcher("sw_"+i));
+			capabilities.add(circuito.generate_open_capability_for_switcher("sw_"+i));
+			capabilities.add(circuito.generate_close_capability_for_switcher("sw_"+i));
 		}
 
 		for (int i=1; i<= 7; i++) {
-			capabilities.add(generate_capability_for_open_close("swp"+i,"sws"+i));
+			capabilities.add(circuito.generate_capability_for_open_close("swp"+i,"sws"+i));
 		}
 		
 		return capabilities;
 	}
 	
 
-	private AbstractCapability generate_switch_on_generator(String name) {
-		/* switch_ON_main_generator_cap
-		 * PRE: off(main)
-		 * SCENARIO mainOn: remove {off(main)}, add {on(main)}
-		*/
-		Condition main_on_pre = new FOLCondition(new DLPAtom("off", new Constant(name)));
-		List<EvolutionScenario> main_on_evo = new LinkedList<>();
-		CapabilityEvolutionScenario main_on_evo1 = new CapabilityEvolutionScenario("gen_on");
-		main_on_evo1.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("on", new Constant(name))) ) );
-		main_on_evo1.addOperator(new RemoveStatement(new ExtDLPHead(new DLPAtom("off", new Constant(name)))));
-		main_on_evo.add(main_on_evo1);		
-		return new AbstractCapability("switch_ON_"+name+"_generator_cap", main_on_evo, main_on_pre, null);
-	}
 
-	private AbstractCapability generate_switch_off_generator(String name) {
-		/* switch_OFF_main_generator_cap
-		 * PRE: on(main)
-		 * SCENARIO mainOff: remove {on(main)}, add {off(main)}
-		*/
-		Condition main_on_pre = new FOLCondition(new DLPAtom("on", new Constant(name)));
-		List<EvolutionScenario> main_on_evo = new LinkedList<>();
-		CapabilityEvolutionScenario main_on_evo1 = new CapabilityEvolutionScenario("gen_off");
-		main_on_evo1.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("off", new Constant(name))) ) );
-		main_on_evo1.addOperator(new RemoveStatement(new ExtDLPHead(new DLPAtom("on", new Constant(name)))));
-		main_on_evo.add(main_on_evo1);		
-		return new AbstractCapability("switch_OFF_"+name+"_generator_cap", main_on_evo, main_on_pre, null);
-	}
-	
-	private AbstractCapability generate_switch_on_aux2() {
-		/* switch_ON_main_generator_cap
-		 * PRE: off(main)
-		 * SCENARIO mainOn: remove {off(main)}, add {on(main)}
-		*/
-		Condition main_on_pre = new FOLCondition(new DLPAtom("off", new Constant("aux2")));
-		List<EvolutionScenario> main_on_evo = new LinkedList<>();
-		CapabilityEvolutionScenario main_on_evo1 = new CapabilityEvolutionScenario("gen_on");
-		main_on_evo1.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("on", new Constant("aux2"))) ) );
-		main_on_evo1.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("closed", new Constant("sw15"))) ) );
-		main_on_evo1.addOperator(new RemoveStatement(new ExtDLPHead(new DLPAtom("off", new Constant("aux2")))));
-		main_on_evo1.addOperator(new RemoveStatement(new ExtDLPHead(new DLPAtom("open", new Constant("sw15")))));
-		main_on_evo.add(main_on_evo1);		
-		return new AbstractCapability("switch_ON_aux2_and_sw15_generator_cap", main_on_evo, main_on_pre, null);
-	}
-
-	private AbstractCapability generate_switch_on_aux2_alt() {
-		/* switch_ON_main_generator_cap
-		 * PRE: off(main)
-		 * SCENARIO mainOn: remove {off(main)}, add {on(main)}
-		*/
-		Condition main_on_pre = new FOLCondition(new DLPAtom("off", new Constant("aux2")));
-		List<EvolutionScenario> main_on_evo = new LinkedList<>();
-		CapabilityEvolutionScenario main_on_evo1 = new CapabilityEvolutionScenario("gen_on");
-		main_on_evo1.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("on", new Constant("aux2"))) ) );
-		main_on_evo1.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("closed", new Constant("sw16"))) ) );
-		main_on_evo1.addOperator(new RemoveStatement(new ExtDLPHead(new DLPAtom("off", new Constant("aux2")))));
-		main_on_evo1.addOperator(new RemoveStatement(new ExtDLPHead(new DLPAtom("open", new Constant("sw16")))));
-		main_on_evo.add(main_on_evo1);		
-		return new AbstractCapability("switch_ON_aux2_and_sw16_generator_cap", main_on_evo, main_on_pre, null);
-	}
-
-	private AbstractCapability generate_switch_on_aux2_alt2() {
-		/* switch_ON_main_generator_cap
-		 * PRE: off(main)
-		 * SCENARIO mainOn: remove {off(main)}, add {on(main)}
-		*/
-		Condition main_on_pre = new FOLCondition(new DLPAtom("off", new Constant("aux2")));
-		List<EvolutionScenario> main_on_evo = new LinkedList<>();
-		CapabilityEvolutionScenario main_on_evo1 = new CapabilityEvolutionScenario("gen_on");
-		main_on_evo1.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("on", new Constant("aux2"))) ) );
-		main_on_evo1.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("closed", new Constant("sw15"))) ) );
-		main_on_evo1.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("closed", new Constant("sw16"))) ) );
-		main_on_evo1.addOperator(new RemoveStatement(new ExtDLPHead(new DLPAtom("off", new Constant("aux2")))));
-		main_on_evo1.addOperator(new RemoveStatement(new ExtDLPHead(new DLPAtom("open", new Constant("sw15")))));
-		main_on_evo1.addOperator(new RemoveStatement(new ExtDLPHead(new DLPAtom("open", new Constant("sw16")))));
-		main_on_evo.add(main_on_evo1);		
-		return new AbstractCapability("switch_ON_aux2_and_sw15_16_generator_cap", main_on_evo, main_on_pre, null);
-	}
-	
-	private AbstractCapability generate_close_capability_for_switcher(String switch_name) {
-		/* close_switch_<name>_cap
-		 * PRE: open(<name>)
-		 * SCENARIO iClosed: remove {open(<name>)}, add {closed(<name>)}
-		*/
-		Constant i_const = new Constant(switch_name);
-		Condition i_pre = new FOLCondition(new DLPAtom("open", i_const));
-		List<EvolutionScenario> main_on_evo = new LinkedList<>();
-		CapabilityEvolutionScenario i_evo_scenario = new CapabilityEvolutionScenario("iClosed");
-		i_evo_scenario.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("closed", i_const)) ) );
-		i_evo_scenario.addOperator(new RemoveStatement(new ExtDLPHead(new DLPAtom("open", i_const))));
-		main_on_evo.add(i_evo_scenario);
-		return new AbstractCapability("close_switch_"+switch_name+"_cap", main_on_evo, i_pre, null);
-	}
-
-	private AbstractCapability generate_open_capability_for_switcher(String switch_name) {
-		/* open_switch_<name>_cap
-		 * PRE: closed(<name>)
-		 * SCENARIO iOpen: remove {closed(<name>)}, add {open(<name>)}
-		*/
-		Constant i_const = new Constant(switch_name);
-		Condition i_pre = new FOLCondition(new DLPAtom("closed", i_const));
-		List<EvolutionScenario> main_on_evo = new LinkedList<>();
-		CapabilityEvolutionScenario i_evo_scenario = new CapabilityEvolutionScenario("iOpen");
-		i_evo_scenario.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("open", i_const)) ) );
-		i_evo_scenario.addOperator(new RemoveStatement(new ExtDLPHead(new DLPAtom("closed", i_const))));
-		main_on_evo.add(i_evo_scenario);
-		return new AbstractCapability("open_switch_"+switch_name+"_cap", main_on_evo, i_pre, null);
-	}
-
-	private AbstractCapability generate_capability_for_open_close(String switch_name1,String switch_name2) {
-		Constant i_const1 = new Constant(switch_name1);
-		Constant i_const2 = new Constant(switch_name2);
-		
-		Condition i_pre = new FOLCondition(new DLPAtom("closed", i_const1));
-		List<EvolutionScenario> main_on_evo = new LinkedList<>();
-		CapabilityEvolutionScenario i_evo_scenario = new CapabilityEvolutionScenario("iOpen");
-		i_evo_scenario.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("open", i_const1)) ) );
-		i_evo_scenario.addOperator( new AddStatement( new ExtDLPHead(new DLPAtom("closed", i_const2)) ) );
-		i_evo_scenario.addOperator(new RemoveStatement(new ExtDLPHead(new DLPAtom("closed", i_const1))));
-		i_evo_scenario.addOperator(new RemoveStatement(new ExtDLPHead(new DLPAtom("open", i_const2))));
-		main_on_evo.add(i_evo_scenario);
-		return new AbstractCapability("open_switch_"+switch_name1+"_close_switch_"+switch_name2+"_cap", main_on_evo, i_pre, null);
-	}
-	
 	
 	public class SPSloadmetrics extends QualityAsset {
 		private SPSCircuit circuito;
@@ -353,10 +233,8 @@ public class SPSReconfigCircuito3 implements Scenario {
 			try {
 				this.myAssumptions = circuito.getAssumptions();
 			} catch (ParseException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (NotAllowedInAnAssumptionSet e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}		
 			init_metrics();
@@ -520,6 +398,15 @@ public class SPSReconfigCircuito3 implements Scenario {
 			System.out.println("score without power balance: "+score_before);
 		}
 		
+	}
+
+
+	public void log_graph() {
+		circuito.log_graph();
+	}
+
+	public void log_current_state_graph(AssumptionSet assumptions, StateOfWorld w) {
+		circuito.log_current_state_graph(assumptions, w);
 	}
 
 }
