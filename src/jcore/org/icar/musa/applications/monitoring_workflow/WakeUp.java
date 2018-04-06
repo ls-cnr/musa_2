@@ -2,32 +2,28 @@ package org.icar.musa.applications.monitoring_workflow;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
 
 import org.icar.musa.applications.Scenario;
-import org.icar.musa.core.Condition;
-import org.icar.musa.core.Requirements;
-import org.icar.musa.core.context.StateOfWorld;
-import org.icar.musa.core.context.evolution.AddStatement;
-import org.icar.musa.core.context.evolution.EvolutionScenario;
-import org.icar.musa.core.context.evolution.RemoveAnyStatement;
-import org.icar.musa.core.context.evolution.RemoveStatement;
-import org.icar.musa.core.fol_reasoner.FOLCondition;
-import org.icar.musa.core.runtime_entity.AbstractCapability;
-import org.icar.musa.core.runtime_entity.AssumptionSet;
-import org.icar.musa.core.runtime_entity.CapabilityEvolutionScenario;
-import org.icar.musa.core.runtime_entity.QualityAsset;
+import org.icar.musa.context.StateOfWorld;
+import org.icar.musa.context.evolution.AddStatement;
+import org.icar.musa.context.evolution.EvolutionScenario;
+import org.icar.musa.context.evolution.RemoveAnyStatement;
+import org.icar.musa.context.fol_reasoner.FOLCondition;
+import org.icar.musa.runtime_entity.AbstractCapability;
+import org.icar.musa.runtime_entity.AssumptionSet;
+import org.icar.musa.runtime_entity.CapabilityEvolutionScenario;
+import org.icar.musa.runtime_entity.Condition;
+import org.icar.musa.runtime_entity.QualityAsset;
+import org.icar.musa.runtime_entity.Requirements;
 import org.icar.musa.utils.agent_communication.translator.ExtDLPHead;
 import org.icar.musa.utils.exception.NotAllowedInAnAssumptionSet;
 import org.icar.specification.LTLgoal.LTLGoalModelBuilder;
-import org.icar.specification.LTLgoal.model.GoalModel;
-import org.icar.specification.LTLgoal.model.LTLGoal;
+import org.icar.specification.LTLgoal.specmodel.GoalModel;
+import org.icar.specification.LTLgoal.specmodel.LTLGoal;
 
 import net.sf.tweety.logics.commons.syntax.Constant;
-import net.sf.tweety.logics.commons.syntax.Variable;
 import net.sf.tweety.lp.asp.parser.ParseException;
 import net.sf.tweety.lp.asp.syntax.DLPAtom;
 

@@ -1,8 +1,8 @@
 package org.icar.musa.pmr.problem_exploration;
 
-import org.icar.musa.core.Requirements;
-import org.icar.musa.core.runtime_entity.AssumptionSet;
-import org.icar.musa.core.runtime_entity.QualityAsset;
+import org.icar.musa.runtime_entity.AssumptionSet;
+import org.icar.musa.runtime_entity.QualityAsset;
+import org.icar.musa.runtime_entity.Requirements;
 
 public class ProblemSpecification {
 	private AssumptionSet assumptions;

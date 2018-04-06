@@ -1,11 +1,9 @@
 package org.icar.musa.utils.agent_communication.translator;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
-import org.icar.ltlpetrinet.supervisor.Token;
-import org.icar.ltlpetrinet.supervisor.TokenConf;
+import org.icar.linear_temporal_logic.ltl_supervisor.Token;
+import org.icar.linear_temporal_logic.ltl_supervisor.TokenConf;
 import org.icar.musa.utils.exception.TranslateError;
 
 import jason.asSyntax.ListTermImpl;

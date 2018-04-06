@@ -4,7 +4,6 @@ import org.icar.specification.LTLgoal.goalParser.APredicateContext;
 import org.icar.specification.LTLgoal.goalParser.AlwaysFalseContext;
 import org.icar.specification.LTLgoal.goalParser.AlwaysTrueContext;
 import org.icar.specification.LTLgoal.goalParser.AndBinaryOperatorContext;
-import org.icar.specification.LTLgoal.goalParser.Binary_operatorContext;
 import org.icar.specification.LTLgoal.goalParser.BracketedContext;
 import org.icar.specification.LTLgoal.goalParser.FinallyUnaryOperatorContext;
 import org.icar.specification.LTLgoal.goalParser.GloballyUnaryOperatorContext;
@@ -18,14 +17,13 @@ import org.icar.specification.LTLgoal.goalParser.NotUnaryOperatorContext;
 import org.icar.specification.LTLgoal.goalParser.OrBinaryOperatorContext;
 import org.icar.specification.LTLgoal.goalParser.ReleaseBinaryOperatorContext;
 import org.icar.specification.LTLgoal.goalParser.Single_goalContext;
-import org.icar.specification.LTLgoal.goalParser.Unary_operatorContext;
 import org.icar.specification.LTLgoal.goalParser.UntilBinaryOperatorContext;
-import org.icar.specification.LTLgoal.model.BinaryFormula;
-import org.icar.specification.LTLgoal.model.GoalModel;
-import org.icar.specification.LTLgoal.model.LTLFormula;
-import org.icar.specification.LTLgoal.model.LTLGoal;
-import org.icar.specification.LTLgoal.model.LTLPredicate;
-import org.icar.specification.LTLgoal.model.UnaryFormula;
+import org.icar.specification.LTLgoal.specmodel.BinaryFormula;
+import org.icar.specification.LTLgoal.specmodel.GoalModel;
+import org.icar.specification.LTLgoal.specmodel.LTLFormula;
+import org.icar.specification.LTLgoal.specmodel.LTLGoal;
+import org.icar.specification.LTLgoal.specmodel.LTLPredicate;
+import org.icar.specification.LTLgoal.specmodel.UnaryFormula;
 
 public class myGoalVisitor extends goalBaseVisitor<GoalModelEntity>  {
 

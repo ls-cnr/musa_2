@@ -1,7 +1,7 @@
 package org.icar.musa.utils.agent_communication.translator;
 
-import org.icar.ltlpetrinet.supervisor.TokenConf;
-import org.icar.musa.core.context.StateOfWorld;
+import org.icar.linear_temporal_logic.ltl_supervisor.TokenConf;
+import org.icar.musa.context.StateOfWorld;
 import org.icar.musa.pmr.problem_exploration.StateNode;
 import org.icar.musa.pmr.problem_exploration.WTSNode;
 import org.icar.musa.pmr.problem_exploration.XorNode;

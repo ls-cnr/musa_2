@@ -3,9 +3,9 @@ package org.icar.testcase;
 import static org.junit.Assert.*;
 
 import org.icar.musa.applications.spsreconfiguration.SPSReconfigcirc3_std_4guasti_0;
-import org.icar.musa.core.context.StateOfWorld;
-import org.icar.musa.core.runtime_entity.AssumptionSet;
-import org.icar.musa.core.runtime_entity.QualityAsset;
+import org.icar.musa.context.StateOfWorld;
+import org.icar.musa.runtime_entity.AssumptionSet;
+import org.icar.musa.runtime_entity.QualityAsset;
 import org.junit.Test;
 
 public class Circuito3_test {

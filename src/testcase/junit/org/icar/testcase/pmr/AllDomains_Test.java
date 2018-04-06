@@ -10,14 +10,14 @@ import org.icar.musa.applications.spsreconfiguration.SPSReconfigcirc3_std_4guast
 import org.icar.musa.applications.spsreconfiguration.SPSReconfigurationEasy;
 import org.icar.musa.applications.spsreconfiguration.SPSReconfigurationFailure2;
 import org.icar.musa.applications.spsreconfiguration.SPSReconfigurationFull;
-import org.icar.musa.core.Requirements;
-import org.icar.musa.core.runtime_entity.AbstractCapability;
-import org.icar.musa.core.runtime_entity.AssumptionSet;
 import org.icar.musa.pmr.problem_exploration.ProblemSpecification;
 import org.icar.musa.pmr.problem_exploration.WTS;
 import org.icar.musa.pmr.problem_exploration.WTSEventLogger;
 import org.icar.musa.pmr.problem_exploration.WTSLocalBuilder;
 import org.icar.musa.pmr.solution.AWBuilder;
+import org.icar.musa.runtime_entity.AbstractCapability;
+import org.icar.musa.runtime_entity.AssumptionSet;
+import org.icar.musa.runtime_entity.Requirements;
 import org.icar.musa.utils.exception.ProblemDefinitionException;
 import org.junit.Ignore;
 import org.junit.Test;

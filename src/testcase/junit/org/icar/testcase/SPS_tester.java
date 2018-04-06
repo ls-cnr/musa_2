@@ -3,10 +3,10 @@ package org.icar.testcase;
 import static org.junit.Assert.*;
 
 import org.icar.musa.applications.spsreconfiguration.SPSReconfigurationFailure2;
-import org.icar.musa.core.context.StateOfWorld;
-import org.icar.musa.core.fol_reasoner.EntailOperator;
-import org.icar.musa.core.fol_reasoner.FOLCondition;
-import org.icar.musa.core.runtime_entity.AssumptionSet;
+import org.icar.musa.context.StateOfWorld;
+import org.icar.musa.context.fol_reasoner.EntailOperator;
+import org.icar.musa.context.fol_reasoner.FOLCondition;
+import org.icar.musa.runtime_entity.AssumptionSet;
 import org.icar.musa.utils.exception.NotAllowedInAStateOfWorld;
 import org.junit.Test;
 

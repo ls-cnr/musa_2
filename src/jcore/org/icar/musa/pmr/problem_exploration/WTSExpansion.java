@@ -3,8 +3,6 @@ package org.icar.musa.pmr.problem_exploration;
 import java.util.ArrayList;
 import java.util.Comparator;
 
-import org.icar.ltlpetrinet.hierarchical_model.NetHierarchy;
-
 public class WTSExpansion extends WTS {	
 	private static final long serialVersionUID = 1341666082643667454L;
 

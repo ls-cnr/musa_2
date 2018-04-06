@@ -5,8 +5,8 @@ import java.io.FileInputStream;
 import java.io.IOException;
 
 import org.icar.specification.LTLgoal.LTLGoalModelBuilder;
-import org.icar.specification.LTLgoal.model.GoalModel;
-import org.icar.specification.LTLgoal.model.LTLGoal;
+import org.icar.specification.LTLgoal.specmodel.GoalModel;
+import org.icar.specification.LTLgoal.specmodel.LTLGoal;
 
 public class myGoalLanguageExample {
 	/**

@@ -4,15 +4,15 @@ import static org.junit.Assert.*;
 
 import java.util.Comparator;
 
-import org.icar.ltlpetrinet.hierarchical_model.NetHierarchy;
-import org.icar.ltlpetrinet.hierarchical_model.PredicateNode;
-import org.icar.ltlpetrinet.hierarchical_model.template.AndOperator;
-import org.icar.ltlpetrinet.hierarchical_model.template.FinallyPN;
-import org.icar.ltlpetrinet.hierarchical_model.template.GloballyPN;
-import org.icar.ltlpetrinet.supervisor.NetSupervisor;
-import org.icar.ltlpetrinet.supervisor.TokenConf;
-import org.icar.musa.core.context.StateOfWorld;
-import org.icar.musa.core.fol_reasoner.FOLCondition;
+import org.icar.linear_temporal_logic.hierarchical_ltl_model.NetHierarchy;
+import org.icar.linear_temporal_logic.hierarchical_ltl_model.PredicateNode;
+import org.icar.linear_temporal_logic.hierarchical_ltl_model.template.AndOperator;
+import org.icar.linear_temporal_logic.hierarchical_ltl_model.template.FinallyPN;
+import org.icar.linear_temporal_logic.hierarchical_ltl_model.template.GloballyPN;
+import org.icar.linear_temporal_logic.ltl_supervisor.NetSupervisor;
+import org.icar.linear_temporal_logic.ltl_supervisor.TokenConf;
+import org.icar.musa.context.StateOfWorld;
+import org.icar.musa.context.fol_reasoner.FOLCondition;
 import org.icar.musa.pmr.problem_exploration.CapabilityEdge;
 import org.icar.musa.pmr.problem_exploration.ScenarioEdge;
 import org.icar.musa.pmr.problem_exploration.StateNode;

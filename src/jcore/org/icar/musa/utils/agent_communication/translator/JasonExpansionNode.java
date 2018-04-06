@@ -1,7 +1,6 @@
 package org.icar.musa.utils.agent_communication.translator;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import org.icar.musa.pmr.problem_exploration.CapabilityEdge;

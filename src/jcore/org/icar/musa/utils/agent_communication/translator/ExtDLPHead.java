@@ -1,6 +1,5 @@
 package org.icar.musa.utils.agent_communication.translator;
 
-import net.sf.tweety.logics.commons.syntax.AssociativeFormulaSupport;
 import net.sf.tweety.logics.commons.syntax.interfaces.AssociativeFormula;
 import net.sf.tweety.lp.asp.syntax.DLPHead;
 import net.sf.tweety.lp.asp.syntax.DLPLiteral;

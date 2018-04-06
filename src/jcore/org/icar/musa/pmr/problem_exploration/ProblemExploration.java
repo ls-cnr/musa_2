@@ -4,21 +4,21 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.icar.ltlpetrinet.annotated_pn.PNStateEnum;
-import org.icar.ltlpetrinet.hierarchical_model.NetHierarchy;
-import org.icar.ltlpetrinet.hierarchical_model.NetHierarchyBuilder;
-import org.icar.ltlpetrinet.supervisor.NetSupervisor;
-import org.icar.ltlpetrinet.supervisor.TokenConf;
-import org.icar.musa.core.context.StateOfWorld;
-import org.icar.musa.core.context.evolution.EvolutionOperator;
-import org.icar.musa.core.context.evolution.EvolutionScenario;
-import org.icar.musa.core.fol_reasoner.EntailOperator;
-import org.icar.musa.core.fol_reasoner.FOLCondition;
-import org.icar.musa.core.runtime_entity.AbstractCapability;
-import org.icar.musa.core.runtime_entity.AssumptionSet;
-import org.icar.musa.core.runtime_entity.QualityAsset;
+import org.icar.linear_temporal_logic.annotated_petrinet.PNStateEnum;
+import org.icar.linear_temporal_logic.hierarchical_ltl_model.NetHierarchy;
+import org.icar.linear_temporal_logic.hierarchical_ltl_model.NetHierarchyBuilder;
+import org.icar.linear_temporal_logic.ltl_supervisor.NetSupervisor;
+import org.icar.linear_temporal_logic.ltl_supervisor.TokenConf;
+import org.icar.musa.context.StateOfWorld;
+import org.icar.musa.context.evolution.EvolutionOperator;
+import org.icar.musa.context.evolution.EvolutionScenario;
+import org.icar.musa.context.fol_reasoner.EntailOperator;
+import org.icar.musa.context.fol_reasoner.FOLCondition;
+import org.icar.musa.runtime_entity.AbstractCapability;
+import org.icar.musa.runtime_entity.AssumptionSet;
+import org.icar.musa.runtime_entity.QualityAsset;
 import org.icar.musa.utils.exception.ProblemDefinitionException;
-import org.icar.specification.LTLgoal.model.LTLGoal;
+import org.icar.specification.LTLgoal.specmodel.LTLGoal;
 
 public class ProblemExploration {
 	private final double EXIT_REWARD_SCORE = 1;

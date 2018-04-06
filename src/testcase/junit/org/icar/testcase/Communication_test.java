@@ -2,7 +2,7 @@ package org.icar.testcase;
 
 import static org.junit.Assert.*;
 
-import org.icar.musa.core.context.StateOfWorld;
+import org.icar.musa.context.StateOfWorld;
 import org.icar.musa.pmr.problem_exploration.CapabilityEdge;
 import org.icar.musa.pmr.problem_exploration.ScenarioEdge;
 import org.icar.musa.pmr.problem_exploration.StateNode;

@@ -6,12 +6,12 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import org.icar.musa.core.context.StateOfWorld;
-import org.icar.musa.core.runtime_entity.AssumptionSet;
-import org.icar.musa.core.runtime_entity.QualityAsset;
+import org.icar.musa.context.StateOfWorld;
 import org.icar.musa.pmr.problem_exploration.StateNode;
 import org.icar.musa.pmr.problem_exploration.WTSNode;
 import org.icar.musa.pmr.problem_exploration.XorNode;
+import org.icar.musa.runtime_entity.AssumptionSet;
+import org.icar.musa.runtime_entity.QualityAsset;
 
 
 public class TreeBrick {

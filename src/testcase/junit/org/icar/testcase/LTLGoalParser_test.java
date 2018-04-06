@@ -5,8 +5,8 @@ import static org.junit.Assert.*;
 import java.io.IOException;
 
 import org.icar.specification.LTLgoal.LTLGoalModelBuilder;
-import org.icar.specification.LTLgoal.model.GoalModel;
-import org.icar.specification.LTLgoal.model.LTLGoal;
+import org.icar.specification.LTLgoal.specmodel.GoalModel;
+import org.icar.specification.LTLgoal.specmodel.LTLGoal;
 import org.junit.Test;
 
 public class LTLGoalParser_test {

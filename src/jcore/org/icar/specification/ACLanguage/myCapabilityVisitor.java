@@ -1,10 +1,8 @@
 package org.icar.specification.ACLanguage;
 
-import java.util.Collection;
-
-import org.icar.musa.core.context.evolution.AddStatement;
-import org.icar.musa.core.context.evolution.RemoveAnyStatement;
-import org.icar.musa.core.context.evolution.RemoveStatement;
+import org.icar.musa.context.evolution.AddStatement;
+import org.icar.musa.context.evolution.RemoveAnyStatement;
+import org.icar.musa.context.evolution.RemoveStatement;
 import org.icar.musa.utils.agent_communication.translator.ExtDLPHead;
 import org.icar.specification.ACLanguage.capabilityParser.AtomContext;
 import org.icar.specification.ACLanguage.capabilityParser.EvolutionContext;
@@ -51,16 +49,16 @@ import org.icar.specification.ACLanguage.capabilityParser.MyVariableTermContext;
 import org.icar.specification.ACLanguage.capabilityParser.Numeral_termContext;
 import org.icar.specification.ACLanguage.capabilityParser.String_termContext;
 import org.icar.specification.ACLanguage.capabilityParser.Variable_termContext;
-import org.icar.specification.ACLanguage.model.CapBody;
-import org.icar.specification.ACLanguage.model.CapConditionTerms;
-import org.icar.specification.ACLanguage.model.CapEvoAction;
-import org.icar.specification.ACLanguage.model.CapEvoActionList;
-import org.icar.specification.ACLanguage.model.CapEvoScenario;
-import org.icar.specification.ACLanguage.model.CapRelationFormula;
-import org.icar.specification.ACLanguage.model.CapTerm;
-import org.icar.specification.ACLanguage.model.CapVarList;
-import org.icar.specification.ACLanguage.model.Capability;
-import org.icar.specification.ACLanguage.model.CapabilityEvolution;
+import org.icar.specification.ACLanguage.specmodel.CapBody;
+import org.icar.specification.ACLanguage.specmodel.CapConditionTerms;
+import org.icar.specification.ACLanguage.specmodel.CapEvoAction;
+import org.icar.specification.ACLanguage.specmodel.CapEvoActionList;
+import org.icar.specification.ACLanguage.specmodel.CapEvoScenario;
+import org.icar.specification.ACLanguage.specmodel.CapRelationFormula;
+import org.icar.specification.ACLanguage.specmodel.CapTerm;
+import org.icar.specification.ACLanguage.specmodel.CapVarList;
+import org.icar.specification.ACLanguage.specmodel.Capability;
+import org.icar.specification.ACLanguage.specmodel.CapabilityEvolution;
 
 import net.sf.tweety.commons.util.Pair;
 import net.sf.tweety.logics.commons.syntax.Constant;

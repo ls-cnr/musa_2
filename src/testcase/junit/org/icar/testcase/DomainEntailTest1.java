@@ -5,10 +5,10 @@ import net.sf.tweety.lp.asp.parser.ParseException;
 import java.io.IOException;
 import static org.junit.Assert.*;
 
-import org.icar.musa.core.fol_reasoner.FOLCondition;
-import org.icar.musa.core.context.*;
-import org.icar.musa.core.fol_reasoner.EntailOperator;
-import org.icar.musa.core.runtime_entity.AssumptionSet;
+import org.icar.musa.context.*;
+import org.icar.musa.context.fol_reasoner.EntailOperator;
+import org.icar.musa.context.fol_reasoner.FOLCondition;
+import org.icar.musa.runtime_entity.AssumptionSet;
 import org.junit.Before;
 import org.junit.Test;
 

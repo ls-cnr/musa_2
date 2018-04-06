@@ -2,7 +2,7 @@ package org.icar.testcase;
 
 import static org.junit.Assert.*;
 
-import org.icar.musa.core.context.StateOfWorld;
+import org.icar.musa.context.StateOfWorld;
 import org.icar.musa.utils.agent_communication.translator.ExtDLPHead;
 import org.junit.Before;
 import org.junit.Test;

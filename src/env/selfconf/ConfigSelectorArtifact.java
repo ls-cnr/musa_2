@@ -5,7 +5,6 @@ package selfconf;
 import java.util.HashMap;
 import java.util.HashSet;
 
-import org.icar.musa.core.runtime_entity.AbstractWorkflowNode;
 import org.icar.musa.pmr.problem_exploration.CapabilityEdge;
 import org.icar.musa.pmr.problem_exploration.ScenarioEdge;
 import org.icar.musa.pmr.problem_exploration.StateNode;
@@ -13,6 +12,7 @@ import org.icar.musa.pmr.problem_exploration.WTSExpansion;
 import org.icar.musa.pmr.problem_exploration.WTSNode;
 import org.icar.musa.pmr.problem_exploration.XorNode;
 import org.icar.musa.pmr.solution.AWBuilder;
+import org.icar.musa.runtime_entity.AbstractWorkflowNode;
 import org.icar.musa.utils.agent_communication.translator.JasonExpansionNode;
 import org.icar.musa.utils.agent_communication.translator.JasonExtNode;
 import org.icar.musa.utils.exception.TranslateError;

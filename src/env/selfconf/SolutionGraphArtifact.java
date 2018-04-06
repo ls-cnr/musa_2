@@ -2,9 +2,9 @@
 
 package selfconf;
 
-import org.icar.ltlpetrinet.hierarchical_model.NetHierarchy;
-import org.icar.ltlpetrinet.hierarchical_model.NetHierarchyBuilder;
-import org.icar.musa.core.context.StateOfWorld;
+import org.icar.linear_temporal_logic.hierarchical_ltl_model.NetHierarchy;
+import org.icar.linear_temporal_logic.hierarchical_ltl_model.NetHierarchyBuilder;
+import org.icar.musa.context.StateOfWorld;
 import org.icar.musa.pmr.problem_exploration.StateNode;
 import org.icar.musa.pmr.problem_exploration.WTS;
 import org.icar.musa.pmr.problem_exploration.WTSExpansion;
@@ -12,7 +12,7 @@ import org.icar.musa.utils.agent_communication.translator.JasonExpansionNode;
 import org.icar.musa.utils.agent_communication.translator.JasonExtNode;
 import org.icar.musa.utils.agent_communication.translator.JasonStateOfWorld;
 import org.icar.musa.utils.exception.TranslateError;
-import org.icar.specification.LTLgoal.model.LTLGoal;
+import org.icar.specification.LTLgoal.specmodel.LTLGoal;
 
 import cartago.*;
 import jason.asSyntax.Term;

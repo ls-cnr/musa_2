@@ -3,10 +3,10 @@ package org.icar.testcase;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import org.icar.musa.core.fol_reasoner.FOLCondition;
-import org.icar.musa.core.context.StateOfWorld;
-import org.icar.musa.core.fol_reasoner.EntailOperator;
-import org.icar.musa.core.runtime_entity.AssumptionSet;
+import org.icar.musa.context.StateOfWorld;
+import org.icar.musa.context.fol_reasoner.EntailOperator;
+import org.icar.musa.context.fol_reasoner.FOLCondition;
+import org.icar.musa.runtime_entity.AssumptionSet;
 import org.junit.Test;
 
 import net.sf.tweety.logics.commons.syntax.Constant;

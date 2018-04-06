@@ -4,12 +4,12 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.icar.ltlpetrinet.hierarchical_model.NetHierarchy;
-import org.icar.ltlpetrinet.hierarchical_model.NetHierarchyBuilder;
-import org.icar.musa.core.context.StateOfWorld;
-import org.icar.musa.core.runtime_entity.AbstractCapability;
+import org.icar.linear_temporal_logic.hierarchical_ltl_model.NetHierarchy;
+import org.icar.linear_temporal_logic.hierarchical_ltl_model.NetHierarchyBuilder;
+import org.icar.musa.context.StateOfWorld;
+import org.icar.musa.runtime_entity.AbstractCapability;
 import org.icar.musa.utils.exception.ProblemDefinitionException;
-import org.icar.specification.LTLgoal.model.LTLGoal;
+import org.icar.specification.LTLgoal.specmodel.LTLGoal;
 
 public class WTSLocalBuilder {
 	private static int max_iteration = 15;

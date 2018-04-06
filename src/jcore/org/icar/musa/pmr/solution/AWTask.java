@@ -1,7 +1,7 @@
 package org.icar.musa.pmr.solution;
 
-import org.icar.musa.core.runtime_entity.AbstractCapability;
 import org.icar.musa.pmr.problem_exploration.WTSExpansion;
+import org.icar.musa.runtime_entity.AbstractCapability;
 
 public class AWTask extends AWItem {
 	private AbstractCapability cap_ref;

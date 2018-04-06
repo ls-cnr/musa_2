@@ -7,21 +7,16 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.icar.musa.pmr.problem_exploration.WTSEdge;
-import org.icar.musa.pmr.problem_exploration.WTSEventListener;
-import org.icar.musa.core.context.StateOfWorld;
-import org.icar.musa.core.fol_reasoner.EntailOperator;
-import org.icar.musa.core.fol_reasoner.FOLCondition;
-import org.icar.musa.core.runtime_entity.AssumptionSet;
-import org.icar.musa.core.runtime_entity.QualityAsset;
+import org.icar.musa.context.StateOfWorld;
 import org.icar.musa.pmr.problem_exploration.CapabilityEdge;
 import org.icar.musa.pmr.problem_exploration.ScenarioEdge;
 import org.icar.musa.pmr.problem_exploration.StateNode;
+import org.icar.musa.pmr.problem_exploration.WTSEdge;
+import org.icar.musa.pmr.problem_exploration.WTSEventListener;
 import org.icar.musa.pmr.problem_exploration.WTSNode;
 import org.icar.musa.pmr.problem_exploration.XorNode;
-
-import net.sf.tweety.logics.commons.syntax.Constant;
-import net.sf.tweety.lp.asp.syntax.DLPAtom;
+import org.icar.musa.runtime_entity.AssumptionSet;
+import org.icar.musa.runtime_entity.QualityAsset;
 
 public class AWBuilder implements WTSEventListener {
 	private HashSet<TreeBrick> bricks;

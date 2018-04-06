@@ -2,14 +2,14 @@ package org.icar.testcase;
 
 import static org.junit.Assert.*;
 
-import org.icar.ltlpetrinet.hierarchical_model.NetHierarchy;
-import org.icar.ltlpetrinet.hierarchical_model.NetHierarchyBuilder;
-import org.icar.ltlpetrinet.supervisor.NetSupervisor;
-import org.icar.ltlpetrinet.supervisor.TokenConf;
+import org.icar.linear_temporal_logic.hierarchical_ltl_model.NetHierarchy;
+import org.icar.linear_temporal_logic.hierarchical_ltl_model.NetHierarchyBuilder;
+import org.icar.linear_temporal_logic.ltl_supervisor.NetSupervisor;
+import org.icar.linear_temporal_logic.ltl_supervisor.TokenConf;
 import org.icar.musa.applications.spsreconfiguration.SPSReconfigurationFull;
-import org.icar.musa.core.Requirements;
-import org.icar.musa.core.context.StateOfWorld;
-import org.icar.specification.LTLgoal.model.LTLGoal;
+import org.icar.musa.context.StateOfWorld;
+import org.icar.musa.runtime_entity.Requirements;
+import org.icar.specification.LTLgoal.specmodel.LTLGoal;
 import org.junit.Test;
 
 import net.sf.tweety.lp.asp.parser.ParseException;

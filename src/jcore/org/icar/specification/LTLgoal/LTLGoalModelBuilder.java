@@ -7,7 +7,7 @@ import java.io.StringReader;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
-import org.icar.specification.LTLgoal.model.GoalModel;
+import org.icar.specification.LTLgoal.specmodel.GoalModel;
 
 public class LTLGoalModelBuilder {
 	

@@ -1,11 +1,12 @@
 package org.icar.musa.utils.persistence.entity;
 
+import static javax.persistence.GenerationType.IDENTITY;
+
 // Generated 22-nov-2016 14.40.56 by Hibernate Tools 3.4.0.CR1
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import static javax.persistence.GenerationType.IDENTITY;
 import javax.persistence.Id;
 import javax.persistence.Table;
 

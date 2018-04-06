@@ -2,8 +2,8 @@ package org.icar.musa.pmr.problem_exploration;
 
 import java.util.Comparator;
 
-import org.icar.ltlpetrinet.supervisor.TokenConf;
-import org.icar.musa.core.context.StateOfWorld;
+import org.icar.linear_temporal_logic.ltl_supervisor.TokenConf;
+import org.icar.musa.context.StateOfWorld;
 
 public class StateNode extends WTSNode {
 	private StateOfWorld state;

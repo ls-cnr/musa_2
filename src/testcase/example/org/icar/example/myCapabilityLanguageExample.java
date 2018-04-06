@@ -4,9 +4,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 
-import org.icar.musa.core.runtime_entity.AbstractCapability;
+import org.icar.musa.runtime_entity.AbstractCapability;
 import org.icar.specification.ACLanguage.CapabilityBuilder;
-import org.icar.specification.ACLanguage.model.Capability;
+import org.icar.specification.ACLanguage.specmodel.Capability;
 
 public class myCapabilityLanguageExample {
 

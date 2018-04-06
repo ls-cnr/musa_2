@@ -5,20 +5,19 @@ import java.io.InputStream;
 import java.io.StringReader;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
 
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
-import org.icar.musa.core.context.evolution.EvolutionOperator;
-import org.icar.musa.core.context.evolution.EvolutionScenario;
-import org.icar.musa.core.fol_reasoner.FOLCondition;
-import org.icar.musa.core.runtime_entity.AbstractCapability;
-import org.icar.musa.core.runtime_entity.CapabilityEvolutionScenario;
-import org.icar.specification.ACLanguage.model.CapEvoAction;
-import org.icar.specification.ACLanguage.model.CapEvoActionList;
-import org.icar.specification.ACLanguage.model.CapEvoScenario;
-import org.icar.specification.ACLanguage.model.Capability;
+import org.icar.musa.context.evolution.EvolutionOperator;
+import org.icar.musa.context.evolution.EvolutionScenario;
+import org.icar.musa.context.fol_reasoner.FOLCondition;
+import org.icar.musa.runtime_entity.AbstractCapability;
+import org.icar.musa.runtime_entity.CapabilityEvolutionScenario;
+import org.icar.specification.ACLanguage.specmodel.CapEvoAction;
+import org.icar.specification.ACLanguage.specmodel.CapEvoActionList;
+import org.icar.specification.ACLanguage.specmodel.CapEvoScenario;
+import org.icar.specification.ACLanguage.specmodel.Capability;
 
 import net.sf.tweety.logics.fol.syntax.FolFormula;
 
