@@ -12,7 +12,7 @@ import org.icar.musa.utils.exception.ProblemDefinitionException;
 import org.icar.specification.LTLgoal.specmodel.LTLGoal;
 
 public class WTSLocalBuilder {
-	private static int max_iteration = 15;
+	private static int max_iteration = 50;
 	
 	private ProblemSpecification ps;	
 	private ArrayList<AbstractCapability> allCap;

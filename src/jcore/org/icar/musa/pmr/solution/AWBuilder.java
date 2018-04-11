@@ -227,8 +227,8 @@ public class AWBuilder implements WTSEventListener {
 			StateNode final_state = (StateNode) start;
 			StateOfWorld w = final_state.getState();
 			double score = final_state.getGoal_satisfaction_degree();
-			System.out.println("final state: "+w.toString());
-			System.out.println("score: "+score);
+			//System.out.println("final state: "+w.toString());
+			//System.out.println("score: "+score);
 		}
 
 		for (TreeBrick sub : t.getChilds()) {
@@ -251,10 +251,10 @@ public class AWBuilder implements WTSEventListener {
 		if (t.getChilds().size()==0) {
 			StateNode final_state = (StateNode) start;
 			StateOfWorld w = final_state.getState();
-			double score = final_state.getGoal_satisfaction_degree();
-			System.out.println("final state: "+asset.getShortStateRepresentation(w));
-			long long_score = asset.evaluate_state(w);
-			System.out.println("l score: "+long_score);
+//			double score = final_state.getGoal_satisfaction_degree();
+//			//System.out.println("final state: "+asset.getShortStateRepresentation(w));
+//			long long_score = asset.evaluate_state(w);
+			//System.out.println("l score: "+long_score);
 			//System.out.println("score: "+score);
 			asset.log_state(assumptions,w);
 		}

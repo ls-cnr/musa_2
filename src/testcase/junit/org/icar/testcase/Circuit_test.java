@@ -99,18 +99,7 @@ public class Circuit_test {
 
 		//circuit.log_assumptions();
 		//circuit.log_initial_state();
-		try {
-			circuit.log_current_state(circuit.getInitialState());
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (NotAllowedInAnAssumptionSet e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (NotAllowedInAStateOfWorld e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		circuit.log_current_state(circuit.getInitialState());
 	}
 
 }
