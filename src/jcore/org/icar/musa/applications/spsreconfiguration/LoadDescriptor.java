@@ -19,6 +19,8 @@ public class LoadDescriptor {
 	private int type;
 	private int priority;
 	
+	private boolean open;
+	
 	public LoadDescriptor(int source, int id, int pow, int type, int priority) {
 		super();
 		this.source = source;
@@ -27,6 +29,19 @@ public class LoadDescriptor {
 		this.pow = pow;
 		this.type = type;
 		this.priority = priority;
+		
+		this.open = false;
+	}
+	public LoadDescriptor(int source, int id, int pow, int type, int priority,boolean open) {
+		super();
+		this.source = source;
+		
+		this.id = id;
+		this.pow = pow;
+		this.type = type;
+		this.priority = priority;
+
+		this.open = open;
 	}
 
 	public String getName() {
@@ -69,6 +84,19 @@ public class LoadDescriptor {
 		return "sw_"+id;
 	}
 	
+	public int getSource() {
+		return source;
+	}
+	public void setSource(int source) {
+		this.source = source;
+	}
+
+	public boolean isOpen() {
+		return open;
+	}
+	public void setOpen(boolean open) {
+		this.open = open;
+	}
 	public FOLCondition getLoadCondition() {
 		return new FOLCondition(new DLPAtom("on",new Constant (getName())));
 	}

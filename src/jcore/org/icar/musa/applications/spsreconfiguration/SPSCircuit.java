@@ -77,6 +77,16 @@ public class SPSCircuit {
 		
 		loads.add( new LoadDescriptor(node,load,pow,type,priority) );
 	}
+	public void add_load(int node, int load, int pow, int type, int priority,boolean open) {
+		if (type==LoadDescriptor.VITAL)
+			vital_loads.add(new LoadDescriptor(node,load,pow,type,priority,open));
+		if (type==LoadDescriptor.SEMIVITAL)
+			semi_vital_loads.add(new LoadDescriptor(node,load,pow,type,priority,open));
+		if (type==LoadDescriptor.NONVITAL)
+			non_vital_loads.add(new LoadDescriptor(node,load,pow,type,priority,open));
+		
+		loads.add( new LoadDescriptor(node,load,pow,type,priority,open) );
+	}
 
 	public void add_generator(int node, String name, int pow) {
 		generators.add( new GeneratorDescriptor(node,name,pow));
@@ -207,7 +217,10 @@ public class SPSCircuit {
 				}
 			}
 			for (LoadDescriptor l : loads) {
-				w.addFact_asString("closed("+l.getSwitcher()+").");
+				if (l.isOpen())
+					w.addFact_asString("open("+l.getSwitcher()+").");
+				else
+					w.addFact_asString("closed("+l.getSwitcher()+").");
 			}
 			for (GeneratorDescriptor g : generators) {
 				if (g.getState()==true)
