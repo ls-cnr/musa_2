@@ -10,6 +10,7 @@ import org.icar.musa.applications.spsreconfiguration.SPSReconfigcirc3_std_4guast
 import org.icar.musa.applications.spsreconfiguration.SPSReconfigurationEasy;
 import org.icar.musa.applications.spsreconfiguration.SPSReconfigurationFailure2;
 import org.icar.musa.applications.spsreconfiguration.SPSReconfigurationFull;
+import org.icar.musa.applications.spsreconfiguration.SPScirc3_std_m1_s2_3guasti;
 import org.icar.musa.pmr.problem_exploration.ProblemSpecification;
 import org.icar.musa.pmr.problem_exploration.WTS;
 import org.icar.musa.pmr.problem_exploration.WTSEventLogger;
@@ -85,7 +86,7 @@ public class AllDomains_Test {
 		aw_builder.log_partial_solutions(assumptionsSPS, s.getQualityAsset());
 	}
 
-	@Test
+	@Ignore @Test
 	public void explore_SPS_circuito3() throws ProblemDefinitionException {
 		Scenario s = new SPSReconfigcirc3_std_4guasti_0();
 		AssumptionSet assumptionsSPS = s.getDomainAssumptions();
@@ -103,6 +104,26 @@ public class AllDomains_Test {
 		//WTSEventLogger logger = new WTSEventLogger();
 		AWBuilder aw_builder = new AWBuilder(s.getQualityAsset(),assumptionsSPS);
 		//wts_builder.register(logger);
+		wts_builder.register(aw_builder);
+		
+		wts_builder.build_solution_space(s.getInitialState());
+		
+		aw_builder.log_solutions(assumptionsSPS, s.getQualityAsset());
+		aw_builder.log_partial_solutions(assumptionsSPS, s.getQualityAsset());
+	}
+
+	@Test
+	public void explore_SPS_circuito3_m1_sc2() throws ProblemDefinitionException {
+		Scenario s = new SPScirc3_std_m1_s2_3guasti();
+		System.out.println(s.getName());
+		
+		AssumptionSet assumptionsSPS = s.getDomainAssumptions();
+		Requirements requirementsSPS = s.getRequirements();
+		ArrayList<AbstractCapability> allCapSPS = s.getCapabilitySet();
+		ProblemSpecification ps_SPS = new ProblemSpecification(assumptionsSPS, requirementsSPS, s.getQualityAsset());
+				
+		WTSLocalBuilder wts_builder = new WTSLocalBuilder(ps_SPS, allCapSPS);
+		AWBuilder aw_builder = new AWBuilder(s.getQualityAsset(),assumptionsSPS);
 		wts_builder.register(aw_builder);
 		
 		wts_builder.build_solution_space(s.getInitialState());
